@@ -1,0 +1,41 @@
+# Cấu hình IDE (IntelliJ, Eclipse, VS Code)
+.idea/
+.eclipse/
+.classpath
+.project
+.settings/
+.vscode/
+
+# Thư mục và file build (Maven và Gradle)
+/target/
+/build/
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*.log
+
+# Dependency (nếu không dùng Maven/Gradle wrapper)
+.gradle/
+/out/
+
+# Files hệ thống
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Files log
+logs/
+*.log
+*.txt
+
+# Files tạm hoặc backup
+*.swp
+*~
+.#*
+*.bak
+
+# Files môi trường (nếu có)
+.env
+application.properties.example
+application.yml.example
