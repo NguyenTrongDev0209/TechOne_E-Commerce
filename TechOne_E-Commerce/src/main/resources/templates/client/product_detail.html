@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trang Chi Tiết Sản Phẩm TechShop</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f94715",
+                        "primary-dark": "#d6370d",
+                        "background-light": "#f8f6f5",
+                        "background-dark": "#23140f",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2f1c16",
+                        "text-main": "#1c100d",
+                        "text-muted": "#9e5a47",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetic */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200">
+<!-- Header -->
+<div class="sticky top-0 z-50 bg-[#fcf9f8]/95 dark:bg-[#23140f]/95 backdrop-blur-md border-b border-[#f4e9e6] dark:border-white/10">
+<div class="layout-container flex flex-col justify-center w-full">
+<header class="flex items-center justify-between whitespace-nowrap px-4 lg:px-10 py-3 max-w-[1440px] mx-auto w-full">
+<div class="flex items-center gap-8">
+<a class="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity" href="#">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h2 class="text-[#1c100d] dark:text-white text-xl font-bold leading-tight tracking-tight">TechShop</h2>
+</a>
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-[#1c100d] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Điện thoại</a>
+<a class="text-[#1c100d] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Laptop</a>
+<a class="text-[#1c100d] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Phụ kiện</a>
+<a class="text-primary text-sm font-bold hover:opacity-80 transition-colors" href="#">Sale 🔥</a>
+<a class="text-[#1c100d] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Tin tức</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<label class="hidden md:flex flex-col min-w-40 h-10 w-64">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full bg-[#f4e9e6] dark:bg-white/5 border border-transparent focus-within:border-primary/50 transition-colors">
+<div class="text-[#9e5a47] dark:text-gray-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full min-w-0 flex-1 bg-transparent border-none text-[#1c100d] dark:text-white focus:ring-0 placeholder:text-[#9e5a47] dark:placeholder:text-gray-500 px-3 text-sm" placeholder="Tìm kiếm sản phẩm..."/>
+</div>
+</label>
+<div class="flex gap-3">
+<button class="flex size-10 items-center justify-center rounded-xl bg-[#f4e9e6] dark:bg-white/5 hover:bg-primary/10 hover:text-primary dark:hover:text-primary text-[#1c100d] dark:text-white transition-colors relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute -top-1 -right-1 size-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full">2</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-xl bg-[#f4e9e6] dark:bg-white/5 hover:bg-primary/10 hover:text-primary dark:hover:text-primary text-[#1c100d] dark:text-white transition-colors">
+<span class="material-symbols-outlined">person</span>
+</button>
+<!-- Mobile Menu Button -->
+<button class="lg:hidden flex size-10 items-center justify-center rounded-xl bg-[#f4e9e6] dark:bg-white/5 text-[#1c100d] dark:text-white">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+</div>
+</div>
+<!-- Main Content -->
+<main class="w-full max-w-[1280px] mx-auto px-4 lg:px-8 py-6 pb-20">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap items-center gap-2 mb-6 text-sm">
+<a class="text-[#9e5a47] dark:text-gray-400 hover:text-primary transition-colors" href="#">Trang chủ</a>
+<span class="material-symbols-outlined text-[#9e5a47] dark:text-gray-600 text-[16px]">chevron_right</span>
+<a class="text-[#9e5a47] dark:text-gray-400 hover:text-primary transition-colors" href="#">Laptop</a>
+<span class="material-symbols-outlined text-[#9e5a47] dark:text-gray-600 text-[16px]">chevron_right</span>
+<a class="text-[#9e5a47] dark:text-gray-400 hover:text-primary transition-colors" href="#">Gaming</a>
+<span class="material-symbols-outlined text-[#9e5a47] dark:text-gray-600 text-[16px]">chevron_right</span>
+<span class="text-[#1c100d] dark:text-white font-medium">TechBook Pro X1</span>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+<!-- Left Column: Gallery -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<!-- Main Image -->
+<div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-surface-dark group border border-black/5 dark:border-white/5">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat transition-transform duration-500 group-hover:scale-105" data-alt="Modern silver laptop open showing colorful screen details on white background" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCvJySvZepco3zqsAhctOIp1M4egaYDAx9qozjBZdLtV50Ot4fAXHuI1faexBrdTN6Ds91vhI5Q2cfnCVdM59F54QHyvRPuN3s_9UOfY46TiKSWxWQaYAApwcELdF_GANNpvRu0ntFXAjuI-jmi-rUoC46SJw5Z8qA8eIMT3alKV-lPhuEEXm4rROFM8DKJRk9RSyvssGs96vazwzDparlaCLqagKYnrXAbW1WdyNJu8Mlp5whHxZUW2sArJEUSexheaED4iFE6W-Y");'>
+</div>
+<div class="absolute top-4 left-4">
+<span class="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Bán chạy</span>
+</div>
+<button class="absolute bottom-4 right-4 size-10 bg-white/90 dark:bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-gray-700 dark:text-white shadow hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+</div>
+<!-- Thumbnails -->
+<div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
+<button class="relative flex-none w-20 h-20 rounded-xl border-2 border-primary overflow-hidden p-1 bg-white dark:bg-surface-dark">
+<div class="w-full h-full bg-center bg-cover rounded-lg" data-alt="Closeup of laptop keyboard" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDTY0dg2LOxJ36BC_fA14cpCS5Tqfil3kOkG59MI4B2xjwngxkkVIy5KQ-ZiawkX1Z45bDUqbB_2XcpRSv31_lz1RdKZ5K5BcvGfVcc7WrS73yM4Cd5OmQIyg6VKwB3UM65eX0kBto7qbHH4yZsGAJeTWxFognQQfCdGme6rTix48WmYWUXeHnvn2zr9zuXq1LAtEv68m4JeykCrpwtJeuKWDVdT4EGO1NifNJ5U7LXLO2rKyww2CN9vs3eoX4UUnMaYNWOVZFM9BE");'></div>
+</button>
+<button class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-surface-dark transition-colors">
+<div class="w-full h-full bg-center bg-cover rounded-lg" data-alt="Laptop side profile view thin design" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA2w8Bpvdo7BKx3rcjajRfJTsE8ZtDqTcg_kLmol062RIfPPDzs83JhDLxzeDGPl0nvLn-8u5brceVH6orFouGIjHKmWG40oaH1jzkbBG8ox_1SpxR4L4X0DKaskJIpi7nyy2Qv8vJVKwRL5dtx5NWyrsw24ihvm-5zUFFEoBTDm81LEpCGS5Utas21uR6ep4VRr8Xn18-517dzUCr3vLTn4XGbfQouknwabY4FDGH0oEm9pC_mR9IgRpKHTUGOb9kyVuUfqZ_XjQo");'></div>
+</button>
+<button class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-surface-dark transition-colors">
+<div class="w-full h-full bg-center bg-cover rounded-lg" data-alt="Laptop lid closed with metallic finish" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBn8NpTXcHcJaNTflydzVkZL7A38EvYvSQA28hmXJcVWSS3gzlLgYWiRMHZ4fjcork2L6cvm3kAIXgjID-hNDpRwLzOHsuaj99LEQUg7UriZQLsERjyh2mZBM96ldPyfWIlLGvnE3EuagQe9sNVejAvm_ut9cMqVJnhHD0airCKcmStvZ6y9zpVWUCCGfrgNLa5hJREJxhqwkmrO0_9aZXyNihExuYP9dPqkTuJv7pU7gZf3WKn6m9CTdMwqQZl3wjLL_rtf2hHQUE");'></div>
+</button>
+<button class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-surface-dark transition-colors">
+<div class="w-full h-full bg-center bg-cover rounded-lg" data-alt="Laptop ports and connectivity close up" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD6rrcS_cNJ_mOhCNWwmkEiSEz03x_viAG-bbOHw0C3iPghr6XkeXd9nXXT4KEc--pWCe96OOJbENdOyJoJWcqp10ARvHt0akCGueKGYBCxc1qT1MXZJaFsHs8j4-S5_dqH8ZLLEcCs2D8jSAyOMOcA_BQaLFdHtusJ6ljBTXCkYhlEP4OL5-OmTVrfGNQjdtYZqqjgGClCpfBM1AM3A6T3SBV5zPQRT4GtlOHwuZYSITcrS3BwcdFMj5r5MGKGwfmyCdExx9auYDw");'></div>
+</button>
+<!-- Video Thumbnail -->
+<button class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden bg-gray-100 dark:bg-surface-dark flex items-center justify-center group">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors text-3xl">play_circle</span>
+</button>
+</div>
+</div>
+<!-- Right Column: Info & Actions -->
+<div class="lg:col-span-5 flex flex-col">
+<div class="sticky top-24 space-y-6">
+<!-- Title Block -->
+<div>
+<h1 class="text-3xl lg:text-4xl font-bold text-[#1c100d] dark:text-white leading-tight font-display mb-3">TechBook Pro X1 - M2 Chip Ultimate Edition</h1>
+<div class="flex items-center gap-4 flex-wrap">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 fill-current text-[20px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-yellow-500 fill-current text-[20px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-yellow-500 fill-current text-[20px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-yellow-500 fill-current text-[20px]" style="font-variation-settings: 'FILL' 1">star</span>
+<span class="material-symbols-outlined text-yellow-500 text-[20px]">star_half</span>
+<span class="ml-1 text-sm font-semibold text-[#1c100d] dark:text-white">4.8</span>
+</div>
+<div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+<a class="text-sm text-primary hover:underline font-medium" href="#reviews">124 Đánh giá</a>
+<div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
+<span class="text-sm text-gray-500 dark:text-gray-400">Đã bán 1.2k</span>
+</div>
+</div>
+<!-- Price Block -->
+<div class="p-4 rounded-xl bg-white dark:bg-surface-dark/50 border border-gray-100 dark:border-white/5 shadow-sm">
+<div class="flex items-end gap-3 flex-wrap">
+<span class="text-4xl font-bold text-primary font-display">29.990.000₫</span>
+<span class="text-lg text-gray-400 line-through mb-1">34.990.000₫</span>
+<span class="mb-2 px-2 py-0.5 text-xs font-bold text-white rounded bg-primary">-15%</span>
+</div>
+<p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">info</span>
+                            Giá đã bao gồm VAT
+                        </p>
+</div>
+<!-- Variants -->
+<div class="space-y-4">
+<!-- Color -->
+<div>
+<span class="block text-sm font-semibold text-[#1c100d] dark:text-white mb-3">Màu sắc: <span class="font-normal text-gray-500">Bạc Silver</span></span>
+<div class="flex gap-3">
+<label class="cursor-pointer group relative">
+<input checked="" class="peer sr-only" name="color" type="radio"/>
+<div class="size-10 rounded-full bg-[#e3e3e3] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#23140f] peer-checked:ring-primary transition-all"></div>
+</label>
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="color" type="radio"/>
+<div class="size-10 rounded-full bg-[#5d5d5d] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#23140f] peer-checked:ring-primary transition-all"></div>
+</label>
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="color" type="radio"/>
+<div class="size-10 rounded-full bg-[#2a2a2a] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#23140f] peer-checked:ring-primary transition-all"></div>
+</label>
+</div>
+</div>
+<!-- Config -->
+<div>
+<span class="block text-sm font-semibold text-[#1c100d] dark:text-white mb-3">Cấu hình:</span>
+<div class="flex flex-wrap gap-3">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="config" type="radio"/>
+<div class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark text-sm font-medium peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all">
+                                        16GB / 512GB SSD
+                                    </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="config" type="radio"/>
+<div class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark text-sm font-medium peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all">
+                                        32GB / 1TB SSD
+                                    </div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="config" type="radio"/>
+<div class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark text-sm font-medium peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary transition-all">
+                                        64GB / 2TB SSD
+                                    </div>
+</label>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-4 border-t border-gray-100 dark:border-white/10 space-y-4">
+<div class="flex items-center gap-4">
+<div class="flex items-center border border-gray-300 dark:border-gray-600 rounded-xl h-12 w-32 bg-white dark:bg-surface-dark">
+<button class="size-10 flex items-center justify-center text-gray-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<input class="flex-1 w-full text-center border-none focus:ring-0 bg-transparent p-0 text-[#1c100d] dark:text-white font-medium" type="number" value="1"/>
+<button class="size-10 flex items-center justify-center text-gray-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+<div class="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+                                Còn hàng
+                            </div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 h-14 rounded-xl bg-white dark:bg-transparent border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                                Thêm vào giỏ
+                            </button>
+<button class="flex items-center justify-center gap-2 h-14 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark shadow-lg shadow-primary/30 transition-all transform active:scale-95">
+                                Mua ngay
+                            </button>
+</div>
+</div>
+<!-- Trust Badges -->
+<div class="grid grid-cols-3 gap-2 pt-4">
+<div class="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+<span class="text-xs font-medium text-gray-600 dark:text-gray-300">100% Chính hãng</span>
+</div>
+<div class="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+<span class="text-xs font-medium text-gray-600 dark:text-gray-300">Miễn phí vẫn chuyển</span>
+</div>
+<div class="flex flex-col items-center justify-center text-center gap-2 p-3 rounded-xl bg-gray-50 dark:bg-white/5">
+<span class="material-symbols-outlined text-primary text-3xl">security</span>
+<span class="text-xs font-medium text-gray-600 dark:text-gray-300">Bảo hành 12 tháng</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Frequently Bought Together -->
+<div class="mt-16 bg-white dark:bg-surface-dark rounded-2xl p-6 lg:p-8 border border-gray-100 dark:border-white/5 shadow-sm">
+<h3 class="text-xl font-bold mb-6 text-[#1c100d] dark:text-white">Khách hàng thường mua kèm</h3>
+<div class="flex flex-col lg:flex-row items-center gap-8">
+<div class="flex flex-wrap items-center justify-center gap-4 flex-1">
+<!-- Main Product -->
+<div class="w-32 flex flex-col gap-2">
+<div class="w-32 h-32 rounded-lg bg-gray-50 dark:bg-white/5 bg-center bg-cover border border-gray-200 dark:border-white/10" data-alt="Small thumbnail of main laptop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7nlQNVgECF1yxIVNOuL82gVG62nsY0_TQKC_WNZG_zic_Ea2Xf1sobcpYZvDF5WtQu1Q5C9PgVCt-_Ss9vI3gGmHyOZRbk9E9puYB7H8AVuGOcAZe0ICX8E8cwsYIBt1XVVlozzUWom55J04U2RRviYgyiLnClQo_ieVn7bE5Zy2JcpWboWcIDIQMi7BDqopQh_nhZJrAcgpBdtlyMO2nABBEeC5cuoF6UC8Hueli8J45J1kmt-8qrYbjzwS7XfJBZDBzYd-RDSA");'></div>
+<p class="text-xs font-medium line-clamp-2 dark:text-gray-300">TechBook Pro X1</p>
+<span class="text-sm font-bold text-primary">29.990k</span>
+</div>
+<span class="material-symbols-outlined text-gray-400">add</span>
+<!-- Accessory 1 -->
+<div class="w-32 flex flex-col gap-2">
+<div class="relative w-32 h-32 rounded-lg bg-gray-50 dark:bg-white/5 bg-center bg-cover border border-gray-200 dark:border-white/10 group cursor-pointer" data-alt="Wireless mouse accessory" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC5NQZLNNKsuycwbKp3_GIhpc4IwObP9E7kjjXxgZOCEQTUCLJFeCdbzYSBqK6I6KkQBCvBKSKIaeXadPil31kLYE4Z6eOsZn30bLw34ROThgwZiMJqKyN98QbQ8R6LvO0QZ5VCh8ahiFPvJqvekJjgqgoSunIGp345OEFhChDiCBwnfHmX1GaYuXEtR0ZxPErSDrRxiipu1dVz50rsHhGbfZ4Zf9rln6Ik0SppFwF4aAk92bRid_9ctnrwDVGm-eowjpYEA7vvNzw");'>
+<div class="absolute top-2 right-2">
+<input checked="" class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</div>
+</div>
+<p class="text-xs font-medium line-clamp-2 dark:text-gray-300">Chuột không dây Pro</p>
+<span class="text-sm font-bold text-primary">590k</span>
+</div>
+<span class="material-symbols-outlined text-gray-400">add</span>
+<!-- Accessory 2 -->
+<div class="w-32 flex flex-col gap-2">
+<div class="relative w-32 h-32 rounded-lg bg-gray-50 dark:bg-white/5 bg-center bg-cover border border-gray-200 dark:border-white/10 group cursor-pointer" data-alt="Laptop sleeve case" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeTTB_1vn5kI6Ah6V5M-7odgkhswOaCJ6r5JY_0X-MjTxdV5ynKYaHRUSUkG3HTTrWVYSPpgWn3HjRdKlkkwOn_sr9QOnSxKPtFP76PmiBoXAE-HWiLz43QG3_mDowp5q2nv1FgxsiENRVBcMzwCSNToy3YA_q4iYb2P5K7MJuyxHmdLGu-nbzz0L5JvXRaJzczEa0Zh1NxcNTtkwtssmP89n-khUyc3fOHb2AxrNsUQ2BvN5ePGOTdMnrpAX175c6e0_1-xgPQNk");'>
+<div class="absolute top-2 right-2">
+<input class="rounded border-gray-300 text-primary focus:ring-primary size-4" type="checkbox"/>
+</div>
+</div>
+<p class="text-xs font-medium line-clamp-2 dark:text-gray-300">Túi chống sốc Leather</p>
+<span class="text-sm font-bold text-primary">890k</span>
+</div>
+</div>
+<!-- Total Action -->
+<div class="w-full lg:w-64 flex flex-col gap-4 p-4 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+<div class="flex justify-between text-sm">
+<span class="text-gray-500">Tổng cộng:</span>
+<span class="font-medium dark:text-white">2 sản phẩm</span>
+</div>
+<div class="text-2xl font-bold text-primary">30.580.000₫</div>
+<button class="w-full h-10 rounded-lg bg-text-main dark:bg-white text-white dark:text-black font-bold text-sm hover:opacity-90 transition-opacity">
+                        Thêm combo vào giỏ
+                    </button>
+</div>
+</div>
+</div>
+<!-- Content Tabs -->
+<div class="mt-16">
+<div class="border-b border-gray-200 dark:border-white/10 mb-8 overflow-x-auto no-scrollbar">
+<nav class="flex space-x-8 min-w-max">
+<a class="border-b-2 border-primary py-4 px-1 text-sm font-bold text-primary" href="#">
+                        Mô tả chi tiết
+                    </a>
+<a class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all" href="#">
+                        Thông số kỹ thuật
+                    </a>
+<a class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all" href="#">
+                        Đánh giá &amp; Hỏi đáp (124)
+                    </a>
+<a class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all" href="#">
+                        Chính sách bảo hành
+                    </a>
+</nav>
+</div>
+<!-- Tab Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+<div class="lg:col-span-2 space-y-6 text-gray-600 dark:text-gray-300 leading-relaxed">
+<h2 class="text-2xl font-bold text-[#1c100d] dark:text-white">Sức mạnh vượt trội, thiết kế đỉnh cao</h2>
+<p>
+                        TechBook Pro X1 mang đến hiệu năng chưa từng có với chip M2 thế hệ mới. Xử lý mọi tác vụ từ chỉnh sửa video 8K, lập trình phức tạp đến chơi game đồ họa cao một cách mượt mà. Tất cả được gói gọn trong thiết kế nhôm nguyên khối siêu mỏng nhẹ.
+                    </p>
+<div class="w-full aspect-video rounded-xl bg-gray-100 dark:bg-white/5 bg-center bg-cover my-6" data-alt="Lifestyle shot of person using laptop in a modern cafe" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCch--PFix6O8_s_x9_BpKfAVLjpfHvbJPlMhX3CAwbz6RZNaRR7T6bxNJYI0t6i0MHmrvnx46B9GERx84ALVmiy0ZLd0uLf-wThYnhZtUVVrn4gyz4VVx8XbXcaycKwS2skqUmTsyLhzDjBn1LrWfJwV9u4d0C5r7b8Ljzt3JSxUbcSG-Nsu4CGhnSDINTNLDxBvKIgbgNO1IrbnLbcGbYcOLIbavlS_QO9u78rPAArp1xNk0LeT3PduF2-0lIHijGvClomNsL1ms");'></div>
+<h3 class="text-xl font-bold text-[#1c100d] dark:text-white mt-4">Màn hình Liquid Retina XDR</h3>
+<p>
+                        Trải nghiệm hình ảnh sống động hơn bao giờ hết với dải động cực cao, độ sáng lên đến 1600 nits và tỷ lệ tương phản 1.000.000:1. Mọi chi tiết đều trở nên sắc nét và chân thực.
+                    </p>
+<div class="grid grid-cols-2 gap-4 my-6">
+<div class="aspect-[4/3] rounded-xl bg-gray-100 dark:bg-white/5 bg-center bg-cover" data-alt="Close up of laptop screen displaying vibrant colors" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgZpLpKBeXxsKH8wSABZbFF8vCR01OWbP7hjCvRJhhe52vcS4hO6yhMtSvCPOuG1sqxgfoKToXHgiGlmUV6rIvepOXFQ9kNIiaTAegDHxEFKRpz0FkpzteELoWvGflfbxz-_LBXHSqvXa5vaXIMtW82NqF39b9y_SZCa3NhY5WZsXHnzGkAmdNCyPkucbhE1JbuUh_emXhLfRAiC4e_RyTDK1XCU1CXL4M_QR20Bdxik68-Ghib9CqNbzZPM4pqL206qGrsh5y99o");'></div>
+<div class="aspect-[4/3] rounded-xl bg-gray-100 dark:bg-white/5 bg-center bg-cover" data-alt="Laptop side view showing thin profile" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD8YFQJXXPWZirI3ogmvOIIJl2TDHq7qDnMzliXFOMigyLz42jEEflnScRNxBNAWDqaXRb0PueJDahxLbPrAqI0URDtAvFoRcoEXweh1W2etLuK9bnJewfbt9rW9aG2-RpV76o0xCfKvmlJMd4zGy4FtkbzGxQs3NZQ5in3xdu9cRsHUqrjgYT9U-AlG2SjYfg8CC6KbepWdBr6YjGtziH-K04W_fMp5Yfuzl0TsiymV1uPDLB-iCGIbYo2qtBU60o7razFCd7-JfQ");'></div>
+</div>
+</div>
+<!-- Specs Summary in Side Panel -->
+<div class="lg:col-span-1">
+<div class="bg-gray-50 dark:bg-white/5 rounded-2xl p-6">
+<h3 class="font-bold text-lg mb-4 text-[#1c100d] dark:text-white">Thông số nổi bật</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-400 mt-1">memory</span>
+<div>
+<span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Vi xử lý</span>
+<span class="text-sm font-semibold dark:text-gray-200">Apple M2 Pro (10-core CPU)</span>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-400 mt-1">grid_view</span>
+<div>
+<span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">RAM</span>
+<span class="text-sm font-semibold dark:text-gray-200">16GB Unified Memory</span>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-400 mt-1">hard_drive</span>
+<div>
+<span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Lưu trữ</span>
+<span class="text-sm font-semibold dark:text-gray-200">512GB SSD NVMe</span>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-400 mt-1">monitor</span>
+<div>
+<span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Màn hình</span>
+<span class="text-sm font-semibold dark:text-gray-200">14.2" Liquid Retina XDR (3024 x 1964)</span>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-gray-400 mt-1">battery_charging_full</span>
+<div>
+<span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Pin</span>
+<span class="text-sm font-semibold dark:text-gray-200">Lên đến 18 giờ</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-white/10 transition-colors">
+                            Xem cấu hình chi tiết
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Related Products Carousel -->
+<div class="mt-20">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-[#1c100d] dark:text-white">Sản phẩm tương tự</h2>
+<div class="flex gap-2">
+<button class="size-9 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+</button>
+<button class="size-9 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-gray-100 dark:hover:bg-white/10 text-gray-600 dark:text-white transition-colors">
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-square rounded-2xl bg-white dark:bg-white/5 overflow-hidden border border-gray-100 dark:border-white/5">
+<div class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded">-10%</div>
+<div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300" data-alt="Black gaming laptop with rgb lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCSWR_Oq7FtE3oJbPsUS6Ggq6x-UQVsZCC5tXoZ12IH16Ce6xj7Ewa7MetTLpduJyGZ8sIZKoFIS3PlD8GGZ6MaDW4bqLZmPyXuR4EsIwH8rQp82or6Q0_QZQGL_T6vTkQg2r4jrne3ioWZSc2vk52i5Btjdz6fSYkGXVmXPeCf2QBCLJrDuf_6bUBunRa_ImVyeooOsBBcMKBdh9f_A3iZrW8b09BXbKFVUju-zjseNskheK_tx140Ijj2vrvBRsHK53coM7zNU10");'></div>
+<button class="absolute bottom-3 right-3 size-9 bg-primary text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+<div>
+<h3 class="font-semibold text-[#1c100d] dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">Dell XPS 15 9520</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-yellow-500 text-xs flex"><span class="material-symbols-outlined text-[14px] fill-current" style="font-variation-settings: 'FILL' 1">star</span></span>
+<span class="text-xs text-gray-500">(45)</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-bold text-primary">45.990k</span>
+<span class="text-xs text-gray-400 line-through">49.990k</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-square rounded-2xl bg-white dark:bg-white/5 overflow-hidden border border-gray-100 dark:border-white/5">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300" data-alt="Silver ultra-thin laptop front view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUzXqO9VY_yK1yq2kEKUc6cOFaObNxlg_01pzyrWghvLXj4quAC7U2BQoJ7w5KWhhYnegsSiUk2i09IuK8prJTU8BNc6RUq8hxt6yUxF1vVHosRFYtCFVqyftxV1ZVknUR3s2QIuCLb6IWOclzWOiyb54d9itQx3U1d0ABAIAeDbz5nLxwUzlr8a2oG7wxQvlnNPSJvMTXDMgTPm1SA7bKRAwyFWYBP5ouS-Ol6WgRaIjqvb6-HZ-Duu8pSDKXBKKoZ9_4C91GYGs");'></div>
+<button class="absolute bottom-3 right-3 size-9 bg-primary text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+<div>
+<h3 class="font-semibold text-[#1c100d] dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">MacBook Air M2</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-yellow-500 text-xs flex"><span class="material-symbols-outlined text-[14px] fill-current" style="font-variation-settings: 'FILL' 1">star</span></span>
+<span class="text-xs text-gray-500">(210)</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-bold text-primary">27.490k</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-square rounded-2xl bg-white dark:bg-white/5 overflow-hidden border border-gray-100 dark:border-white/5">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300" data-alt="Grey laptop open angled view" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBYySb9VgfCv7DGYYtEcG-NyVeN95miwy82CJ0J5XgW2EkUZJFKCwZq3tQIhEBMY0_r-SmYvAXVdOGYVndUjSiHLty6tWAOn2WZzkrRPOw-fdMJImhpoRS5Z7kqn0kdGAkYb2W2lvqUgaFBZ5inoyqu7coxAW7HbRjMkDWit0DklcQ__DDYB1IgBnvnRhJMR8DXlJS7zkvlvBMjFHppxkvCxFAS4xCGQ-ySb8lEnLaQGhKdRke12dE3X5HIbsPXyVnGO85kAvPBV_w");'></div>
+<button class="absolute bottom-3 right-3 size-9 bg-primary text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+<div>
+<h3 class="font-semibold text-[#1c100d] dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">Asus Zenbook 14</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-yellow-500 text-xs flex"><span class="material-symbols-outlined text-[14px] fill-current" style="font-variation-settings: 'FILL' 1">star</span></span>
+<span class="text-xs text-gray-500">(89)</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-bold text-primary">22.990k</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group flex flex-col gap-3">
+<div class="relative aspect-square rounded-2xl bg-white dark:bg-white/5 overflow-hidden border border-gray-100 dark:border-white/5">
+<div class="absolute top-3 left-3 bg-blue-500 text-white text-[10px] font-bold px-2 py-1 rounded">New</div>
+<div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300" data-alt="Dark grey professional laptop workstation" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBr-y4S5iJufixAukX83RzNwuc9cXUOdQZenLH-I0f7E1O10XUwKIWr_-YueqWttCvAPmCGIe5YZMy4XsqUmN9JHO3nVst_k6CMzLdeEdE7fwfB3K7k3wOVv6Jhg8FhikU1PI0n-MxjRRIRIINfvIbPicFmYQEt48_pZDcJa08GNNDKDcHGHctot1T_lCDMz2a-F_8F2145tT8V13kyGKokJ_CuBqpcP0-x8S2OjyvHVBi6OnNlqMYFTuPSItOEVq1eqFWkhpLpxqg");'></div>
+<button class="absolute bottom-3 right-3 size-9 bg-primary text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
+<span class="material-symbols-outlined text-lg">add_shopping_cart</span>
+</button>
+</div>
+<div>
+<h3 class="font-semibold text-[#1c100d] dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">HP Spectre x360</h3>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-yellow-500 text-xs flex"><span class="material-symbols-outlined text-[14px] fill-current" style="font-variation-settings: 'FILL' 1">star</span></span>
+<span class="text-xs text-gray-500">(15)</span>
+</div>
+<div class="flex items-center gap-2 mt-2">
+<span class="font-bold text-primary">38.990k</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-[#1a0f0b] border-t border-gray-100 dark:border-white/5 pt-16 pb-8">
+<div class="layout-container px-4 lg:px-10 max-w-[1440px] mx-auto w-full">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+<div>
+<div class="flex items-center gap-2 text-primary mb-6">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<h2 class="text-[#1c100d] dark:text-white text-xl font-bold leading-tight">TechShop</h2>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">
+                        Địa chỉ uy tín số 1 về các sản phẩm công nghệ. Chất lượng đảm bảo, hậu mãi tuyệt vời.
+                    </p>
+<div class="flex gap-4">
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+<a class="text-gray-400 hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">call</span></a>
+</div>
+</div>
+<div>
+<h3 class="font-bold text-[#1c100d] dark:text-white mb-6">Sản phẩm</h3>
+<ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Điện thoại</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Laptop</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Máy tính bảng</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Phụ kiện</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold text-[#1c100d] dark:text-white mb-6">Hỗ trợ khách hàng</h3>
+<ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
+<li><a class="hover:text-primary transition-colors" href="#">Trung tâm trợ giúp</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Chính sách bảo hành</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Trạng thái đơn hàng</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Hướng dẫn mua hàng</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-bold text-[#1c100d] dark:text-white mb-6">Đăng ký nhận tin</h3>
+<p class="text-sm text-gray-500 dark:text-gray-400 mb-4">Nhận thông tin khuyến mãi mới nhất từ TechShop</p>
+<div class="flex gap-2">
+<input class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 dark:bg-white/5 dark:text-white text-sm focus:ring-primary focus:border-primary" placeholder="Email của bạn" type="email"/>
+<button class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg font-bold transition-colors">Gửi</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-100 dark:border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="text-xs text-gray-400">© 2024 TechShop. All rights reserved.</p>
+<div class="flex gap-4">
+<img alt="Visa" class="h-4 opacity-50 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeTJ4zwneUBM9vfyw1U1Y0lczzv-4xi4I5R-HnzWhCZgzwc-O_ZiuFjPQZ1jf6vpRQgWwIc4Qrqo2VucbKnfzR4aLUiznQw-iN8_Kmo5Y16zT4mAqXUw3_glNvzaKKu1AiRdYMIQfimN-PCV60zK0uLppmzET08Yz0ZuXdJgx-IdCao5B1IyIYBLvZudREhHL-tlhrOcJQ0MZ1l-F7D0Gyrmh_Zhhc-BKMT5GC_2RHp9JT41js7bftXXs4-BnhAHdyDQ4WMIx82Ss"/>
+<img alt="Mastercard" class="h-4 opacity-50 grayscale hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiHtHPl7LctpClAY-Vn8Gs7vft6VW-KrVUkQxMvi9R_RMEIpLOCRNhCd84_nAvHs5J3nQtlh5E6IOAXEkrUuvdahs_Zy4CUW85cFaVg7-3s2mnOBPQBqFV_IyjKzPXgVBx7awjHBivGXcx8rZGj3ffZICWlkpjaoN-XCDh2hP5PNxUDIeTuHFrqdITJKhKJJ9NgK3ObrZVozo5h0kj1UmCEk66nBgv-ztq3RklYoXIynBvmYf8y8-LTZfIvliuO4zlf8GZiK30_A0"/>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cấu Hình Admin TechShop</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#ff4400",
+              "primary-hover": "#e63d00",
+              "background-light": "#f8f6f5",
+              "background-dark": "#23140f",
+              "surface-light": "#ffffff",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "body": ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+                "DEFAULT": "0.5rem",
+                "lg": "1rem",
+                "xl": "1.5rem",
+                "2xl": "2rem",
+            },
+            boxShadow: {
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d1d5db;
+        }.toggle-checkbox:checked {
+            right: 0;
+            border-color: #ff4400;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #ff4400;
+        }html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-800 font-display antialiased overflow-hidden h-screen flex">
+<aside class="w-64 bg-surface-light border-r border-slate-100 flex-col hidden lg:flex h-full z-20 shadow-soft">
+<div class="h-16 flex items-center px-6 border-b border-slate-50">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 p-1.5 rounded-lg text-primary">
+<span class="material-symbols-outlined text-2xl">bolt</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900">TechShop<span class="text-primary">.</span></h1>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">grid_view</span>
+<span>Tổng quan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">shopping_bag</span>
+<span>Đơn hàng</span>
+<span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">18</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">inventory_2</span>
+<span>Sản phẩm</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+<span>Khách hàng</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+<span>Báo cáo</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-semibold transition-colors" href="#">
+<span class="material-symbols-outlined filled">settings</span>
+<span>Cấu hình</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-50">
+<div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
+<div class="w-10 h-10 rounded-full bg-cover bg-center ring-2 ring-primary/20" data-alt="Administrator portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9z6g2SfMoqJ-Ax0X0K0ve3Cxoh7zkyktFIfKLo0IhWq5zGIdungKkkg3f0OylhG-qL8VGm_mtefrgyGQKmozkvo1vL0fvlruRaLsQ-pXpabjrWsO91v22qytTeGmRDhAwEQVw13lQZGkmfGHuKWxOy87uYb3Sfu6uxNwxHkb_plPGx8VD5f6TIHY1I2_-wG-S5K-PiuaCUZlzmn_i_Ncbs69Fa_UU0orEfQoJHlZhxZGLnsnG8NzH5l4XzgAN6-Mt7swKrNfgPw')"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold text-slate-900 truncate">Admin TechShop</p>
+<p class="text-xs text-slate-500 truncate">admin@techshop.vn</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<header class="h-16 bg-surface-light/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-10">
+<button class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex-1 max-w-lg hidden md:block">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
+<input class="w-full bg-slate-50 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400" placeholder="Tìm kiếm cài đặt..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4 ml-auto">
+<button class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-xl hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-slate-200 mx-1"></div>
+<button class="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+<span class="hidden sm:inline">Trợ giúp</span>
+</button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto bg-background-light p-4 md:p-8 scroll-smooth">
+<div class="max-w-7xl mx-auto">
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-1">Cấu hình Website</h1>
+<p class="text-slate-500 font-body">Quản lý toàn bộ thiết lập hệ thống, thanh toán và vận hành.</p>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-8 items-start">
+<div class="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-4 z-0">
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 p-2">
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-colors" href="#general">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+                                    Cấu hình chung
+                                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors" href="#seo">
+<span class="material-symbols-outlined text-[20px]">search</span>
+                                    Cấu hình SEO
+                                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors" href="#payment">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                                    Cấu hình thanh toán
+                                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors" href="#shipping">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                                    Cấu hình vận chuyển
+                                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors" href="#email-sms">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+                                    Email &amp; SMS
+                                </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors" href="#social">
+<span class="material-symbols-outlined text-[20px]">share</span>
+                                    Mạng xã hội
+                                </a>
+</nav>
+</div>
+<div class="mt-6 bg-blue-50 p-4 rounded-2xl border border-blue-100">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-blue-600 mt-0.5">info</span>
+<div>
+<h4 class="text-sm font-bold text-blue-900 mb-1">Phiên bản 2.5.0</h4>
+<p class="text-xs text-blue-700">Hệ thống đang chạy phiên bản mới nhất. Cập nhật lần cuối: 25/12/2025.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 space-y-8 w-full min-w-0">
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="general">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">tune</span>
+                                    Thông tin chung
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="col-span-1 md:col-span-2">
+<label class="block text-sm font-bold text-slate-700 mb-2">Tên Website</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="text" value="TechShop - Công nghệ đỉnh cao"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Hotline</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="text" value="1900 123 456"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Email liên hệ</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="email" value="contact@techshop.vn"/>
+</div>
+<div class="col-span-1 md:col-span-2">
+<label class="block text-sm font-bold text-slate-700 mb-2">Địa chỉ trụ sở</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="text" value="Số 123, Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh"/>
+</div>
+<div class="col-span-1 md:col-span-2">
+<label class="block text-sm font-bold text-slate-700 mb-2">Giờ làm việc</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="text" value="Thứ 2 - Thứ 6: 8:00 - 17:30 | Thứ 7: 8:00 - 12:00"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Logo Website</label>
+<div class="border-2 border-dashed border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-20 h-20 mb-3 bg-slate-100 rounded-lg flex items-center justify-center">
+<img alt="Current Logo" class="max-w-full h-auto p-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDka0ATs7XEUnY6JLiU0DSWWEKrO9LQx4oly4UZd8dVBVCRxd2zLX4JPNvcH_Rrb3y0SuqV8JazTvWi-ucB-zrI9PyJowhj2KYvBCGexwSalWREomFjzxNxux8OlldC0ycVMXcFJ9jaJsNiOtKyai61ocrl6klgNbSL6nycuA4GSTL1gi6IL_-4zdz0rpIRp71jNIpfw2Sid-lCcwuQ_Jj1XSAdKta9uWzZsJJCF2P87TDVgu8vbDCkB0Ek-dw5QrQtmtYvqOoGjSs"/>
+</div>
+<span class="text-xs font-semibold text-primary group-hover:underline">Tải lên logo mới</span>
+<span class="text-[10px] text-slate-400 mt-1">PNG, JPG (Max 2MB)</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Favicon</label>
+<div class="border-2 border-dashed border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-slate-50 hover:border-primary/50 transition-all cursor-pointer group">
+<div class="w-12 h-12 mb-3 bg-slate-100 rounded-lg flex items-center justify-center">
+<img alt="Current Favicon" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc_cwbJrQUemHGIy0WVq-NMh2aN77nrcxad2VBzktw4HhJLe7S91lKSdfYMoBLrjcUsdRS2AxS9g6lMgxFn82mP2Ti2VKIm9rf_y8ST8TqZWAArnEgQB0_3HJoqJ8NumdFuy6GjiPzHGVFR55vln3kkIGrZl1ruCVCPHh2DPutAyhTh9EQ7ZlB7byFK55Q0O-FZ5xehRt1g7_8TCs-MNKyuVxv26ybdxWEvo2aj4H_uOaIvwdYlPZJFbOm4tuD_pTYY0k0auxSauI"/>
+</div>
+<span class="text-xs font-semibold text-primary group-hover:underline">Tải lên favicon</span>
+<span class="text-[10px] text-slate-400 mt-1">ICO, PNG (32x32px)</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-3 justify-end">
+<button class="px-6 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-sm hover:bg-slate-50 transition-colors">Khôi phục mặc định</button>
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="seo">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">search</span>
+                                    Cấu hình SEO
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Meta Title (Mặc định)</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="text" value="TechShop - Mua sắm đồ công nghệ chính hãng giá tốt"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Meta Description (Mặc định)</label>
+<textarea class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" rows="3">Chuyên cung cấp laptop, điện thoại, phụ kiện công nghệ chính hãng. Bảo hành 12 tháng, đổi trả 30 ngày, miễn phí vận chuyển.</textarea>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Google Analytics ID</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" placeholder="UA-XXXXXXXX-X" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Google Search Console Code</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" placeholder="Verification Code" type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Robot.txt Editor</label>
+<textarea class="w-full bg-slate-800 text-green-400 font-mono border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" rows="4">User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /checkout
+Sitemap: https://techshop.vn/sitemap.xml</textarea>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-end">
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="payment">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+                                    Phương thức thanh toán
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-green-600">
+<span class="material-symbols-outlined text-2xl">paid</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900">COD (Thanh toán khi nhận hàng)</h4>
+<p class="text-xs text-slate-500">Cho phép khách hàng thanh toán tiền mặt khi nhận hàng</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex flex-col p-4 bg-slate-50 rounded-xl border border-slate-100 gap-4">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-blue-600">
+<span class="material-symbols-outlined text-2xl">account_balance</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900">Chuyển khoản ngân hàng</h4>
+<p class="text-xs text-slate-500">Hiển thị thông tin ngân hàng khi checkout</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="pl-16 grid grid-cols-1 md:grid-cols-2 gap-4">
+<input class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm" placeholder="Tên Ngân hàng" type="text"/>
+<input class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm" placeholder="Số tài khoản" type="text"/>
+<input class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm md:col-span-2" placeholder="Chủ tài khoản" type="text"/>
+</div>
+</div>
+<div class="flex flex-col p-4 bg-slate-50 rounded-xl border border-slate-100 gap-4">
+<div class="flex items-center justify-between w-full">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-blue-800">
+<span class="font-bold">Pay</span>
+</div>
+<div>
+<h4 class="font-bold text-slate-900">PayPal</h4>
+<p class="text-xs text-slate-500">Thanh toán quốc tế qua cổng PayPal</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="pl-16">
+<input class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm mb-2" placeholder="PayPal Client ID" type="password"/>
+<input class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm" placeholder="PayPal Secret Key" type="password"/>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-end">
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="shipping">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+                                    Đơn vị vận chuyển
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-4 border border-slate-200 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-3">
+<span class="font-bold text-slate-800">Giao Hàng Nhanh (GHN)</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="p-4 border border-slate-200 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-3">
+<span class="font-bold text-slate-800">Viettel Post</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-50">
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Phí ship mặc định (VND)</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" type="number" value="30000"/>
+</div>
+<div>
+<label class="block text-sm font-bold text-slate-700 mb-2">Khu vực miễn phí vận chuyển</label>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" placeholder="VD: Hồ Chí Minh, Hà Nội" type="text"/>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-end">
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="email-sms">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">mail</span>
+                                    Cấu hình Email &amp; SMS
+                                </h3>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-sm font-bold text-slate-700">Email Templates</h4>
+<div class="flex gap-2 text-xs">
+<button class="bg-primary text-white px-3 py-1 rounded-lg">Đơn mới</button>
+<button class="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg hover:bg-slate-200">Xác nhận</button>
+<button class="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg hover:bg-slate-200">Hủy đơn</button>
+</div>
+</div>
+<textarea class="w-full font-mono bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-700" rows="6">Xin chào {customer_name},
+Cảm ơn bạn đã đặt hàng tại TechShop. Đơn hàng #{order_id} của bạn đã được tiếp nhận.
+Tổng tiền: {total_amount}
+Chúng tôi sẽ liên hệ sớm để xác nhận.
+TechShop Team.
+                                </textarea>
+<div class="pt-4 border-t border-slate-50">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h4 class="text-sm font-bold text-slate-900">SMS OTP</h4>
+<p class="text-xs text-slate-500">Gửi mã xác thực qua tin nhắn điện thoại</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<input class="w-full bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900" placeholder="SMS Provider API Key" type="text"/>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-end">
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24" id="social">
+<div class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+<h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">share</span>
+                                    Mạng xã hội
+                                </h3>
+</div>
+<div class="p-6 space-y-4">
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-blue-600 font-bold text-lg">f</span>
+<input class="w-full pl-10 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Facebook URL" type="text"/>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-pink-600 font-bold text-lg">In</span>
+<input class="w-full pl-10 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="Instagram URL" type="text"/>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-red-600 font-bold text-lg">Y</span>
+<input class="w-full pl-10 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="YouTube Channel URL" type="text"/>
+</div>
+<div class="relative">
+<span class="absolute left-3 top-2.5 text-black font-bold text-lg">Tk</span>
+<input class="w-full pl-10 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="TikTok URL" type="text"/>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-end">
+<button class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu thay đổi</button>
+</div>
+</div>
+</div>
+<div class="h-12"></div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

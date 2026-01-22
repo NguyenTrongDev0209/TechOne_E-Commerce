@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chính sách Bảo hành &amp; Đổi trả - TechShop</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f94715",
+                        "primary-dark": "#d6360b",
+                        "background-light": "#fcf9f8",
+                        "background-dark": "#23140f",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d1b16",
+                        "text-main": "#1c100d",
+                        "text-muted": "#9e5a47",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for table if needed */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af; 
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white transition-colors duration-200">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full border-b border-gray-100 dark:border-white/10 bg-surface-light dark:bg-surface-dark shadow-sm">
+<div class="container mx-auto px-4 lg:px-8 max-w-7xl h-20 flex items-center justify-between">
+<!-- Logo -->
+<a class="flex items-center gap-3 text-text-main dark:text-white group" href="#">
+<div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-3xl">bolt</span>
+</div>
+<h1 class="text-xl font-black tracking-tight">TechShop</h1>
+</a>
+<!-- Search -->
+<div class="hidden md:flex flex-1 max-w-md mx-8">
+<div class="relative w-full group focus-within:ring-2 ring-primary/20 rounded-xl transition-all">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-2.5 bg-background-light dark:bg-background-dark border-transparent rounded-xl text-sm focus:border-transparent focus:ring-0 placeholder-text-muted/70 text-text-main dark:text-white" placeholder="Tìm kiếm sản phẩm..." type="text"/>
+</div>
+</div>
+<!-- Nav & Actions -->
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Sản phẩm</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Khuyến mãi</a>
+<a class="text-sm font-semibold text-primary transition-colors" href="#">Hỗ trợ</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Tin tức</a>
+</nav>
+<div class="flex items-center gap-3 pl-4 border-l border-gray-200 dark:border-white/10">
+<button class="relative p-2.5 rounded-xl hover:bg-background-light dark:hover:bg-white/5 transition-colors group">
+<span class="material-symbols-outlined text-text-main dark:text-white group-hover:text-primary">shopping_cart</span>
+<span class="absolute top-1.5 right-1.5 size-2.5 bg-primary rounded-full border-2 border-surface-light dark:border-surface-dark"></span>
+</button>
+<button class="p-2.5 rounded-xl hover:bg-background-light dark:hover:bg-white/5 transition-colors group">
+<span class="material-symbols-outlined text-text-main dark:text-white group-hover:text-primary">person</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Wrapper -->
+<div class="container mx-auto px-4 lg:px-8 max-w-7xl py-8 flex flex-col min-h-screen">
+<!-- Breadcrumbs -->
+<nav aria-label="Breadcrumb" class="flex mb-8 text-sm font-medium text-text-muted">
+<ol class="flex items-center space-x-2">
+<li><a class="hover:text-primary transition-colors" href="#">Trang chủ</a></li>
+<li><span class="text-gray-400">/</span></li>
+<li><span class="text-text-main dark:text-white">Chính sách bảo hành</span></li>
+</ol>
+</nav>
+<div class="flex flex-col lg:flex-row gap-12">
+<!-- Main Content Area -->
+<main class="w-full lg:w-3/4 order-2 lg:order-1">
+<!-- Page Heading -->
+<div class="mb-10 pb-6 border-b border-gray-100 dark:border-white/10">
+<h1 class="text-3xl md:text-4xl font-black tracking-tight text-text-main dark:text-white mb-4">
+                        Chính sách Bảo hành &amp; Đổi trả - TechShop
+                    </h1>
+<div class="flex items-center gap-4 text-sm text-text-muted">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">calendar_today</span>
+                            Cập nhật lần cuối: 20/10/2023
+                        </span>
+<span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">visibility</span>
+                            2.5k lượt xem
+                        </span>
+</div>
+</div>
+<!-- Rich Text Content -->
+<div class="prose prose-lg dark:prose-invert max-w-none text-text-main dark:text-gray-200">
+<p class="leading-relaxed mb-8 text-lg text-gray-600 dark:text-gray-300">
+                        Tại <strong class="text-primary font-bold">TechShop</strong>, chúng tôi cam kết mang đến cho khách hàng những sản phẩm công nghệ chất lượng nhất. Dưới đây là quy định chi tiết về chính sách bảo hành và đổi trả áp dụng cho toàn bộ hệ thống cửa hàng và mua sắm trực tuyến.
+                    </p>
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-8 border border-gray-100 dark:border-white/5 shadow-sm mb-10">
+<h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+<span class="bg-primary/10 text-primary p-2 rounded-lg">
+<span class="material-symbols-outlined">verified_user</span>
+</span>
+                            1. Điều kiện bảo hành
+                        </h2>
+<ul class="space-y-4 list-none pl-0 text-base">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Sản phẩm còn trong thời hạn bảo hành được tính kể từ ngày giao hàng hoặc được ghi trên Phiếu Bảo Hành.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Có Phiếu Bảo Hành của nhà sản xuất hoặc nhà phân phối (nếu có).</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Sản phẩm bị lỗi kỹ thuật do nhà sản xuất.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
+<span>Tem bảo hành và tem niêm phong (nếu có) của TechShop còn nguyên vẹn.</span>
+</li>
+</ul>
+</div>
+<h2 class="text-2xl font-bold mb-6 mt-10">2. Thời gian bảo hành theo hãng</h2>
+<div class="overflow-x-auto custom-scrollbar rounded-xl border border-gray-200 dark:border-white/10 mb-10">
+<table class="w-full text-left border-collapse bg-white dark:bg-surface-dark min-w-[600px]">
+<thead class="bg-gray-50 dark:bg-white/5">
+<tr>
+<th class="p-4 font-bold text-sm text-text-muted uppercase border-b border-gray-200 dark:border-white/10">Thương hiệu</th>
+<th class="p-4 font-bold text-sm text-text-muted uppercase border-b border-gray-200 dark:border-white/10">Loại sản phẩm</th>
+<th class="p-4 font-bold text-sm text-text-muted uppercase border-b border-gray-200 dark:border-white/10">Thời gian bảo hành</th>
+<th class="p-4 font-bold text-sm text-text-muted uppercase border-b border-gray-200 dark:border-white/10">Hình thức</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-white/5">
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 font-medium">Apple</td>
+<td class="p-4">iPhone, iPad, MacBook</td>
+<td class="p-4 text-primary font-bold">12 Tháng</td>
+<td class="p-4">Chính hãng tại TTBH Apple</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 font-medium">Samsung</td>
+<td class="p-4">Điện thoại, Tablet</td>
+<td class="p-4 text-primary font-bold">12 Tháng</td>
+<td class="p-4">Điện tử (theo IMEI)</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 font-medium">Dell / HP / Asus</td>
+<td class="p-4">Laptop</td>
+<td class="p-4 text-primary font-bold">12 - 24 Tháng</td>
+<td class="p-4">Tại nhà / TTBH hãng</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<td class="p-4 font-medium">Phụ kiện</td>
+<td class="p-4">Cáp, Sạc, Tai nghe</td>
+<td class="p-4 text-primary font-bold">6 - 12 Tháng</td>
+<td class="p-4">Đổi mới 1-1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 class="text-2xl font-bold mb-6 mt-10">3. Quy trình đổi trả</h2>
+<div class="grid md:grid-cols-3 gap-6 mb-12">
+<!-- Step 1 -->
+<div class="relative p-6 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-white/5 group hover:border-primary/50 transition-all">
+<div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center font-bold text-lg shadow-lg shadow-primary/30">1</div>
+<h3 class="font-bold text-lg mb-2 mt-2">Thông báo lỗi</h3>
+<p class="text-sm text-text-muted">Liên hệ hotline hoặc mang sản phẩm đến cửa hàng gần nhất để báo cáo tình trạng lỗi.</p>
+</div>
+<!-- Step 2 -->
+<div class="relative p-6 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-white/5 group hover:border-primary/50 transition-all">
+<div class="absolute -top-4 -left-4 w-10 h-10 bg-white dark:bg-surface-dark border-2 border-primary text-primary rounded-lg flex items-center justify-center font-bold text-lg">2</div>
+<h3 class="font-bold text-lg mb-2 mt-2">Kiểm tra &amp; Xác nhận</h3>
+<p class="text-sm text-text-muted">Kỹ thuật viên sẽ kiểm tra lỗi phần cứng/phần mềm trong vòng 24-48 giờ làm việc.</p>
+</div>
+<!-- Step 3 -->
+<div class="relative p-6 bg-surface-light dark:bg-surface-dark rounded-xl border border-gray-100 dark:border-white/5 group hover:border-primary/50 transition-all">
+<div class="absolute -top-4 -left-4 w-10 h-10 bg-white dark:bg-surface-dark border-2 border-primary text-primary rounded-lg flex items-center justify-center font-bold text-lg">3</div>
+<h3 class="font-bold text-lg mb-2 mt-2">Đổi mới / Hoàn tiền</h3>
+<p class="text-sm text-text-muted">Nếu đủ điều kiện, TechShop sẽ tiến hành đổi sản phẩm mới hoặc hoàn tiền theo quy định.</p>
+</div>
+</div>
+<div class="bg-primary/5 rounded-xl p-8 text-center border border-primary/10 mt-12">
+<div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-primary">
+<span class="material-symbols-outlined text-3xl">support_agent</span>
+</div>
+<h3 class="text-xl font-bold text-text-main dark:text-white mb-2">Bạn vẫn còn thắc mắc?</h3>
+<p class="text-text-muted mb-6 max-w-md mx-auto">Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng giải đáp mọi câu hỏi về chính sách bảo hành của bạn.</p>
+<a class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-primary/25" href="#">
+<span class="material-symbols-outlined">chat</span>
+                            Liên hệ chúng tôi
+                        </a>
+</div>
+</div>
+</main>
+<!-- Sidebar (Desktop Right) -->
+<aside class="w-full lg:w-1/4 order-1 lg:order-2">
+<div class="sticky top-24 space-y-8">
+<!-- Quick Links Widget -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-gray-100 dark:border-white/10 shadow-sm">
+<h3 class="text-lg font-bold text-text-main dark:text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">article</span>
+                            Danh mục chính sách
+                        </h3>
+<nav class="flex flex-col space-y-1">
+<a class="group flex items-center justify-between px-4 py-3 rounded-lg bg-primary/10 text-primary font-semibold" href="#">
+<span>Chính sách Bảo hành</span>
+<span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary transition-colors" href="#">
+<span>Chính sách Giao hàng</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary transition-colors" href="#">
+<span>Chính sách Thanh toán</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary transition-colors" href="#">
+<span>Chính sách Bảo mật</span>
+</a>
+<a class="group flex items-center justify-between px-4 py-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary transition-colors" href="#">
+<span>Điều khoản sử dụng</span>
+</a>
+</nav>
+</div>
+<!-- Hotline Widget -->
+<div class="relative overflow-hidden bg-background-dark text-white rounded-xl p-6 shadow-md">
+<div class="absolute top-0 right-0 p-8 -mr-6 -mt-6 bg-white/10 rounded-full blur-2xl w-32 h-32"></div>
+<h3 class="text-lg font-bold mb-1 relative z-10">Cần hỗ trợ gấp?</h3>
+<p class="text-white/70 text-sm mb-4 relative z-10">Gọi ngay hotline miễn phí</p>
+<a class="flex items-center gap-3 text-2xl font-black text-primary hover:text-white transition-colors relative z-10" href="tel:18001234">
+<span class="material-symbols-outlined text-3xl">phone_in_talk</span>
+                            1800 1234
+                        </a>
+<p class="text-xs text-white/50 mt-2 relative z-10">8:00 - 21:00 (Cả CN &amp; Ngày lễ)</p>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-white/10 mt-auto pt-16 pb-8">
+<div class="container mx-auto px-4 lg:px-8 max-w-7xl">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+<!-- Col 1 -->
+<div>
+<a class="flex items-center gap-2 text-text-main dark:text-white mb-6" href="#">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">bolt</span>
+</div>
+<span class="text-xl font-black tracking-tight">TechShop</span>
+</a>
+<p class="text-text-muted text-sm leading-relaxed mb-6">
+                        TechShop - Hệ thống bán lẻ công nghệ hàng đầu. Uy tín, chất lượng và tận tâm phục vụ khách hàng.
+                    </p>
+<div class="flex gap-4">
+<a class="size-10 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-text-main dark:text-white hover:bg-primary hover:text-white transition-all" href="#">
+<!-- Facebook Icon placeholder -->
+<svg class="size-5" fill="currentColor" viewbox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</a>
+<a class="size-10 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-text-main dark:text-white hover:bg-primary hover:text-white transition-all" href="#">
+<!-- Youtube Icon placeholder -->
+<svg class="size-5" fill="currentColor" viewbox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+</a>
+</div>
+</div>
+<!-- Col 2 -->
+<div>
+<h4 class="font-bold text-lg mb-6 text-text-main dark:text-white">Về TechShop</h4>
+<ul class="space-y-4 text-sm text-text-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Giới thiệu công ty</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tuyển dụng</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Gửi góp ý, khiếu nại</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tìm siêu thị (2300 shop)</a></li>
+</ul>
+</div>
+<!-- Col 3 -->
+<div>
+<h4 class="font-bold text-lg mb-6 text-text-main dark:text-white">Hỗ trợ khách hàng</h4>
+<ul class="space-y-4 text-sm text-text-muted">
+<li><a class="hover:text-primary transition-colors" href="#">Hướng dẫn mua hàng</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Tra cứu bảo hành</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Chính sách đổi trả</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Giao hàng &amp; Lắp đặt</a></li>
+</ul>
+</div>
+<!-- Col 4 -->
+<div>
+<h4 class="font-bold text-lg mb-6 text-text-main dark:text-white">Tổng đài hỗ trợ</h4>
+<ul class="space-y-4 text-sm">
+<li class="flex justify-between items-center text-text-muted">
+<span>Gọi mua:</span>
+<a class="font-bold text-text-main dark:text-white hover:text-primary" href="tel:18001060">1800.1060</a>
+</li>
+<li class="flex justify-between items-center text-text-muted">
+<span>Kỹ thuật:</span>
+<a class="font-bold text-text-main dark:text-white hover:text-primary" href="tel:18001763">1800.1763</a>
+</li>
+<li class="flex justify-between items-center text-text-muted">
+<span>Khiếu nại:</span>
+<a class="font-bold text-text-main dark:text-white hover:text-primary" href="tel:18001062">1800.1062</a>
+</li>
+</ul>
+<div class="mt-6 pt-6 border-t border-gray-100 dark:border-white/5">
+<div class="flex gap-2">
+<img class="h-6 w-auto opacity-70 grayscale hover:grayscale-0 transition-all" data-alt="Visa payment icon generic gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0TrykdUlL-yvUiiSspqdSJ3mRvBHQoJ7fDqAKpUlW1KAl9DXNlcwELMprXGTXl5asr21OIhB7bZYkf_zNcyp4GS1CqsRhyhoNadUqO8sfnlF3L0fVsHjJdWIV4jNaJ7_TLuFrXedurYmrc0YNRvklzbVHgp-8DtxG3unCE8b0KDNQRsLVlxRcAilLrJuDu-PtIv-BFOY9SGdHjdobzHq914QE_HVeaqTPFcHyQmoY4G_NJ8s8JNm4EXuJbEgSmq-U8wNW4Qb4HNo"/>
+<img class="h-6 w-auto opacity-70 grayscale hover:grayscale-0 transition-all" data-alt="Mastercard payment icon generic gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOieIF1PmS8td8mrUMvNCKrevSag3AZAMBQQqevJq3L_f3rHeipMgqN5YWj3bahrZLfsAExaVzwPR66v-0yCbOwQTWd7NFXovXy_TxzPg8o2JHi7mMAW5SsNRJ8xNA_90Uonnec_lECqWOzBUB6UVI_zcjjGrt6BxOA0_R-M61eSk0Dz4-SUAh-1yxZ5bFLdFXp5kQf4xg9DZQUUTWlgBYOw_z8TC7Z-pZQSvlngbXWey2pWXGfNru9K0kz0S6qqQeV8lVwQOLC2s"/>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-200 dark:border-white/10 pt-8 text-center text-sm text-text-muted">
+<p>© 2023 Công ty Cổ phần Thương mại TechShop. All rights reserved.</p>
+</div>
+</div>
+</footer>
+</body></html>
