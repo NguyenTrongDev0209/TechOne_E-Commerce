@@ -1,136 +1,15 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8" />
-<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <title>TechShop Creator Dashboard - Viết Bài Mới</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-	rel="stylesheet" />
-<link href="https://fonts.googleapis.com" rel="preconnect" />
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap"
-	rel="stylesheet" />
-<script
-	src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script id="tailwind-config">
-	tailwind.config = {
-		theme : {
-			extend : {
-				colors : {
-					"primary" : "#FF4500", // Red-Orange Accent
-					"bg-main" : "#FFFFFF", // Main White Background
-					"bg-sidebar" : "#F8F9FA", // Light Gray Sidebar
-					"card-surface" : "#FFFFFF", // White Card Background
-					"border-subtle" : "#E9ECEF", // Light Gray Border
-					"text-main" : "#212529", // Dark Gray Text
-					"text-muted" : "#6C757D", // Muted Gray Text
-				},
-				fontFamily : {
-					"display" : [ "Space Grotesk", "sans-serif" ],
-					"body" : [ "Noto Sans", "sans-serif" ],
-				},
-				borderRadius : {
-					"DEFAULT" : "0.5rem",
-					"lg" : "1rem",
-					"xl" : "1.5rem",
-					"full" : "9999px"
-				},
-			},
-		},
-	}
-</script>
-<style>
-::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
-}
-
-::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-	background: #dee2e6;
-	border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #FF4500;
-}
-
-.editor-content:empty:before {
-	content: attr(placeholder);
-	color: #9CA3AF;
-	pointer-events: none;
-	font-style: italic;
-}
-</style>
+<th:block th:replace="~{fragments_creator/head_css :: head_css}"></th:block>
 </head>
-<body
-	class="bg-bg-main text-text-main font-display overflow-hidden antialiased selection:bg-primary selection:text-white">
-	<div class="flex h-screen w-full overflow-hidden">
-		<aside
-			class="hidden lg:flex w-72 flex-col justify-between border-r border-border-subtle bg-bg-sidebar p-6">
-			<div class="flex flex-col gap-8">
-				<div class="flex items-center gap-3 px-2">
-					<div
-						class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
-						<span class="material-symbols-outlined text-2xl">design_services</span>
-					</div>
-					<h1 class="text-xl font-bold tracking-tight text-text-main">
-						TechShop<br />
-						<span class="text-primary text-sm font-medium">Creator</span>
-					</h1>
-				</div>
-				<nav class="flex flex-col gap-2">
-					<a
-						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
-						href="#"> <span class="material-symbols-outlined">dashboard</span>
-						<span class="text-sm font-medium">Tổng quan</span>
-					</a> <a
-						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
-						href="#"> <span class="material-symbols-outlined">article</span>
-						<span class="text-sm font-medium">Bài viết của tôi</span>
-					</a> <a
-						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
-						href="#"> <span class="material-symbols-outlined">bar_chart</span>
-						<span class="text-sm font-medium">Thống kê</span>
-					</a> <a
-						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
-						href="#"> <span class="material-symbols-outlined">chat_bubble</span>
-						<span class="text-sm font-medium">Bình luận</span> <span
-						class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
-					</a> <a
-						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
-						href="#"> <span class="material-symbols-outlined">settings</span>
-						<span class="text-sm font-medium">Cài đặt</span>
-					</a>
-				</nav>
-			</div>
-			<div class="flex flex-col gap-4">
-				<button
-					class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all ring-2 ring-offset-2 ring-primary/20">
-					<span class="material-symbols-outlined text-[20px]">edit_square</span>
-					Viết bài mới
-				</button>
-				<div
-					class="flex items-center gap-3 rounded-xl border border-border-subtle bg-white p-3 shadow-sm">
-					<div
-						class="h-10 w-10 overflow-hidden rounded-full bg-slate-200 bg-[url('https://i.pravatar.cc/150?img=11')] bg-cover bg-center"
-						data-alt="User Avatar"></div>
-					<div class="flex flex-col">
-						<p class="text-sm font-bold text-text-main">My Creator</p>
-						<p class="text-xs text-text-muted">Creator Pro</p>
-					</div>
-					<button
-						class="ml-auto text-text-muted hover:text-primary transition-colors">
-						<span class="material-symbols-outlined">logout</span>
-					</button>
-				</div>
-			</div>
-		</aside>
+<body class="bg-bg-main text-text-main font-display antialiased overflow-hidden h-screen flex">
+
+    <div th:replace="~{fragments_creator/sidebar :: sidebar}"></div>
+
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header th:replace="~{fragments_creator/header :: header}" th:with="pageTitle='Chào mừng quay lại, Minh! 👋', pageSub='Hôm nay bạn có ý tưởng công nghệ nào mới không?'"></header>
 		<main
 			class="flex-1 flex flex-col h-screen overflow-hidden bg-bg-main relative">
 			<header
