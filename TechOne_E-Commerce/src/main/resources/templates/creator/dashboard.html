@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>TechShop Creator Dashboard</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+	rel="stylesheet" />
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap"
+	rel="stylesheet" />
+<script
+	src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+	tailwind.config = {
+		theme : {
+			extend : {
+				colors : {
+					"primary" : "#FF4500", 
+					"bg-main" : "#FFFFFF",
+					"bg-sidebar" : "#F8F9FA", 
+					"card-surface" : "#FFFFFF", 
+					"border-subtle" : "#E9ECEF", 
+					"text-main" : "#212529", 
+					"text-muted" : "#6C757D", 
+				},
+				fontFamily : {
+					"display" : [ "Space Grotesk", "sans-serif" ],
+					"body" : [ "Noto Sans", "sans-serif" ],
+				},
+				borderRadius : {
+					"DEFAULT" : "0.5rem",
+					"lg" : "1rem",
+					"xl" : "1.5rem",
+					"full" : "9999px"
+				},
+			},
+		},
+	}
+</script>
+<style>
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #dee2e6;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #FF4500;
+}
+</style>
+</head>
+<body
+	class="bg-bg-main text-text-main font-display overflow-hidden antialiased selection:bg-primary selection:text-white">
+	<div class="flex h-screen w-full overflow-hidden">
+		<aside
+			class="hidden lg:flex w-72 flex-col justify-between border-r border-border-subtle bg-bg-sidebar p-6">
+			<div class="flex flex-col gap-8">
+				<div class="flex items-center gap-3 px-2">
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+						<span class="material-symbols-outlined text-2xl">design_services</span>
+					</div>
+					<h1 class="text-xl font-bold tracking-tight text-text-main">
+						TechShop<br />
+						<span class="text-primary text-sm font-medium">Creator</span>
+					</h1>
+				</div>
+				<nav class="flex flex-col gap-2">
+					<a
+						class="group flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-white shadow-lg shadow-primary/20 transition-all"
+						href="#"> <span class="material-symbols-outlined filled">dashboard</span>
+						<span class="text-sm font-medium">Tổng quan</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">article</span>
+						<span class="text-sm font-medium">Bài viết của tôi</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">bar_chart</span>
+						<span class="text-sm font-medium">Thống kê</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">chat_bubble</span>
+						<span class="text-sm font-medium">Bình luận</span> <span
+						class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">settings</span>
+						<span class="text-sm font-medium">Cài đặt</span>
+					</a>
+				</nav>
+			</div>
+			<div class="flex flex-col gap-4">
+				<button
+					class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">
+					<span class="material-symbols-outlined text-[20px]">edit_square</span>
+					Viết bài mới
+				</button>
+				<div
+					class="flex items-center gap-3 rounded-xl border border-border-subtle bg-white p-3 shadow-sm">
+					<div
+						class="h-10 w-10 overflow-hidden rounded-full bg-slate-200 bg-[url('https://i.pravatar.cc/150?img=11')] bg-cover bg-center"
+						data-alt="User Avatar"></div>
+					<div class="flex flex-col">
+						<p class="text-sm font-bold text-text-main">My Creator</p>
+						<p class="text-xs text-text-muted">Creator Pro</p>
+					</div>
+					<button
+						class="ml-auto text-text-muted hover:text-primary transition-colors">
+						<span class="material-symbols-outlined">logout</span>
+					</button>
+				</div>
+			</div>
+		</aside>
+		<main
+			class="flex-1 flex flex-col overflow-y-auto bg-bg-main scroll-smooth">
+			<div
+				class="container mx-auto max-w-[1200px] p-4 md:p-8 flex flex-col gap-8">
+				<header class="flex flex-wrap items-center justify-between gap-4">
+					<div class="flex flex-col gap-1">
+						<!-- <h2
+							class="text-3xl md:text-4xl font-bold tracking-tight text-text-main">
+							Chào mừng quay lại, Minh! 👋</h2> -->
+						<!-- <p class="text-text-muted text-base font-normal">Hôm nay bạn
+							có ý tưởng công nghệ nào mới không?</p> -->
+					</div>
+					<div class="hidden md:flex gap-3">
+						<button
+							class="flex items-center justify-center rounded-xl h-10 w-10 bg-white border border-border-subtle text-text-muted hover:border-primary hover:text-primary transition-colors shadow-sm">
+							<span class="material-symbols-outlined">notifications</span>
+						</button>
+						<button
+							class="flex h-10 cursor-pointer items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm">
+							<span class="truncate">Xem trang của tôi</span>
+						</button>
+					</div>
+				</header>
+				<section
+					class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+					<div
+						class="flex flex-col justify-between gap-4 rounded-xl bg-card-surface p-5 border border-border-subtle shadow-sm hover:shadow-md transition-all group">
+						<div class="flex justify-between items-start">
+							<div class="p-2 rounded-lg bg-blue-50 text-blue-600">
+								<span class="material-symbols-outlined">visibility</span>
+							</div>
+							<span
+								class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+								<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+								+12%
+							</span>
+						</div>
+						<div>
+							<p class="text-text-muted text-sm font-medium">Tổng lượt xem</p>
+							<h3 class="text-2xl font-bold text-text-main mt-1">125.4K</h3>
+						</div>
+					</div>
+					<div
+						class="flex flex-col justify-between gap-4 rounded-xl bg-card-surface p-5 border border-border-subtle shadow-sm hover:shadow-md transition-all group">
+						<div class="flex justify-between items-start">
+							<div class="p-2 rounded-lg bg-orange-50 text-primary">
+								<span class="material-symbols-outlined">post_add</span>
+							</div>
+							<span
+								class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+								<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+								+2
+							</span>
+						</div>
+						<div>
+							<p class="text-text-muted text-sm font-medium">Bài đã đăng</p>
+							<h3 class="text-2xl font-bold text-text-main mt-1">42</h3>
+						</div>
+					</div>
+					<div
+						class="flex flex-col justify-between gap-4 rounded-xl bg-card-surface p-5 border border-border-subtle shadow-sm hover:shadow-md transition-all group">
+						<div class="flex justify-between items-start">
+							<div class="p-2 rounded-lg bg-pink-50 text-pink-500">
+								<span class="material-symbols-outlined">favorite</span>
+							</div>
+							<span
+								class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+								<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+								+5%
+							</span>
+						</div>
+						<div>
+							<p class="text-text-muted text-sm font-medium">Tổng lượt
+								thích</p>
+							<h3 class="text-2xl font-bold text-text-main mt-1">8.9K</h3>
+						</div>
+					</div>
+					<div
+						class="flex flex-col justify-between gap-4 rounded-xl bg-card-surface p-5 border border-border-subtle shadow-sm hover:shadow-md transition-all group">
+						<div class="flex justify-between items-start">
+							<div class="p-2 rounded-lg bg-purple-50 text-purple-600">
+								<span class="material-symbols-outlined">chat</span>
+							</div>
+							<span
+								class="flex items-center text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+								<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+								+18%
+							</span>
+						</div>
+						<div>
+							<p class="text-text-muted text-sm font-medium">Bình luận mới</p>
+							<h3 class="text-2xl font-bold text-text-main mt-1">156</h3>
+						</div>
+					</div>
+				</section>
+				<section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+					<div
+						class="lg:col-span-2 rounded-xl bg-card-surface border border-border-subtle p-6 shadow-sm">
+						<div class="flex items-center justify-between mb-6">
+							<div>
+								<h3 class="text-lg font-bold text-text-main">Hiệu suất nội
+									dung</h3>
+								<p class="text-sm text-text-muted">Lượt xem trong 7 ngày qua</p>
+							</div>
+							<div class="flex items-center gap-2">
+								<span class="text-3xl font-bold text-text-main tracking-tight">24.5K</span>
+								<span
+									class="text-sm font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+15%</span>
+							</div>
+						</div>
+						<div class="w-full aspect-[2/1] md:aspect-[3/1] relative">
+							<svg class="w-full h-full overflow-visible"
+								preserveAspectRatio="none" viewBox="0 0 500 150">
+<defs>
+<linearGradient id="gradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#FF4500; stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#FF4500; stop-opacity:0"></stop>
+</linearGradient>
+</defs>
+<path d="M0,100 Q50,90 100,60 T200,80 T300,40 T400,70 T500,20 V150 H0 Z"
+									fill="url(#gradient)"></path>
+<path d="M0,100 Q50,90 100,60 T200,80 T300,40 T400,70 T500,20"
+									fill="none" stroke="#FF4500" stroke-linecap="round"
+									stroke-linejoin="round" stroke-width="3"></path>
+<circle class="shadow-md" cx="300" cy="40" fill="#FF4500" r="5"
+									stroke="white" stroke-width="3"></circle>
+</svg>
+							<div
+								class="flex justify-between mt-4 text-xs font-medium text-text-muted">
+								<span>T2</span> <span>T3</span> <span>T4</span> <span>T5</span>
+								<span>T6</span> <span>T7</span> <span>CN</span>
+							</div>
+						</div>
+					</div>
+					<div
+						class="lg:col-span-1 rounded-xl bg-card-surface border border-border-subtle p-6 shadow-sm flex flex-col h-full">
+						<div class="flex items-center justify-between mb-4">
+							<h3 class="text-lg font-bold text-text-main">Bài viết nổi
+								bật</h3>
+							<button
+								class="text-primary hover:text-primary/80 text-sm font-medium">Xem
+								tất cả</button>
+						</div>
+						<div class="flex flex-col gap-4 flex-1">
+							<div
+								class="group flex gap-3 items-center p-2 rounded-lg hover:bg-bg-sidebar transition-colors cursor-pointer border border-transparent hover:border-border-subtle">
+								<div
+									class="h-14 w-14 flex-shrink-0 rounded-lg bg-gradient-to-br from-orange-400 to-red-500 overflow-hidden relative shadow-sm"
+									data-alt="Review iPhone 15 Gradient">
+									<div
+										class="absolute inset-0 flex items-center justify-center text-white/70">
+										<span class="material-symbols-outlined text-[20px]">smartphone</span>
+									</div>
+								</div>
+								<div class="flex-1 min-w-0">
+									<h4
+										class="text-sm font-bold text-text-main truncate group-hover:text-primary transition-colors">Review
+										chi tiết iPhone 15 Pro Max</h4>
+									<div
+										class="flex items-center gap-3 mt-1 text-xs text-text-muted">
+										<span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">visibility</span>
+											12.5k</span> <span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">thumb_up</span>
+											850</span>
+									</div>
+								</div>
+								<div class="text-amber-500">
+									<span class="material-symbols-outlined filled">workspace_premium</span>
+								</div>
+							</div>
+							<div
+								class="group flex gap-3 items-center p-2 rounded-lg hover:bg-bg-sidebar transition-colors cursor-pointer border border-transparent hover:border-border-subtle">
+								<div
+									class="h-14 w-14 flex-shrink-0 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 overflow-hidden relative shadow-sm"
+									data-alt="AI Tech Gradient">
+									<div
+										class="absolute inset-0 flex items-center justify-center text-white/70">
+										<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+									</div>
+								</div>
+								<div class="flex-1 min-w-0">
+									<h4
+										class="text-sm font-bold text-text-main truncate group-hover:text-primary transition-colors">Tương
+										lai của AI trong năm 2024</h4>
+									<div
+										class="flex items-center gap-3 mt-1 text-xs text-text-muted">
+										<span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">visibility</span>
+											8.2k</span> <span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">thumb_up</span>
+											420</span>
+									</div>
+								</div>
+								<div class="text-slate-400">
+									<span class="material-symbols-outlined">looks_two</span>
+								</div>
+							</div>
+							<div
+								class="group flex gap-3 items-center p-2 rounded-lg hover:bg-bg-sidebar transition-colors cursor-pointer border border-transparent hover:border-border-subtle">
+								<div
+									class="h-14 w-14 flex-shrink-0 rounded-lg bg-gradient-to-br from-emerald-400 to-teal-500 overflow-hidden relative shadow-sm"
+									data-alt="Laptop Setup Gradient">
+									<div
+										class="absolute inset-0 flex items-center justify-center text-white/70">
+										<span class="material-symbols-outlined text-[20px]">laptop_mac</span>
+									</div>
+								</div>
+								<div class="flex-1 min-w-0">
+									<h4
+										class="text-sm font-bold text-text-main truncate group-hover:text-primary transition-colors">Setup
+										bàn làm việc tối giản</h4>
+									<div
+										class="flex items-center gap-3 mt-1 text-xs text-text-muted">
+										<span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">visibility</span>
+											5.1k</span> <span class="flex items-center gap-1"><span
+											class="material-symbols-outlined text-[12px]">thumb_up</span>
+											210</span>
+									</div>
+								</div>
+								<div class="text-slate-400">
+									<span class="material-symbols-outlined">looks_3</span>
+								</div>
+							</div>
+						</div>
+						<div
+							class="mt-4 pt-4 border-t border-border-subtle flex flex-col gap-2">
+							<p class="text-xs font-medium text-text-muted">Mẹo viết bài:</p>
+							<div class="p-3 bg-primary/5 border border-primary/20 rounded-lg">
+								<p class="text-xs text-text-main leading-relaxed">
+									<span
+										class="material-symbols-outlined text-[14px] align-text-bottom text-primary mr-1">lightbulb</span>
+									Sử dụng nhiều hình ảnh minh họa thực tế giúp tăng <span
+										class="font-bold text-primary">35%</span> thời gian đọc trang.
+								</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section
+					class="rounded-xl bg-card-surface border border-border-subtle shadow-sm overflow-hidden">
+					<div
+						class="p-6 border-b border-border-subtle flex flex-wrap gap-4 justify-between items-center">
+						<h3 class="text-lg font-bold text-text-main">Hoạt động gần
+							đây</h3>
+						<div class="flex gap-2">
+							<div class="relative">
+								<span
+									class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted material-symbols-outlined text-[18px]">search</span>
+								<input
+									class="h-9 pl-9 pr-4 rounded-lg bg-bg-sidebar border-none text-sm text-text-main placeholder-gray-400 focus:ring-1 focus:ring-primary w-48 lg:w-64 focus:bg-white transition-colors"
+									placeholder="Tìm kiếm bài viết..." type="text" />
+							</div>
+							<button
+								class="flex items-center justify-center h-9 w-9 rounded-lg bg-bg-sidebar text-text-muted hover:text-primary hover:bg-white border border-transparent hover:border-border-subtle transition-all">
+								<span class="material-symbols-outlined text-[20px]">filter_list</span>
+							</button>
+						</div>
+					</div>
+					<div class="overflow-x-auto">
+						<table class="w-full text-left text-sm">
+							<thead
+								class="bg-bg-sidebar text-text-muted font-medium border-b border-border-subtle">
+								<tr>
+									<th class="px-6 py-4">Bài viết</th>
+									<th class="px-6 py-4">Trạng thái</th>
+									<th class="px-6 py-4">Ngày đăng</th>
+									<th class="px-6 py-4">Tương tác</th>
+									<th class="px-6 py-4 text-right">Hành động</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-border-subtle">
+								<tr class="group hover:bg-bg-sidebar transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-3">
+											<div
+												class="h-10 w-10 rounded bg-slate-200 overflow-hidden flex-shrink-0"
+												data-alt="Laptop image placeholder">
+												<div class="w-full h-full bg-slate-200"></div>
+											</div>
+											<span
+												class="font-medium text-text-main max-w-[200px] truncate">Đánh
+												giá MacBook Pro M3</span>
+										</div>
+									</td>
+									<td class="px-6 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 border border-emerald-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+											Đã xuất bản
+									</span></td>
+									<td class="px-6 py-4 text-text-muted">12/10/2023</td>
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4 text-text-muted">
+											<div class="flex items-center gap-1" title="Views">
+												<span class="material-symbols-outlined text-[16px]">visibility</span>
+												1.2k
+											</div>
+											<div class="flex items-center gap-1" title="Comments">
+												<span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+												45
+											</div>
+										</div>
+									</td>
+									<td class="px-6 py-4 text-right">
+										<button
+											class="p-1 rounded text-text-muted hover:text-primary hover:bg-white transition-colors">
+											<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+										</button>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-3">
+											<div
+												class="h-10 w-10 rounded bg-slate-200 overflow-hidden flex-shrink-0"
+												data-alt="Watch image placeholder">
+												<div class="w-full h-full bg-slate-200"></div>
+											</div>
+											<span
+												class="font-medium text-text-main max-w-[200px] truncate">Top
+												5 Smartwatch đáng mua</span>
+										</div>
+									</td>
+									<td class="px-6 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-600 border border-amber-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+											Chờ duyệt
+									</span></td>
+									<td class="px-6 py-4 text-text-muted">14/10/2023</td>
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4 text-text-muted">
+											<div class="flex items-center gap-1 opacity-50">
+												<span class="material-symbols-outlined text-[16px]">visibility</span>
+												--
+											</div>
+											<div class="flex items-center gap-1 opacity-50">
+												<span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+												--
+											</div>
+										</div>
+									</td>
+									<td class="px-6 py-4 text-right">
+										<button
+											class="p-1 rounded text-text-muted hover:text-primary hover:bg-white transition-colors">
+											<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+										</button>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-3">
+											<div
+												class="h-10 w-10 rounded bg-slate-200 overflow-hidden flex-shrink-0"
+												data-alt="Headphones image placeholder">
+												<div class="w-full h-full bg-slate-200"></div>
+											</div>
+											<span
+												class="font-medium text-text-main max-w-[200px] truncate">Sony
+												WH-1000XM5: Có đáng tiền?</span>
+										</div>
+									</td>
+									<td class="px-6 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500 border border-slate-200">
+											<span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+											Bản nháp
+									</span></td>
+									<td class="px-6 py-4 text-text-muted">--</td>
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4 text-text-muted">
+											<div class="flex items-center gap-1 opacity-50">
+												<span class="material-symbols-outlined text-[16px]">visibility</span>
+												--
+											</div>
+											<div class="flex items-center gap-1 opacity-50">
+												<span class="material-symbols-outlined text-[16px]">chat_bubble</span>
+												--
+											</div>
+										</div>
+									</td>
+									<td class="px-6 py-4 text-right">
+										<button
+											class="p-1 rounded text-text-muted hover:text-primary hover:bg-white transition-colors">
+											<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div
+						class="p-4 border-t border-border-subtle bg-bg-sidebar text-center">
+						<button
+							class="text-sm font-bold text-text-muted hover:text-primary transition-colors">
+							Xem tất cả bài viết</button>
+					</div>
+				</section>
+				<footer
+					class="mt-4 pb-8 text-center text-xs text-text-muted opacity-70">
+					© 2023 TechShop Inc. All rights reserved. </footer>
+			</div>
+		</main>
+	</div>
+
+</body>
+</html>
