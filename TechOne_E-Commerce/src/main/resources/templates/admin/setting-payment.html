@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>Cấu Hình Thanh Toán TechShop Admin</title>
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap"
+	rel="stylesheet" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+	rel="stylesheet" />
+<script
+	src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+	tailwind.config = {
+		darkMode : "class",
+		theme : {
+			extend : {
+				colors : {
+					"primary" : "#ff4500",
+					"primary-hover" : "#e63d00",
+					"background-light" : "#f8f6f5",
+					"background-dark" : "#23140f",
+					"surface-light" : "#ffffff",
+				},
+				fontFamily : {
+					"display" : [ "Space Grotesk", "sans-serif" ],
+					"body" : [ "Noto Sans", "sans-serif" ],
+				},
+				borderRadius : {
+					"DEFAULT" : "0.5rem",
+					"lg" : "1rem",
+					"xl" : "1.5rem",
+					"2xl" : "2rem",
+				},
+				boxShadow : {
+					'soft' : '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+				}
+			},
+		},
+	}
+</script>
+<style>
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #e5e7eb;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #d1d5db;
+}
+
+.toggle-checkbox:checked {
+	right: 0;
+	border-color: #ff4500;
+}
+
+.toggle-checkbox:checked+.toggle-label {
+	background-color: #ff4500;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+</style>
+</head>
+<body
+	class="bg-background-light text-slate-800 font-display antialiased overflow-hidden h-screen flex">
+	<aside
+		class="w-64 bg-surface-light border-r border-slate-100 flex-col hidden lg:flex h-full z-20 shadow-soft">
+		<div class="h-16 flex items-center px-6 border-b border-slate-50">
+			<div class="flex items-center gap-3">
+				<div class="bg-primary/10 p-1.5 rounded-lg text-primary">
+					<span class="material-symbols-outlined text-2xl">bolt</span>
+				</div>
+				<h1 class="text-xl font-bold tracking-tight text-slate-900">
+					TechShop<span class="text-primary">.</span>
+				</h1>
+			</div>
+		</div>
+		<nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+			<a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group"
+				href="#"> <span
+				class="material-symbols-outlined group-hover:text-primary transition-colors">grid_view</span>
+				<span>Tổng quan</span>
+			</a> <a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group"
+				href="#"> <span
+				class="material-symbols-outlined group-hover:text-primary transition-colors">shopping_bag</span>
+				<span>Đơn hàng</span> <span
+				class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">18</span>
+			</a> <a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group"
+				href="#"> <span
+				class="material-symbols-outlined group-hover:text-primary transition-colors">inventory_2</span>
+				<span>Sản phẩm</span>
+			</a> <a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group"
+				href="#"> <span
+				class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+				<span>Khách hàng</span>
+			</a> <a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors group"
+				href="#"> <span
+				class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
+				<span>Báo cáo</span>
+			</a> <a
+				class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-semibold transition-colors"
+				href="#"> <span class="material-symbols-outlined filled">settings</span>
+				<span>Cấu hình</span>
+			</a>
+		</nav>
+		<div class="p-4 border-t border-slate-50">
+			<div
+				class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
+				<div
+					class="w-10 h-10 rounded-full bg-cover bg-center ring-2 ring-primary/20"
+					data-alt="Administrator portrait"
+					style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9z6g2SfMoqJ-Ax0X0K0ve3Cxoh7zkyktFIfKLo0IhWq5zGIdungKkkg3f0OylhG-qL8VGm_mtefrgyGQKmozkvo1vL0fvlruRaLsQ-pXpabjrWsO91v22qytTeGmRDhAwEQVw13lQZGkmfGHuKWxOy87uYb3Sfu6uxNwxHkb_plPGx8VD5f6TIHY1I2_-wG-S5K-PiuaCUZlzmn_i_Ncbs69Fa_UU0orEfQoJHlZhxZGLnsnG8NzH5l4XzgAN6-Mt7swKrNfgPw')"></div>
+				<div class="flex-1 min-w-0">
+					<p class="text-sm font-bold text-slate-900 truncate">Admin
+						TechShop</p>
+					<p class="text-xs text-slate-500 truncate">admin@techshop.vn</p>
+				</div>
+				<span class="material-symbols-outlined text-slate-400">expand_more</span>
+			</div>
+		</div>
+	</aside>
+	<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+		<header
+			class="h-16 bg-surface-light/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-10">
+			<button
+				class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900">
+				<span class="material-symbols-outlined">menu</span>
+			</button>
+			<div class="flex-1 max-w-lg hidden md:block">
+				<div class="relative group">
+					<span
+						class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
+					<input
+						class="w-full bg-slate-50 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400"
+						placeholder="Tìm kiếm cài đặt..." type="text" />
+				</div>
+			</div>
+			<div class="flex items-center gap-4 ml-auto">
+				<button
+					class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-xl hover:text-primary transition-colors">
+					<span class="material-symbols-outlined">notifications</span> <span
+						class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+				</button>
+				<div class="h-8 w-px bg-slate-200 mx-1"></div>
+				<button
+					class="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+					<span class="material-symbols-outlined">help</span> <span
+						class="hidden sm:inline">Trợ giúp</span>
+				</button>
+			</div>
+		</header>
+		<main
+			class="flex-1 overflow-y-auto bg-background-light p-4 md:p-8 scroll-smooth">
+			<div class="max-w-7xl mx-auto">
+				<div
+					class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+					<div>
+						<h1
+							class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-1">Cấu
+							hình thanh toán</h1>
+						<p class="text-slate-500 font-body">Thiết lập các cổng thanh
+							toán và phương thức giao dịch cho website.</p>
+					</div>
+				</div>
+				<div class="flex flex-col lg:flex-row gap-8 items-start">
+					<div class="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-4 z-0">
+						<div
+							class="bg-white rounded-2xl shadow-soft border border-slate-100 p-2">
+							<nav class="space-y-1">
+								<a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">tune</span> Cấu
+									hình chung
+								</a> <!-- <a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">search</span> Cấu
+									hình SEO
+								</a> --> <a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">payments</span>
+									Cấu hình thanh toán
+								</a> <a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">local_shipping</span>
+									Cấu hình vận chuyển
+								</a> <a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">mail</span> Email
+									&amp; SMS
+								</a> <a
+									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
+									href="#"> <span
+									class="material-symbols-outlined text-[20px]">share</span> Mạng
+									xã hội
+								</a>
+							</nav>
+						</div>
+					</div>
+					<div class="flex-1 space-y-8 w-full min-w-0">
+						<div
+							class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden">
+							<div
+								class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
+								<h3
+									class="text-lg font-bold text-slate-900 flex items-center gap-2">
+									<span class="material-symbols-outlined text-primary">credit_card_gear</span>
+									Phương thức thanh toán
+								</h3>
+								<div class="flex items-center gap-2">
+									<span class="flex h-2 w-2 relative"> <span
+										class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+										<span
+										class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+									</span> <span class="text-xs font-semibold text-green-600">Hệ
+										thống hoạt động</span>
+								</div>
+							</div>
+							<div class="p-6 space-y-8">
+								<div
+									class="group border border-slate-200 rounded-2xl p-5 hover:border-primary/30 transition-all bg-white hover:shadow-sm">
+									<div class="flex items-center justify-between">
+										<div class="flex items-center gap-4">
+											<div
+												class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-600 border border-green-100">
+												<span class="material-symbols-outlined text-2xl">local_shipping</span>
+											</div>
+											<div>
+												<h4 class="font-bold text-slate-900 text-base">Thanh
+													toán khi nhận hàng (COD)</h4>
+												<p class="text-xs text-slate-500 mt-0.5">Khách hàng
+													thanh toán bằng tiền mặt khi nhận được hàng.</p>
+											</div>
+										</div>
+										<label
+											class="relative inline-flex items-center cursor-pointer">
+											<input checked="" class="sr-only peer" type="checkbox"
+											value="" />
+											<div
+												class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+										</label>
+									</div>
+								</div>
+								<div
+									class="group border border-slate-200 rounded-2xl p-5 hover:border-primary/30 transition-all bg-white hover:shadow-sm">
+									<div class="flex items-center justify-between mb-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 border border-blue-100">
+												<span class="material-symbols-outlined text-2xl">account_balance</span>
+											</div>
+											<div>
+												<h4 class="font-bold text-slate-900 text-base">Chuyển
+													khoản ngân hàng</h4>
+												<p class="text-xs text-slate-500 mt-0.5">Hiển thị thông
+													tin tài khoản ngân hàng để khách chuyển khoản.</p>
+											</div>
+										</div>
+										<label
+											class="relative inline-flex items-center cursor-pointer">
+											<input checked="" class="sr-only peer" type="checkbox"
+											value="" />
+											<div
+												class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+										</label>
+									</div>
+									<div
+										class="pl-0 md:pl-16 pt-4 border-t border-slate-50 grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Tên
+												ngân hàng</label> <input
+												class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 placeholder:text-slate-400"
+												placeholder="VD: Vietcombank, Techcombank" type="text"
+												value="Techcombank" />
+										</div>
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Số
+												tài khoản</label> <input
+												class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 placeholder:text-slate-400 font-mono"
+												placeholder="0123456789" type="text" value="19036547898888" />
+										</div>
+										<div class="md:col-span-2">
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Chủ
+												tài khoản</label> <input
+												class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 placeholder:text-slate-400 uppercase"
+												placeholder="NGUYEN VAN A" type="text"
+												value="CONG TY TNHH TECHSHOP" />
+										</div>
+									</div>
+								</div>
+								<div
+									class="group border border-slate-200 rounded-2xl p-5 hover:border-primary/30 transition-all bg-white hover:shadow-sm">
+									<div class="flex items-center justify-between mb-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600 border border-pink-100">
+												<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+											</div>
+											<div>
+												<h4 class="font-bold text-slate-900 text-base">Ví điện
+													tử MoMo</h4>
+												<p class="text-xs text-slate-500 mt-0.5">Tích hợp cổng
+													thanh toán QR Code MoMo.</p>
+											</div>
+										</div>
+										<label
+											class="relative inline-flex items-center cursor-pointer">
+											<input class="sr-only peer" type="checkbox" value="" />
+											<div
+												class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+										</label>
+									</div>
+									<div
+										class="hidden peer-checked:block pl-0 md:pl-16 pt-4 border-t border-slate-50 space-y-4">
+									</div>
+									<div
+										class="pl-0 md:pl-16 pt-4 border-t border-slate-50 grid grid-cols-1 gap-4 opacity-50 grayscale pointer-events-none select-none relative">
+										<div
+											class="absolute inset-0 z-10 flex items-center justify-center">
+											<span
+												class="bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-xs font-bold border border-slate-200">Chưa
+												kích hoạt</span>
+										</div>
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Partner
+												Code</label> <input
+												class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+												type="text" />
+										</div>
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Access
+												Key</label> <input
+												class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm"
+												type="password" />
+										</div>
+									</div>
+								</div>
+								<!-- <div
+									class="group border border-slate-200 rounded-2xl p-5 border-primary/40 ring-1 ring-primary/10 transition-all bg-white shadow-sm">
+									<div class="flex items-center justify-between mb-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 border border-indigo-100">
+												<span class="material-symbols-outlined text-2xl">credit_card</span>
+											</div>
+											<div>
+												<h4 class="font-bold text-slate-900 text-base">Thẻ tín
+													dụng (Stripe/Visa)</h4>
+												<p class="text-xs text-slate-500 mt-0.5">Thanh toán quốc
+													tế qua cổng Stripe.</p>
+											</div>
+										</div>
+										<label
+											class="relative inline-flex items-center cursor-pointer">
+											<input checked="" class="sr-only peer" type="checkbox"
+											value="" />
+											<div
+												class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+										</label>
+									</div>
+									<div
+										class="pl-0 md:pl-16 pt-4 border-t border-slate-50 space-y-4">
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Publishable
+												Key</label>
+											<div class="relative">
+												<input
+													class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 font-mono"
+													type="text" value="pk_live_51Mz..." /> <span
+													class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">key</span>
+											</div>
+										</div>
+										<div>
+											<label
+												class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Secret
+												Key</label>
+											<div class="relative group/input">
+												<input
+													class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-3 pr-10 py-2 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 font-mono"
+													type="password" value="sk_live_51Mz..." />
+												<button
+													class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors focus:outline-none">
+													<span class="material-symbols-outlined text-[18px]">visibility_off</span>
+												</button>
+											</div>
+										</div>
+										<div class="flex items-center justify-between pt-2">
+											<p
+												class="text-xs text-slate-400 italic flex items-center gap-1">
+												<span class="material-symbols-outlined text-[14px]">lock</span>
+												Thông tin được mã hóa bảo mật
+											</p>
+											<button
+												class="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-50 text-indigo-600 text-xs font-bold hover:bg-indigo-100 transition-colors">
+												<span class="material-symbols-outlined text-[16px]">sync</span>
+												Kiểm tra kết nối
+											</button>
+										</div>
+									</div>
+								</div> -->
+							</div>
+							<div
+								class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3 justify-end items-center">
+								<button
+									class="w-full sm:w-auto px-6 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-sm hover:bg-white hover:text-slate-800 transition-colors focus:ring-2 focus:ring-slate-200">
+									Khôi phục mặc định</button>
+								<button
+									class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+									<span class="material-symbols-outlined text-[18px]">save</span>
+									Lưu thay đổi
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+</body>
+</html>

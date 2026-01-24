@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>TechShop Creator Dashboard - Viết Bài Mới</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+	rel="stylesheet" />
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;600;700&amp;display=swap"
+	rel="stylesheet" />
+<script
+	src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+	tailwind.config = {
+		theme : {
+			extend : {
+				colors : {
+					"primary" : "#FF4500", // Red-Orange Accent
+					"bg-main" : "#FFFFFF", // Main White Background
+					"bg-sidebar" : "#F8F9FA", // Light Gray Sidebar
+					"card-surface" : "#FFFFFF", // White Card Background
+					"border-subtle" : "#E9ECEF", // Light Gray Border
+					"text-main" : "#212529", // Dark Gray Text
+					"text-muted" : "#6C757D", // Muted Gray Text
+				},
+				fontFamily : {
+					"display" : [ "Space Grotesk", "sans-serif" ],
+					"body" : [ "Noto Sans", "sans-serif" ],
+				},
+				borderRadius : {
+					"DEFAULT" : "0.5rem",
+					"lg" : "1rem",
+					"xl" : "1.5rem",
+					"full" : "9999px"
+				},
+			},
+		},
+	}
+</script>
+<style>
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #dee2e6;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #FF4500;
+}
+
+.editor-content:empty:before {
+	content: attr(placeholder);
+	color: #9CA3AF;
+	pointer-events: none;
+	font-style: italic;
+}
+</style>
+</head>
+<body
+	class="bg-bg-main text-text-main font-display overflow-hidden antialiased selection:bg-primary selection:text-white">
+	<div class="flex h-screen w-full overflow-hidden">
+		<aside
+			class="hidden lg:flex w-72 flex-col justify-between border-r border-border-subtle bg-bg-sidebar p-6">
+			<div class="flex flex-col gap-8">
+				<div class="flex items-center gap-3 px-2">
+					<div
+						class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/20">
+						<span class="material-symbols-outlined text-2xl">design_services</span>
+					</div>
+					<h1 class="text-xl font-bold tracking-tight text-text-main">
+						TechShop<br />
+						<span class="text-primary text-sm font-medium">Creator</span>
+					</h1>
+				</div>
+				<nav class="flex flex-col gap-2">
+					<a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">dashboard</span>
+						<span class="text-sm font-medium">Tổng quan</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">article</span>
+						<span class="text-sm font-medium">Bài viết của tôi</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">bar_chart</span>
+						<span class="text-sm font-medium">Thống kê</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">chat_bubble</span>
+						<span class="text-sm font-medium">Bình luận</span> <span
+						class="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">3</span>
+					</a> <a
+						class="group flex items-center gap-3 rounded-xl px-4 py-3 text-text-muted hover:bg-white hover:text-primary hover:shadow-sm transition-all"
+						href="#"> <span class="material-symbols-outlined">settings</span>
+						<span class="text-sm font-medium">Cài đặt</span>
+					</a>
+				</nav>
+			</div>
+			<div class="flex flex-col gap-4">
+				<button
+					class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all ring-2 ring-offset-2 ring-primary/20">
+					<span class="material-symbols-outlined text-[20px]">edit_square</span>
+					Viết bài mới
+				</button>
+				<div
+					class="flex items-center gap-3 rounded-xl border border-border-subtle bg-white p-3 shadow-sm">
+					<div
+						class="h-10 w-10 overflow-hidden rounded-full bg-slate-200 bg-[url('https://i.pravatar.cc/150?img=11')] bg-cover bg-center"
+						data-alt="User Avatar"></div>
+					<div class="flex flex-col">
+						<p class="text-sm font-bold text-text-main">My Creator</p>
+						<p class="text-xs text-text-muted">Creator Pro</p>
+					</div>
+					<button
+						class="ml-auto text-text-muted hover:text-primary transition-colors">
+						<span class="material-symbols-outlined">logout</span>
+					</button>
+				</div>
+			</div>
+		</aside>
+		<main
+			class="flex-1 flex flex-col h-screen overflow-hidden bg-bg-main relative">
+			<header
+				class="h-16 flex items-center justify-between px-4 md:px-8 border-b border-border-subtle bg-white shrink-0 z-20 shadow-sm">
+				<div class="flex items-center gap-4">
+					<button
+						class="flex items-center justify-center gap-2 text-text-muted hover:text-text-main font-medium px-4 py-2 border border-border-subtle rounded-lg hover:bg-gray-50 transition-colors"
+						title="Hủy bỏ">
+						<span class="material-symbols-outlined text-lg">close</span> <span
+							class="hidden sm:inline">Hủy</span>
+					</button>
+				</div>
+				<h1
+					class="text-lg font-bold text-text-main absolute left-1/2 -translate-x-1/2 hidden md:block">
+					Viết bài mới</h1>
+				<div class="flex items-center gap-3">
+					<button
+						class="text-text-muted hover:text-primary font-medium text-sm px-3 py-2 transition-colors hidden sm:block">Lưu
+						nháp</button>
+					<button
+						class="flex items-center gap-2 text-text-main hover:text-primary font-medium text-sm px-4 py-2 border border-border-subtle rounded-lg hover:bg-gray-50 transition-colors">
+						<span class="material-symbols-outlined text-lg">visibility</span>
+						<span class="hidden sm:inline">Xem trước</span>
+					</button>
+					<button
+						class="bg-primary hover:bg-primary/90 text-white font-bold text-sm px-5 py-2 rounded-lg shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+						<span>Tiếp tục</span> <span
+							class="material-symbols-outlined text-sm">arrow_forward</span>
+					</button>
+				</div>
+			</header>
+			<div class="flex flex-1 overflow-hidden">
+				<div class="flex-1 overflow-y-auto scroll-smooth relative bg-white">
+					<div
+						class="max-w-4xl mx-auto px-6 py-8 md:py-12 min-h-full flex flex-col">
+						<textarea
+							class="w-full resize-none overflow-hidden bg-transparent text-4xl md:text-5xl font-bold text-text-main placeholder-gray-300 border-none focus:ring-0 p-0 mb-6 leading-tight"
+							placeholder="Tiêu đề bài viết" rows="1" style="height: auto;"></textarea>
+						<div
+							class="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-y border-border-subtle py-2 mb-8 flex items-center gap-1 transition-all">
+							<div
+								class="flex items-center gap-1 px-2 border-r border-border-subtle">
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="In đậm">
+									<span class="material-symbols-outlined">format_bold</span>
+								</button>
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="In nghiêng">
+									<span class="material-symbols-outlined">format_italic</span>
+								</button>
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Gạch chân">
+									<span class="material-symbols-outlined">format_underlined</span>
+								</button>
+							</div>
+							<div
+								class="flex items-center gap-1 px-2 border-r border-border-subtle">
+								<button
+									class="flex items-center gap-1 p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main text-sm font-medium"
+									title="Heading">
+									<span class="material-symbols-outlined">title</span> <span
+										class="material-symbols-outlined text-sm">expand_more</span>
+								</button>
+							</div>
+							<div
+								class="flex items-center gap-1 px-2 border-r border-border-subtle">
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Danh sách">
+									<span class="material-symbols-outlined">format_list_bulleted</span>
+								</button>
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Danh sách số">
+									<span class="material-symbols-outlined">format_list_numbered</span>
+								</button>
+							</div>
+							<div class="flex items-center gap-1 px-2">
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Chèn link">
+									<span class="material-symbols-outlined">link</span>
+								</button>
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Chèn ảnh">
+									<span class="material-symbols-outlined">image</span>
+								</button>
+								<button
+									class="p-2 rounded hover:bg-gray-100 text-text-muted hover:text-text-main"
+									title="Code block">
+									<span class="material-symbols-outlined">code_blocks</span>
+								</button>
+							</div>
+						</div>
+						<div
+							class="editor-content prose prose-lg max-w-none flex-1 text-text-main focus:outline-none min-h-[400px]"
+							contenteditable="true"
+							placeholder="Bắt đầu viết câu chuyện tuyệt vời của bạn...">
+							<p class="mb-4">Chào mừng bạn đến với TechShop Creator! Đây
+								là không gian sáng tạo dành riêng cho bạn.</p>
+							<p class="mb-4">Bạn có thể viết bài đánh giá, chia sẻ kinh
+								nghiệm công nghệ hoặc hướng dẫn kỹ thuật. Hãy sử dụng thanh công
+								cụ phía trên để định dạng bài viết.</p>
+							<div
+								class="my-8 rounded-xl bg-gray-50 border border-border-subtle flex flex-col items-center justify-center h-64 text-text-muted gap-2 select-none cursor-pointer hover:bg-gray-100 transition-colors">
+								<span class="material-symbols-outlined text-4xl">add_photo_alternate</span>
+								<span class="text-sm font-medium">Nhấn để thêm ảnh hoặc
+									video</span>
+							</div>
+							<p>Bắt đầu viết tiếp tại đây...</p>
+						</div>
+					</div>
+				</div>
+				<aside
+					class="w-80 border-l border-border-subtle bg-white overflow-y-auto hidden xl:flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.02)] z-10">
+					<div class="p-5 border-b border-border-subtle bg-gray-50/50">
+						<h3 class="font-bold text-text-main flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">tune</span>
+							Cài đặt bài viết
+						</h3>
+					</div>
+					<div class="p-5 flex flex-col gap-8">
+						<div class="flex flex-col gap-3">
+							<label
+								class="text-sm font-bold text-text-main flex items-center justify-between">
+								Ảnh đại diện <span class="text-xs font-normal text-text-muted">(Thumbnail)</span>
+							</label>
+							<div
+								class="group relative aspect-video w-full rounded-xl border-2 border-dashed border-border-subtle bg-gray-50 flex flex-col items-center justify-center text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer overflow-hidden">
+								<div
+									class="flex flex-col items-center gap-2 p-4 transition-transform group-hover:scale-105">
+									<div
+										class="h-10 w-10 rounded-full bg-white shadow-sm flex items-center justify-center text-primary mb-1">
+										<span class="material-symbols-outlined">cloud_upload</span>
+									</div>
+									<span class="text-xs text-text-muted font-medium">Kéo
+										thả hoặc click để tải lên</span>
+								</div>
+							</div>
+						</div>
+						<div class="flex flex-col gap-3">
+							<label class="text-sm font-bold text-text-main">Chuyên
+								mục</label>
+							<div class="relative">
+								<span
+									class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-[20px]">category</span>
+								<select
+									class="w-full pl-10 pr-4 py-2.5 rounded-lg border-border-subtle bg-white text-sm focus:border-primary focus:ring-primary shadow-sm cursor-pointer hover:border-gray-300 transition-colors appearance-none">
+									<option disabled="" selected="">Chọn chuyên mục...</option>
+									<option>Công nghệ &amp; Gadgets</option>
+									<option>Đánh giá sản phẩm</option>
+									<option>Thủ thuật &amp; Hướng dẫn</option>
+									<option>Lập trình &amp; Code</option>
+									<option>Tin tức công nghệ</option>
+								</select> <span
+									class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+							</div>
+						</div>
+						<div class="flex flex-col gap-3">
+							<label class="text-sm font-bold text-text-main">Tags</label>
+							<div
+								class="flex flex-wrap gap-2 p-2 border border-border-subtle rounded-lg bg-white min-h-[46px] focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-shadow">
+								<span
+									class="bg-gray-100 text-xs font-bold text-text-main px-2 py-1.5 rounded flex items-center gap-1 border border-gray-200">
+									TechShop
+									<button class="hover:text-red-500 flex items-center">
+										<span class="material-symbols-outlined text-[14px]">close</span>
+									</button>
+								</span> <input
+									class="border-none p-0 text-sm focus:ring-0 flex-1 min-w-[80px] h-7 bg-transparent placeholder-text-muted/70"
+									placeholder="Nhập tags..." type="text" />
+							</div>
+							<p class="text-[11px] text-text-muted">Nhấn Enter để thêm
+								tag.</p>
+						</div>
+						<hr class="border-border-subtle border-dashed" />
+						<div class="flex flex-col gap-4">
+							<label
+								class="text-sm font-bold text-text-main flex items-center gap-2">
+								Cấu hình SEO <span
+								class="material-symbols-outlined text-[16px] text-text-muted cursor-help"
+								title="Thông tin hiển thị trên Google">help</span>
+							</label>
+							<div class="space-y-4">
+								<div class="space-y-1.5">
+									<label class="text-xs font-medium text-text-muted">Tiêu
+										đề SEO</label> <input
+										class="w-full px-3 py-2 rounded-lg border-border-subtle text-sm focus:border-primary focus:ring-primary shadow-sm placeholder-text-muted/50"
+										placeholder="Tiêu đề hiển thị trên tìm kiếm" type="text" />
+								</div>
+								<div class="space-y-1.5">
+									<label class="text-xs font-medium text-text-muted">Mô
+										tả Meta</label>
+									<textarea
+										class="w-full px-3 py-2 rounded-lg border-border-subtle text-sm focus:border-primary focus:ring-primary shadow-sm placeholder-text-muted/50 resize-none"
+										placeholder="Mô tả ngắn gọn về bài viết (150-160 ký tự)"
+										rows="4"></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</aside>
+			</div>
+		</main>
+	</div>
+
+</body>
+</html>
