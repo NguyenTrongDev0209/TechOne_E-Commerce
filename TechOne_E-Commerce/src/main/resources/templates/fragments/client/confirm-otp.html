@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Nhập mã xác nhận - TechShop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#fa4614", // Thống nhất màu cam
+                        "primary-hover": "#d6380e",
+                        "background-light": "#f8f6f5",
+                        "background-dark": "#23130f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#1c100d] dark:text-[#fcf9f8] font-display min-h-screen flex flex-col antialiased selection:bg-primary/20 selection:text-primary">
+    
+    <header class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 border-b border-gray-200/50 dark:border-white/10 bg-white/80 dark:bg-[#23130f]/80 backdrop-blur-md transition-all duration-300">
+        <a th:href="@{/}" class="flex items-center gap-2.5 group">
+            <img th:src="@{/images/TechOne_Logo.png}" alt="TechOne Logo" class="h-8 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"/>
+        </a>
+        <a href="#" class="hidden sm:flex items-center gap-1 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-[18px]">help</span>
+            <span>Trợ giúp</span>
+        </a>
+    </header>
+    <main class="flex-grow flex flex-col items-center justify-center p-4 sm:p-6 pt-24">
+        <div class="w-full max-w-[480px] flex flex-col items-center">
+            <div class="mb-6 rounded-full bg-primary/10 p-4 text-primary animate-pulse">
+                <span class="material-symbols-outlined text-4xl">lock_open</span>
+            </div>
+            <h1 class="text-3xl font-bold text-center tracking-tight text-[#1c100d] dark:text-white mb-3">
+                Nhập mã xác nhận
+            </h1>
+            <p class="text-gray-500 dark:text-gray-400 text-center text-base leading-relaxed max-w-sm mb-8">
+                Chúng tôi đã gửi mã xác nhận đến số điện thoại <span class="font-medium text-[#1c100d] dark:text-gray-200">09** *** 789</span> hoặc email <span class="font-medium text-[#1c100d] dark:text-gray-200">u***@example.com</span>. Vui lòng nhập mã để tiếp tục.
+            </p>
+            <div class="w-full bg-white dark:bg-[#2c1814] rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.08)] border border-white/50 dark:border-white/5 p-6 sm:p-8">
+                <form action="#" class="flex flex-col gap-6" method="POST">
+                    <div class="flex justify-between gap-2 sm:gap-3">
+                        <input autofocus="" class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number" value="5"/>
+                        <input class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number"/>
+                        <input class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number"/>
+                        <input class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number"/>
+                        <input class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number"/>
+                        <input class="w-full aspect-square text-center text-2xl font-bold bg-background-light dark:bg-[#1a0f0d] border border-gray-300 dark:border-[#543b35] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" maxlength="1" type="number"/>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="text-sm font-medium text-gray-500/80 dark:text-gray-500">
+                            Mã hết hạn sau <span class="font-mono font-bold text-primary" id="countdown">00:59</span>
+                        </div>
+                        <div class="text-center text-sm">
+                            <span class="text-gray-500 dark:text-gray-400">Không nhận được mã?</span>
+                            <a class="font-semibold text-gray-500 hover:text-primary transition-colors ml-1 cursor-pointer pointer-events-none opacity-50" href="#" id="resend-link">Gửi lại mã</a>
+                        </div>
+                    </div>
+                    <button class="w-full flex items-center justify-center h-12 bg-primary hover:bg-[#ff6434] text-white font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]">
+                        <span>Xác nhận</span>
+                    </button>
+                </form>
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-[#3a221b] text-center">
+                    <a th:href="@{/login}" class="inline-flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                        Quay lại đăng nhập
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-6 text-center text-sm text-gray-500 dark:text-gray-500 border-t border-gray-200 dark:border-[#3a221b]">
+        <div class="flex justify-center gap-6 mb-2">
+            <a class="hover:text-primary transition-colors" href="#">Điều khoản sử dụng</a>
+            <a class="hover:text-primary transition-colors" href="#">Chính sách bảo mật</a>
+        </div>
+        <p>© 2024 TechShop. All rights reserved.</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let timeLeft = 59;
+            const countdownElement = document.getElementById('countdown');
+            const resendLink = document.getElementById('resend-link');
+            const timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "00:00";
+                    resendLink.classList.remove('text-gray-500', 'pointer-events-none', 'opacity-50');
+                    resendLink.classList.add('text-primary');
+                } else {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    timeLeft--;
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

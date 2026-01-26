@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-	@GetMapping("/client/home")
-	public String home() {
-		return "client/home";
+	
+	@GetMapping("/")
+	public String showHome() {
+		return "fragments/client/home";
 	}
+	
 }

@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
-	@GetMapping("/client/login")
+	
+	@GetMapping("/login")
 	public String loginForm() {
-		return "client/login";
+		return "fragments/client/login";
 	}
+	
 }

@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ProfileController {
-	@GetMapping("/client/profile")
-	public String profile() {
-		return "client/profile";
+	
+	@GetMapping("/account/profile")
+	public String showProfile() {
+		return "/fragments/client/profile";
 	}
 }

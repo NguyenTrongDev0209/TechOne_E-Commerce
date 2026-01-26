@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CategoryController {
-	@GetMapping("/client/categories")
-	public String categories() {
-		return "client/categories";
+	
+	@GetMapping("/categories")
+	public String showCategories() {
+		return "fragments/client/categories";
 	}
 }

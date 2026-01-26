@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AddressController {
-	@GetMapping("/client/address")
-	public String address() {
-		return "client/address";
+	
+	@GetMapping("/account/address")
+	public String showAddress() {
+		return "fragments/client/address";
 	}
 }

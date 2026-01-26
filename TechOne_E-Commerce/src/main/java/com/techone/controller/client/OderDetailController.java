@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class OderDetailController {
-	@GetMapping("/client/order_detail")
+	
+	@GetMapping("/account/orders/order-detail")
 	public String orderDetail() {
-		return "client/order_detail";
+		return "fragments/client/order-detail";
 	}
 }
