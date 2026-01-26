@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-account :: view(title='Tài khoản của tôi', activeTab='overview', accountContent=~{:: #account-content})}">
+<body>
+
+    <div id="account-content">
+        
+        <div class="mb-6 flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-[#1c100d] dark:text-white">Tổng quan</h1>
+            <span class="text-sm text-gray-500">Cập nhật lần cuối: 24/05/2024</span>
+        </div>
+
+        <div class="bg-gradient-to-r from-[#23140f] to-[#3a2824] dark:from-[#0f172a] dark:to-[#1e293b] rounded-xl p-6 text-white mb-8 relative overflow-hidden shadow-lg">
+            <div class="relative z-10">
+                <h2 class="text-2xl font-bold mb-2">Xin chào, Nguyen Van A!</h2>
+                <p class="text-white/80 max-w-lg">Chào mừng trở lại TechOne. Bạn đang có 3 đơn hàng đang được xử lý và 5 sản phẩm trong giỏ hàng.</p>
+            </div>
+            <div class="absolute -right-10 -top-10 size-40 rounded-full bg-primary/20 blur-2xl"></div>
+            <div class="absolute right-20 -bottom-10 size-32 rounded-full bg-blue-500/20 blur-2xl"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white dark:bg-[#1e293b] p-5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
+                <div class="size-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined">shopping_bag</span>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Đơn hàng</p>
+                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white">12</p>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-[#1e293b] p-5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
+                <div class="size-12 rounded-full bg-yellow-50 text-yellow-600 flex items-center justify-center">
+                    <span class="material-symbols-outlined">stars</span>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Điểm tích lũy</p>
+                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white">350</p>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-[#1e293b] p-5 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex items-center gap-4">
+                <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-symbols-outlined">confirmation_number</span>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Voucher</p>
+                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white">2</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden mb-8">
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Đơn hàng gần đây</h3>
+                <a class="text-primary text-sm font-medium hover:underline" href="#">Xem tất cả</a>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-gray-500 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
+                        <tr>
+                            <th class="px-6 py-3" scope="col">Mã đơn</th>
+                            <th class="px-6 py-3" scope="col">Ngày đặt</th>
+                            <th class="px-6 py-3" scope="col">Sản phẩm</th>
+                            <th class="px-6 py-3" scope="col">Tổng tiền</th>
+                            <th class="px-6 py-3" scope="col">Trạng thái</th>
+                            <th class="px-6 py-3 text-right" scope="col">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b dark:bg-[#1e293b] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <th class="px-6 py-4 font-medium text-[#1c100d] dark:text-white whitespace-nowrap" scope="row">
+                                #ORD-9921
+                            </th>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                20/05/2024
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                MacBook Pro M3 Max...
+                            </td>
+                            <td class="px-6 py-4 font-bold text-[#1c100d] dark:text-white">
+                                49.990.000đ
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">Giao thành công</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="text-primary hover:text-orange-700 font-medium">Chi tiết</button>
+                            </td>
+                        </tr>
+                        <tr class="bg-white dark:bg-[#1e293b] hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <th class="px-6 py-4 font-medium text-[#1c100d] dark:text-white whitespace-nowrap" scope="row">
+                                #ORD-9884
+                            </th>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                15/05/2024
+                            </td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                                Sony WH-1000XM5...
+                            </td>
+                            <td class="px-6 py-4 font-bold text-[#1c100d] dark:text-white">
+                                8.490.000đ
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-200">Đang giao</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="text-primary hover:text-orange-700 font-medium">Chi tiết</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Sản phẩm yêu thích</h3>
+                    <a class="text-primary text-sm font-medium hover:underline" href="#">Xem tất cả</a>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-3 shadow-sm group relative">
+                        <div class="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
+                            <img alt="Dell XPS 13 Plus" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400"/>
+                            <button class="absolute top-2 right-2 size-8 bg-white/90 rounded-full flex items-center justify-center text-red-500 shadow-sm hover:bg-white">
+                                <span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+                            </button>
+                        </div>
+                        <h4 class="font-medium text-sm text-[#1c100d] dark:text-white truncate">Dell XPS 13 Plus</h4>
+                        <p class="text-primary font-bold text-sm mt-1">35.990.000đ</p>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-3 shadow-sm group relative">
+                        <div class="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
+                            <img alt="Sony Headphones" class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"/>
+                            <button class="absolute top-2 right-2 size-8 bg-white/90 rounded-full flex items-center justify-center text-red-500 shadow-sm hover:bg-white">
+                                <span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+                            </button>
+                        </div>
+                        <h4 class="font-medium text-sm text-[#1c100d] dark:text-white truncate">Sony WH-1000XM4</h4>
+                        <p class="text-primary font-bold text-sm mt-1">6.190.000đ</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Địa chỉ mặc định</h3>
+                    <button class="text-primary text-sm font-medium hover:underline">Chỉnh sửa</button>
+                </div>
+                <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm h-full max-h-[280px]">
+                    <div class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-gray-400 mt-1">home_pin</span>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-[#1c100d] dark:text-white">Nhà riêng</span>
+                                <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded">Mặc định</span>
+                            </div>
+                            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Nguyen Van A</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">(+84) 912 345 678</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                                Số 123, Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-dashed border-gray-200 dark:border-gray-600">
+                        <button class="w-full py-2 border border-dashed border-primary text-primary rounded-lg font-medium hover:bg-primary/5 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined">add</span>
+                            Thêm địa chỉ mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

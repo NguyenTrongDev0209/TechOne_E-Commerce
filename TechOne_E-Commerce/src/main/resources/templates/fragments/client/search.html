@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-client :: view(title='Kết quả tìm kiếm', content=~{:: #main-content})}">
+<body>
+
+    <div id="main-content" class="w-full">
+        
+        
+            <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <nav class="flex text-sm text-gray-500 dark:text-gray-400">
+                    <a class="hover:text-primary transition-colors" href="/">Trang chủ</a>
+                    <span class="mx-2">/</span>
+                    <span class="text-slate-800 dark:text-white font-medium">Tìm kiếm</span>
+                </nav>
+            </div>
+        
+
+        <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
+            
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white mb-2">Kết quả tìm kiếm cho "iPhone 15"</h1>
+                <p class="text-gray-500 dark:text-gray-400">Tìm thấy <span class="font-semibold text-slate-900 dark:text-white">12</span> sản phẩm phù hợp</p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                
+                <aside class="w-full lg:w-72 flex-shrink-0 space-y-8 hidden lg:block">
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-4 flex items-center justify-between">
+                            Danh mục
+                            <span class="material-symbols-outlined text-gray-400">expand_less</span>
+                        </h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input checked="" class="form-checkbox rounded text-primary border-gray-300 focus:ring-primary h-5 w-5 transition duration-150 ease-in-out" type="checkbox"/>
+                                <span class="text-slate-700 dark:text-gray-300 group-hover:text-primary transition-colors">Điện thoại</span>
+                                <span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-full">120</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input class="form-checkbox rounded text-primary border-gray-300 focus:ring-primary h-5 w-5 transition duration-150 ease-in-out" type="checkbox"/>
+                                <span class="text-slate-700 dark:text-gray-300 group-hover:text-primary transition-colors">Phụ kiện</span>
+                                <span class="ml-auto text-xs text-gray-400 bg-gray-100 dark:bg-white/10 px-2 py-0.5 rounded-full">45</span>
+                            </label>
+                        </div>
+                    </div>
+                    <hr class="border-gray-100 dark:border-white/10"/>
+                    
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-4">Khoảng giá</h3>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="relative flex-1">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">₫</span>
+                                <input class="w-full pl-6 pr-2 py-2 text-sm border border-gray-200 dark:border-white/10 rounded-lg focus:ring-primary focus:border-primary dark:bg-white/5 dark:text-white" type="text" value="0"/>
+                            </div>
+                            <span class="text-gray-400">-</span>
+                            <div class="relative flex-1">
+                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">₫</span>
+                                <input class="w-full pl-6 pr-2 py-2 text-sm border border-gray-200 dark:border-white/10 rounded-lg focus:ring-primary focus:border-primary dark:bg-white/5 dark:text-white" type="text" value="50.000.000"/>
+                            </div>
+                        </div>
+                        <div class="relative h-1.5 bg-gray-200 dark:bg-white/10 rounded-full mb-6">
+                            <div class="absolute left-0 right-0 h-full bg-primary rounded-full"></div>
+                            <div class="absolute left-0 top-1/2 -translate-y-1/2 size-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer"></div>
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 size-4 bg-white border-2 border-primary rounded-full shadow cursor-pointer"></div>
+                        </div>
+                        <button class="w-full py-2 bg-primary/10 text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-all text-sm">Áp dụng</button>
+                    </div>
+                    <hr class="border-gray-100 dark:border-white/10"/>
+                    
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white mb-4">Thương hiệu</h3>
+                        <div class="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input checked="" class="form-checkbox rounded text-primary border-gray-300 focus:ring-primary h-5 w-5" type="checkbox"/>
+                                <span class="text-slate-700 dark:text-gray-300">Apple</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input class="form-checkbox rounded text-primary border-gray-300 focus:ring-primary h-5 w-5" type="checkbox"/>
+                                <span class="text-slate-700 dark:text-gray-300">Samsung</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input class="form-checkbox rounded text-primary border-gray-300 focus:ring-primary h-5 w-5" type="checkbox"/>
+                                <span class="text-slate-700 dark:text-gray-300">Xiaomi</span>
+                            </label>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="flex-1">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-white dark:bg-[#1c0f0c] p-4 rounded-xl border border-gray-100 dark:border-white/5 shadow-sm">
+                        <button class="lg:hidden flex items-center gap-2 text-slate-700 dark:text-white font-medium">
+                            <span class="material-symbols-outlined">tune</span>
+                            Bộ lọc
+                        </button>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <label class="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">Sắp xếp theo:</label>
+                            <div class="relative">
+                                <select class="pl-3 pr-8 py-1.5 text-sm bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg focus:ring-primary focus:border-primary text-slate-800 dark:text-white appearance-none cursor-pointer">
+                                    <option>Liên quan nhất</option>
+                                    <option>Giá: Thấp đến Cao</option>
+                                    <option>Giá: Cao đến Thấp</option>
+                                    <option>Mới nhất</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 border-l border-gray-200 dark:border-white/10 pl-4">
+                            <button class="p-1.5 rounded-lg bg-primary/10 text-primary">
+                                <span class="material-symbols-outlined text-[20px]">grid_view</span>
+                            </button>
+                            <button class="p-1.5 rounded-lg text-gray-400 hover:text-slate-700 dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[20px]">view_list</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
+                        
+                        <div class="group flex flex-col bg-white dark:bg-[#2f1f1b] rounded-2xl border border-gray-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
+                            <div class="absolute top-3 left-3 z-10 flex flex-col gap-1">
+                                <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">-15%</span>
+                            </div>
+                            <div class="relative h-64 w-full p-6 flex items-center justify-center bg-white dark:bg-[#1a110e]">
+                                <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-titanium-select-202309?wid=940&hei=1112&fmt=png-alpha&.v=1693585335334" alt="iPhone 15 Pro Max" class="h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110"/>
+                                <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                                    <button class="size-10 rounded-full bg-white dark:bg-gray-800 text-slate-700 dark:text-white shadow-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                    </button>
+                                    <button class="size-10 rounded-full bg-white dark:bg-gray-800 text-slate-700 dark:text-white shadow-lg flex items-center justify-center hover:text-red-500 transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">favorite</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400">
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">(45)</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-lg leading-tight mb-1 group-hover:text-primary transition-colors cursor-pointer">iPhone 15 Pro Max 256GB</h3>
+                                <div class="mt-auto flex items-end justify-between">
+                                    <div>
+                                        <p class="text-xs text-gray-400 line-through font-medium">34.990.000₫</p>
+                                        <p class="text-primary font-bold text-xl">31.990.000₫</p>
+                                    </div>
+                                    <button class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-95">
+                                        <span class="material-symbols-outlined">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="group flex flex-col bg-white dark:bg-[#2f1f1b] rounded-2xl border border-gray-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
+                            <div class="absolute top-3 left-3 z-10">
+                                <span class="bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">New</span>
+                            </div>
+                            <div class="relative h-64 w-full p-6 flex items-center justify-center bg-white dark:bg-[#1a110e]">
+                                <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309?wid=940&hei=1112&fmt=png-alpha&.v=1692924328206" alt="iPhone 15" class="h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110"/>
+                                <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                                    <button class="size-10 rounded-full bg-white dark:bg-gray-800 text-slate-700 dark:text-white shadow-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400">
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] text-gray-300">star</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">(12)</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-lg leading-tight mb-1 group-hover:text-primary transition-colors cursor-pointer">iPhone 15 128GB</h3>
+                                <div class="mt-auto flex items-end justify-between">
+                                    <div>
+                                        <p class="text-primary font-bold text-xl">22.990.000₫</p>
+                                    </div>
+                                    <button class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-95">
+                                        <span class="material-symbols-outlined">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="group flex flex-col bg-white dark:bg-[#2f1f1b] rounded-2xl border border-gray-100 dark:border-white/5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
+                            <div class="absolute top-3 left-3 z-10">
+                                <span class="bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">-5%</span>
+                            </div>
+                            <div class="relative h-64 w-full p-6 flex items-center justify-center bg-white dark:bg-[#1a110e]">
+                                <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-plus-pink-select-202309?wid=940&hei=1112&fmt=png-alpha&.v=1692924328206" alt="iPhone 15 Plus" class="h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110"/>
+                                <div class="absolute inset-x-0 bottom-4 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0">
+                                    <button class="size-10 rounded-full bg-white dark:bg-gray-800 text-slate-700 dark:text-white shadow-lg flex items-center justify-center hover:bg-primary hover:text-white transition-colors">
+                                        <span class="material-symbols-outlined text-[20px]">visibility</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="p-5 flex flex-col flex-1">
+                                <div class="flex items-center gap-1 mb-2">
+                                    <div class="flex text-yellow-400">
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star</span>
+                                        <span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+                                    </div>
+                                    <span class="text-xs text-gray-400">(89)</span>
+                                </div>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-lg leading-tight mb-1 group-hover:text-primary transition-colors cursor-pointer">iPhone 15 Plus 256GB</h3>
+                                <div class="mt-auto flex items-end justify-between">
+                                    <div>
+                                        <p class="text-xs text-gray-400 line-through font-medium">28.990.000₫</p>
+                                        <p class="text-primary font-bold text-xl">27.590.000₫</p>
+                                    </div>
+                                    <button class="size-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-95">
+                                        <span class="material-symbols-outlined">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mt-12 flex items-center justify-center gap-2">
+                        <button class="size-10 flex items-center justify-center rounded-lg border border-gray-200 dark:border-white/10 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/5 disabled:opacity-50">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button class="size-10 flex items-center justify-center rounded-lg bg-primary text-white font-semibold">1</button>
+                        <button class="size-10 flex items-center justify-center rounded-lg border border-gray-200 dark:border-white/10 text-slate-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 font-semibold">2</button>
+                        <span class="text-gray-400 px-2">...</span>
+                        <button class="size-10 flex items-center justify-center rounded-lg border border-gray-200 dark:border-white/10 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/5">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ForgotPasswordController {
-	@GetMapping("/client/forgot_password")
+	
+	@GetMapping("/forgot-password")
 	public String form() {
-		return "client/forgot_password";
+		return "fragments/client/forgot-password";
 	}
+	
 }

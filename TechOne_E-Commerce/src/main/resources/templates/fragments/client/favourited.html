@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-account :: view(title='Danh sách yêu thích', activeTab='wishlist', accountContent=~{:: #wishlist-content})}">
+<body>
+
+    <div id="wishlist-content">
+        
+        <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-[#1c100d] dark:text-white">Danh sách yêu thích</h1>
+                <p class="text-sm text-gray-500 mt-1">Bạn đang có <span class="font-bold text-primary">5</span> sản phẩm trong danh sách yêu thích</p>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-6 bg-white dark:bg-[#1e293b] p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="text-sm text-gray-500 dark:text-gray-400">Sắp xếp theo:</span>
+                <select class="border-none bg-transparent text-sm font-medium text-[#1c100d] dark:text-white focus:ring-0 cursor-pointer pr-8">
+                    <option>Mới nhất</option>
+                    <option>Giá tăng dần</option>
+                    <option>Giá giảm dần</option>
+                    <option>Tên A-Z</option>
+                </select>
+            </div>
+            <button class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+                Xóa tất cả
+            </button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            
+            <div class="group bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+                <div class="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                    <img alt="MacBook Pro M3 Max" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=400"/>
+                    <button class="absolute top-3 right-3 z-10 size-9 bg-white dark:bg-[#2a1a15] rounded-full flex items-center justify-center text-primary shadow-md hover:bg-red-50 dark:hover:bg-[#3a2824] group/btn transition-colors" title="Xóa khỏi yêu thích">
+                        <span class="material-symbols-outlined text-[20px] fill-current group-hover/btn:hidden">favorite</span>
+                        <span class="material-symbols-outlined text-[20px] hidden group-hover/btn:block">close</span>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        -15%
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="mb-2">
+                        <div class="flex items-center gap-1 mb-1">
+                            <span class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                            <span class="text-xs font-bold text-[#1c100d] dark:text-white">4.9</span>
+                            <span class="text-xs text-gray-400">(128)</span>
+                        </div>
+                        <h3 class="font-bold text-[#1c100d] dark:text-white line-clamp-2 hover:text-primary transition-colors">
+                            <a href="#">MacBook Pro 14 inch M3 Max 2024</a>
+                        </h3>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex items-end gap-2 mb-3">
+                            <span class="text-lg font-bold text-primary">49.990.000đ</span>
+                            <span class="text-xs text-gray-400 line-through mb-1">58.990.000đ</span>
+                        </div>
+                        <button class="w-full py-2 bg-primary hover:bg-orange-600 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+                <div class="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                    <img alt="Sony Headphones" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"/>
+                    <button class="absolute top-3 right-3 z-10 size-9 bg-white dark:bg-[#2a1a15] rounded-full flex items-center justify-center text-primary shadow-md hover:bg-red-50 dark:hover:bg-[#3a2824] group/btn transition-colors" title="Xóa khỏi yêu thích">
+                        <span class="material-symbols-outlined text-[20px] fill-current group-hover/btn:hidden">favorite</span>
+                        <span class="material-symbols-outlined text-[20px] hidden group-hover/btn:block">close</span>
+                    </button>
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="mb-2">
+                        <div class="flex items-center gap-1 mb-1">
+                            <span class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                            <span class="text-xs font-bold text-[#1c100d] dark:text-white">4.8</span>
+                            <span class="text-xs text-gray-400">(450)</span>
+                        </div>
+                        <h3 class="font-bold text-[#1c100d] dark:text-white line-clamp-2 hover:text-primary transition-colors">
+                            <a href="#">Sony WH-1000XM5 Wireless Noise Canceling</a>
+                        </h3>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex items-end gap-2 mb-3">
+                            <span class="text-lg font-bold text-primary">8.490.000đ</span>
+                        </div>
+                        <button class="w-full py-2 bg-primary hover:bg-orange-600 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full opacity-75">
+                <div class="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                    <img alt="Mechanical Keyboard" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 grayscale" src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=400"/>
+                    <button class="absolute top-3 right-3 z-10 size-9 bg-white dark:bg-[#2a1a15] rounded-full flex items-center justify-center text-primary shadow-md hover:bg-red-50 dark:hover:bg-[#3a2824] group/btn transition-colors" title="Xóa khỏi yêu thích">
+                        <span class="material-symbols-outlined text-[20px] fill-current group-hover/btn:hidden">favorite</span>
+                        <span class="material-symbols-outlined text-[20px] hidden group-hover/btn:block">close</span>
+                    </button>
+                    <div class="absolute inset-0 bg-black/10 flex items-center justify-center">
+                        <div class="bg-gray-800 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                            Hết hàng
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="mb-2">
+                        <div class="flex items-center gap-1 mb-1">
+                            <span class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                            <span class="text-xs font-bold text-[#1c100d] dark:text-white">5.0</span>
+                            <span class="text-xs text-gray-400">(42)</span>
+                        </div>
+                        <h3 class="font-bold text-[#1c100d] dark:text-white line-clamp-2 hover:text-primary transition-colors">
+                            <a href="#">Keychron Q1 Pro Wireless Custom Mechanical</a>
+                        </h3>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex items-end gap-2 mb-3">
+                            <span class="text-lg font-bold text-gray-500">4.590.000đ</span>
+                        </div>
+                        <button class="w-full py-2 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm font-bold rounded-lg cursor-not-allowed flex items-center justify-center gap-2" disabled="">
+                            <span class="material-symbols-outlined text-[18px]">notifications</span>
+                            Nhận thông báo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full">
+                <div class="relative aspect-[4/5] overflow-hidden bg-gray-100">
+                    <img alt="Smart Watch" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=400"/>
+                    <button class="absolute top-3 right-3 z-10 size-9 bg-white dark:bg-[#2a1a15] rounded-full flex items-center justify-center text-primary shadow-md hover:bg-red-50 dark:hover:bg-[#3a2824] group/btn transition-colors" title="Xóa khỏi yêu thích">
+                        <span class="material-symbols-outlined text-[20px] fill-current group-hover/btn:hidden">favorite</span>
+                        <span class="material-symbols-outlined text-[20px] hidden group-hover/btn:block">close</span>
+                    </button>
+                    <div class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                        -5%
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="mb-2">
+                        <div class="flex items-center gap-1 mb-1">
+                            <span class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                            <span class="text-xs font-bold text-[#1c100d] dark:text-white">4.6</span>
+                            <span class="text-xs text-gray-400">(89)</span>
+                        </div>
+                        <h3 class="font-bold text-[#1c100d] dark:text-white line-clamp-2 hover:text-primary transition-colors">
+                            <a href="#">Apple Watch Series 9 GPS 41mm</a>
+                        </h3>
+                    </div>
+                    <div class="mt-auto">
+                        <div class="flex items-end gap-2 mb-3">
+                            <span class="text-lg font-bold text-primary">10.290.000đ</span>
+                            <span class="text-xs text-gray-400 line-through mb-1">10.990.000đ</span>
+                        </div>
+                        <button class="w-full py-2 bg-primary hover:bg-orange-600 text-white text-sm font-bold rounded-lg transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">shopping_cart</span>
+                            Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="hidden flex flex-col items-center justify-center py-16 bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="size-32 bg-gray-50 dark:bg-[#2a1a15] rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-gray-300 text-6xl">favorite_border</span>
+            </div>
+            <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Danh sách yêu thích trống</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-center max-w-md mb-8">
+                Bạn chưa thêm sản phẩm nào vào danh sách yêu thích. Hãy khám phá thêm các sản phẩm công nghệ tuyệt vời tại TechOne nhé!
+            </p>
+            <button class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-orange-500/30">
+                Khám phá sản phẩm
+            </button>
+        </div>
+
+        <div class="mt-8 flex justify-center">
+            <nav class="flex items-center gap-2">
+                <button class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button class="size-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
+                <button class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">2</button>
+                <button class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">3</button>
+                <button class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </nav>
+        </div>
+
+    </div>
+</body>
+</html>

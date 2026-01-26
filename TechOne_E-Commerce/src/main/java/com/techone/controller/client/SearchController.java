@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class SearchController {
-	@GetMapping("/client/search")
-	public String search() {
-		return "client/search";
+	
+	@GetMapping("/search")
+	public String showSearch() {
+		return "fragments/client/search";
 	}
+	
 }

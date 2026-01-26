@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-account :: view(title='Đơn hàng của tôi', activeTab='orders', accountContent=~{:: #order-content})}">
+<body>
+
+    <div id="order-content">
+        
+        <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <h1 class="text-3xl font-bold text-[#1c100d] dark:text-white">Đơn hàng của tôi</h1>
+        </div>
+
+        <div class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-gray-400">search</span>
+                    </div>
+                    <input class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm" placeholder="Tìm đơn hàng theo Mã đơn hoặc Tên sản phẩm..." type="text"/>
+                </div>
+                <div class="w-full md:w-48">
+                    <div class="relative">
+                        <select class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="shipping">Đang giao hàng</option>
+                            <option value="delivered">Đã giao hàng</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-500">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-48">
+                    <div class="relative">
+                        <input class="block w-full pl-3 pr-2 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary cursor-pointer text-gray-500" placeholder="Chọn ngày" type="date"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            
+            <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-4">
+                        <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors" href="#">#ORD-9921</a>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            20/05/2024 14:30
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full border border-blue-200">
+                        <span class="w-2 h-2 mr-1.5 bg-blue-500 rounded-full"></span>
+                        Đang xử lý
+                    </span>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1 flex gap-4">
+                            <div class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                <img alt="Dell XPS" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=200"/>
+                                <div class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">x1</div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Dell XPS 13 Plus - Core i7/16GB/512GB</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Phân loại: Bạc kim</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
+                            <div class="text-xl font-bold text-primary mb-4">35.990.000đ</div>
+                            <div class="flex gap-2 w-full md:w-auto">
+                                <button class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+                                    Hủy đơn
+                                </button>
+                                <a th:href="@{/account/orders/order-detail}" class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-4">
+                        <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors" href="#">#ORD-8854</a>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            15/05/2024 09:12
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full border border-green-200">
+                        <span class="w-2 h-2 mr-1.5 bg-green-500 rounded-full"></span>
+                        Giao thành công
+                    </span>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1 flex flex-col gap-3">
+                            <div class="flex gap-4">
+                                <div class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                    <img alt="Sony Headphones" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=200"/>
+                                    <div class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">x1</div>
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Sony WH-1000XM5 Wireless Noise Cancelling</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Màu: Đen</p>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex gap-4 items-center pl-24">
+                                <span class="text-xs text-gray-500 italic">+ 2 sản phẩm khác</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
+                            <div class="text-xl font-bold text-primary mb-4">9.590.000đ</div>
+                            <div class="flex gap-2 w-full md:w-auto">
+                                <button class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm shadow-orange-500/20">
+                                    Mua lại
+                                </button>
+                                <a th:href="@{/account/orders/order-detail}" class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow opacity-75">
+                <div class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-4">
+                        <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors" href="#">#ORD-7762</a>
+                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">schedule</span>
+                            10/05/2024 18:45
+                        </span>
+                    </div>
+                    <span class="inline-flex items-center bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
+                        <span class="w-2 h-2 mr-1.5 bg-gray-500 rounded-full"></span>
+                        Đã hủy
+                    </span>
+                </div>
+                <div class="p-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1 flex gap-4">
+                            <div class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0 grayscale">
+                                <img alt="MacBook Air" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=200"/>
+                                <div class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">x1</div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">MacBook Air M2 2022 13.6 inch</h4>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Phân loại: Midnight</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
+                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
+                            <div class="text-xl font-bold text-gray-500 mb-4 line-through decoration-gray-400">27.490.000đ</div>
+                            <div class="flex gap-2 w-full md:w-auto">
+                                <button class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm shadow-orange-500/20">
+                                    Mua lại
+                                </button>
+                                <a th:href="@{/account/orders/order-detail}" class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-8 flex items-center justify-center">
+            <nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+                <a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">
+                    <span class="sr-only">Previous</span>
+                    <span class="material-symbols-outlined text-sm">chevron_left</span>
+                </a>
+                <a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="#">1</a>
+                <a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">2</a>
+                <a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 dark:text-white ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">3</a>
+                <span class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 focus:outline-offset-0">...</span>
+                <a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 focus:z-20 focus:outline-offset-0" href="#">
+                    <span class="sr-only">Next</span>
+                    <span class="material-symbols-outlined text-sm">chevron_right</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="hidden flex-col items-center justify-center py-16 text-center">
+            <div class="size-32 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                <span class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-600">shopping_bag</span>
+            </div>
+            <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Bạn chưa có đơn hàng nào</h3>
+            <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto">Khám phá hàng ngàn sản phẩm công nghệ hấp dẫn tại TechShop và đặt hàng ngay hôm nay!</p>
+            <button class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-orange-500/30 flex items-center gap-2">
+                <span class="material-symbols-outlined">storefront</span>
+                Mua sắm ngay
+            </button>
+        </div>
+
+    </div>
+</body>
+</html>

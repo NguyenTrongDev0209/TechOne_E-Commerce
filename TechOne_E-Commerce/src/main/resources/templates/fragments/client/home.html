@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layouts/layout-client :: view(title='Trang Chủ', content=~{:: #main-content})}">
+<body>
+
+	<main id="main-content" class="w-full overflow-x-hidden flex-1">
+
+		<section
+			class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+			<div
+				class="relative overflow-hidden rounded-2xl md:rounded-[2rem] bg-gray-900 text-white min-h-[400px] md:min-h-[500px] flex items-center">
+				<div class="absolute inset-0 z-0">
+					<div
+						class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10"></div>
+					<img alt="High tech gaming setup"
+						class="w-full h-full object-cover object-center"
+						th:src="@{/images/banner-bg.jpg}"
+						src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2070" />
+				</div>
+				<div
+					class="relative z-20 w-full max-w-2xl px-6 md:px-16 py-12 flex flex-col items-start gap-6">
+					<span
+						class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/30 text-sm font-bold backdrop-blur-sm">
+						<span class="material-symbols-outlined text-[18px]">local_fire_department</span>
+						Hàng Mới Về
+					</span>
+					<h2
+						class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
+						iPhone 15 Pro Max <br /> <span
+							class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Titan
+							Tự Nhiên</span>
+					</h2>
+					<p class="text-gray-300 text-lg md:text-xl font-medium max-w-lg">
+						Thiết kế khung titan bền bỉ, chip A17 Pro mạnh mẽ nhất lịch sử.
+						Giảm ngay 2 triệu đồng khi đặt trước hôm nay.</p>
+					<div class="flex flex-wrap gap-4 pt-2">
+						<button
+							class="flex items-center justify-center gap-2 px-8 py-3.5 bg-primary hover:bg-primary-hover text-white rounded-xl font-bold text-base transition-all transform hover:-translate-y-0.5 shadow-lg shadow-primary/30">
+							Xem ngay <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+						</button>
+						<button
+							class="flex items-center justify-center gap-2 px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md rounded-xl font-bold text-base transition-all">
+							Tìm hiểu thêm</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div class="flex items-center justify-between mb-8">
+				<h3 class="text-2xl font-bold text-text-main">Danh mục chính</h3>
+				<a
+					class="text-primary font-semibold text-sm hover:underline flex items-center gap-1"
+					href="#"> Xem tất cả <span
+					class="material-symbols-outlined text-[16px]">chevron_right</span>
+				</a>
+			</div>
+			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+				<a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">laptop_mac</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Laptop</span>
+				</a> <a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-green-50 text-green-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">smartphone</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Điện
+						thoại</span>
+				</a> <a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">headphones</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Tai
+						nghe</span>
+				</a> <a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">watch</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Smartwatch</span>
+				</a> <a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-red-50 text-red-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">videogame_asset</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Gaming</span>
+				</a> <a
+					class="group flex flex-col items-center gap-4 p-6 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300"
+					href="#">
+					<div
+						class="w-16 h-16 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+						<span class="material-symbols-outlined text-3xl">cable</span>
+					</div> <span
+					class="font-semibold text-text-main group-hover:text-primary transition-colors">Phụ
+						kiện</span>
+				</a>
+			</div>
+		</section>
+
+		<section class="w-full py-10 my-8">
+			<div
+				class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-orange-50 to-red-50 border border-orange-100 rounded-3xl p-6">
+
+				<div
+					class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+					<div class="flex items-center gap-4">
+						<div class="flex items-center">
+							<span
+								class="material-symbols-outlined text-primary text-4xl animate-pulse">bolt</span>
+							<h2
+								class="text-3xl font-black italic uppercase text-primary tracking-tight">Flash
+								Sale</h2>
+						</div>
+						<div class="hidden md:block h-8 w-px bg-gray-300 mx-2"></div>
+						<div class="flex items-center gap-2 text-text-main font-bold">
+							<span class="text-sm font-normal text-text-secondary">Kết
+								thúc trong:</span>
+							<div class="flex gap-1 items-center">
+								<span
+									class="bg-gray-900 text-white px-2 py-1 rounded text-lg min-w-[36px] text-center">02</span>
+								<span>:</span> <span
+									class="bg-gray-900 text-white px-2 py-1 rounded text-lg min-w-[36px] text-center">15</span>
+								<span>:</span> <span
+									class="bg-primary text-white px-2 py-1 rounded text-lg min-w-[36px] text-center">40</span>
+							</div>
+						</div>
+					</div>
+					<a class="text-primary font-bold hover:underline" href="#">Xem
+						tất cả deal ></a>
+				</div>
+
+				<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+
+					<a th:href="@{/product/product-detail}"
+						class="block bg-white rounded-xl shadow-sm transition-all duration-300 border border-transparent hover:border-primary group cursor-pointer">
+
+						<div
+							class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+							<span
+								class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+							<button onclick="event.preventDefault()"
+								class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+								<span
+									class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+								<span
+									class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+							</button>
+							<img
+								src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+
+						<div class="p-4 flex flex-col gap-2">
+							<span
+								class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+
+							<h4
+								class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
+								MacBook Air M2 2023 15 inch 8GB/256GB</h4>
+
+							<div class="flex items-center gap-1 text-yellow-400 text-sm">
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+								<span class="text-gray-400 text-xs ml-1">(120)</span>
+							</div>
+
+							<div class="flex items-end justify-between mt-1">
+								<div class="flex flex-col">
+									<span class="text-gray-400 text-xs line-through">28.990.000₫</span>
+									<span class="text-primary text-lg font-bold">21.490.000₫</span>
+								</div>
+
+								<button
+									class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+									<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span>
+								</button>
+							</div>
+						</div>
+					</a>
+					<a th:href="@{/product/product-detail}"
+						class="block bg-white rounded-xl shadow-sm transition-all duration-300 border border-transparent hover:border-primary group cursor-pointer">
+
+						<div
+							class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+							<span
+								class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+							<button onclick="event.preventDefault()"
+								class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+								<span
+									class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+								<span
+									class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+							</button>
+							<img
+								src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+
+						<div class="p-4 flex flex-col gap-2">
+							<span
+								class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+
+							<h4
+								class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
+								MacBook Air M2 2023 15 inch 8GB/256GB</h4>
+
+							<div class="flex items-center gap-1 text-yellow-400 text-sm">
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+								<span class="text-gray-400 text-xs ml-1">(120)</span>
+							</div>
+
+							<div class="flex items-end justify-between mt-1">
+								<div class="flex flex-col">
+									<span class="text-gray-400 text-xs line-through">28.990.000₫</span>
+									<span class="text-primary text-lg font-bold">21.490.000₫</span>
+								</div>
+
+								<button
+									class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+									<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span>
+								</button>
+							</div>
+						</div>
+					</a>
+					<a th:href="@{/product/product-detail}"
+						class="block bg-white rounded-xl shadow-sm transition-all duration-300 border border-transparent hover:border-primary group cursor-pointer">
+
+						<div
+							class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+							<span
+								class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+							<button onclick="event.preventDefault()"
+								class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+								<span
+									class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+								<span
+									class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+							</button>
+							<img
+								src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+
+						<div class="p-4 flex flex-col gap-2">
+							<span
+								class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+
+							<h4
+								class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
+								MacBook Air M2 2023 15 inch 8GB/256GB</h4>
+
+							<div class="flex items-center gap-1 text-yellow-400 text-sm">
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+								<span class="text-gray-400 text-xs ml-1">(120)</span>
+							</div>
+
+							<div class="flex items-end justify-between mt-1">
+								<div class="flex flex-col">
+									<span class="text-gray-400 text-xs line-through">28.990.000₫</span>
+									<span class="text-primary text-lg font-bold">21.490.000₫</span>
+								</div>
+
+								<button
+									class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+									<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span>
+								</button>
+							</div>
+						</div>
+					</a>
+					<a th:href="@{/product/product-detail}"
+						class="block bg-white rounded-xl shadow-sm transition-all duration-300 border border-transparent hover:border-primary group cursor-pointer">
+
+						<div
+							class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+							<span
+								class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+							<button onclick="event.preventDefault()"
+								class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+								<span
+									class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+								<span
+									class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+							</button>
+							<img
+								src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+
+						<div class="p-4 flex flex-col gap-2">
+							<span
+								class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+
+							<h4
+								class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
+								MacBook Air M2 2023 15 inch 8GB/256GB</h4>
+
+							<div class="flex items-center gap-1 text-yellow-400 text-sm">
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+								<span class="text-gray-400 text-xs ml-1">(120)</span>
+							</div>
+
+							<div class="flex items-end justify-between mt-1">
+								<div class="flex flex-col">
+									<span class="text-gray-400 text-xs line-through">28.990.000₫</span>
+									<span class="text-primary text-lg font-bold">21.490.000₫</span>
+								</div>
+
+								<button
+									class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+									<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span>
+								</button>
+							</div>
+						</div>
+					</a>
+					<a th:href="@{/product/product-detail}"
+						class="block bg-white rounded-xl shadow-sm transition-all duration-300 border border-transparent hover:border-primary group cursor-pointer">
+
+						<div
+							class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+							<span
+								class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+							<button onclick="event.preventDefault()"
+								class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+								<span
+									class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+								<span
+									class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+							</button>
+							<img
+								src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+
+						<div class="p-4 flex flex-col gap-2">
+							<span
+								class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+
+							<h4
+								class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
+								MacBook Air M2 2023 15 inch 8GB/256GB</h4>
+
+							<div class="flex items-center gap-1 text-yellow-400 text-sm">
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+								<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+								<span class="text-gray-400 text-xs ml-1">(120)</span>
+							</div>
+
+							<div class="flex items-end justify-between mt-1">
+								<div class="flex flex-col">
+									<span class="text-gray-400 text-xs line-through">28.990.000₫</span>
+									<span class="text-primary text-lg font-bold">21.490.000₫</span>
+								</div>
+
+								<button
+									class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+									<span class="material-symbols-outlined text-[22px]">add_shopping_cart</span>
+								</button>
+							</div>
+						</div>
+					</a>
+					
+				</div>
+			</div>
+		</section>
+
+		<section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+			<div class="flex items-center justify-between mb-8">
+				<h3 class="text-2xl font-bold text-text-main">Sản phẩm nổi bật</h3>
+				<div class="flex gap-2">
+					<button
+						class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-600">
+						<span class="material-symbols-outlined">chevron_left</span>
+					</button>
+					<button
+						class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center hover:bg-gray-50 text-gray-600">
+						<span class="material-symbols-outlined">chevron_right</span>
+					</button>
+				</div>
+			</div>
+			<div
+				class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6">
+				<div
+					class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary/20 transition-all duration-300 group">
+					<div class="relative p-2">
+						<div
+							class="w-full aspect-square bg-gray-50 rounded-lg overflow-hidden">
+							<img
+								src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-wifi-blue-202203?wid=940&hei=1112&fmt=png-alpha&.v=1645065732688"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+						<button
+							class="absolute top-4 right-4 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-white shadow-sm transition-colors">
+							<span class="material-symbols-outlined text-[20px]">favorite</span>
+						</button>
+					</div>
+					<div class="p-4 pt-2">
+						<h4
+							class="text-text-main font-semibold text-sm line-clamp-2 mb-2 group-hover:text-primary">iPad
+							Air 5 M1 WiFi 64GB</h4>
+						<div class="flex items-end justify-between">
+							<div>
+								<p class="text-xs text-gray-400 line-through">15.990.000₫</p>
+								<p class="text-base font-bold text-text-main">13.490.000₫</p>
+							</div>
+							<button
+								class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20">
+								<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div
+					class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary/20 transition-all duration-300 group">
+					<div class="relative p-2">
+						<div
+							class="w-full aspect-square bg-gray-50 rounded-lg overflow-hidden">
+							<img src="https://m.media-amazon.com/images/I/61pUul1oDlL.jpg"
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+						</div>
+						<button
+							class="absolute top-4 right-4 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-white shadow-sm transition-colors">
+							<span class="material-symbols-outlined text-[20px]">favorite</span>
+						</button>
+					</div>
+					<div class="p-4 pt-2">
+						<h4
+							class="text-text-main font-semibold text-sm line-clamp-2 mb-2 group-hover:text-primary">Chuột
+							Gaming Logitech G Pro</h4>
+						<div class="flex items-end justify-between">
+							<div>
+								<p class="text-xs text-gray-400 line-through">3.190.000₫</p>
+								<p class="text-base font-bold text-text-main">2.890.000₫</p>
+							</div>
+							<button
+								class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20">
+								<span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="mt-10 flex justify-center">
+				<button
+					class="px-8 py-3 border border-gray-300 rounded-xl font-semibold text-text-secondary hover:text-primary hover:border-primary transition-colors bg-white">
+					Xem thêm 240 sản phẩm</button>
+			</div>
+		</section>
+
+		<section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
+			<h3 class="text-2xl font-bold text-text-main mb-6">Thương hiệu
+				nổi tiếng</h3>
+			<div
+				class="flex flex-wrap justify-center md:justify-between items-center gap-8 grayscale hover:grayscale-0 transition-all duration-500">
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#000] cursor-pointer">APPLE</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#1428a0] cursor-pointer">SAMSUNG</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#00539b] cursor-pointer">DELL</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#0047BB] cursor-pointer">HP</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#000] cursor-pointer">SONY</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#ff6900] cursor-pointer">XIAOMI</div>
+				<div
+					class="font-black text-2xl text-gray-400 hover:text-[#00539b] cursor-pointer">ASUS</div>
+			</div>
+		</section>
+
+		<section
+			class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10 border-t border-gray-100">
+			<h3 class="text-2xl font-bold text-text-main mb-6">Tin công nghệ
+				mới</h3>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<article class="flex flex-col gap-3 group cursor-pointer">
+					<div
+						class="w-full aspect-video rounded-xl overflow-hidden bg-gray-200">
+						<img
+							src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?auto=format&fit=crop&q=80&w=800"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+					</div>
+					<div class="flex flex-col gap-2">
+						<span class="text-primary text-sm font-semibold">Review</span>
+						<h4
+							class="text-lg font-bold text-text-main group-hover:text-primary transition-colors">Top
+							5 Laptop cho sinh viên IT đáng mua nhất 2024</h4>
+						<p class="text-text-secondary text-sm line-clamp-2">Tổng hợp
+							những mẫu laptop cấu hình mạnh, pin trâu và giá cả hợp lý.</p>
+						<span class="text-xs text-gray-400 mt-1">2 giờ trước</span>
+					</div>
+				</article>
+				<article class="flex flex-col gap-3 group cursor-pointer">
+					<div
+						class="w-full aspect-video rounded-xl overflow-hidden bg-gray-200">
+						<img
+							src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+					</div>
+					<div class="flex flex-col gap-2">
+						<span class="text-primary text-sm font-semibold">Công nghệ</span>
+						<h4
+							class="text-lg font-bold text-text-main group-hover:text-primary transition-colors">Chip
+							A18 Pro lộ diện hiệu năng khủng khiếp</h4>
+						<p class="text-text-secondary text-sm line-clamp-2">Những
+							thông tin rò rỉ mới nhất về thế hệ chip tiếp theo của Apple.</p>
+						<span class="text-xs text-gray-400 mt-1">1 ngày trước</span>
+					</div>
+				</article>
+				<article class="flex flex-col gap-3 group cursor-pointer">
+					<div
+						class="w-full aspect-video rounded-xl overflow-hidden bg-gray-200">
+						<img
+							src="https://images.unsplash.com/photo-1622979135225-d2ba269fb1ac?auto=format&fit=crop&q=80&w=800"
+							class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+					</div>
+					<div class="flex flex-col gap-2">
+						<span class="text-primary text-sm font-semibold">Xu hướng</span>
+						<h4
+							class="text-lg font-bold text-text-main group-hover:text-primary transition-colors">Thực
+							tế ảo VR - Tương lai của giải trí tại gia</h4>
+						<p class="text-text-secondary text-sm line-clamp-2">Khám phá
+							các thiết bị VR mới nhất.</p>
+						<span class="text-xs text-gray-400 mt-1">2 ngày trước</span>
+					</div>
+				</article>
+			</div>
+		</section>
+
+		<section
+			class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12 mb-8">
+			<div
+				class="bg-gray-900 rounded-2xl md:rounded-[2rem] p-8 md:p-12 lg:p-16 text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+				<div
+					class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+				<div
+					class="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
+				<div class="relative z-10 max-w-xl">
+					<h3 class="text-3xl font-bold text-white mb-2">Đăng ký nhận
+						deal hot</h3>
+					<p class="text-gray-400">Nhận thông báo về các chương trình
+						khuyến mãi, mã giảm giá độc quyền.</p>
+				</div>
+				<div class="relative z-10 w-full md:w-auto flex-1 max-w-md">
+					<div class="flex flex-col sm:flex-row gap-3">
+						<input
+							class="w-full px-5 py-3.5 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+							placeholder="Nhập email của bạn" type="email" />
+						<button
+							class="px-8 py-3.5 bg-primary hover:bg-primary-hover text-white font-bold rounded-xl whitespace-nowrap shadow-lg shadow-primary/30 transition-all">
+							Đăng ký ngay</button>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</main>
+</body>
+</html>

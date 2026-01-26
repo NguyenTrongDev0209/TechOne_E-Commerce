@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ChangePasswordController {
-	@GetMapping("/client/change_password")
+	@GetMapping("/account/change-password")
 	public String changePassword() {
-		return "client/change_password";
+		return "fragments/client/change-password";
 	}
 }

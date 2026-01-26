@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ProductDetailController {
-	@GetMapping("/client/product_detail")
-	public String productDetail() {
-		return "client/product_detail";
+	
+	@GetMapping("/product/product-detail")
+	public String showProductDetail() {
+		return "fragments/client/product-detail";
 	}
 }

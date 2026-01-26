@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class PostDetailController {
-	@GetMapping("/client/post_detail")
-	public String postDetail() {
-		return "client/post_detail";
+	
+	@GetMapping("/posts/post-detail")
+	public String showPostDetail() {
+		return "fragments/client/post-detail";
 	}
 }

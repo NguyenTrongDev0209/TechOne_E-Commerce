@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-client :: view(title='Chương trình khuyến mãi', content=~{:: #promotion-content})}">
+<body>
+
+    <div id="promotion-content" class="w-full bg-background-light dark:bg-background-dark min-h-screen">
+        
+        <div class="relative w-full overflow-hidden bg-gray-900 dark:bg-[#0f172a]">
+            <div class="absolute inset-0 bg-cover bg-center opacity-40" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2000');"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent dark:from-[#0f172a]"></div>
+            
+            <div class="relative z-10 px-4 md:px-10 py-16 md:py-24 flex flex-col items-center justify-center text-center max-w-5xl mx-auto gap-8">
+                <div class="flex flex-col gap-4">
+                    <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full bg-primary/20 text-primary border border-primary/30 mx-auto w-fit backdrop-blur-sm">
+                        <span class="material-symbols-outlined text-sm font-bold">local_fire_department</span>
+                        <span class="text-xs font-bold uppercase tracking-wider">Hot Deal Trong Ngày</span>
+                    </div>
+                    <h1 class="text-white text-4xl md:text-6xl font-black leading-tight tracking-tight drop-shadow-xl">
+                        FLASH SALE KHỦNG<br/><span class="text-primary">GIẢM ĐẾN 50%</span>
+                    </h1>
+                    <p class="text-gray-300 text-base md:text-lg max-w-2xl mx-auto">
+                        Cơ hội sở hữu các siêu phẩm công nghệ với mức giá không tưởng. Số lượng có hạn, săn ngay kẻo lỡ!
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-3 md:gap-6 py-4">
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                            <p class="text-white text-2xl md:text-3xl font-bold font-mono">00</p>
+                        </div>
+                        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Ngày</p>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                            <p class="text-white text-2xl md:text-3xl font-bold font-mono">12</p>
+                        </div>
+                        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Giờ</p>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                            <p class="text-primary text-2xl md:text-3xl font-bold font-mono">45</p>
+                        </div>
+                        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Phút</p>
+                    </div>
+                    <div class="flex flex-col items-center gap-2">
+                        <div class="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-lg">
+                            <p class="text-primary text-2xl md:text-3xl font-bold font-mono">30</p>
+                        </div>
+                        <p class="text-gray-400 text-xs font-medium uppercase tracking-wider">Giây</p>
+                    </div>
+                </div>
+
+                <button class="flex min-w-[160px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 md:h-14 px-8 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-red-600 hover:scale-105 transition-all shadow-lg shadow-primary/40">
+                    Săn Deal Ngay
+                </button>
+            </div>
+        </div>
+
+        <div class="sticky top-[65px] z-40 bg-white/95 dark:bg-[#1e293b]/95 backdrop-blur-sm border-b border-gray-100 dark:border-gray-700 py-4">
+            <div class="flex justify-center px-4">
+                <div class="flex h-12 w-full max-w-md items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 p-1">
+                    <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1e293b] has-[:checked]:shadow-sm has-[:checked]:text-primary text-gray-500 dark:text-gray-400 text-sm font-bold transition-all">
+                        <span class="truncate">Đang diễn ra</span>
+                        <input checked="" class="invisible w-0 absolute" name="status" type="radio" value="active"/>
+                    </label>
+                    <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1e293b] has-[:checked]:shadow-sm has-[:checked]:text-primary text-gray-500 dark:text-gray-400 text-sm font-bold transition-all">
+                        <span class="truncate">Sắp tới</span>
+                        <input class="invisible w-0 absolute" name="status" type="radio" value="upcoming"/>
+                    </label>
+                    <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-[#1e293b] has-[:checked]:shadow-sm has-[:checked]:text-primary text-gray-500 dark:text-gray-400 text-sm font-bold transition-all">
+                        <span class="truncate">Đã kết thúc</span>
+                        <input class="invisible w-0 absolute" name="status" type="radio" value="ended"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 md:px-10 lg:px-40 py-8 flex flex-col gap-12 max-w-[1440px] mx-auto w-full">
+            
+            <section>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-[#1c100d] dark:text-white text-2xl font-bold leading-tight">Chương Trình Nổi Bật</h2>
+                    <a class="text-primary font-medium text-sm hover:underline flex items-center gap-1" href="#">
+                        Xem tất cả <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="group relative overflow-hidden rounded-2xl h-[300px] md:h-[360px] cursor-pointer">
+                        <img alt="Gaming Laptop" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=800"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
+                            <div class="bg-primary text-white text-xs font-bold px-2 py-1 rounded w-fit mb-3">GAMING GEAR</div>
+                            <h3 class="text-white text-2xl md:text-3xl font-bold mb-2">Lễ Hội Laptop Gaming</h3>
+                            <p class="text-gray-200 text-sm md:text-base mb-4 line-clamp-2">Giảm nóng tới 5.000.000đ cho các dòng máy MSI, ASUS, Acer. Tặng kèm chuột gaming.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white/80 text-sm font-mono flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">calendar_month</span> Đến 30/11
+                                </span>
+                                <button class="h-10 px-5 rounded-lg bg-white text-[#1c100d] font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                                    Xem Ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-2xl h-[300px] md:h-[360px] cursor-pointer">
+                        <img alt="Apple Setup" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1531297420494-85689e8e5305?auto=format&fit=crop&q=80&w=800"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 w-full">
+                            <div class="bg-white text-[#1c100d] text-xs font-bold px-2 py-1 rounded w-fit mb-3">APPLE AUTHORIZED</div>
+                            <h3 class="text-white text-2xl md:text-3xl font-bold mb-2">Tuần Lễ Táo Khuyết</h3>
+                            <p class="text-gray-200 text-sm md:text-base mb-4 line-clamp-2">Ưu đãi đặc quyền cho iPhone 15 Series và MacBook M3. Trả góp 0% lãi suất.</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white/80 text-sm font-mono flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-sm">calendar_month</span> Đến 25/11
+                                </span>
+                                <button class="h-10 px-5 rounded-lg bg-white text-[#1c100d] font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors">
+                                    Xem Ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-2">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="material-symbols-outlined text-primary">bolt</span>
+                            <span class="text-primary font-bold text-sm uppercase tracking-wider">Flash Sale</span>
+                        </div>
+                        <h2 class="text-[#1c100d] dark:text-white text-2xl font-bold leading-tight">Sản Phẩm Giảm Sâu</h2>
+                    </div>
+                    <div class="flex items-center gap-2 bg-[#1c100d] dark:bg-white/10 text-white px-4 py-2 rounded-lg">
+                        <span class="text-xs font-medium opacity-80">Kết thúc trong:</span>
+                        <div class="font-mono font-bold text-primary text-lg">02:45:10</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    
+                    <div class="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="relative aspect-square rounded-xl bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                            <img alt="iPhone 15 Pro Max" class="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=400"/>
+                            <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">-15%</div>
+                            <div class="absolute top-2 left-2 bg-green-600 text-white text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider">Có sẵn</div>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-1">
+                            <h3 class="font-semibold text-[#1c100d] dark:text-white truncate">iPhone 15 Pro Max 256GB</h3>
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                <span class="text-primary font-bold text-lg">29.990.000đ</span>
+                                <span class="text-gray-400 text-sm line-through decoration-1">34.990.000đ</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-2 overflow-hidden">
+                                <div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Đã bán 85%</p>
+                        </div>
+                        <button class="w-full h-10 mt-auto rounded-lg bg-gray-100 dark:bg-gray-700 text-[#1c100d] dark:text-white font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Thêm vào giỏ
+                        </button>
+                    </div>
+
+                    <div class="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="relative aspect-square rounded-xl bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                            <img alt="Sony WH-1000XM5" class="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"/>
+                            <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">-25%</div>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-1">
+                            <h3 class="font-semibold text-[#1c100d] dark:text-white truncate">Sony WH-1000XM5</h3>
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                <span class="text-primary font-bold text-lg">6.490.000đ</span>
+                                <span class="text-gray-400 text-sm line-through decoration-1">8.990.000đ</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-2 overflow-hidden">
+                                <div class="bg-primary h-1.5 rounded-full" style="width: 45%"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Đã bán 45%</p>
+                        </div>
+                        <button class="w-full h-10 mt-auto rounded-lg bg-gray-100 dark:bg-gray-700 text-[#1c100d] dark:text-white font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Thêm vào giỏ
+                        </button>
+                    </div>
+
+                    <div class="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="relative aspect-square rounded-xl bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                            <img alt="Keychron K2" class="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=400"/>
+                            <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">-40%</div>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-1">
+                            <h3 class="font-semibold text-[#1c100d] dark:text-white truncate">Keychron K2 Pro</h3>
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                <span class="text-primary font-bold text-lg">1.990.000đ</span>
+                                <span class="text-gray-400 text-sm line-through decoration-1">3.290.000đ</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-2 overflow-hidden">
+                                <div class="bg-primary h-1.5 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Sắp hết hàng</p>
+                        </div>
+                        <button class="w-full h-10 mt-auto rounded-lg bg-gray-100 dark:bg-gray-700 text-[#1c100d] dark:text-white font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Thêm vào giỏ
+                        </button>
+                    </div>
+
+                    <div class="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 p-4 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="relative aspect-square rounded-xl bg-gray-50 dark:bg-gray-800 overflow-hidden">
+                            <img alt="PS5 Controller" class="h-full w-full object-contain p-4 group-hover:scale-105 transition-transform duration-300" src="https://images.unsplash.com/photo-1606318801954-d46d46d3360a?auto=format&fit=crop&q=80&w=400"/>
+                            <div class="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">-10%</div>
+                        </div>
+                        <div class="flex flex-col flex-1 gap-1">
+                            <h3 class="font-semibold text-[#1c100d] dark:text-white truncate">Tay cầm PS5 DualSense</h3>
+                            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0">
+                                <span class="text-primary font-bold text-lg">1.490.000đ</span>
+                                <span class="text-gray-400 text-sm line-through decoration-1">1.690.000đ</span>
+                            </div>
+                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 mt-2 overflow-hidden">
+                                <div class="bg-primary h-1.5 rounded-full" style="width: 20%"></div>
+                            </div>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Đã bán 20%</p>
+                        </div>
+                        <button class="w-full h-10 mt-auto rounded-lg bg-gray-100 dark:bg-gray-700 text-[#1c100d] dark:text-white font-bold text-sm group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span> Thêm vào giỏ
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center">
+                    <button class="flex items-center gap-2 px-6 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-[#1c100d] dark:text-white font-bold text-sm hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        Xem thêm 124 sản phẩm khác
+                        <span class="material-symbols-outlined text-lg">expand_more</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <section class="bg-gray-50 dark:bg-[#1e293b] border-y border-gray-100 dark:border-gray-700 py-16 px-4 md:px-10">
+            <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
+                <div class="flex justify-center text-primary mb-2">
+                    <span class="material-symbols-outlined !text-[48px]">mail_outline</span>
+                </div>
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-black text-[#1c100d] dark:text-white mb-3">Đừng Bỏ Lỡ Deal Ngon!</h2>
+                    <p class="text-gray-500 dark:text-gray-400">Đăng ký nhận thông báo để là người đầu tiên biết về Flash Sale và mã giảm giá độc quyền.</p>
+                </div>
+                <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto w-full">
+                    <input class="flex-1 rounded-xl border-none py-3 px-5 focus:ring-2 focus:ring-primary/20 text-[#1c100d] dark:bg-gray-800 dark:text-white" placeholder="Nhập email của bạn..." required="" type="email"/>
+                    <button class="bg-primary text-white font-bold py-3 px-8 rounded-xl hover:bg-red-600 transition-colors whitespace-nowrap" type="submit">Đăng ký ngay</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>
