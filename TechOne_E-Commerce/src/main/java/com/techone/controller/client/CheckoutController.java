@@ -8,7 +8,7 @@ public class CheckoutController {
 	
 	@GetMapping("/checkout")
 	public String showCheckout() {
-		return "fragments/client/checkout";
+		return "views/client/checkout";
 	}
 	
 }

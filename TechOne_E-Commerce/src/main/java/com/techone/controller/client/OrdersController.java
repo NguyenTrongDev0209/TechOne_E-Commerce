@@ -8,6 +8,6 @@ public class OrdersController {
 	
 	@GetMapping("/account/orders")
 	public String showOders() {
-		return "fragments/client/orders";
+		return "views/client/orders";
 	}
 }

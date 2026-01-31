@@ -8,7 +8,7 @@ public class AccountController {
 	
 	@GetMapping("/account")
 	public String showAccount() {
-		return "fragments/client/account";
+		return "views/client/account";
 	}
 	
 }

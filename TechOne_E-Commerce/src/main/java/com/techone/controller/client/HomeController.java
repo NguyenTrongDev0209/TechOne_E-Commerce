@@ -8,7 +8,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public String showHome() {
-		return "fragments/client/home";
+		return "views/client/home";
 	}
 	
 }

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-account :: view(title='Kho Voucher', activeTab='vouchers', accountContent=~{:: #voucher-content})}">
+
+<body>
+
+    <div id="voucher-content">
+
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-[#1c100d] dark:text-white">Kho Voucher</h1>
+            <p class="text-sm text-gray-500">Quản lý các mã giảm giá của bạn</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Voucher Item 1 -->
+            <div
+                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm flex gap-4 relative overflow-hidden group">
+                <!-- Left Side (Icon/Amount) -->
+                <div
+                    class="w-24 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex flex-col items-center justify-center p-2 border border-orange-100 dark:border-orange-800/30 flex-shrink-0">
+                    <span class="material-symbols-outlined text-orange-500 text-3xl mb-1">confirmation_number</span>
+                    <span class="font-bold text-orange-600 dark:text-orange-400 text-lg">15%</span>
+                    <span class="text-[10px] text-orange-500 uppercase font-bold">Giảm tối đa</span>
+                </div>
+
+                <!-- Right Side (Info) -->
+                <div class="flex-1 flex flex-col justify-between py-1">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-[#1c100d] dark:text-white">Giảm 15% đơn từ 500k</h3>
+                            <button class="text-primary text-xs font-bold hover:underline">Điều kiện</button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">Áp dụng cho các sản phẩm công nghệ (Laptop,
+                            Điện thoại) trong tháng 5.</p>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <div class="text-xs text-gray-500">
+                            HSD: <span class="text-red-500 font-medium">31/05/2024</span>
+                        </div>
+                        <button
+                            class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
+                            ngay</button>
+                    </div>
+                </div>
+
+                <!-- Decorative Circles -->
+                <div
+                    class="absolute -left-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
+                </div>
+                <div
+                    class="absolute -right-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
+                </div>
+            </div>
+
+            <!-- Voucher Item 2 -->
+            <div
+                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm flex gap-4 relative overflow-hidden group">
+                <div
+                    class="w-24 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex flex-col items-center justify-center p-2 border border-blue-100 dark:border-blue-800/30 flex-shrink-0">
+                    <span class="material-symbols-outlined text-blue-500 text-3xl mb-1">local_shipping</span>
+                    <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">Free</span>
+                    <span class="text-[10px] text-blue-500 uppercase font-bold">Vận chuyển</span>
+                </div>
+
+                <div class="flex-1 flex flex-col justify-between py-1">
+                    <div>
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-[#1c100d] dark:text-white">Miễn phí vận chuyển</h3>
+                            <button class="text-primary text-xs font-bold hover:underline">Điều kiện</button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">Áp dụng cho đơn hàng từ 200k. Tối đa 30k.</p>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-3">
+                        <div class="text-xs text-gray-500">
+                            HSD: <span class="text-red-500 font-medium">15/06/2024</span>
+                        </div>
+                        <button
+                            class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
+                            ngay</button>
+                    </div>
+                </div>
+
+                <div
+                    class="absolute -left-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
+                </div>
+                <div
+                    class="absolute -right-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

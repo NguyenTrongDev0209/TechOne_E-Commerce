@@ -8,6 +8,6 @@ public class ProfileController {
 	
 	@GetMapping("/account/profile")
 	public String showProfile() {
-		return "/fragments/client/profile";
+		return "/views/client/profile";
 	}
 }

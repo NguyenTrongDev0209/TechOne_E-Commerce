@@ -8,6 +8,6 @@ public class OrderSuccessController {
 	
 	@GetMapping("/checkout/order-success")
 	public String showSuccessOrder() {
-		return "fragments/client//order-success";
+		return "views/client//order-success";
 	}
 }

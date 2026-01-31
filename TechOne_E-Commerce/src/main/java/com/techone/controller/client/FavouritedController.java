@@ -8,6 +8,6 @@ public class FavouritedController {
 	
 	@GetMapping("/account/favourited")
 	public String showFavourited() {
-		return "fragments/client/favourited";
+		return "views/client/favourited";
 	}
 }

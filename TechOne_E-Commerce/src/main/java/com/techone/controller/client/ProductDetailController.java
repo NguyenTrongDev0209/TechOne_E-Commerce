@@ -8,6 +8,6 @@ public class ProductDetailController {
 	
 	@GetMapping("/product/product-detail")
 	public String showProductDetail() {
-		return "fragments/client/product-detail";
+		return "views/client/product-detail";
 	}
 }
