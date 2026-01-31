@@ -174,21 +174,6 @@
                                 class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary"
                                 placeholder="Nhập số điện thoại" type="tel" />
                         </div>
-                        <div class="col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Địa chỉ cụ
-                                thể</label>
-                            <input
-                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary"
-                                placeholder="Số nhà, tên đường, tòa nhà..." type="text" />
-                        </div>
-                        <div class="col-span-1">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phường /
-                                Xã</label>
-                            <select
-                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary">
-                                <option value="">Chọn Phường / Xã</option>
-                            </select>
-                        </div>
                         <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tỉnh / Thành
                                 phố</label>
@@ -200,9 +185,25 @@
                             </select>
                         </div>
                         <div class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quận /
+                                Huyện</label>
+                            <select
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary">
+                                <option value="">Chọn Quận / Huyện</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phường /
+                                Xã</label>
+                            <select
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary">
+                                <option value="">Chọn Phường / Xã</option>
+                            </select>
+                        </div>
+                        <div class="col-span-1">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Loại địa
                                 chỉ</label>
-                            <div class="flex gap-4">
+                            <div class="flex gap-4 h-[42px] items-center">
                                 <label class="flex items-center gap-2 cursor-pointer">
                                     <input class="text-primary focus:ring-primary" name="addressType" type="radio"
                                         value="home" />
@@ -214,6 +215,13 @@
                                     <span class="text-gray-700 dark:text-gray-300">Văn phòng</span>
                                 </label>
                             </div>
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Địa chỉ cụ
+                                thể</label>
+                            <input
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary"
+                                placeholder="Số nhà, tên đường, tòa nhà..." type="text" />
                         </div>
                         <div class="col-span-2">
                             <label class="flex items-center gap-3 cursor-pointer">

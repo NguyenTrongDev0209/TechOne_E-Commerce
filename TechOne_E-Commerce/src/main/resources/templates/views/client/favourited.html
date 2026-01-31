@@ -15,21 +15,76 @@
         </div>
 
         <div
-            class="flex flex-wrap justify-between items-center gap-4 mb-6 bg-white dark:bg-[#1e293b] p-4 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
-            <div class="flex items-center gap-2">
-                <span class="text-sm text-gray-500 dark:text-gray-400">Sắp xếp theo:</span>
-                <select
-                    class="border-none bg-transparent text-sm font-medium text-[#1c100d] dark:text-white focus:ring-0 cursor-pointer pr-8">
-                    <option>Mới nhất</option>
-                    <option>Giá tăng dần</option>
-                    <option>Giá giảm dần</option>
-                    <option>Tên A-Z</option>
-                </select>
+            class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-gray-400">search</span>
+                    </div>
+                    <input
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm"
+                        placeholder="Tìm kiếm sản phẩm yêu thích..." type="text" />
+                </div>
+                <div class="w-full md:w-48">
+                    <div class="relative">
+                        <!-- Custom Sort Dropdown -->
+                        <div class="relative">
+                            <input type="hidden" name="sort" id="sortInput" value="newest">
+
+                            <button id="sortFilterBtn" onclick="toggleSortDropdown()"
+                                class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+                                <span id="sortFilterLabel">Mới nhất</span>
+                                <span id="sortDropdownIcon"
+                                    class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
+                            </button>
+
+                            <div id="sortDropdown"
+                                class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+                                <div class="p-1.5 space-y-0.5">
+                                    <div onclick="selectSort('newest', 'Mới nhất')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Mới nhất</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectSort('price_asc', 'Giá tăng dần')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Giá tăng dần</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectSort('price_desc', 'Giá giảm dần')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Giá giảm dần</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectSort('name_asc', 'Tên A-Z')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Tên A-Z</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="w-full md:w-48">
+                    <div class="relative">
+                        <div class="relative">
+                            <input id="dateFilter"
+                                class="block w-full pl-3 pr-2 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer text-gray-700 dark:text-gray-200 shadow-sm"
+                                placeholder="Chọn ngày" type="text" readonly="readonly" />
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                                <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1">
-                <span class="material-symbols-outlined text-[18px]">delete</span>
-                Xóa tất cả
-            </button>
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
@@ -242,6 +297,140 @@
             </nav>
         </div>
 
+        <script>
+            function toggleSortDropdown() {
+                const dropdown = document.getElementById('sortDropdown');
+                const icon = document.getElementById('sortDropdownIcon');
+                dropdown.classList.toggle('hidden');
+                if (dropdown.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+
+            function selectSort(value, label) {
+                document.getElementById('sortInput').value = value;
+                document.getElementById('sortFilterLabel').textContent = label;
+                document.getElementById('sortDropdown').classList.add('hidden');
+                document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
+                console.log('Selected sort:', value);
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdown = document.getElementById('sortDropdown');
+                const button = document.getElementById('sortFilterBtn');
+                const icon = document.getElementById('sortDropdownIcon');
+
+                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                    if (!dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+        </script>
+
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+        <!-- Flatpickr CSS with custom overrides -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+        <style>
+            .flatpickr-calendar {
+                font-family: 'Inter', sans-serif !important;
+                border-radius: 12px !important;
+                margin-top: 8px !important;
+                /* Gap requested by user */
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            .dark .flatpickr-calendar {
+                background: #1e293b !important;
+                border: 1px solid #334155 !important;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+            }
+
+            .flatpickr-day.selected,
+            .flatpickr-day.startRange,
+            .flatpickr-day.endRange,
+            .flatpickr-day.selected.inRange,
+            .flatpickr-day.startRange.inRange,
+            .flatpickr-day.endRange.inRange,
+            .flatpickr-day.selected:focus,
+            .flatpickr-day.startRange:focus,
+            .flatpickr-day.endRange:focus,
+            .flatpickr-day.selected:hover,
+            .flatpickr-day.startRange:hover,
+            .flatpickr-day.endRange:hover,
+            .flatpickr-day.selected.prevMonthDay,
+            .flatpickr-day.startRange.prevMonthDay,
+            .flatpickr-day.endRange.prevMonthDay,
+            .flatpickr-day.selected.nextMonthDay,
+            .flatpickr-day.startRange.nextMonthDay,
+            .flatpickr-day.endRange.nextMonthDay {
+                background: #ea580c !important;
+                border-color: #ea580c !important;
+            }
+
+            .flatpickr-day.todays-date {
+                color: #ea580c !important;
+                border-color: #ea580c !important;
+            }
+
+            /* Custom Header Styling */
+            .flatpickr-current-month {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 75% !important;
+                /* Ensure it fits between arrows */
+                left: 12.5% !important;
+                padding: 0 !important;
+            }
+
+            .flatpickr-monthDropdown-months {
+                text-align: left !important;
+                width: auto !important;
+                font-size: 14px !important;
+                /* Make it smaller */
+                margin-left: 0 !important;
+            }
+
+            .numInputWrapper {
+                width: auto !important;
+                margin-right: 0 !important;
+            }
+
+            .flatpickr-current-month input.cur-year {
+                font-size: 14px !important;
+                /* Make year smaller */
+                text-align: right !important;
+                padding: 0 !important;
+            }
+
+            .flatpickr-current-month .numInputWrapper span.arrowUp {
+                display: none;
+                /* Optional: cleaner look */
+            }
+
+            .flatpickr-current-month .numInputWrapper span.arrowDown {
+                display: none;
+                /* Optional: cleaner look */
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#dateFilter", {
+                    locale: "vn",
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
+                    disableMobile: "true",
+                });
+            });
+        </script>
     </div>
 </body>
 
