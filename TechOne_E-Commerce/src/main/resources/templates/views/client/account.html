@@ -59,7 +59,7 @@
             <div
                 class="rounded-t-xl px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
                 <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Đơn hàng gần đây</h3>
-                <a class="text-primary text-sm font-medium hover:underline" href="#">Xem tất cả</a>
+                <a class="text-primary text-sm font-medium hover:underline" th:href="@{/account/orders}">Xem tất cả</a>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left">
@@ -223,37 +223,105 @@
             <div>
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Sản phẩm yêu thích</h3>
-                    <a class="text-primary text-sm font-medium hover:underline" href="#">Xem tất cả</a>
+                    <a class="text-primary text-sm font-medium hover:underline" th:href="@{/account/favourited}">Xem tất
+                        cả</a>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div
-                        class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-3 shadow-sm group relative">
-                        <div class="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-                            <img alt="Dell XPS 13 Plus"
-                                class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                                src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400" />
-                            <button
-                                class="absolute top-2 right-2 size-8 bg-white/90 rounded-full flex items-center justify-center text-red-500 shadow-sm hover:bg-white">
-                                <span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+                    <!-- Product Card 1 -->
+                    <a href="#"
+                        class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
+                        <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                            <span
+                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-10%</span>
+                            <button onclick="event.preventDefault()"
+                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:scale-110 transition-all group/fav">
+                                <span class="material-symbols-outlined text-[20px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">favorite</span>
                             </button>
+                            <img src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400"
+                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                                alt="Dell XPS 13 Plus" />
                         </div>
-                        <h4 class="font-medium text-sm text-[#1c100d] dark:text-white truncate">Dell XPS 13 Plus</h4>
-                        <p class="text-primary font-bold text-sm mt-1">35.990.000đ</p>
-                    </div>
-                    <div
-                        class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-3 shadow-sm group relative">
-                        <div class="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden mb-3">
-                            <img alt="Sony Headphones"
-                                class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                                src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400" />
-                            <button
-                                class="absolute top-2 right-2 size-8 bg-white/90 rounded-full flex items-center justify-center text-red-500 shadow-sm hover:bg-white">
-                                <span class="material-symbols-outlined text-[20px] fill-current">favorite</span>
+                        <div class="p-3 flex flex-col gap-2">
+                            <span
+                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">DELL</span>
+                            <h4
+                                class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
+                                Dell XPS 13 Plus 9320 i7 16GB 512GB
+                            </h4>
+                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="text-gray-400 dark:text-gray-500 ml-1">(45)</span>
+                            </div>
+                            <div class="flex items-end justify-between mt-1">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-400 text-xs line-through font-medium">39.990.000đ</span>
+                                    <span class="text-accent font-bold">35.990.000đ</span>
+                                </div>
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
+                                    <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Product Card 2 -->
+                    <a href="#"
+                        class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
+                        <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                            <span
+                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
+                            <button onclick="event.preventDefault()"
+                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:scale-110 transition-all group/fav">
+                                <span class="material-symbols-outlined text-[20px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">favorite</span>
                             </button>
+                            <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"
+                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                                alt="Sony Headphones" />
                         </div>
-                        <h4 class="font-medium text-sm text-[#1c100d] dark:text-white truncate">Sony WH-1000XM4</h4>
-                        <p class="text-primary font-bold text-sm mt-1">6.190.000đ</p>
-                    </div>
+                        <div class="p-3 flex flex-col gap-2">
+                            <span
+                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">SONY</span>
+                            <h4
+                                class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
+                                Tai nghe Chống ồn Sony WH-1000XM4
+                            </h4>
+                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star</span>
+                                <span class="material-symbols-outlined text-[14px] fill-current"
+                                    style="font-variation-settings: 'FILL' 1">star_half</span>
+                                <span class="text-gray-400 dark:text-gray-500 ml-1">(120)</span>
+                            </div>
+                            <div class="flex items-end justify-between mt-1">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-400 text-xs line-through font-medium">8.490.000đ</span>
+                                    <span class="text-accent font-bold">6.190.000đ</span>
+                                </div>
+                                <button
+                                    class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
+                                    <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                </button>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
 

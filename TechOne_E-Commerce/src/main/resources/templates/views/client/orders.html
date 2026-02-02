@@ -116,14 +116,12 @@
                                 class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
                                 <img alt="Dell XPS" class="w-full h-full object-cover"
                                     src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=200" />
-                                <div
-                                    class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">
-                                    x1</div>
                             </div>
-                            <div class="flex flex-col justify-center">
-                                <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Dell XPS 13
+                            <div class="flex flex-col justify-start">
+                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Dell
+                                    XPS 13
                                     Plus - Core i7/16GB/512GB</h4>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Phân loại: Bạc kim</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Phân loại: Bạc kim</p>
                             </div>
                         </div>
                         <div
@@ -171,18 +169,21 @@
                                     class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
                                     <img alt="Sony Headphones" class="w-full h-full object-cover"
                                         src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=200" />
-                                    <div
-                                        class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">
-                                        x1</div>
                                 </div>
-                                <div class="flex flex-col justify-center">
-                                    <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Sony
+                                <div class="flex flex-col justify-start">
+                                    <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">
+                                        Sony
                                         WH-1000XM5 Wireless Noise Cancelling</h4>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">Màu: Đen</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Đen</p>
                                 </div>
                             </div>
-                            <div class="hidden md:flex gap-4 items-center pl-24">
-                                <span class="text-xs text-gray-500 italic">+ 2 sản phẩm khác</span>
+                            <div class="md:flex gap-4 items-center pl-24">
+                                <button onclick="toggleOrderItems('order-items-8854', this)"
+                                    class="flex items-center gap-1 text-xs font-medium text-primary hover:text-orange-700 transition-colors focus:outline-none select-none">
+                                    <span>Xem thêm 2 sản phẩm</span>
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-300">expand_more</span>
+                                </button>
                             </div>
                         </div>
                         <div
@@ -200,6 +201,57 @@
                                 </a>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Hidden Items -->
+                    <div id="order-items-8854"
+                        class="hidden mt-6 pt-6 border-t border-dashed border-gray-200 dark:border-gray-700 flex flex-col gap-4 animate-fade-in">
+
+                        <!-- Extra Item 1 -->
+                        <!-- Extra Item 1 -->
+                        <div class="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-start">
+                            <div
+                                class="relative size-16 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                <img alt="Logitech Mouse" class="w-full h-full object-cover"
+                                    src="https://images.unsplash.com/photo-1615663245857-acda57730a57?auto=format&fit=crop&q=80&w=200" />
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-0.5 line-clamp-1">
+                                    Chuột
+                                    Logitech MX Master 3S</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Xám nhạt</p>
+                            </div>
+                            <div class="text-right mr-12 self-center">
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">SL
+                                    : 1</span>
+                            </div>
+                            <div
+                                class="text-base font-bold text-[#1c100d] dark:text-white text-right whitespace-nowrap self-center">
+                                2.690.000đ</div>
+                        </div>
+
+                        <!-- Extra Item 2 -->
+                        <!-- Extra Item 2 -->
+                        <div class="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-start">
+                            <div
+                                class="relative size-16 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
+                                <img alt="Mechanical Keyboard" class="w-full h-full object-cover"
+                                    src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=200" />
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-0.5 line-clamp-1">Bàn
+                                    phím cơ Keychron K2 Pro</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Switch: Brown</p>
+                            </div>
+                            <div class="text-right mr-12 self-center">
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">SL
+                                    : 1</span>
+                            </div>
+                            <div
+                                class="text-base font-bold text-[#1c100d] dark:text-white text-right whitespace-nowrap self-center">
+                                2.850.000đ</div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -229,9 +281,6 @@
                                 class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0 grayscale">
                                 <img alt="MacBook Air" class="w-full h-full object-cover"
                                     src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=200" />
-                                <div
-                                    class="absolute bottom-0 right-0 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded-tl-md">
-                                    x1</div>
                             </div>
                             <div class="flex flex-col justify-center">
                                 <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">MacBook Air
@@ -297,6 +346,33 @@
         </div>
 
         <script>
+            function toggleOrderItems(elementId, btn) {
+                const container = document.getElementById(elementId);
+                const icon = btn.querySelector('.material-symbols-outlined');
+                const textSpan = btn.querySelector('span:first-child');
+
+                // Toggle visibility
+                container.classList.toggle('hidden');
+
+                // Update UI based on state
+                if (container.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                    // Restore original text or keep it conditional? 
+                    // Let's assume the text format is "Xem thêm X sản phẩm" vs "Thu gọn"
+                    // Since text is dynamic, maybe we should just simpler text like "Xem thêm" / "Thu gọn"?
+                    // Or retrieve count from data attribute?
+                    // For now, let's just toggle back to default text if we knew what it was, 
+                    // but simple way is just flip text.
+                    // However, hardcoding text inside JS might lose the number "2".
+                    // Better approach: Check current text content.
+
+                    textSpan.textContent = 'Xem thêm 2 sản phẩm';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                    textSpan.textContent = 'Thu gọn';
+                }
+            }
+
             function toggleStatusDropdown() {
                 const dropdown = document.getElementById('statusDropdown');
                 const icon = document.getElementById('statusDropdownIcon');
@@ -343,6 +419,22 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
         <style>
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-fade-in {
+                animation: fadeIn 0.3s ease-out forwards;
+            }
+
             .flatpickr-calendar {
                 font-family: 'Inter', sans-serif !important;
                 border-radius: 12px !important;
