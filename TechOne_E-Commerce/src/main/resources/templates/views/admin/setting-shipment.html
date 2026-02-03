@@ -1,333 +1,291 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/layout-admin :: view(title='Cấu Hình Vận Chuyển TechShop', menuItem='settings', content=~{:: #main-content})}">
+<html
+	th:replace="~{layouts/layout-admin :: view(title='Cấu Hình Vận Chuyển TechShop', menuItem='settings', content=~{:: #main-content}, subMenuItem='shipment')}">
+
 <body>
-    <div id="main-content">
-        <div class="max-w-7xl mx-auto">
-				<div
-					class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-					<div>
-						<h1
-							class="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight mb-1">Cấu
-							hình Vận chuyển</h1>
-						<p class="text-slate-500 font-body">Thiết lập đơn vị vận
-							chuyển, phí ship và khu vực giao hàng.</p>
-					</div>
-				</div>
-				<div class="flex flex-col lg:flex-row gap-8 items-start">
-					<div class="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-4 z-0">
-						<div
-							class="bg-white rounded-2xl shadow-soft border border-slate-100 p-2">
-							<nav class="space-y-1">
-								<a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-colors"
-									href="/admin/setting"> <span
-									class="material-symbols-outlined text-[20px]">tune</span> Cấu
-									hình chung
-								</a> <!-- <a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
-									href="#seo"> <span
-									class="material-symbols-outlined text-[20px]">search</span> Cấu
-									hình SEO
-								</a> --> <a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
-									href="/admin/setting/setting-payment"> <span
-									class="material-symbols-outlined text-[20px]">payments</span>
-									Cấu hình thanh toán
-								</a> <a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
-									href="/admin/setting/setting-shipment"> <span
-									class="material-symbols-outlined text-[20px]">local_shipping</span>
-									Cấu hình vận chuyển
-								</a> <a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
-									href="#email-sms"> <span
-									class="material-symbols-outlined text-[20px]">mail</span> Email
-									&amp; SMS
-								</a> <a
-									class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors"
-									href="#social"> <span
-									class="material-symbols-outlined text-[20px]">share</span> Mạng
-									xã hội
-								</a>
-							</nav>
-						</div>
-						<div
-							class="mt-6 bg-blue-50 p-4 rounded-2xl border border-blue-100">
-							<div class="flex items-start gap-3">
-								<span class="material-symbols-outlined text-blue-600 mt-0.5">info</span>
-								<div>
-									<h4 class="text-sm font-bold text-blue-900 mb-1">Cập nhật
-										API</h4>
-									<p class="text-xs text-blue-700">API Viettel Post đã được
-										cập nhật v2.0 ngày 25/12/2025.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="flex-1 space-y-8 w-full min-w-0">
-						
-						<div
-							class="bg-white rounded-2xl shadow-soft border border-slate-100 overflow-hidden scroll-mt-24"
-							id="shipping">
-							<div
-								class="px-6 py-5 border-b border-slate-50 bg-slate-50/50 flex items-center justify-between">
-								<h3
-									class="text-lg font-bold text-slate-900 flex items-center gap-2">
-									<span class="material-symbols-outlined text-primary">local_shipping</span>
-									Cấu hình vận chuyển
-								</h3>
-								<div class="flex gap-2">
-									<span
-										class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg flex items-center gap-1">
-										<span class="w-2 h-2 bg-green-500 rounded-full"></span> Active
-									</span>
-								</div>
-							</div>
-							<div class="p-6 space-y-8">
-								<div class="space-y-4">
-									<h4
-										class="text-base font-bold text-slate-800 border-l-4 border-primary pl-3">Đơn
-										vị vận chuyển</h4>
-									<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-										<div
-											class="p-4 border border-slate-200 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors bg-slate-50/50">
-											<div class="flex items-center gap-3">
-												<div
-													class="w-10 h-10 bg-white rounded-lg border border-slate-100 flex items-center justify-center shadow-sm text-orange-600">
-													<span class="material-symbols-outlined">rocket_launch</span>
-												</div>
-												<div>
-													<p class="font-bold text-slate-800">Giao Hàng Nhanh
-														(GHN)</p>
-													<p class="text-xs text-slate-500">API v2.0 Connected</p>
-												</div>
-											</div>
-											<label
-												class="relative inline-flex items-center cursor-pointer">
-												<input checked="" class="sr-only peer" type="checkbox"
-												value="" />
-												<div
-													class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-											</label>
-										</div>
-										<div
-											class="p-4 border border-slate-200 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors bg-slate-50/50">
-											<div class="flex items-center gap-3">
-												<div
-													class="w-10 h-10 bg-white rounded-lg border border-slate-100 flex items-center justify-center shadow-sm text-red-600">
-													<span class="material-symbols-outlined">local_post_office</span>
-												</div>
-												<div>
-													<p class="font-bold text-slate-800">Viettel Post</p>
-													<p class="text-xs text-slate-500">Standard Service</p>
-												</div>
-											</div>
-											<label
-												class="relative inline-flex items-center cursor-pointer">
-												<input checked="" class="sr-only peer" type="checkbox"
-												value="" />
-												<div
-													class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-											</label>
-										</div>
-										<div
-											class="p-4 border border-slate-200 border-dashed rounded-xl flex items-center justify-center gap-2 text-slate-500 hover:text-primary hover:border-primary cursor-pointer transition-colors group">
-											<span class="material-symbols-outlined">add_circle</span> <span
-												class="font-medium">Thêm đối tác vận chuyển</span>
-										</div>
-									</div>
-								</div>
-								<div class="space-y-4 pt-4 border-t border-slate-100">
-									<h4
-										class="text-base font-bold text-slate-800 border-l-4 border-primary pl-3">Cài
-										đặt phí ship</h4>
-									<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-										<div>
-											<label class="block text-sm font-bold text-slate-700 mb-2">Phí
-												ship mặc định (VND)</label>
-											<div class="relative">
-												<input
-													class="w-full pl-4 pr-12 bg-slate-50 border border-slate-200 rounded-lg py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 font-medium"
-													type="number" value="30000" /> <span
-													class="absolute right-4 top-2.5 text-slate-400 text-sm font-medium">đ</span>
-											</div>
-											<p class="text-[11px] text-slate-400 mt-1">Áp dụng cho
-												các đơn hàng không thuộc khu vực ưu đãi.</p>
-										</div>
-										<div>
-											<label class="block text-sm font-bold text-slate-700 mb-2">Miễn
-												phí vận chuyển cho đơn từ</label>
-											<div class="relative">
-												<input
-													class="w-full pl-4 pr-12 bg-slate-50 border border-slate-200 rounded-lg py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-900 font-medium"
-													type="number" value="500000" /> <span
-													class="absolute right-4 top-2.5 text-slate-400 text-sm font-medium">đ</span>
-											</div>
-											<p class="text-[11px] text-slate-400 mt-1">Nhập 0 để tắt
-												tính năng này.</p>
-										</div>
-									</div>
-									<div class="mt-4">
-										<label class="block text-sm font-bold text-slate-700 mb-3">Bảng
-											phí ship theo trọng lượng</label>
-										<div
-											class="overflow-x-auto border border-slate-200 rounded-xl shadow-sm">
-											<table class="w-full text-sm text-left text-slate-600">
-												<thead
-													class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
-													<tr>
-														<th class="px-6 py-3 font-bold w-1/3">Trọng lượng
-															(kg)</th>
-														<th class="px-6 py-3 font-bold w-1/3">Khu vực</th>
-														<th class="px-6 py-3 font-bold w-1/3">Phí cộng thêm
-															(VND)</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr
-														class="bg-white border-b border-slate-100 hover:bg-slate-50/50">
-														<td class="px-6 py-3 font-medium text-slate-900">&gt;
-															5kg</td>
-														<td class="px-6 py-3">Toàn quốc</td>
-														<td class="px-6 py-3">
-															<div class="flex items-center gap-2">
-																<span>+ 10,000đ / kg</span>
-																<button class="text-slate-400 hover:text-primary">
-																	<span class="material-symbols-outlined text-lg">edit</span>
-																</button>
-															</div>
-														</td>
-													</tr>
-													<tr
-														class="bg-white border-b border-slate-100 hover:bg-slate-50/50">
-														<td class="px-6 py-3 font-medium text-slate-900">&gt;
-															10kg</td>
-														<td class="px-6 py-3">Nội thành</td>
-														<td class="px-6 py-3">
-															<div class="flex items-center gap-2">
-																<span>+ 5,000đ / kg</span>
-																<button class="text-slate-400 hover:text-primary">
-																	<span class="material-symbols-outlined text-lg">edit</span>
-																</button>
-															</div>
-														</td>
-													</tr>
-												</tbody>
-											</table>
-											<div
-												class="p-2 bg-slate-50 text-center border-t border-slate-200">
-												<button
-													class="text-xs font-bold text-primary hover:text-primary-hover flex items-center justify-center gap-1">
-													<span class="material-symbols-outlined text-sm">add</span>
-													Thêm quy tắc
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="space-y-4 pt-4 border-t border-slate-100">
-									<div class="flex items-center justify-between">
-										<h4
-											class="text-base font-bold text-slate-800 border-l-4 border-primary pl-3">Khu
-											vực giao hàng hỗ trợ</h4>
-										<button
-											class="text-xs font-bold text-white bg-primary hover:bg-primary-hover px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm">
-											<span class="material-symbols-outlined text-sm">add</span>
-											Thêm khu vực
-										</button>
-									</div>
-									<div class="grid grid-cols-1 gap-3">
-										<div
-											class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all group">
-											<div class="flex items-center gap-3">
-												<span
-													class="material-symbols-outlined text-slate-400 group-hover:text-primary">location_on</span>
-												<div>
-													<p class="text-sm font-bold text-slate-900">TP. Hồ Chí
-														Minh</p>
-													<p class="text-xs text-slate-500">Tất cả các quận huyện
-														- Phí ship tiêu chuẩn</p>
-												</div>
-											</div>
-											<div class="flex items-center gap-2">
-												<span
-													class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Active</span>
-												<button
-													class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">edit</span>
-												</button>
-												<button
-													class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">delete</span>
-												</button>
-											</div>
-										</div>
-										<div
-											class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all group">
-											<div class="flex items-center gap-3">
-												<span
-													class="material-symbols-outlined text-slate-400 group-hover:text-primary">location_on</span>
-												<div>
-													<p class="text-sm font-bold text-slate-900">Hà Nội</p>
-													<p class="text-xs text-slate-500">Nội thành - Phí ship
-														tiêu chuẩn</p>
-												</div>
-											</div>
-											<div class="flex items-center gap-2">
-												<span
-													class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Active</span>
-												<button
-													class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">edit</span>
-												</button>
-												<button
-													class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">delete</span>
-												</button>
-											</div>
-										</div>
-										<div
-											class="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200 hover:bg-white hover:shadow-sm transition-all group">
-											<div class="flex items-center gap-3">
-												<span
-													class="material-symbols-outlined text-slate-400 group-hover:text-primary">location_on</span>
-												<div>
-													<p class="text-sm font-bold text-slate-900">Đà Nẵng</p>
-													<p class="text-xs text-slate-500">Trung tâm thành phố -
-														Phí ship +10k</p>
-												</div>
-											</div>
-											<div class="flex items-center gap-2">
-												<span
-													class="px-2 py-1 bg-gray-200 text-gray-600 text-[10px] font-bold rounded">Inactive</span>
-												<button
-													class="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-100 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">edit</span>
-												</button>
-												<button
-													class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-													<span class="material-symbols-outlined text-lg">delete</span>
-												</button>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div
-									class="pt-6 border-t border-slate-100 flex justify-end gap-3">
-									<button
-										class="px-6 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-sm hover:bg-slate-50 transition-colors">Khôi
-										phục mặc định</button>
-									<button
-										class="px-8 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all transform active:scale-95">Lưu
-										thay đổi</button>
-								</div>
-							</div>
-						</div>
-						
-						<div class="h-12"></div>
-					</div>
+	<div id="main-content">
+		<div class="max-w-7xl mx-auto">
+			<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+				<div>
+					<h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Cấu
+						hình Vận chuyển</h1>
+					<p class="text-gray-500 dark:text-gray-400 font-body">Thiết lập đơn vị vận
+						chuyển, phí ship và khu vực giao hàng.</p>
 				</div>
 			</div>
-    </div>
+			<div class="flex flex-col lg:flex-row gap-8 items-start">
+
+				<div class="flex-1 space-y-8 w-full min-w-0">
+
+					<div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+						id="shipping">
+						<div
+							class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+							<h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+								<span class="material-symbols-outlined text-primary">local_shipping</span>
+								Cấu hình vận chuyển
+							</h3>
+							<div class="flex gap-2">
+								<span
+									class="px-2 py-1 bg-green-100 text-green-700 text-xs font-bold rounded-lg flex items-center gap-1">
+									<span class="w-2 h-2 bg-green-500 rounded-full"></span> Active
+								</span>
+							</div>
+						</div>
+						<div class="p-6 space-y-8">
+							<div class="space-y-4">
+								<h4
+									class="text-base font-bold text-gray-800 dark:text-gray-200 border-l-4 border-primary pl-3">
+									Đơn
+									vị vận chuyển</h4>
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<div
+										class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors bg-gray-50 dark:bg-gray-800/50">
+										<div class="flex items-center gap-3">
+											<div
+												class="w-10 h-10 bg-white rounded-lg border border-slate-100 flex items-center justify-center shadow-sm text-orange-600">
+												<span class="material-symbols-outlined">rocket_launch</span>
+											</div>
+											<div>
+												<p class="font-bold text-gray-800 dark:text-gray-200">Giao Hàng Nhanh
+													(GHN)</p>
+												<p class="text-xs text-gray-500 dark:text-gray-400">API v2.0 Connected
+												</p>
+											</div>
+										</div>
+										<label class="relative inline-flex items-center cursor-pointer">
+											<input checked="" class="sr-only peer" type="checkbox" value="" />
+											<div
+												class="w-11 h-6 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+											</div>
+										</label>
+									</div>
+									<div
+										class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors bg-gray-50 dark:bg-gray-800/50">
+										<div class="flex items-center gap-3">
+											<div
+												class="w-10 h-10 bg-white rounded-lg border border-slate-100 flex items-center justify-center shadow-sm text-red-600">
+												<span class="material-symbols-outlined">local_post_office</span>
+											</div>
+											<div>
+												<p class="font-bold text-gray-800 dark:text-gray-200">Viettel Post</p>
+												<p class="text-xs text-gray-500 dark:text-gray-400">Standard Service</p>
+											</div>
+										</div>
+										<label class="relative inline-flex items-center cursor-pointer">
+											<input checked="" class="sr-only peer" type="checkbox" value="" />
+											<div
+												class="w-11 h-6 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+											</div>
+										</label>
+									</div>
+									<div
+										class="p-4 border border-gray-200 dark:border-gray-700 border-dashed rounded-xl flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 hover:text-primary hover:border-primary cursor-pointer transition-colors group">
+										<span class="material-symbols-outlined">add_circle</span> <span
+											class="font-medium">Thêm đối tác vận chuyển</span>
+									</div>
+								</div>
+							</div>
+							<div class="space-y-4 pt-4 border-t border-slate-100">
+								<h4
+									class="text-base font-bold text-gray-800 dark:text-gray-200 border-l-4 border-primary pl-3">
+									Cài
+									đặt phí ship</h4>
+								<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+									<div>
+										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Phí
+											ship mặc định (VND)</label>
+										<div class="relative">
+											<input
+												class="w-full pl-4 pr-12 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white font-medium"
+												type="number" value="30000" /> <span
+												class="absolute right-4 top-2.5 text-gray-400 dark:text-gray-500 text-sm font-medium">đ</span>
+										</div>
+										<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1">Áp dụng cho
+											các đơn hàng không thuộc khu vực ưu đãi.</p>
+									</div>
+									<div>
+										<label
+											class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Miễn
+											phí vận chuyển cho đơn từ</label>
+										<div class="relative">
+											<input
+												class="w-full pl-4 pr-12 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white font-medium"
+												type="number" value="500000" /> <span
+												class="absolute right-4 top-2.5 text-gray-400 dark:text-gray-500 text-sm font-medium">đ</span>
+										</div>
+										<p class="text-[11px] text-gray-400 dark:text-gray-500 mt-1">Nhập 0 để tắt
+											tính năng này.</p>
+									</div>
+								</div>
+								<div class="mt-4">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Bảng
+										phí ship theo trọng lượng</label>
+									<div
+										class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm">
+										<table class="w-full text-sm text-left text-gray-600 dark:text-gray-400">
+											<thead
+												class="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+												<tr>
+													<th class="px-6 py-3 font-bold w-1/3">Trọng lượng
+														(kg)</th>
+													<th class="px-6 py-3 font-bold w-1/3">Khu vực</th>
+													<th class="px-6 py-3 font-bold w-1/3">Phí cộng thêm
+														(VND)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr
+													class="bg-white border-b border-slate-100 hover:bg-gray-50 dark:bg-gray-800/50">
+													<td class="px-6 py-3 font-medium text-gray-900 dark:text-white">&gt;
+														5kg</td>
+													<td class="px-6 py-3">Toàn quốc</td>
+													<td class="px-6 py-3">
+														<div class="flex items-center gap-2">
+															<span>+ 10,000đ / kg</span>
+															<button
+																class="text-gray-400 dark:text-gray-500 hover:text-primary">
+																<span
+																	class="material-symbols-outlined text-lg">edit</span>
+															</button>
+														</div>
+													</td>
+												</tr>
+												<tr
+													class="bg-white border-b border-slate-100 hover:bg-gray-50 dark:bg-gray-800/50">
+													<td class="px-6 py-3 font-medium text-gray-900 dark:text-white">&gt;
+														10kg</td>
+													<td class="px-6 py-3">Nội thành</td>
+													<td class="px-6 py-3">
+														<div class="flex items-center gap-2">
+															<span>+ 5,000đ / kg</span>
+															<button
+																class="text-gray-400 dark:text-gray-500 hover:text-primary">
+																<span
+																	class="material-symbols-outlined text-lg">edit</span>
+															</button>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<div
+											class="p-2 bg-gray-50 dark:bg-gray-800 text-center border-t border-gray-200 dark:border-gray-700">
+											<button
+												class="text-xs font-bold text-primary hover:text-primary-hover flex items-center justify-center gap-1">
+												<span class="material-symbols-outlined text-sm">add</span>
+												Thêm quy tắc
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space-y-4 pt-4 border-t border-slate-100">
+								<div class="flex items-center justify-between">
+									<h4
+										class="text-base font-bold text-gray-800 dark:text-gray-200 border-l-4 border-primary pl-3">
+										Khu
+										vực giao hàng hỗ trợ</h4>
+									<button
+										class="text-xs font-bold text-white bg-primary hover:bg-primary-hover px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1 shadow-sm">
+										<span class="material-symbols-outlined text-sm">add</span>
+										Thêm khu vực
+									</button>
+								</div>
+								<div class="grid grid-cols-1 gap-3">
+									<div
+										class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-white hover:shadow-sm transition-all group">
+										<div class="flex items-center gap-3">
+											<span
+												class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary">location_on</span>
+											<div>
+												<p class="text-sm font-bold text-gray-900 dark:text-white">TP. Hồ Chí
+													Minh</p>
+												<p class="text-xs text-gray-500 dark:text-gray-400">Tất cả các quận
+													huyện
+													- Phí ship tiêu chuẩn</p>
+											</div>
+										</div>
+										<div class="flex items-center gap-2">
+											<span
+												class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Active</span>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-primary hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">edit</span>
+											</button>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">delete</span>
+											</button>
+										</div>
+									</div>
+									<div
+										class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-white hover:shadow-sm transition-all group">
+										<div class="flex items-center gap-3">
+											<span
+												class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary">location_on</span>
+											<div>
+												<p class="text-sm font-bold text-gray-900 dark:text-white">Hà Nội</p>
+												<p class="text-xs text-gray-500 dark:text-gray-400">Nội thành - Phí ship
+													tiêu chuẩn</p>
+											</div>
+										</div>
+										<div class="flex items-center gap-2">
+											<span
+												class="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Active</span>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-primary hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">edit</span>
+											</button>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">delete</span>
+											</button>
+										</div>
+									</div>
+									<div
+										class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-white hover:shadow-sm transition-all group">
+										<div class="flex items-center gap-3">
+											<span
+												class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary">location_on</span>
+											<div>
+												<p class="text-sm font-bold text-gray-900 dark:text-white">Đà Nẵng</p>
+												<p class="text-xs text-gray-500 dark:text-gray-400">Trung tâm thành phố
+													-
+													Phí ship +10k</p>
+											</div>
+										</div>
+										<div class="flex items-center gap-2">
+											<span
+												class="px-2 py-1 bg-gray-200 text-gray-600 text-[10px] font-bold rounded">Inactive</span>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-primary hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">edit</span>
+											</button>
+											<button
+												class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+												<span class="material-symbols-outlined text-lg">delete</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+								<button
+									class="px-6 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 font-bold text-sm hover:bg-gray-50 dark:bg-gray-800 transition-colors">Khôi
+									phục mặc định</button>
+								<button
+									class="px-8 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all transform active:scale-95">Lưu
+									thay đổi</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="h-12"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
+
 </html>

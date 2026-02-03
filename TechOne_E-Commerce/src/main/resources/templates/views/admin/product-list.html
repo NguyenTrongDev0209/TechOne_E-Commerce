@@ -1,335 +1,341 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/layout-admin :: view(title='TechShop Admin Dashboard - Quản Lý Sản Phẩm', menuItem='products', content=~{:: #main-content})}">
+<html
+	th:replace="~{layouts/layout-admin :: view(title='TechShop Admin Dashboard - Quản Lý Sản Phẩm', menuItem='products', content=~{:: #main-content}, subMenuItem=null)}">
+
 <body>
-    <div id="main-content">
-        <div class="max-w-7xl mx-auto space-y-6">
-				<div class="flex flex-col gap-1">
-					<div class="flex items-center gap-2 text-sm text-slate-500">
-						<a class="hover:text-primary transition-colors" href="#">Tổng
-							quan</a> <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-						<span class="font-bold text-slate-900">Sản phẩm</span>
-					</div>
-					<div class="flex justify-between items-end">
-						<h1 class="text-3xl font-bold text-slate-900 tracking-tight">Quản
-							lý sản phẩm</h1>
-					</div>
+	<div id="main-content">
+		<div class="max-w-7xl mx-auto space-y-6">
+			<div class="flex flex-col gap-1">
+				<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+					<a class="hover:text-primary transition-colors" href="#">Tổng
+						quan</a> <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+					<span class="font-bold text-gray-900 dark:text-white">Sản phẩm</span>
 				</div>
+				<div class="flex justify-between items-end">
+					<h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Quản
+						lý sản phẩm</h1>
+				</div>
+			</div>
+			<div
+				class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
 				<div
-					class="bg-white rounded-2xl shadow-soft border border-slate-100 flex flex-col">
-					<div
-						class="p-6 border-b border-slate-50 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-						<div
-							class="flex flex-col sm:flex-row w-full md:w-auto gap-4 flex-1">
-							<div class="relative flex-1 max-w-sm group">
-								<span
-									class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
-								<input
-									class="w-full bg-slate-50 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400 font-body"
-									placeholder="Tìm kiếm tên sản phẩm..." type="text" />
-							</div>
-							<div class="flex gap-4">
-								<select
-									class="bg-slate-50 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors">
-									<option>Danh mục: Tất cả</option>
-									<option>Laptop</option>
-									<option>Smartphone</option>
-									<option>Phụ kiện</option>
-								</select> <select
-									class="bg-slate-50 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors hidden sm:block">
-									<option>Trạng thái: Tất cả</option>
-									<option>Còn hàng</option>
-									<option>Hết hàng</option>
-								</select>
-							</div>
+					class="p-6 border-b border-slate-50 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+					<div class="flex flex-col sm:flex-row w-full md:w-auto gap-4 flex-1">
+						<div class="relative flex-1 max-w-sm group">
+							<span
+								class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
+							<input
+								class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400 font-body"
+								placeholder="Tìm kiếm tên sản phẩm..." type="text" />
 						</div>
-						<a href="/admin/product-list/product-form">
-							<button
+						<div class="flex gap-4">
+							<select
+								class="bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors">
+								<option>Danh mục: Tất cả</option>
+								<option>Laptop</option>
+								<option>Smartphone</option>
+								<option>Phụ kiện</option>
+							</select> <select
+								class="bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors hidden sm:block">
+								<option>Trạng thái: Tất cả</option>
+								<option>Còn hàng</option>
+								<option>Hết hàng</option>
+							</select>
+						</div>
+					</div>
+					<a href="/admin/product-list/product-form">
+						<button
 							class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
 							<span class="material-symbols-outlined text-[20px]">add</span>
 							Thêm sản phẩm mới
 						</button>
-						</a>
-					</div>
-					<div class="overflow-x-auto">
-						<table class="w-full text-left text-sm whitespace-nowrap">
-							<thead
-								class="bg-slate-50 text-slate-500 font-bold font-display border-b border-slate-100">
-								<tr>
-									<th class="px-6 py-4">Sản phẩm</th>
-									<th class="px-6 py-4">Danh mục</th>
-									<th class="px-6 py-4">Giá bán</th>
-									<th class="px-6 py-4">Kho hàng</th>
-									<th class="px-6 py-4">Ngày tạo</th>
-									<th class="px-6 py-4 text-right">Hành động</th>
-								</tr>
-							</thead>
-							<tbody class="divide-y divide-slate-100 font-body">
-								<tr class="hover:bg-slate-50 transition-colors group">
-									<td class="px-6 py-4">
-										<div class="flex items-center gap-4">
-											<div
-												class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
-												<span class="material-symbols-outlined">laptop_mac</span>
-											</div>
-											<div class="flex flex-col">
-												<span
-													class="font-bold text-slate-900 group-hover:text-primary transition-colors text-base">MacBook
-													Pro M3</span> <span class="text-xs text-slate-500">SKU:
-													MB-M3-14</span>
-											</div>
+					</a>
+				</div>
+				<div class="overflow-x-auto">
+					<table class="w-full text-left text-sm whitespace-nowrap">
+						<thead
+							class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-bold font-display border-b border-slate-100">
+							<tr>
+								<th class="px-6 py-4">Sản phẩm</th>
+								<th class="px-6 py-4">Danh mục</th>
+								<th class="px-6 py-4">Giá bán</th>
+								<th class="px-6 py-4">Kho hàng</th>
+								<th class="px-6 py-4">Ngày tạo</th>
+								<th class="px-6 py-4 text-right">Hành động</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-gray-100 dark:divide-gray-700 font-body">
+							<tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-4">
+										<div
+											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+											<span class="material-symbols-outlined">laptop_mac</span>
 										</div>
-									</td>
-									<td class="px-6 py-4"><span
+										<div class="flex flex-col">
+											<span
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">MacBook
+												Pro M3</span> <span
+												class="text-xs text-gray-500 dark:text-gray-400">SKU:
+												MB-M3-14</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4"><span
 										class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
-											Laptop </span></td>
-									<td class="px-6 py-4"><span
-										class="font-bold text-primary text-base">45.990.000đ</span></td>
-									<td class="px-6 py-4">
-										<div class="flex flex-col gap-1">
-											<span class="text-sm font-bold text-slate-900">12</span> <span
-												class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
-												<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-												Còn hàng
-											</span>
+										Laptop </span></td>
+								<td class="px-6 py-4"><span class="font-bold text-primary text-base">45.990.000đ</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-col gap-1">
+										<span class="text-sm font-bold text-gray-900 dark:text-white">12</span> <span
+											class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
+											<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+											Còn hàng
+										</span>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium">20/12/2025</td>
+								<td class="px-6 py-4">
+									<div class="flex items-center justify-end gap-1">
+										<button
+											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">visibility</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">edit</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-4">
+										<div
+											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+											<span class="material-symbols-outlined">smartphone</span>
 										</div>
-									</td>
-									<td class="px-6 py-4 text-slate-500 font-medium">20/12/2025</td>
-									<td class="px-6 py-4">
-										<div class="flex items-center justify-end gap-1">
-											<button
-												class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">visibility</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">edit</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">delete</span>
-											</button>
+										<div class="flex flex-col">
+											<span
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">iPhone
+												15 Pro Max</span> <span
+												class="text-xs text-gray-500 dark:text-gray-400">SKU:
+												IP-15PM-256</span>
 										</div>
-									</td>
-								</tr>
-								<tr class="hover:bg-slate-50 transition-colors group">
-									<td class="px-6 py-4">
-										<div class="flex items-center gap-4">
-											<div
-												class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
-												<span class="material-symbols-outlined">smartphone</span>
-											</div>
-											<div class="flex flex-col">
-												<span
-													class="font-bold text-slate-900 group-hover:text-primary transition-colors text-base">iPhone
-													15 Pro Max</span> <span class="text-xs text-slate-500">SKU:
-													IP-15PM-256</span>
-											</div>
-										</div>
-									</td>
-									<td class="px-6 py-4"><span
+									</div>
+								</td>
+								<td class="px-6 py-4"><span
 										class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
-											Smartphone </span></td>
-									<td class="px-6 py-4"><span
-										class="font-bold text-primary text-base">34.990.000đ</span></td>
-									<td class="px-6 py-4">
-										<div class="flex flex-col gap-1">
-											<span class="text-sm font-bold text-slate-900">5</span> <span
-												class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600">
-												<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-												Sắp hết
-											</span>
+										Smartphone </span></td>
+								<td class="px-6 py-4"><span class="font-bold text-primary text-base">34.990.000đ</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-col gap-1">
+										<span class="text-sm font-bold text-gray-900 dark:text-white">5</span> <span
+											class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-600">
+											<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+											Sắp hết
+										</span>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium">22/12/2025</td>
+								<td class="px-6 py-4">
+									<div class="flex items-center justify-end gap-1">
+										<button
+											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">visibility</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">edit</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-4">
+										<div
+											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+											<span class="material-symbols-outlined">headphones</span>
 										</div>
-									</td>
-									<td class="px-6 py-4 text-slate-500 font-medium">22/12/2025</td>
-									<td class="px-6 py-4">
-										<div class="flex items-center justify-end gap-1">
-											<button
-												class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">visibility</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">edit</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">delete</span>
-											</button>
+										<div class="flex flex-col">
+											<span
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">Sony
+												WH-1000XM5</span> <span
+												class="text-xs text-gray-500 dark:text-gray-400">SKU:
+												SN-WH5-BLK</span>
 										</div>
-									</td>
-								</tr>
-								<tr class="hover:bg-slate-50 transition-colors group">
-									<td class="px-6 py-4">
-										<div class="flex items-center gap-4">
-											<div
-												class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
-												<span class="material-symbols-outlined">headphones</span>
-											</div>
-											<div class="flex flex-col">
-												<span
-													class="font-bold text-slate-900 group-hover:text-primary transition-colors text-base">Sony
-													WH-1000XM5</span> <span class="text-xs text-slate-500">SKU:
-													SN-WH5-BLK</span>
-											</div>
-										</div>
-									</td>
-									<td class="px-6 py-4"><span
+									</div>
+								</td>
+								<td class="px-6 py-4"><span
 										class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
-											Phụ kiện </span></td>
-									<td class="px-6 py-4"><span
-										class="font-bold text-primary text-base">8.490.000đ</span></td>
-									<td class="px-6 py-4">
-										<div class="flex flex-col gap-1">
-											<span class="text-sm font-bold text-slate-900">0</span> <span
-												class="inline-flex items-center gap-1 text-[10px] font-bold text-red-600">
-												<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-												Hết hàng
-											</span>
+										Phụ kiện </span></td>
+								<td class="px-6 py-4"><span class="font-bold text-primary text-base">8.490.000đ</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-col gap-1">
+										<span class="text-sm font-bold text-gray-900 dark:text-white">0</span> <span
+											class="inline-flex items-center gap-1 text-[10px] font-bold text-red-600">
+											<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+											Hết hàng
+										</span>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium">15/12/2025</td>
+								<td class="px-6 py-4">
+									<div class="flex items-center justify-end gap-1">
+										<button
+											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">visibility</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">edit</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-4">
+										<div
+											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+											<span class="material-symbols-outlined">smartphone</span>
 										</div>
-									</td>
-									<td class="px-6 py-4 text-slate-500 font-medium">15/12/2025</td>
-									<td class="px-6 py-4">
-										<div class="flex items-center justify-end gap-1">
-											<button
-												class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">visibility</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">edit</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">delete</span>
-											</button>
+										<div class="flex flex-col">
+											<span
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">Samsung
+												Galaxy S24 Ultra</span> <span
+												class="text-xs text-gray-500 dark:text-gray-400">SKU:
+												SS-S24U-512</span>
 										</div>
-									</td>
-								</tr>
-								<tr class="hover:bg-slate-50 transition-colors group">
-									<td class="px-6 py-4">
-										<div class="flex items-center gap-4">
-											<div
-												class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
-												<span class="material-symbols-outlined">smartphone</span>
-											</div>
-											<div class="flex flex-col">
-												<span
-													class="font-bold text-slate-900 group-hover:text-primary transition-colors text-base">Samsung
-													Galaxy S24 Ultra</span> <span class="text-xs text-slate-500">SKU:
-													SS-S24U-512</span>
-											</div>
-										</div>
-									</td>
-									<td class="px-6 py-4"><span
+									</div>
+								</td>
+								<td class="px-6 py-4"><span
 										class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
-											Smartphone </span></td>
-									<td class="px-6 py-4"><span
-										class="font-bold text-primary text-base">31.990.000đ</span></td>
-									<td class="px-6 py-4">
-										<div class="flex flex-col gap-1">
-											<span class="text-sm font-bold text-slate-900">25</span> <span
-												class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
-												<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-												Còn hàng
-											</span>
+										Smartphone </span></td>
+								<td class="px-6 py-4"><span class="font-bold text-primary text-base">31.990.000đ</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-col gap-1">
+										<span class="text-sm font-bold text-gray-900 dark:text-white">25</span> <span
+											class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
+											<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+											Còn hàng
+										</span>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium">10/12/2025</td>
+								<td class="px-6 py-4">
+									<div class="flex items-center justify-end gap-1">
+										<button
+											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">visibility</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">edit</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-4">
+										<div
+											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
+											<span class="material-symbols-outlined">laptop_mac</span>
 										</div>
-									</td>
-									<td class="px-6 py-4 text-slate-500 font-medium">10/12/2025</td>
-									<td class="px-6 py-4">
-										<div class="flex items-center justify-end gap-1">
-											<button
-												class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">visibility</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">edit</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">delete</span>
-											</button>
+										<div class="flex flex-col">
+											<span
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base">Dell
+												XPS 15 9530</span> <span
+												class="text-xs text-gray-500 dark:text-gray-400">SKU:
+												DE-XPS15-I9</span>
 										</div>
-									</td>
-								</tr>
-								<tr class="hover:bg-slate-50 transition-colors group">
-									<td class="px-6 py-4">
-										<div class="flex items-center gap-4">
-											<div
-												class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0">
-												<span class="material-symbols-outlined">laptop_mac</span>
-											</div>
-											<div class="flex flex-col">
-												<span
-													class="font-bold text-slate-900 group-hover:text-primary transition-colors text-base">Dell
-													XPS 15 9530</span> <span class="text-xs text-slate-500">SKU:
-													DE-XPS15-I9</span>
-											</div>
-										</div>
-									</td>
-									<td class="px-6 py-4"><span
+									</div>
+								</td>
+								<td class="px-6 py-4"><span
 										class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">
-											Laptop </span></td>
-									<td class="px-6 py-4"><span
-										class="font-bold text-primary text-base">52.000.000đ</span></td>
-									<td class="px-6 py-4">
-										<div class="flex flex-col gap-1">
-											<span class="text-sm font-bold text-slate-900">8</span> <span
-												class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
-												<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-												Còn hàng
-											</span>
-										</div>
-									</td>
-									<td class="px-6 py-4 text-slate-500 font-medium">05/12/2025</td>
-									<td class="px-6 py-4">
-										<div class="flex items-center justify-end gap-1">
-											<button
-												class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">visibility</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">edit</span>
-											</button>
-											<button
-												class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
-												<span class="material-symbols-outlined text-[20px]">delete</span>
-											</button>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div
-						class="p-6 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
-						<p class="text-sm text-slate-500 font-medium">
-							Hiển thị <span class="font-bold text-slate-900">1-5</span> trong
-							số <span class="font-bold text-slate-900">42</span> sản phẩm
-						</p>
-						<div class="flex items-center gap-2">
-							<button
-								class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors">
-								<span class="material-symbols-outlined text-[20px]">chevron_left</span>
-							</button>
-							<button
-								class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-md shadow-primary/20">
-								1</button>
-							<button
-								class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition-colors">
-								2</button>
-							<button
-								class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-600 font-bold hover:bg-slate-100 transition-colors">
-								3</button>
-							<button
-								class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors">
-								<span class="material-symbols-outlined text-[20px]">chevron_right</span>
-							</button>
-						</div>
+										Laptop </span></td>
+								<td class="px-6 py-4"><span class="font-bold text-primary text-base">52.000.000đ</span>
+								</td>
+								<td class="px-6 py-4">
+									<div class="flex flex-col gap-1">
+										<span class="text-sm font-bold text-gray-900 dark:text-white">8</span> <span
+											class="inline-flex items-center gap-1 text-[10px] font-bold text-green-600">
+											<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+											Còn hàng
+										</span>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium">05/12/2025</td>
+								<td class="px-6 py-4">
+									<div class="flex items-center justify-end gap-1">
+										<button
+											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">visibility</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">edit</span>
+										</button>
+										<button
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors group/btn">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="p-6 border-t border-slate-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+					<p class="text-sm text-gray-500 dark:text-gray-400 font-medium">
+						Hiển thị <span class="font-bold text-gray-900 dark:text-white">1-5</span> trong
+						số <span class="font-bold text-gray-900 dark:text-white">42</span> sản phẩm
+					</p>
+					<div class="flex items-center gap-2">
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors">
+							<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+						</button>
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-white font-bold shadow-md shadow-primary/20">
+							1</button>
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-slate-600 font-bold hover:bg-slate-100 transition-colors">
+							2</button>
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-slate-600 font-bold hover:bg-slate-100 transition-colors">
+							3</button>
+						<button
+							class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 text-slate-400 hover:bg-primary/10 hover:text-primary transition-colors">
+							<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+						</button>
 					</div>
 				</div>
 			</div>
-    </div>
+		</div>
+	</div>
 </body>
+
 </html>

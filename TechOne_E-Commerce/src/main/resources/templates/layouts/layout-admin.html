@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html th:fragment="view(title, menuItem, content)" class="light" lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="view(title, menuItem, content, subMenuItem)" class="light" lang="vi"
+    xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title th:text="${title}">Admin TechShop</title>
@@ -80,14 +81,10 @@
 <body class="bg-background-light text-slate-800 font-display antialiased overflow-hidden h-screen flex">
     <!-- Sidebar -->
     <aside class="w-64 bg-surface-light border-r border-slate-100 flex-col hidden lg:flex h-full z-20 shadow-soft">
-        <div class="h-16 flex items-center px-6 border-b border-slate-50">
-            <div class="flex items-center gap-3">
-                <div class="bg-primary/10 p-1.5 rounded-lg text-primary">
-                    <span class="material-symbols-outlined text-2xl">bolt</span>
-                </div>
-                <h1 class="text-xl font-bold tracking-tight text-slate-900">TechShop<span class="text-primary">.</span>
-                </h1>
-            </div>
+        <div class="h-16 flex items-center justify-center px-6 border-b border-slate-50">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <img src="/images/TechOne_Logo.png" alt="TechShop Logo" class="h-8 w-auto object-contain" />
+            </a>
         </div>
         <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
             <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors"
@@ -121,12 +118,64 @@
                 <span class="material-symbols-outlined group-hover:text-primary transition-colors">bar_chart</span>
                 <span>Báo cáo</span>
             </a>
-            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
-                th:classappend="${menuItem == 'settings'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
-                th:href="@{/admin/setting}">
-                <span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
-                <span>Cấu hình</span>
-            </a>
+            <!-- Settings Menu with Sub-items -->
+            <div class="space-y-1">
+                <button type="button"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors group cursor-pointer"
+                    th:classappend="${menuItem == 'settings'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                    onclick="const menu = document.getElementById('settings-submenu'); const chev = document.getElementById('settings-chevron'); menu.classList.toggle('hidden'); chev.classList.toggle('rotate-180');">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                        <span>Cấu hình</span>
+                    </div>
+                    <span id="settings-chevron"
+                        class="material-symbols-outlined text-[20px] transition-transform duration-200"
+                        th:classappend="${menuItem == 'settings'} ? 'rotate-180' : ''">expand_more</span>
+                </button>
+
+                <div id="settings-submenu" class="space-y-1 pl-3 overflow-hidden transition-all"
+                    th:classappend="${menuItem == 'settings'} ? '' : 'hidden'">
+
+                    <!-- Cấu hình chung -->
+                    <a th:href="@{/admin/setting}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'general'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">tune</span>
+                        <span>Cấu hình chung</span>
+                    </a>
+
+                    <!-- Cấu hình thanh toán -->
+                    <a th:href="@{/admin/setting/setting-payment}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'payment'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">payments</span>
+                        <span>Thanh toán</span>
+                    </a>
+
+                    <!-- Cấu hình vận chuyển -->
+                    <a th:href="@{/admin/setting/setting-shipment}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'shipment'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">local_shipping</span>
+                        <span>Vận chuyển</span>
+                    </a>
+
+                    <!-- Email & SMS -->
+                    <a th:href="@{/admin/setting#email-sms}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-500 hover:bg-slate-50 hover:text-slate-900">
+                        <span class="material-symbols-outlined text-[18px]">mail</span>
+                        <span>Email & SMS</span>
+                    </a>
+
+                    <!-- Mạng xã hội -->
+                    <a th:href="@{/admin/setting#social}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-500 hover:bg-slate-50 hover:text-slate-900">
+                        <span class="material-symbols-outlined text-[18px]">share</span>
+                        <span>Mạng xã hội</span>
+                    </a>
+                </div>
+            </div>
         </nav>
         <div class="p-4 border-t border-slate-50">
             <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
@@ -150,12 +199,12 @@
             <button class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900">
                 <span class="material-symbols-outlined">menu</span>
             </button>
-            <div class="flex-1 max-w-lg hidden md:block">
+            <div class="flex-1 max-w-lg hidden md:block ml-4">
                 <div class="relative group">
                     <span
                         class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
                     <input
-                        class="w-full bg-slate-50 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400"
+                        class="w-full bg-slate-100 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400"
                         placeholder="Tìm kiếm đơn hàng, sản phẩm..." type="text" />
                 </div>
             </div>
