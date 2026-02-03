@@ -9,7 +9,7 @@ public class ProductListController {
 		
 	@GetMapping("/admin/product-list")
 	public String shippingConfiguration() {
-		return "admin/product-list";
+		return "views/admin/product-list";
 	}
 	
 }

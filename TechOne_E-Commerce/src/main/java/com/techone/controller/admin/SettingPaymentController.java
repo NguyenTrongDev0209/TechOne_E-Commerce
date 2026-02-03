@@ -8,7 +8,7 @@ public class SettingPaymentController {
 
 	@GetMapping("/admin/setting/setting-payment")
 	public String shippingConfiguration() {
-		return "admin/setting-payment";
+		return "views/admin/setting-payment";
 	}
 	
 }

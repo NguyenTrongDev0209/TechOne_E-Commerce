@@ -8,7 +8,7 @@ public class SettingController {
 	
 	@GetMapping("/admin/setting")
 	public String shippingConfiguration() {
-		return "admin/setting";
+		return "views/admin/setting";
 	}
 	
 }

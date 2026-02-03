@@ -1,19 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>TechShop Admin - Quản Lý Khách Hàng</title>
-<th:block th:replace="~{views/head_css :: head_css}"></th:block>
-</head>
-<body class="bg-background-light text-slate-800 font-display antialiased overflow-hidden h-screen flex">
-
-    <div th:replace="~{views/sidebar :: sidebar}"></div>
-
-    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
-        <header th:replace="~{views/header :: header}"></header>
-
-		<main
-			class="flex-1 overflow-y-auto bg-background-light p-4 md:p-8 scroll-smooth">
-			<div class="max-w-7xl mx-auto space-y-6">
+<html th:replace="~{layouts/layout-admin :: view(title='TechShop Admin - Quản Lý Khách Hàng', menuItem='customers', content=~{:: #main-content})}">
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
 				<div
 					class="flex items-center gap-2 text-sm text-slate-500 font-medium">
 					<a class="hover:text-primary transition-colors" href="#">Tổng
@@ -333,7 +322,6 @@
 				</div>
 				<div class="h-8"></div>
 			</div>
-		</main>
-	</div>
+    </div>
 </body>
 </html>
