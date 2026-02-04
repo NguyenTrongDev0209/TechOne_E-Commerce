@@ -4,11 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ReportListController {
-	
-	@GetMapping("/admin/report-list")
-	public String shippingConfiguration() {
-		return "views/admin/report-list";
-	}
-	
+public class CommentManagerController {
+
+    @GetMapping("/admin/comment-list")
+    public String commentList() {
+        return "views/admin/comment-list";
+    }
 }

@@ -1,62 +1,76 @@
 <!DOCTYPE html>
 <html
-    th:replace="~{layouts/layout-admin :: view(title='Quản lý phiếu giảm giá', menuItem='vouchers', content=~{:: #main-content}, subMenuItem=null)}">
+    th:replace="~{layouts/layout-admin :: view(title='Quản Lý Bình Luận & Đánh Giá', menuItem='comments', content=~{:: #main-content}, subMenuItem=null)}">
 
 <body>
     <div id="main-content">
         <div class="max-w-7xl mx-auto space-y-6">
             <!-- Header -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Phiếu giảm giá</h1>
-                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Quản lý các mã khuyến mãi và voucher của
-                        hệ thống</p>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Bình
+                        luận & Đánh giá</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body">Quản lý các đánh giá sản phẩm và bình luận từ
+                        khách hàng.</p>
                 </div>
-                <button
-                    class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-orange-900/20">
-                    <span class="material-symbols-outlined text-[20px]">add</span>
-                    Tạo Voucher mới
-                </button>
-            </div>
-
-            <!-- Stats/Summary Cards (Optional but nice) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined">local_activity</span>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Đang hoạt động</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">8 Voucher</h3>
-                    </div>
-                </div>
-                <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined">redeem</span>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Lượt sử dụng (T12)</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">1,240</h3>
-                    </div>
-                </div>
-                <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
-                        <span class="material-symbols-outlined">event_busy</span>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Hết hạn tháng này</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">2 Voucher</h3>
-                    </div>
+                <div class="flex items-center gap-3">
+                    <button
+                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Làm mới
+                    </button>
                 </div>
             </div>
 
-            <!-- Content Card -->
-            <!-- Content Card -->
-            <!-- Filter section is now independent -->
-            <!-- Toolbox -->
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                        <span class="material-symbols-outlined">reviews</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng đánh
+                            giá</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">8,245</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
+                        <span class="material-symbols-outlined">star_half</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Trung bình
+                        </p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">4.8/5.0</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-red-50 text-red-600 rounded-lg">
+                        <span class="material-symbols-outlined">mark_chat_unread</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Chưa trả
+                            lời</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">12</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-green-50 text-green-600 rounded-lg">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Đã trả lời
+                        </p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">8,233</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Table -->
             <!-- Filter Section -->
             <div
                 class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
@@ -67,7 +81,7 @@
                     </div>
                     <input
                         class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
-                        placeholder="Tìm kiếm mã voucher..." type="text" />
+                        placeholder="Tìm kiếm đánh giá..." type="text" />
                 </div>
 
                 <!-- Sort Dropdown -->
@@ -95,15 +109,15 @@
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
-                            <div onclick="selectSort('active', 'Đang hoạt động')"
+                            <div onclick="selectSort('high_rated', 'Đánh giá cao')"
                                 class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                <span>Đang hoạt động</span>
+                                <span>Đánh giá cao</span>
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
-                            <div onclick="selectSort('expired', 'Đã hết hạn')"
+                            <div onclick="selectSort('low_rated', 'Đánh giá thấp')"
                                 class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                <span>Đã hết hạn</span>
+                                <span>Đánh giá thấp</span>
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
@@ -122,19 +136,19 @@
                 </div>
             </div>
 
-            <!-- Table -->
-            <!-- Table Card -->
+            <!-- Main Content Table -->
             <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden">
+                <!-- Table -->
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead
-                            class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-100">
+                            class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-200 dark:border-gray-700 uppercase text-xs tracking-wider">
                             <tr>
                                 <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-between">
-                                        <span>Mã Voucher</span>
+                                        <span>Sản phẩm</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
@@ -142,7 +156,7 @@
                                 <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-between">
-                                        <span>Giảm giá</span>
+                                        <span>Khách hàng</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
@@ -150,7 +164,15 @@
                                 <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-between">
-                                        <span>Đơn tối thiểu</span>
+                                        <span>Đánh giá</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 w-1/3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Nội dung</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
@@ -158,15 +180,7 @@
                                 <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-between">
-                                        <span>Lượt dùng</span>
-                                        <span
-                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
-                                    </div>
-                                </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
-                                    onclick="toggleSort(this)">
-                                    <div class="flex items-center justify-between">
-                                        <span>Thời gian</span>
+                                        <span>Ngày</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
@@ -182,222 +196,211 @@
                                 <th class="px-6 py-4 text-right">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
-                            <!-- Voucher 1 -->
-                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white">
+                            <!-- Comment 1 -->
+                            <tr class="hover:bg-gray-50 dark:bg-gray-800/80 transition-colors group">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded bg-orange-100 text-orange-600 flex items-center justify-center font-bold font-mono text-xs border border-orange-200">
-                                            TET25
+                                            class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9z6g2SfMoqJ-Ax0X0K0ve3Cxoh7zkyktFIfKLo0IhWq5zGIdungKkkg3f0OylhG-qL8VGm_mtefrgyGQKmozkvo1vL0fvlruRaLsQ-pXpabjrWsO91v22qytTeGmRDhAwEQVw13lQZGkmfGHuKWxOy87uYb3Sfu6uxNwxHkb_plPGx8VD5f6TIHY1I2_-wG-S5K-PiuaCUZlzmn_i_Ncbs69Fa_UU0orEfQoJHlZhxZGLnsnG8NzH5l4XzgAN6-Mt7swKrNfgPw"
+                                                class="w-full h-full object-cover">
                                         </div>
-                                        <div>
-                                            <p class="font-bold text-gray-900 dark:text-white">TET2025</p>
-                                            <p class="text-xs text-gray-500">Sale Tết Nguyên Đán</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="font-bold text-primary text-lg">25%</span>
-                                    <p class="text-xs text-gray-400">Tối đa 500k</p>
-                                </td>
-                                <td class="px-6 py-4 font-medium text-slate-600">
-                                    2.000.000đ
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex justify-between text-xs text-slate-500">
-                                            <span>450</span>
-                                            <span>/ 1000</span>
-                                        </div>
-                                        <div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-primary w-[45%]"></div>
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-gray-900 dark:text-white text-sm">iPhone 15 Pro
+                                                Max</span>
+                                            <span class="text-xs text-gray-500">256GB - Titan Tự Nhiên</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="flex flex-col text-xs text-slate-500">
-                                        <span>Bđ: 01/01/2025</span>
-                                        <span>Kt: 15/02/2025</span>
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-xs">
+                                            H
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-gray-900 dark:text-white">Hoàng Nam</span>
+                                            <span class="text-xs text-gray-500">24/12/2025</span>
+                                        </div>
                                     </div>
                                 </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex text-amber-400 text-[16px]">
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-normal">
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">
+                                        Sản phẩm rất đẹp, đóng gói cẩn thận. Giao hàng nhanh hơn dự kiến. Rất hài lòng
+                                        với dịch vụ của TechShop!
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4 text-xs text-gray-500">2 phút trước</td>
                                 <td class="px-6 py-4">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                        Đang chạy
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Đã trả lời
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
-                                            title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                            class="flex items-center gap-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
+                                            onclick="toggleReply(this)">
+                                            <span class="material-symbols-outlined text-[16px]">reply</span>
+                                            Trả lời
                                         </button>
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded transition-colors"
-                                            title="Gửi tặng">
-                                            <span class="material-symbols-outlined text-[18px]">send</span>
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">visibility_off</span>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- Voucher 2 -->
-                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                            <!-- Reply Box (Hidden by default) -->
+                            <tr class="hidden bg-gray-50/50 border-b border-gray-100">
+                                <td colspan="7" class="px-6 py-4">
+                                    <div class="flex gap-4 pl-12">
+                                        <div class="flex-1">
+                                            <textarea
+                                                class="w-full border-gray-200 rounded-lg text-sm focus:ring-primary focus:border-primary mb-2"
+                                                rows="3" placeholder="Nhập nội dung trả lời khách hàng..."></textarea>
+                                            <div class="flex justify-end gap-2">
+                                                <button
+                                                    class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
+                                                    onclick="toggleReply(this.closest('tr'))">Hủy</button>
+                                                <button
+                                                    class="px-3 py-1.5 text-xs font-bold bg-primary text-white rounded-lg hover:bg-orange-700">Gửi
+                                                    trả lời</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Comment 2 -->
+                            <tr class="hover:bg-gray-50 dark:bg-gray-800/80 transition-colors group">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded bg-blue-100 text-blue-600 flex items-center justify-center font-bold font-mono text-xs border border-blue-200">
-                                            NEW
+                                            class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                                            <span class="material-symbols-outlined text-gray-400">laptop_mac</span>
                                         </div>
-                                        <div>
-                                            <p class="font-bold text-gray-900 dark:text-white">WELCOME</p>
-                                            <p class="text-xs text-gray-500">Khách hàng mới</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="font-bold text-blue-600 text-lg">100k</span>
-                                    <p class="text-xs text-gray-400">Trừ trực tiếp</p>
-                                </td>
-                                <td class="px-6 py-4 font-medium text-slate-600">
-                                    500.000đ
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex justify-between text-xs text-slate-500">
-                                            <span>2105</span>
-                                            <span>/ ∞</span>
-                                        </div>
-                                        <div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-blue-500 w-full"></div>
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-gray-900 dark:text-white text-sm">MacBook Air
+                                                M2</span>
+                                            <span class="text-xs text-gray-500">512GB - Midnight</span>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <div class="flex flex-col text-xs text-slate-500">
-                                        <span>Không giới hạn</span>
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold text-xs">
+                                            L
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="font-bold text-gray-900 dark:text-white">Linh Dan</span>
+                                            <span class="text-xs text-gray-500">23/12/2025</span>
+                                        </div>
                                     </div>
                                 </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex text-amber-400 text-[16px]">
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined filled text-[18px]">star</span>
+                                        <span class="material-symbols-outlined text-gray-300 text-[18px]">star</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-normal">
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-2">
+                                        Máy đẹp nhưng giao hàng hơi chậm một chút. Shop cần cải thiện bên vận chuyển.
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4 text-xs text-gray-500">1 giờ trước</td>
                                 <td class="px-6 py-4">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                        Đang chạy
+                                        class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+                                        Chưa trả lời
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
-                                            title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                            class="flex items-center gap-1 bg-primary text-white hover:bg-orange-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm shadow-primary/30"
+                                            onclick="toggleReply(this)">
+                                            <span class="material-symbols-outlined text-[16px]">reply</span>
+                                            Trả lời
                                         </button>
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                                            title="Xoá/Dừng">
-                                            <span class="material-symbols-outlined text-[18px]">block</span>
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                            <span class="material-symbols-outlined text-[18px]">visibility_off</span>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
 
-                            <!-- Voucher 3 -->
-                            <tr class="hover:bg-orange-50/50 transition-colors group">
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-10 h-10 rounded bg-gray-100 text-gray-600 flex items-center justify-center font-bold font-mono text-xs border border-gray-200">
-                                            LAP
+                            <!-- Reply Box (Hidden by default) -->
+                            <tr class="hidden bg-gray-50/50 border-b border-gray-100">
+                                <td colspan="7" class="px-6 py-4">
+                                    <div class="flex gap-4 pl-12">
+                                        <div class="flex-1">
+                                            <textarea
+                                                class="w-full border-gray-200 rounded-lg text-sm focus:ring-primary focus:border-primary mb-2"
+                                                rows="3" placeholder="Nhập nội dung trả lời khách hàng..."></textarea>
+                                            <div class="flex justify-end gap-2">
+                                                <button
+                                                    class="px-3 py-1.5 text-xs font-medium text-gray-500 hover:text-gray-700"
+                                                    onclick="toggleReply(this.closest('tr'))">Hủy</button>
+                                                <button
+                                                    class="px-3 py-1.5 text-xs font-bold bg-primary text-white rounded-lg hover:bg-orange-700">Gửi
+                                                    trả lời</button>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p class="font-bold text-gray-900 dark:text-white">LAPTOP1M</p>
-                                            <p class="text-xs text-gray-500">Giảm cho Laptop</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span class="font-bold text-gray-600 text-lg">1tr</span>
-                                    <p class="text-xs text-gray-400">Trừ trực tiếp</p>
-                                </td>
-                                <td class="px-6 py-4 font-medium text-slate-600">
-                                    15.000.000đ
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex justify-between text-xs text-slate-500">
-                                            <span>50</span>
-                                            <span>/ 50</span>
-                                        </div>
-                                        <div class="w-24 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                                            <div class="h-full bg-gray-400 w-full"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex flex-col text-xs text-slate-500">
-                                        <span>Kt: 01/12/2025</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-600">
-                                        Hết lượt
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button
-                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
-                                            title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[18px]">edit</span>
-                                        </button>
-                                        <button
-                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                                            title="Xoá">
-                                            <span class="material-symbols-outlined text-[18px]">delete</span>
-                                        </button>
                                     </div>
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
+                </div>
+                <div class="p-4 border-t border-gray-200 text-center text-gray-500 text-xs">
+                    (Pagination goes here)
                 </div>
             </div>
         </div>
 
         <script>
-            function toggleSortDropdown() {
-                const dropdown = document.getElementById('sortDropdown');
-                const icon = document.getElementById('sortDropdownIcon');
-                dropdown.classList.toggle('hidden');
-                if (dropdown.classList.contains('hidden')) {
-                    icon.style.transform = 'rotate(0deg)';
+            function toggleReply(btn) {
+                // Find the closest tr to the button
+                let tr = btn.closest('tr');
+
+                // If the button is inside the reply box (Cancel button), finding the closest tr just finds the reply row itself
+                if (tr.classList.contains('hidden') || tr.nextElementSibling?.classList.contains('hidden') === false && tr.nextElementSibling?.tagName === 'TR') {
+                    // It's the cancel button or the main button
+                }
+
+                // Logic: The reply row is always the *next* row after the comment row
+                let replyRow;
+                if (tr.nextElementSibling && tr.nextElementSibling.classList.contains('bg-gray-50/50')) {
+                    replyRow = tr.nextElementSibling;
                 } else {
-                    icon.style.transform = 'rotate(180deg)';
+                    // Might be the cancel button inside the reply row itself, so tr IS the reply row
+                    replyRow = tr;
+                }
+
+                if (replyRow) {
+                    replyRow.classList.toggle('hidden');
                 }
             }
-
-            function selectSort(value, label) {
-                document.getElementById('sortInput').value = value;
-                document.getElementById('sortFilterLabel').textContent = label;
-                document.getElementById('sortDropdown').classList.add('hidden');
-                document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
-            }
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (event) {
-                const dropdown = document.getElementById('sortDropdown');
-                const button = document.getElementById('sortFilterBtn');
-                const icon = document.getElementById('sortDropdownIcon');
-
-                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                    if (!dropdown.classList.contains('hidden')) {
-                        dropdown.classList.add('hidden');
-                        icon.style.transform = 'rotate(0deg)';
-                    }
-                }
-            });
 
             // Simple sort toggle function for headers
             function toggleSort(header) {

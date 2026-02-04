@@ -16,51 +16,122 @@
 						lý sản phẩm</h1>
 				</div>
 			</div>
+			<!-- Filter Section -->
 			<div
-				class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
-				<div
-					class="p-6 border-b border-slate-50 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-					<div class="flex flex-col sm:flex-row w-full md:w-auto gap-4 flex-1">
-						<div class="relative flex-1 max-w-sm group">
-							<span
-								class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
-							<input
-								class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400 font-body"
-								placeholder="Tìm kiếm tên sản phẩm..." type="text" />
-						</div>
-						<div class="flex gap-4">
-							<select
-								class="bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors">
-								<option>Danh mục: Tất cả</option>
-								<option>Laptop</option>
-								<option>Smartphone</option>
-								<option>Phụ kiện</option>
-							</select> <select
-								class="bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-2.5 pl-4 pr-10 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 cursor-pointer hover:bg-slate-100 transition-colors hidden sm:block">
-								<option>Trạng thái: Tất cả</option>
-								<option>Còn hàng</option>
-								<option>Hết hàng</option>
-							</select>
+				class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+				<!-- Search -->
+				<div class="flex-1 relative">
+					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+						<span class="material-symbols-outlined text-gray-400">search</span>
+					</div>
+					<input
+						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
+						placeholder="Tìm kiếm sản phẩm..." type="text" />
+				</div>
+
+				<!-- Sort Dropdown -->
+				<div class="w-full md:w-48 relative">
+					<input type="hidden" name="sort" id="sortInput" value="newest">
+					<button id="sortFilterBtn" onclick="toggleSortDropdown()"
+						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+						<span id="sortFilterLabel">Mới nhất</span>
+						<span id="sortDropdownIcon"
+							class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
+					</button>
+
+					<div id="sortDropdown"
+						class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+						<div class="p-1.5 space-y-0.5">
+							<div onclick="selectSort('newest', 'Mới nhất')"
+								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+								<span>Mới nhất</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div onclick="selectSort('price_asc', 'Giá tăng dần')"
+								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+								<span>Giá tăng dần</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div onclick="selectSort('price_desc', 'Giá giảm dần')"
+								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+								<span>Giá giảm dần</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
 						</div>
 					</div>
-					<a href="/admin/product-list/product-form">
-						<button
-							class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-primary/20 whitespace-nowrap">
-							<span class="material-symbols-outlined text-[20px]">add</span>
-							Thêm sản phẩm mới
-						</button>
-					</a>
 				</div>
+
+				<!-- Date Picker -->
+				<div class="w-full md:w-48 relative">
+					<input id="dateFilter"
+						class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+						placeholder="Chọn ngày" type="text" readonly="readonly" />
+					<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+						<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+					</div>
+				</div>
+
+				<!-- Add Button -->
+				<a href="/admin/product-list/product-form">
+					<button
+						class="flex items-center justify-center gap-2 bg-primary hover:bg-orange-700 text-white px-4 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg shadow-primary/20 whitespace-nowrap h-full w-full md:w-auto">
+						<span class="material-symbols-outlined text-[20px]">add</span>
+						Thêm mới
+					</button>
+				</a>
+			</div>
+
+			<div
+				class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+				<!-- Filter Section -->
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-sm whitespace-nowrap">
 						<thead
-							class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-bold font-display border-b border-slate-100">
+							class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-bold text-xs uppercase tracking-wider border-b border-gray-100 dark:border-gray-700">
 							<tr>
-								<th class="px-6 py-4">Sản phẩm</th>
-								<th class="px-6 py-4">Danh mục</th>
-								<th class="px-6 py-4">Giá bán</th>
-								<th class="px-6 py-4">Kho hàng</th>
-								<th class="px-6 py-4">Ngày tạo</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-between">
+										<span>Sản phẩm</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-between">
+										<span>Danh mục</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-between">
+										<span>Giá</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-between">
+										<span>Kho hàng</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-between">
+										<span>Ngày tạo</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
 								<th class="px-6 py-4 text-right">Hành động</th>
 							</tr>
 						</thead>
@@ -334,6 +405,159 @@
 					</div>
 				</div>
 			</div>
+
+			<script>
+				function toggleSortDropdown() {
+					const dropdown = document.getElementById('sortDropdown');
+					const icon = document.getElementById('sortDropdownIcon');
+					dropdown.classList.toggle('hidden');
+					if (dropdown.classList.contains('hidden')) {
+						icon.style.transform = 'rotate(0deg)';
+					} else {
+						icon.style.transform = 'rotate(180deg)';
+					}
+				}
+
+				function selectSort(value, label) {
+					document.getElementById('sortInput').value = value;
+					document.getElementById('sortFilterLabel').textContent = label;
+					document.getElementById('sortDropdown').classList.add('hidden');
+					document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
+				}
+
+				// Close dropdown when clicking outside
+				document.addEventListener('click', function (event) {
+					const dropdown = document.getElementById('sortDropdown');
+					const button = document.getElementById('sortFilterBtn');
+					const icon = document.getElementById('sortDropdownIcon');
+
+					if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+						if (!dropdown.classList.contains('hidden')) {
+							dropdown.classList.add('hidden');
+							icon.style.transform = 'rotate(0deg)';
+						}
+					}
+				}
+				});
+
+				// Simple sort toggle function for headers
+				function toggleSort(header) {
+					const icon = header.querySelector('.material-symbols-outlined');
+					if (icon) {
+						if (icon.textContent === 'unfold_more') {
+							icon.textContent = 'expand_less'; // Ascending
+							icon.classList.add('text-primary');
+							icon.classList.remove('text-gray-400');
+						} else if (icon.textContent === 'expand_less') {
+							icon.textContent = 'expand_more'; // Descending
+						} else {
+							icon.textContent = 'unfold_more'; // Reset
+							icon.classList.remove('text-primary');
+							icon.classList.add('text-gray-400');
+						}
+					}
+				}
+			</script>
+
+			<!-- Flatpickr JS -->
+			<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+			<script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+			<!-- Flatpickr CSS with custom overrides -->
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+			<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+			<style>
+				.flatpickr-calendar {
+					font-family: 'Inter', sans-serif !important;
+					border-radius: 12px !important;
+					margin-top: 8px !important;
+					/* Gap requested by user */
+					box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+				}
+
+				.dark .flatpickr-calendar {
+					background: #1e293b !important;
+					border: 1px solid #334155 !important;
+					box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+				}
+
+				.flatpickr-day.selected,
+				.flatpickr-day.startRange,
+				.flatpickr-day.endRange,
+				.flatpickr-day.selected.inRange,
+				.flatpickr-day.startRange.inRange,
+				.flatpickr-day.endRange.inRange,
+				.flatpickr-day.selected:focus,
+				.flatpickr-day.startRange:focus,
+				.flatpickr-day.endRange:focus,
+				.flatpickr-day.selected:hover,
+				.flatpickr-day.startRange:hover,
+				.flatpickr-day.endRange:hover,
+				.flatpickr-day.selected.prevMonthDay,
+				.flatpickr-day.startRange.prevMonthDay,
+				.flatpickr-day.endRange.prevMonthDay,
+				.flatpickr-day.selected.nextMonthDay,
+				.flatpickr-day.startRange.nextMonthDay,
+				.flatpickr-day.endRange.nextMonthDay {
+					background: #ea580c !important;
+					border-color: #ea580c !important;
+				}
+
+				.flatpickr-day.todays-date {
+					color: #ea580c !important;
+					border-color: #ea580c !important;
+				}
+
+				/* Custom Header Styling */
+				.flatpickr-current-month {
+					display: flex !important;
+					justify-content: space-between !important;
+					align-items: center !important;
+					width: 75% !important;
+					/* Ensure it fits between arrows */
+					left: 12.5% !important;
+					padding: 0 !important;
+				}
+
+				.flatpickr-monthDropdown-months {
+					text-align: left !important;
+					width: auto !important;
+					font-size: 14px !important;
+					/* Make it smaller */
+					margin-left: 0 !important;
+				}
+
+				.numInputWrapper {
+					width: auto !important;
+					margin-right: 0 !important;
+				}
+
+				.flatpickr-current-month input.cur-year {
+					font-size: 14px !important;
+					/* Make year smaller */
+					text-align: right !important;
+					padding: 0 !important;
+				}
+
+				.flatpickr-current-month .numInputWrapper span.arrowUp {
+					display: none;
+					/* Optional: cleaner look */
+				}
+
+				.flatpickr-current-month .numInputWrapper span.arrowDown {
+					display: none;
+					/* Optional: cleaner look */
+				}
+			</style>
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					flatpickr("#dateFilter", {
+						locale: "vn",
+						dateFormat: "d/m/Y",
+						maxDate: "today",
+						disableMobile: "true",
+					});
+				});
+			</script>
 		</div>
 	</div>
 </body>
