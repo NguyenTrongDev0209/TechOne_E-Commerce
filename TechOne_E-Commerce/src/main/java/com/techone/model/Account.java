@@ -1,13 +1,16 @@
 package com.techone.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 @Table(name = "accounts")
 public class Account {
 	@Id
@@ -38,7 +42,7 @@ public class Account {
 	public String email;
 	
 	@Column(columnDefinition = "varchar(255)")
-	@NotBlank(message = "Email không được để trống")
+	@NotBlank(message = "Password không được để trống")
 	public String password;
 	
 	@Column(columnDefinition = "varchar(255)")
@@ -57,4 +61,13 @@ public class Account {
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDate createAt = LocalDate.now();
 	//Lấy ngày tạo tài khoản là ngày hôm đó luôn
+	
+	@OneToMany(mappedBy = "account")
+	public List<Post> post;
+	
+	@OneToMany(mappedBy = "account")
+	public List<Comment> comment;
+	
+	@OneToMany(mappedBy = "account")
+	public List<Favourite> favourite;
 }
