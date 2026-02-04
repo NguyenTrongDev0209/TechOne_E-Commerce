@@ -107,6 +107,25 @@
                 <span>Sản phẩm</span>
             </a>
             <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'categories'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/category-manager}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">category</span>
+                <span>Danh mục</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'vouchers'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/voucher-list}">
+                <span
+                    class="material-symbols-outlined group-hover:text-primary transition-colors">confirmation_number</span>
+                <span>Phiếu giảm</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'posts'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/post-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">article</span>
+                <span>Bài viết</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
                 th:classappend="${menuItem == 'customers'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
                 th:href="@{/admin/customer-list}">
                 <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>

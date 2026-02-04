@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title='Quản lý bài viết', menuItem='posts', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Quản lý bài viết</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Kiểm duyệt và quản lý các bài viết trên
+                        hệ thống</p>
+                </div>
+                <!-- Not strictly necessary for admin to create posts if creators do it, but good to have control -->
+                <button
+                    class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-orange-900/20">
+                    <span class="material-symbols-outlined text-[20px]">post_add</span>
+                    Viết bài mới
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">article</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tổng bài viết</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">142</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">hourglass_top</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Chờ duyệt</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">5</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Lượt xem tuần</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">12.5k</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">flag</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Báo cáo</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">2</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Card -->
+            <div
+                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <!-- Toolbox -->
+                <div
+                    class="p-5 border-b border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gray-50/50">
+                    <div class="relative max-w-sm w-full">
+                        <span
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 material-symbols-outlined text-[20px]">search</span>
+                        <input type="text" placeholder="Tìm kiếm bài viết, tác giả..."
+                            class="w-full pl-10 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                    </div>
+                    <div class="flex gap-2">
+                        <select
+                            class="bg-white border border-gray-200 text-gray-600 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
+                            <option>Tất cả danh mục</option>
+                            <option>Tin tức</option>
+                            <option>Review sản phẩm</option>
+                            <option>Thủ thuật</option>
+                        </select>
+                        <select
+                            class="bg-white border border-gray-200 text-gray-600 text-sm rounded-lg focus:ring-primary focus:border-primary block p-2">
+                            <option>Tất cả trạng thái</option>
+                            <option>Đã xuất bản</option>
+                            <option>Chờ duyệt</option>
+                            <option>Bản nháp</option>
+                        </select>
+                        <button
+                            class="p-2 text-gray-500 hover:bg-white hover:text-primary rounded-lg border border-transparent hover:border-gray-200 transition-all">
+                            <span class="material-symbols-outlined">filter_list</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead
+                            class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 w-12">
+                                    <input type="checkbox"
+                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
+                                </th>
+                                <th class="px-6 py-4">Bài viết</th>
+                                <th class="px-6 py-4">Tác giả</th>
+                                <th class="px-6 py-4">Trạng thái</th>
+                                <th class="px-6 py-4">Ngày đăng</th>
+                                <th class="px-6 py-4">Thống kê</th>
+                                <th class="px-6 py-4 text-right">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                            <!-- Post 1 -->
+                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox"
+                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-4">
+                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                            style="background-image: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
+                                        </div>
+                                        <div class="flex-1 min-w-0 max-w-xs">
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                                title="Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng">
+                                                Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng
+                                            </h4>
+                                            <span
+                                                class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded mt-1 inline-block">Review
+                                                sản phẩm</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8FHt1FUWoRj9MGyLY3D3ro2we4i860ngy0vNcGvoDjbpJbMj3hf031XjqaUzkR4krsLWvHwMSXUGCH5So5brGJZx5zGT7m0Np6VelWcTk3R8bxVgoZeotvdUv09gXebqXq7IO2oUILh1PKfbP8h2BGyVdkn-JVFUrdU1_laVWpk9d__bYhBeQVcp8mVLHYlN-gmGsoAUGT_jtLZ-BScEEOQeEpW8p4WI5WIvVALfTwxupUrYpW6l7RdyIU3CD9eq6mHjyKMA4hv0')">
+                                        </div>
+                                        <span class="text-sm text-gray-600">Nguyễn Văn A</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Đã xuất bản
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex flex-col text-xs">
+                                        <span>20/12/2025</span>
+                                        <span>14:30</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <div class="flex items-center gap-1" title="Lượt xem">
+                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
+                                            1.2k
+                                        </div>
+                                        <div class="flex items-center gap-1" title="Bình luận">
+                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                            45
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                            title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            title="Xoá">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Post 2 -->
+                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox"
+                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-4">
+                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                            style="background-image: url('https://images.unsplash.com/photo-1550745165-90c231f428a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
+                                        </div>
+                                        <div class="flex-1 min-w-0 max-w-xs">
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                                title="Top 10 phụ kiện không thể thiếu cho Gamer">
+                                                Top 10 phụ kiện không thể thiếu cho Gamer
+                                            </h4>
+                                            <span
+                                                class="text-xs text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded mt-1 inline-block">Thủ
+                                                thuật</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdkfN4nVccJmULTdGrg5fbuq11izECHlxlbluxLfI4akg1jyLAXjn8DK5Gwcned5q0PtaYyqMEiqLPOnJw-8ANbrilKfGp1pSsKQU3Ddx7uJP7EndMgToiuRRQ2qTze_2E6KIntlADK5CnHYTHVOBfUXB727yBe8bQndhLzEHNqF0a28CLuFLi57ht7LAaobf1DbxgGt4Tpat48zeg7S-SPMHr0SycYXJSmCpD9vGUt7wY7RqX06c8GLLQyPLI0FLcQAZTUi4gZJM')">
+                                        </div>
+                                        <span class="text-sm text-gray-600">Trần Thị B</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+                                        Chờ duyệt
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex flex-col text-xs">
+                                        <span>25/12/2025</span>
+                                        <span>09:15</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <div class="flex items-center gap-1" title="Lượt xem">
+                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
+                                            0
+                                        </div>
+                                        <div class="flex items-center gap-1" title="Bình luận">
+                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                            0
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="p-1.5 text-white bg-green-500 hover:bg-green-600 rounded transition-colors shadow-sm"
+                                            title="Duyệt bài">
+                                            <span class="material-symbols-outlined text-[18px]">check</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                            title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            title="Xoá">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                    <span class="text-sm text-gray-500">Hiển thị 1-2 trên 142 bài viết</span>
+                    <div class="flex gap-2">
+                        <button
+                            class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50">Previous</button>
+                        <button class="px-3 py-1 text-sm bg-primary text-white rounded hover:bg-orange-700">1</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
