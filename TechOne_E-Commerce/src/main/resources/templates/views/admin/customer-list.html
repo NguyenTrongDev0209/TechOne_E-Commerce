@@ -18,54 +18,60 @@
 						sử mua hàng của khách.</p>
 				</div>
 				<div class="flex items-center gap-3">
-					<div
-						class="bg-white px-4 py-2 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-2 text-sm font-semibold text-gray-600 dark:text-gray-300">
-						<span class="w-2 h-2 bg-green-500 rounded-full"></span> <span>2,450
-							Total</span>
-					</div>
+					<button
+						class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-orange-900/20">
+						<span class="material-symbols-outlined text-[20px]">add</span>
+						Thêm khách hàng
+					</button>
 				</div>
 			</div>
 			<!-- Filter Section -->
 			<div
-				class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+				class="bg-white rounded-md p-4 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-end mb-6 relative z-20 overflow-visible">
 				<!-- Search -->
 				<div class="flex-1 relative">
 					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 						<span class="material-symbols-outlined text-gray-400">search</span>
 					</div>
 					<input
-						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
+						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded bg-gray-50 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
 						placeholder="Tìm kiếm khách hàng..." type="text" />
 				</div>
 
-				<!-- Sort Dropdown -->
-				<div class="w-full md:w-48 relative">
-					<input type="hidden" name="sort" id="sortInput" value="newest">
-					<button id="sortFilterBtn" onclick="toggleSortDropdown()"
-						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-						<span id="sortFilterLabel">Mới nhất</span>
-						<span id="sortDropdownIcon"
+				<!-- Group Dropdown -->
+				<div class="w-full md:w-48 relative z-30">
+					<input type="hidden" name="group" id="groupInput" value="all">
+					<button id="groupFilterBtn"
+						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 rounded bg-white text-gray-700 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+						<span id="groupFilterLabel">Tất cả nhóm</span>
+						<span id="groupDropdownIcon"
 							class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
 					</button>
 
-					<div id="sortDropdown"
-						class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+					<div id="groupDropdown"
+						class="hidden absolute right-0 top-full mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
 						<div class="p-1.5 space-y-0.5">
-							<div onclick="selectSort('newest', 'Mới nhất')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Mới nhất</span>
+							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="all" data-label="Tất cả">
+								<span>Tất cả</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
-							<div onclick="selectSort('spending_desc', 'Chi tiêu cao')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Chi tiêu cao</span>
+							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="vip_platinum" data-label="VIP Platinum">
+								<span>VIP Platinum</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
-							<div onclick="selectSort('vip', 'Nhóm VIP')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Nhóm VIP</span>
+							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="vip_gold" data-label="VIP Gold">
+								<span>VIP Gold</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="new" data-label="Khách mới">
+								<span>Khách mới</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
@@ -73,22 +79,32 @@
 					</div>
 				</div>
 
-				<!-- Date Picker -->
-				<div class="w-full md:w-48 relative">
-					<input id="dateFilter"
-						class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
-						placeholder="Chọn ngày" type="text" readonly="readonly" />
-					<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-						<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+				<!-- Date Filters -->
+				<div class="relative w-full md:w-48">
+					<div class="relative">
+						<input id="dateFrom"
+							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+							placeholder="Từ ngày" type="text" readonly="readonly" />
+						<div
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+						</div>
 					</div>
 				</div>
-
-				<!-- Add Button -->
-				<button
-					class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0 h-full">
-					<span class="material-symbols-outlined text-[20px]">add</span>
-					Thêm mới
-				</button>
+				<div class="hidden md:flex items-center justify-center pb-2 text-gray-400">
+					<span>-</span>
+				</div>
+				<div class="relative w-full md:w-48">
+					<div class="relative">
+						<input id="dateTo"
+							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+							placeholder="Đến ngày" type="text" readonly="readonly" />
+						<div
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div
@@ -97,9 +113,9 @@
 				<div class="overflow-x-auto">
 					<table class="w-full text-left border-collapse whitespace-nowrap">
 						<thead
-							class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs uppercase font-bold tracking-wider border-b border-gray-100 dark:border-gray-700">
+							class="bg-white text-slate-500 font-semibold border-b border-slate-100 text-xs uppercase tracking-wider">
 							<tr>
-								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-between">
 										<span>Khách hàng</span>
@@ -107,7 +123,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-between">
 										<span>Số điện thoại</span>
@@ -115,7 +131,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-between">
 										<span>Nhóm khách hàng</span>
@@ -123,7 +139,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-between">
 										<span>Tổng chi tiêu</span>
@@ -131,7 +147,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 text-center cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-center gap-2">
 										<span>Đơn hàng</span>
@@ -139,7 +155,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors group"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-between">
 										<span>Ngày đăng ký</span>
@@ -147,7 +163,7 @@
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
 									</div>
 								</th>
-								<th class="px-6 py-4 text-right">Hành động</th>
+								<th class="px-6 py-5 text-right">Hành động</th>
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
@@ -378,7 +394,7 @@
 					class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
 					<div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
 						Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến <span
-							class="font-medium text-gray-900 dark:text-white">5</span> trong tổng số <span
+							class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số <span
 							class="font-medium text-gray-900 dark:text-white">2,450</span> khách hàng
 					</div>
 
@@ -389,14 +405,14 @@
 							<!-- Custom Pagination Dropdown -->
 							<div class="relative">
 								<button onclick="togglePaginationDropdown()" id="paginationDropdownBtn"
-									class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
+									class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
 									<span id="itemsPerPageLabel">10</span>
 									<span id="paginationDropdownIcon"
 										class="material-symbols-outlined text-gray-400 text-[16px] transition-transform duration-200">expand_more</span>
 								</button>
 
 								<div id="paginationDropdown"
-									class="hidden absolute top-full mt-1 left-0 w-full min-w-[56px] bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+									class="hidden absolute top-full mt-1 left-0 w-full min-w-[56px] bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
 									<div class="p-1 space-y-0.5">
 										<div onclick="selectItemsPerPage('10')"
 											class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
@@ -419,7 +435,7 @@
 
 						<nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
 							<button
-								class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+								class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
 								<span class="material-symbols-outlined text-[16px]">chevron_left</span>
 							</button>
 							<button aria-current="page"
@@ -428,16 +444,6 @@
 							</button>
 							<button
 								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
-								2
-							</button>
-							<button
-								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
-								3
-							</button>
-							<span
-								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-							<button
-								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
 								<span class="material-symbols-outlined text-[16px]">chevron_right</span>
 							</button>
 						</nav>
@@ -445,34 +451,90 @@
 				</div>
 
 				<script>
+					// Dropdown Helpers
+					function setupDropdown(btnId, dropdownId, iconId) {
+						const btn = document.getElementById(btnId);
+						const dropdown = document.getElementById(dropdownId);
+						const icon = document.getElementById(iconId);
+
+						if (btn && dropdown) {
+							btn.addEventListener('click', function (e) {
+								e.stopPropagation();
+								// Close other dropdowns
+								const isHidden = dropdown.classList.contains('hidden');
+								if (isHidden) {
+									dropdown.classList.remove('hidden');
+									if (icon) icon.style.transform = 'rotate(180deg)';
+								} else {
+									dropdown.classList.add('hidden');
+									if (icon) icon.style.transform = 'rotate(0deg)';
+								}
+							});
+						}
+					}
+
+					function setupSelection(dropdownId, itemClass, callback) {
+						const dropdown = document.getElementById(dropdownId);
+						if (!dropdown) return;
+
+						const items = dropdown.querySelectorAll('.' + itemClass);
+						items.forEach(item => {
+							item.addEventListener('click', function (e) {
+								e.stopPropagation();
+								// Reset checks
+								items.forEach(i => {
+									const check = i.querySelector('.material-symbols-outlined');
+									if (check) check.classList.add('opacity-0');
+								});
+								// Set check
+								const check = this.querySelector('.material-symbols-outlined');
+								if (check) check.classList.remove('opacity-0');
+
+								const value = this.getAttribute('data-value');
+								const label = this.getAttribute('data-label');
+
+								if (callback) callback(value, label);
+
+								// Close dropdown
+								dropdown.classList.add('hidden');
+								const iconId = dropdownId + 'Icon';
+								const icon = document.getElementById(iconId);
+								if (icon) icon.style.transform = 'rotate(0deg)';
+							});
+						});
+					}
+
+					// Pagination Logic
 					function togglePaginationDropdown() {
 						const dropdown = document.getElementById('paginationDropdown');
 						const icon = document.getElementById('paginationDropdownIcon');
-
-						if (dropdown.classList.contains('hidden')) {
-							dropdown.classList.remove('hidden');
-							icon.style.transform = 'rotate(180deg)';
-						} else {
-							dropdown.classList.add('hidden');
-							icon.style.transform = 'rotate(0deg)';
-						}
+						document.getElementById('paginationDropdownBtn').click();
 					}
 
 					function selectItemsPerPage(value) {
 						document.getElementById('itemsPerPageLabel').textContent = value;
-						togglePaginationDropdown();
-						// Add logic here to reload page or update query param
-						console.log('Selected items per page:', value);
+						const dropdown = document.getElementById('paginationDropdown');
+						dropdown.classList.add('hidden');
+						const icon = document.getElementById('paginationDropdownIcon');
+						if (icon) icon.style.transform = 'rotate(0deg)';
 					}
 
-					// Close dropdown when clicking outside
+					// Global Click to Close
 					document.addEventListener('click', function (event) {
-						const dropdown = document.getElementById('paginationDropdown');
-						const button = document.getElementById('paginationDropdownBtn');
+						const dropdowns = [
+							{ id: 'groupDropdown', btn: 'groupFilterBtn', icon: 'groupDropdownIcon' },
+							{ id: 'paginationDropdown', btn: 'paginationDropdownBtn', icon: 'paginationDropdownIcon' }
+						];
 
-						if (!dropdown.classList.contains('hidden') && !button.contains(event.target) && !dropdown.contains(event.target)) {
-							togglePaginationDropdown();
-						}
+						dropdowns.forEach(d => {
+							const el = document.getElementById(d.id);
+							const btn = document.getElementById(d.btn);
+							const icon = document.getElementById(d.icon);
+							if (el && !el.classList.contains('hidden') && !el.contains(event.target) && !btn.contains(event.target)) {
+								el.classList.add('hidden');
+								if (icon) icon.style.transform = 'rotate(0deg)';
+							}
+						});
 					});
 
 					// Simple sort toggle function for headers
@@ -492,43 +554,19 @@
 							}
 						}
 					}
+
+					// Initialize
+					document.addEventListener('DOMContentLoaded', function () {
+						setupDropdown('groupFilterBtn', 'groupDropdown', 'groupDropdownIcon');
+
+						setupSelection('groupDropdown', 'select-group-item', function (value, label) {
+							document.getElementById('groupInput').value = value;
+							document.getElementById('groupFilterLabel').textContent = label;
+						});
+					});
 				</script>
 			</div>
 			<div class="h-8"></div>
-
-			<script>
-				function toggleSortDropdown() {
-					const dropdown = document.getElementById('sortDropdown');
-					const icon = document.getElementById('sortDropdownIcon');
-					dropdown.classList.toggle('hidden');
-					if (dropdown.classList.contains('hidden')) {
-						icon.style.transform = 'rotate(0deg)';
-					} else {
-						icon.style.transform = 'rotate(180deg)';
-					}
-				}
-
-				function selectSort(value, label) {
-					document.getElementById('sortInput').value = value;
-					document.getElementById('sortFilterLabel').textContent = label;
-					document.getElementById('sortDropdown').classList.add('hidden');
-					document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
-				}
-
-				// Close dropdown when clicking outside
-				document.addEventListener('click', function (event) {
-					const dropdown = document.getElementById('sortDropdown');
-					const button = document.getElementById('sortFilterBtn');
-					const icon = document.getElementById('sortDropdownIcon');
-
-					if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-						if (!dropdown.classList.contains('hidden')) {
-							dropdown.classList.add('hidden');
-							icon.style.transform = 'rotate(0deg)';
-						}
-					}
-				});
-			</script>
 
 			<!-- Flatpickr JS -->
 			<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -621,7 +659,13 @@
 			</style>
 			<script>
 				document.addEventListener('DOMContentLoaded', function () {
-					flatpickr("#dateFilter", {
+					flatpickr("#dateFrom", {
+						locale: "vn",
+						dateFormat: "d/m/Y",
+						maxDate: "today",
+						disableMobile: "true",
+					});
+					flatpickr("#dateTo", {
 						locale: "vn",
 						dateFormat: "d/m/Y",
 						maxDate: "today",
