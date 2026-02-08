@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html th:fragment="view(title, menuItem, content, subMenuItem)" class="light" lang="vi"
+    xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="${title}">Admin TechShop</title>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // ĐỔI MÀU CHÍNH TẠI ĐÂY:
+                        "primary": "#ea580c",       /* Orange 600 - Cam đậm chủ đạo */
+                        "primary-hover": "#c2410c", /* Orange 700 - Hover đậm hơn */
+                        "accent": "#dc2626",        /* Red 600 - Đỏ cho sale/hot (tương phản với cam) */
+                        "accent-hover": "#b91c1c",  /* Red 700 */
+
+                        // Màu nền mát mẻ
+                        "background-light": "#f8fafc", /* Slate 50 - Trắng ánh xanh cực nhẹ */
+                        "background-dark": "#0f172a",  /* Slate 900 */
+                        "text-main": "#334155",        /* Slate 700 - Chữ màu xám xanh (sang hơn đen tuyền) */
+                        "text-secondary": "#64748b",   /* Slate 500 */
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "2xl": "2rem" },
+                    boxShadow: { 'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)' }
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Thêm các CSS custom như .conic-chart ở đây */
+        .conic-chart {
+            background: conic-gradient(#ff4400 0% 40%, #ff8844 40% 65%, #22c55e 65% 85%, #e5e7eb 85% 100%);
+            border-radius: 50%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+    </style>
+    <style>
+        /* Custom Scrollbar for Admin - overrides/additions to head_css if needed */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light text-slate-800 font-display antialiased overflow-hidden h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-surface-light border-r border-slate-100 flex-col hidden lg:flex h-full z-20 shadow-soft">
+        <div class="h-16 flex items-center justify-center px-6 border-b border-slate-50">
+            <a href="/admin/dashboard" class="flex items-center gap-3">
+                <img src="/images/TechOne_Logo.png" alt="TechShop Logo" class="h-8 w-auto object-contain" />
+            </a>
+        </div>
+        <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1">
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors"
+                th:classappend="${menuItem == 'dashboard'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/dashboard}">
+                <span class="material-symbols-outlined filled">grid_view</span>
+                <span>Tổng quan</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'orders'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/order-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">shopping_bag</span>
+                <span>Đơn hàng</span>
+                <span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">18</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'products'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/product-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">inventory_2</span>
+                <span>Sản phẩm</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'categories'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/category-manager}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">category</span>
+                <span>Danh mục</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'vouchers'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/voucher-list}">
+                <span
+                    class="material-symbols-outlined group-hover:text-primary transition-colors">confirmation_number</span>
+                <span>Phiếu giảm</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'events'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/event-manager}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">event_note</span>
+                <span>Sự kiện</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'posts'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/post-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">post</span>
+                <span>Bài viết</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'customers'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/customer-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">group</span>
+                <span>Khách hàng</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'comments'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/comment-list}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">reviews</span>
+                <span>Bình luận</span>
+            </a>
+            <!-- Settings Menu with Sub-items -->
+            <div class="space-y-1">
+                <button type="button"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg font-medium transition-colors group cursor-pointer"
+                    th:classappend="${menuItem == 'settings'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                    onclick="const menu = document.getElementById('settings-submenu'); const chev = document.getElementById('settings-chevron'); menu.classList.toggle('hidden'); chev.classList.toggle('rotate-180');">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+                        <span>Cấu hình</span>
+                    </div>
+                    <span id="settings-chevron"
+                        class="material-symbols-outlined text-[20px] transition-transform duration-200"
+                        th:classappend="${menuItem == 'settings'} ? 'rotate-180' : ''">expand_more</span>
+                </button>
+
+                <div id="settings-submenu" class="space-y-1 pl-3 overflow-hidden transition-all"
+                    th:classappend="${menuItem == 'settings'} ? '' : 'hidden'">
+
+                    <!-- Cấu hình chung -->
+                    <a th:href="@{/admin/setting}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'general'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">tune</span>
+                        <span>Cấu hình chung</span>
+                    </a>
+
+                    <!-- Cấu hình thanh toán -->
+                    <a th:href="@{/admin/setting/setting-payment}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'payment'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">payments</span>
+                        <span>Thanh toán</span>
+                    </a>
+
+                    <!-- Cấu hình vận chuyển -->
+                    <a th:href="@{/admin/setting/setting-shipment}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                        th:classappend="${subMenuItem == 'shipment'} ? 'text-primary bg-primary/5' : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'">
+                        <span class="material-symbols-outlined text-[18px]">local_shipping</span>
+                        <span>Vận chuyển</span>
+                    </a>
+
+                    <!-- Email & SMS -->
+                    <a th:href="@{/admin/setting#email-sms}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-500 hover:bg-slate-50 hover:text-slate-900">
+                        <span class="material-symbols-outlined text-[18px]">mail</span>
+                        <span>Email & SMS</span>
+                    </a>
+
+                    <!-- Mạng xã hội -->
+                    <a th:href="@{/admin/setting#social}"
+                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-slate-500 hover:bg-slate-50 hover:text-slate-900">
+                        <span class="material-symbols-outlined text-[18px]">share</span>
+                        <span>Mạng xã hội</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-slate-50">
+            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
+                <div class="w-10 h-10 rounded-full bg-cover bg-center ring-2 ring-primary/20"
+                    data-alt="Administrator portrait"
+                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQ9z6g2SfMoqJ-Ax0X0K0ve3Cxoh7zkyktFIfKLo0IhWq5zGIdungKkkg3f0OylhG-qL8VGm_mtefrgyGQKmozkvo1vL0fvlruRaLsQ-pXpabjrWsO91v22qytTeGmRDhAwEQVw13lQZGkmfGHuKWxOy87uYb3Sfu6uxNwxHkb_plPGx8VD5f6TIHY1I2_-wG-S5K-PiuaCUZlzmn_i_Ncbs69Fa_UU0orEfQoJHlZhxZGLnsnG8NzH5l4XzgAN6-Mt7swKrNfgPw')">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-slate-900 truncate">Admin TechShop</p>
+                    <p class="text-xs text-slate-500 truncate">admin@techshop.vn</p>
+                </div>
+                <span class="material-symbols-outlined text-slate-400">expand_more</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <!-- Header -->
+        <header
+            class="h-16 bg-surface-light/80 backdrop-blur-md border-b border-slate-100 flex items-center justify-between px-6 sticky top-0 z-10">
+            <button class="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="flex-1 max-w-lg hidden md:block ml-4">
+                <div class="relative group">
+                    <span
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors material-symbols-outlined text-[20px]">search</span>
+                    <input
+                        class="w-full bg-slate-100 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all placeholder:text-slate-400"
+                        placeholder="Tìm kiếm đơn hàng, sản phẩm..." type="text" />
+                </div>
+            </div>
+            <div class="flex items-center gap-4 ml-auto">
+                <button
+                    class="relative p-2 text-slate-500 hover:bg-slate-50 rounded-xl hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white"></span>
+                </button>
+                <div class="h-8 w-px bg-slate-200 mx-1"></div>
+                <button
+                    class="flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
+                    <span class="material-symbols-outlined">help</span>
+                    <span class="hidden sm:inline">Trợ giúp</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto bg-background-light p-4 md:p-8 scroll-smooth" th:insert="${content}"></main>
+    </div>
+</body>
+
+</html>

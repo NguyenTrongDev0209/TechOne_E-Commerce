@@ -8,6 +8,6 @@ public class ErrorController {
 	
 	@GetMapping("/error-page")
 	public String showError() {
-		return "fragments/client/error";
+		return "views/client/error";
 	}
 }

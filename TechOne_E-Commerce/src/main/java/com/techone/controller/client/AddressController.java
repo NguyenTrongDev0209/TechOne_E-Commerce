@@ -8,6 +8,6 @@ public class AddressController {
 	
 	@GetMapping("/account/address")
 	public String showAddress() {
-		return "fragments/client/address";
+		return "views/client/address";
 	}
 }

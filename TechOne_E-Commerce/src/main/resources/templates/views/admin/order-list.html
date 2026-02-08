@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layouts/layout-admin :: view(title='TechShop Admin - Quản Lý Đơn Hàng', menuItem='orders', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+	<div id="main-content">
+		<div class="max-w-7xl mx-auto space-y-6">
+			<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-2">
+				<div>
+					<h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Quản
+						lý Đơn hàng</h1>
+					<p class="text-slate-500 font-body text-sm mt-1">Danh sách và
+						trạng thái các đơn hàng trong hệ thống</p>
+				</div>
+			</div>
+
+			<div
+				class="bg-white rounded-md p-4 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-end mb-6 relative z-20 overflow-visible">
+				<!-- Search -->
+				<div class="flex-1 relative">
+					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+						<span class="material-symbols-outlined text-gray-400">search</span>
+					</div>
+					<input
+						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded bg-gray-50 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
+						placeholder="Tìm kiếm..." type="text" />
+				</div>
+
+				<!-- Status Dropdown -->
+				<div class="w-full md:w-48 relative z-30">
+					<input type="hidden" name="status" id="statusInput" value="all">
+					<button id="statusFilterBtn"
+						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 rounded bg-white text-gray-700 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+						<span id="statusFilterLabel">Tất cả trang thái</span>
+						<span id="statusDropdownIcon"
+							class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
+					</button>
+
+					<div id="statusDropdown"
+						class="hidden absolute right-0 top-full mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+						<div class="p-1.5 space-y-0.5">
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="all" data-label="Tất cả">
+								<span>Tất cả</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="pending" data-label="Chờ xử lý">
+								<span>Chờ xử lý</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="shipping" data-label="Đang giao">
+								<span>Đang giao</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="completed" data-label="Hoàn thành">
+								<span>Hoàn thành</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="cancelled" data-label="Đã hủy">
+								<span>Đã hủy</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Date Filters -->
+				<div class="relative w-full md:w-48">
+					<div class="relative">
+						<input id="dateFrom"
+							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+							placeholder="Từ ngày" type="text" readonly="readonly" />
+						<div
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+						</div>
+					</div>
+				</div>
+				<div class="hidden md:flex items-center justify-center pb-2 text-gray-400">
+					<span>-</span>
+				</div>
+				<div class="relative w-full md:w-48">
+					<div class="relative">
+						<input id="dateTo"
+							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+							placeholder="Đến ngày" type="text" readonly="readonly" />
+						<div
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div
+				class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col h-full">
+				<div class="overflow-x-auto">
+					<table class="w-full text-left text-sm whitespace-nowrap">
+						<thead
+							class="bg-white text-slate-500 font-semibold border-b border-slate-100 text-xs uppercase tracking-wider">
+							<tr>
+								<th class="px-6 py-5 text-center">STT</th>
+								<th class="px-6 py-5 w-[180px] cursor-pointer hover:bg-gray-50 transition-colors select-none group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
+										<span>Mã đơn</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-5 cursor-pointer hover:bg-gray-50 transition-colors select-none group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
+										<span>Khách hàng</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-5 w-[150px] cursor-pointer hover:bg-gray-50 transition-colors select-none group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
+										<span>Ngày đặt</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-5 w-[180px] cursor-pointer hover:bg-gray-50 transition-colors select-none group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
+										<span>Tổng tiền</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-5 w-[150px] cursor-pointer hover:bg-gray-50 transition-colors select-none group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
+										<span>Trạng thái</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-5 w-[100px] text-center">Hành động</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-100 bg-white">
+							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-slate-500 text-center">1</td>
+								<td class="px-6 py-4"><a
+										class="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+										href="/admin/order-list/order-detail">#ORD-7782</a></td>
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-3">
+										<div class="w-8 h-8 rounded-full bg-cover bg-center border border-slate-100"
+											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8FHt1FUWoRj9MGyLY3D3ro2we4i860ngy0vNcGvoDjbpJbMj3hf031XjqaUzkR4krsLWvHwMSXUGCH5So5brGJZx5zGT7m0Np6VelWcTk3R8bxVgoZeotvdUv09gXebqXq7IO2oUILh1PKfbP8h2BGyVdkn-JVFUrdU1_laVWpk9d__bYhBeQVcp8mVLHYlN-gmGsoAUGT_jtLZ-BScEEOQeEpW8p4WI5WIvVALfTwxupUrYpW6l7RdyIU3CD9eq6mHjyKMA4hv0')">
+										</div>
+										<div class="flex flex-col">
+											<span class="font-bold text-slate-900">Nguyễn Văn A</span> <span
+												class="text-xs text-slate-500">nguyenvana@gmail.com</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-slate-600 font-medium text-center">25/12/2025
+									- 14:30</td>
+								<td class="px-6 py-4 font-bold text-primary">15.490.000đ</td>
+								<td class="px-6 py-4 text-center"><span
+										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+										Hoàn thành
+									</span></td>
+								<td class="px-6 py-4 text-center">
+									<div class="flex items-center justify-center gap-2">
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+											title="Xem chi tiết">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+												<circle cx="12" cy="12" r="3"></circle>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-orange-50 transition-colors"
+											title="Cập nhật">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+												</path>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+											title="In hóa đơn">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<polyline points="6 9 6 2 18 2 18 9"></polyline>
+												<path
+													d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+												</path>
+												<rect height="8" width="12" x="6" y="14"></rect>
+											</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-slate-500 text-center">2</td>
+								<td class="px-6 py-4"><a
+										class="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+										href="#">#ORD-7783</a></td>
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-3">
+										<div class="w-8 h-8 rounded-full bg-cover bg-center border border-slate-100"
+											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdkfN4nVccJmULTdGrg5fbuq11izECHlxlbluxLfI4akg1jyLAXjn8DK5Gwcned5q0PtaYyqMEiqLPOnJw-8ANbrilKfGp1pSsKQU3Ddx7uJP7EndMgToiuRRQ2qTze_2E6KIntlADK5CnHYTHVOBfUXB727yBe8bQndhLzEHNqF0a28CLuFLi57ht7LAaobf1DbxgGt4Tpat48zeg7S-SPMHr0SycYXJSmCpD9vGUt7wY7RqX06c8GLLQyPLI0FLcQAZTUi4gZJM')">
+										</div>
+										<div class="flex flex-col">
+											<span class="font-bold text-slate-900">Trần Thị B</span> <span
+												class="text-xs text-slate-500">tranthib@gmail.com</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-slate-600 font-medium text-center">25/12/2025
+									- 13:15</td>
+								<td class="px-6 py-4 font-bold text-primary">2.100.000đ</td>
+								<td class="px-6 py-4 text-center"><span
+										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+										Đang giao
+									</span></td>
+								<td class="px-6 py-4 text-center">
+									<div class="flex items-center justify-center gap-2">
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+												<circle cx="12" cy="12" r="3"></circle>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-orange-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+												</path>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<polyline points="6 9 6 2 18 2 18 9"></polyline>
+												<path
+													d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+												</path>
+												<rect height="8" width="12" x="6" y="14"></rect>
+											</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-slate-500 text-center">3</td>
+								<td class="px-6 py-4"><a
+										class="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+										href="#">#ORD-7784</a></td>
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-3">
+										<div
+											class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold border border-indigo-200">
+											LC</div>
+										<div class="flex flex-col">
+											<span class="font-bold text-slate-900">Lê Cường</span> <span
+												class="text-xs text-slate-500">lecuong99@gmail.com</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-slate-600 font-medium text-center">25/12/2025
+									- 11:45</td>
+								<td class="px-6 py-4 font-bold text-primary">850.000đ</td>
+								<td class="px-6 py-4 text-center"><span
+										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+										Chờ xử lý
+									</span></td>
+								<td class="px-6 py-4 text-center">
+									<div class="flex items-center justify-center gap-2">
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+												<circle cx="12" cy="12" r="3"></circle>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-orange-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+												</path>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<polyline points="6 9 6 2 18 2 18 9"></polyline>
+												<path
+													d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+												</path>
+												<rect height="8" width="12" x="6" y="14"></rect>
+											</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-slate-500 text-center">4</td>
+								<td class="px-6 py-4"><a
+										class="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+										href="#">#ORD-7785</a></td>
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-3">
+										<div class="w-8 h-8 rounded-full bg-cover bg-center border border-slate-100"
+											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBh3pGKJoZPWC5h7RvFkd4T2GyTkegeXjgV5FSEBPahMt67_JjWOV6HbP55G_Wk3mlOpd0H6AdU_m7sdbI4m9avHn7bh6KuP_s_m5MszyjNOmr8YxWUe3yO62P2YJksSp4rngbc2A4Qk_A-lh8PLjmwd3xAoTfOxd2_SkL8-v8I__O2FdRcZbMZHhVfdwpazaEy5VUcFvKjGQW-TVCpyrR-10vE-XFXNWEXD9php65m6n9hVIsYQ6C9ywEs81uyU4VhAg-VoRYgPHA')">
+										</div>
+										<div class="flex flex-col">
+											<span class="font-bold text-slate-900">Phạm Hùng</span> <span
+												class="text-xs text-slate-500">hungpham@gmail.com</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-slate-600 font-medium text-center">24/12/2025
+									- 09:12</td>
+								<td class="px-6 py-4 font-bold text-primary">32.990.000đ</td>
+								<td class="px-6 py-4 text-center"><span
+										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+										<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+										Đã hủy
+									</span></td>
+								<td class="px-6 py-4 text-center">
+									<div class="flex items-center justify-center gap-2">
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+												<circle cx="12" cy="12" r="3"></circle>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-orange-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+												</path>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<polyline points="6 9 6 2 18 2 18 9"></polyline>
+												<path
+													d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+												</path>
+												<rect height="8" width="12" x="6" y="14"></rect>
+											</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-slate-500 text-center">5</td>
+								<td class="px-6 py-4"><a
+										class="font-bold text-blue-600 hover:text-blue-700 hover:underline"
+										href="#">#ORD-7786</a></td>
+								<td class="px-6 py-4">
+									<div class="flex items-center gap-3">
+										<div
+											class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-bold border border-pink-200">
+											HM</div>
+										<div class="flex flex-col">
+											<span class="font-bold text-slate-900">Hoàng Mai</span> <span
+												class="text-xs text-slate-500">maihoang@gmail.com</span>
+										</div>
+									</div>
+								</td>
+								<td class="px-6 py-4 text-slate-600 font-medium text-center">24/12/2025
+									- 08:30</td>
+								<td class="px-6 py-4 font-bold text-primary">5.200.000đ</td>
+								<td class="px-6 py-4 text-center"><span
+										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+										Chờ xử lý
+									</span></td>
+								<td class="px-6 py-4 text-center">
+									<div class="flex items-center justify-center gap-2">
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+												<circle cx="12" cy="12" r="3"></circle>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-primary hover:bg-orange-50 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+												</path>
+											</svg>
+										</button>
+										<button
+											class="p-2 rounded-lg text-slate-400 hover:text-slate-800 hover:bg-slate-100 transition-colors">
+											<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="18"
+												xmlns="http://www.w3.org/2000/svg">
+												<polyline points="6 9 6 2 18 2 18 9"></polyline>
+												<path
+													d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+												</path>
+												<rect height="8" width="12" x="6" y="14"></rect>
+											</svg>
+										</button>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- Pagination Controls -->
+				<div
+					class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
+					<div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
+						Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến <span
+							class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số <span
+							class="font-medium text-gray-900 dark:text-white">1,245</span> mục
+					</div>
+
+					<div class="flex items-center gap-2">
+						<div class="flex items-center gap-2 mr-4">
+							<span class="text-xs text-gray-500 dark:text-gray-400">Xem</span>
+
+							<!-- Custom Pagination Dropdown -->
+							<div class="relative">
+								<button onclick="togglePaginationDropdown()" id="paginationDropdownBtn"
+									class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
+									<span id="itemsPerPageLabel">10</span>
+									<span id="paginationDropdownIcon"
+										class="material-symbols-outlined text-gray-400 text-[16px] transition-transform duration-200">expand_more</span>
+								</button>
+
+								<div id="paginationDropdown"
+									class="hidden absolute top-full mt-1 left-0 w-full min-w-[56px] bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+									<div class="p-1 space-y-0.5">
+										<div onclick="selectItemsPerPage('10')"
+											class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+											10
+										</div>
+										<div onclick="selectItemsPerPage('20')"
+											class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+											20
+										</div>
+										<div onclick="selectItemsPerPage('50')"
+											class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+											50
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<span class="text-xs text-gray-500 dark:text-gray-400">mục</span>
+						</div>
+
+						<nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
+							<button
+								class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+								<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+							</button>
+							<button aria-current="page"
+								class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-primary-hover hover:text-white dark:border-gray-700 dark:bg-gray-700 dark:text-white transition-colors">
+								1
+							</button>
+							<button
+								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+								2
+							</button>
+							<button
+								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+								3
+							</button>
+							<span
+								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
+							<button
+								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+								<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+							</button>
+						</nav>
+					</div>
+				</div>
+
+				<script>
+					function togglePaginationDropdown() {
+						const dropdown = document.getElementById('paginationDropdown');
+						const icon = document.getElementById('paginationDropdownIcon');
+
+						if (dropdown.classList.contains('hidden')) {
+							dropdown.classList.remove('hidden');
+							icon.style.transform = 'rotate(180deg)';
+						} else {
+							dropdown.classList.add('hidden');
+							icon.style.transform = 'rotate(0deg)';
+						}
+					}
+
+					function selectItemsPerPage(value) {
+						document.getElementById('itemsPerPageLabel').textContent = value;
+						togglePaginationDropdown();
+						// Add logic here to reload page or update query param
+						console.log('Selected items per page:', value);
+					}
+
+					// Close dropdown when clicking outside
+					document.addEventListener('click', function (event) {
+						const dropdown = document.getElementById('paginationDropdown');
+						const button = document.getElementById('paginationDropdownBtn');
+
+						if (!dropdown.classList.contains('hidden') && !button.contains(event.target) && !dropdown.contains(event.target)) {
+							togglePaginationDropdown();
+						}
+					});
+				</script>
+			</div>
+			<div class="flex justify-end mt-2">
+				<button
+					class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white px-5 py-2.5 rounded text-sm font-bold transition-all shadow-sm whitespace-nowrap">
+					<span class="material-symbols-outlined text-[20px]">download</span>
+					Xuất báo cáo
+				</button>
+			</div>
+		</div>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Datepickers
+				flatpickr("#dateFrom", {
+					locale: "vn",
+					dateFormat: "d/m/Y",
+					maxDate: "today",
+					disableMobile: "true",
+				});
+				flatpickr("#dateTo", {
+					locale: "vn",
+					dateFormat: "d/m/Y",
+					maxDate: "today",
+					disableMobile: "true",
+				});
+
+				// Setup Dropdowns
+				setupDropdown('statusFilterBtn', 'statusDropdown', 'statusDropdownIcon');
+				// Sort dropdown removed
+
+				// Setup Item Selections
+				setupSelection('statusDropdown', 'select-status-item', function (value, label) {
+					document.getElementById('statusInput').value = value;
+					document.getElementById('statusFilterLabel').textContent = label;
+				});
+
+
+
+				// Sort selection removed
+
+				function setupDropdown(btnId, dropdownId, iconId) {
+					const btn = document.getElementById(btnId);
+					const dropdown = document.getElementById(dropdownId);
+					const icon = document.getElementById(iconId);
+
+					if (!btn || !dropdown) return;
+
+					btn.addEventListener('click', function (e) {
+						e.stopPropagation();
+						const isHidden = dropdown.classList.contains('hidden');
+
+						// Close all other dropdowns first
+						document.querySelectorAll('[id$="Dropdown"]').forEach(d => {
+							if (d.id !== dropdownId) d.classList.add('hidden');
+						});
+						document.querySelectorAll('[id$="DropdownIcon"]').forEach(i => {
+							if (i.id !== iconId) i.style.transform = 'rotate(0deg)';
+						});
+
+						if (isHidden) {
+							dropdown.classList.remove('hidden');
+							if (icon) icon.style.transform = 'rotate(180deg)';
+						} else {
+							dropdown.classList.add('hidden');
+							if (icon) icon.style.transform = 'rotate(0deg)';
+						}
+					});
+
+					// Click outside to close
+					document.addEventListener('click', function (e) {
+						if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+							dropdown.classList.add('hidden');
+							if (icon) icon.style.transform = 'rotate(0deg)';
+						}
+					});
+				}
+
+				function setupSelection(dropdownId, itemClass, callback) {
+					const dropdown = document.getElementById(dropdownId);
+					if (!dropdown) return;
+
+					const items = dropdown.getElementsByClassName(itemClass);
+					Array.from(items).forEach(item => {
+						item.addEventListener('click', function () {
+							const value = this.getAttribute('data-value');
+							const label = this.getAttribute('data-label');
+
+							if (callback) callback(value, label);
+
+							dropdown.classList.add('hidden');
+							const iconId = dropdownId + 'Icon'; // Assumption based on naming convention
+							const icon = document.getElementById(iconId);
+							if (icon) icon.style.transform = 'rotate(0deg)';
+						});
+					});
+				}
+
+				// Simple sort toggle function for headers
+				window.toggleSort = function (header) {
+					const icon = header.querySelector('.material-symbols-outlined');
+					if (icon) {
+						if (icon.textContent === 'unfold_more') {
+							icon.textContent = 'expand_less'; // Ascending
+							icon.classList.add('text-primary');
+							icon.classList.remove('text-gray-400');
+						} else if (icon.textContent === 'expand_less') {
+							icon.textContent = 'expand_more'; // Descending
+						} else {
+							icon.textContent = 'unfold_more'; // Reset
+							icon.classList.remove('text-primary');
+							icon.classList.add('text-gray-400');
+						}
+					}
+				};
+			});
+		</script>
+
+		<!-- Flatpickr JS -->
+		<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+		<script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+		<!-- Flatpickr CSS with custom overrides -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+		<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+		<style>
+			.flatpickr-calendar {
+				font-family: 'Inter', sans-serif !important;
+				border-radius: 12px !important;
+				margin-top: 8px !important;
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+			}
+
+			.flatpickr-day.selected,
+			.flatpickr-day.selected:hover {
+				background: #ea580c !important;
+				border-color: #ea580c !important;
+			}
+
+			.flatpickr-current-month {
+				display: flex !important;
+				justify-content: center !important;
+				align-items: center !important;
+			}
+		</style>
+	</div>
+
+</body>
+
+</html>

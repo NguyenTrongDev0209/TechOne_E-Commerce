@@ -8,6 +8,6 @@ public class PostDetailController {
 	
 	@GetMapping("/posts/post-detail")
 	public String showPostDetail() {
-		return "fragments/client/post-detail";
+		return "views/client/post-detail";
 	}
 }

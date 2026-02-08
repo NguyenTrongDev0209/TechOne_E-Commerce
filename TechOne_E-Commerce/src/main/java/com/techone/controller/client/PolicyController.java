@@ -8,7 +8,7 @@ public class PolicyController {
 	
 	@GetMapping("/policy")
 	public String showPolicy() {
-		return "fragments/client/policy";
+		return "views/client/policy";
 	}
 	
 }

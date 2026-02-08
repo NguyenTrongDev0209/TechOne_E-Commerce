@@ -8,6 +8,6 @@ public class CategoryController {
 	
 	@GetMapping("/categories")
 	public String showCategories() {
-		return "fragments/client/categories";
+		return "views/client/categories";
 	}
 }

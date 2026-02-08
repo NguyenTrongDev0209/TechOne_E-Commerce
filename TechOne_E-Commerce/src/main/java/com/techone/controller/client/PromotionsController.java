@@ -8,7 +8,7 @@ public class PromotionsController {
 	
 	@GetMapping("/promotions")
 	public String showPromotions() {
-		return "fragments/client/promotions";
+		return "views/client/promotions";
 	}
 	
 }

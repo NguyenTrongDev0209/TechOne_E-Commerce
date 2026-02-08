@@ -8,7 +8,7 @@ public class ProductFormController {
 	
 	@GetMapping("/admin/product-list/product-form")
 	public String shippingConfiguration() {
-		return "admin/product-form";
+		return "views/admin/product-form";
 	}
 
 }

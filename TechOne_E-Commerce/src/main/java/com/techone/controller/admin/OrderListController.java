@@ -8,7 +8,7 @@ public class OrderListController {
 	
 	@GetMapping("/admin/order-list")
 	public String shippingConfiguration() {
-		return "admin/order-list";
+		return "views/admin/order-list";
 	}
 	
 }

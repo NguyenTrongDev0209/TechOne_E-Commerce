@@ -8,7 +8,7 @@ public class SearchController {
 	
 	@GetMapping("/search")
 	public String showSearch() {
-		return "fragments/client/search";
+		return "views/client/search";
 	}
 	
 }

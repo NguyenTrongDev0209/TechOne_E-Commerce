@@ -8,6 +8,6 @@ public class PostsController {
 	
 	@GetMapping("/posts")
 	public String showPosts(){
-		return "fragments/client/posts";
+		return "views/client/posts";
 	}
 }

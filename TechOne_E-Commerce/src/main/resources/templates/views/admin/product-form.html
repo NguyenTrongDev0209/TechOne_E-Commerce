@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html
+	th:replace="~{layouts/layout-admin :: view(title='TechShop Admin Dashboard - Thêm Sản Phẩm Mới', menuItem='products', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+	<div id="main-content">
+		<div class="max-w-7xl mx-auto space-y-6">
+			<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+				<div class="flex flex-col gap-1">
+					<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+						<a class="hover:text-primary transition-colors" href="#">Sản
+							phẩm</a> <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+						<span class="font-bold text-gray-900 dark:text-white">Thêm mới</span>
+					</div>
+					<div class="flex items-center gap-3">
+						<a href="/admin/product-list">
+							<button
+								class="group p-1.5 -ml-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+								<span
+									class="material-symbols-outlined text-[28px] group-hover:text-slate-800">arrow_back</span>
+							</button>
+						</a>
+						<h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Thêm
+							sản phẩm mới</h1>
+					</div>
+				</div>
+				<div class="flex items-center gap-3">
+					<button
+						class="px-5 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800">
+						Lưu tạm</button>
+					<button
+						class="px-5 py-2.5 rounded-xl bg-primary hover:bg-orange-700 text-white font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+						<span class="material-symbols-outlined text-[20px]">check</span>
+						Đăng sản phẩm
+					</button>
+				</div>
+			</div>
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+				<div class="lg:col-span-8 flex flex-col gap-6">
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">info</span>
+							Thông tin chung
+						</h2>
+						<div class="space-y-4">
+							<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+								<div class="space-y-1.5">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
+										sản phẩm <span class="text-red-500">*</span>
+									</label> <input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Nhập tên sản phẩm..." type="text" />
+								</div>
+								<div class="space-y-1.5">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
+										sản phẩm (SKU) <span class="text-red-500">*</span>
+									</label> <input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="VD: IP15-PM-256" type="text" />
+								</div>
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mô
+									tả sản phẩm</label>
+								<div
+									class="border border-slate-100 rounded-xl overflow-hidden bg-white focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+									<div
+										class="bg-gray-50 dark:bg-gray-800 border-b border-slate-100 px-3 py-2 flex items-center gap-1">
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_bold</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_italic</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_underlined</span>
+										</button>
+										<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span
+												class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span
+												class="material-symbols-outlined text-[18px]">format_list_numbered</span>
+										</button>
+										<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">link</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">image</span>
+										</button>
+									</div>
+									<textarea
+										class="w-full border-none p-4 text-sm h-32 focus:ring-0 resize-none font-body"
+										placeholder="Nhập mô tả chi tiết sản phẩm..."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">attach_money</span>
+							Giá cả &amp; Kho hàng
+						</h2>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá
+									bán</label>
+								<div class="relative">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 pl-4 pr-12 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="0" type="number" /> <span
+										class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-bold text-xs">VND</span>
+								</div>
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá
+									gốc (So sánh)</label>
+								<div class="relative">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 pl-4 pr-12 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="0" type="number" /> <span
+										class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-bold text-xs">VND</span>
+								</div>
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Số
+									lượng tồn kho</label> <input
+									class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+									placeholder="0" type="number" />
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Đơn
+									vị tính</label> <select
+									class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all text-gray-600 dark:text-gray-400">
+									<option>Cái</option>
+									<option>Bộ</option>
+									<option>Hộp</option>
+									<option>Chiếc</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">category</span>
+							Phân loại
+						</h2>
+						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Danh
+									mục sản phẩm</label> <select
+									class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all text-gray-600 dark:text-gray-400">
+									<option value="">Chọn danh mục...</option>
+									<option>Điện thoại &amp; Tablet</option>
+									<option>Laptop &amp; PC</option>
+									<option>Âm thanh</option>
+									<option>Phụ kiện</option>
+								</select>
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Thương
+									hiệu</label> <select
+									class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all text-gray-600 dark:text-gray-400">
+									<option value="">Chọn thương hiệu...</option>
+									<option>Apple</option>
+									<option>Samsung</option>
+									<option>Sony</option>
+									<option>Dell</option>
+									<option>Asus</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">settings</span>
+							Thông số kỹ thuật
+						</h2>
+						<div class="space-y-4">
+							<div class="flex gap-3 px-1">
+								<div
+									class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+									Tên
+									thông số</div>
+								<div
+									class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+									Giá
+									trị</div>
+								<div class="w-10"></div>
+							</div>
+							<div class="flex items-center gap-3">
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="VD: Chipset" type="text" value="Apple A17 Pro" />
+								</div>
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="VD: 3nm process" type="text" value="6-core CPU" />
+								</div>
+								<button
+									class="p-3 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors w-10 h-10 flex items-center justify-center">
+									<span class="material-symbols-outlined text-[20px]">delete</span>
+								</button>
+							</div>
+							<div class="flex items-center gap-3">
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Tên thông số" type="text" value="RAM" />
+								</div>
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Giá trị" type="text" value="8GB" />
+								</div>
+								<button
+									class="p-3 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors w-10 h-10 flex items-center justify-center">
+									<span class="material-symbols-outlined text-[20px]">delete</span>
+								</button>
+							</div>
+							<div class="flex items-center gap-3">
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Tên thông số" type="text" />
+								</div>
+								<div class="flex-1">
+									<input
+										class="w-full bg-gray-50 dark:bg-gray-800 border-none rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:bg-white dark:focus:bg-gray-700 transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Giá trị" type="text" />
+								</div>
+								<button
+									class="p-3 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors w-10 h-10 flex items-center justify-center">
+									<span class="material-symbols-outlined text-[20px]">delete</span>
+								</button>
+							</div>
+						</div>
+						<div class="pt-2">
+							<button
+								class="flex items-center gap-2 text-primary font-bold text-sm bg-primary/5 hover:bg-primary/10 px-5 py-3 rounded-xl transition-colors border border-dashed border-primary/20 w-full justify-center sm:w-auto sm:justify-start">
+								<span class="material-symbols-outlined text-[20px]">add_circle</span>
+								Thêm thông số
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="lg:col-span-4 flex flex-col gap-6">
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">image</span>
+							Media
+						</h2>
+						<div class="space-y-4">
+							<div
+								class="aspect-square w-full bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer group">
+								<span
+									class="material-symbols-outlined text-[48px] group-hover:text-primary transition-colors">cloud_upload</span>
+								<p
+									class="text-sm font-bold mt-2 text-gray-500 dark:text-gray-400 group-hover:text-primary">
+									Tải
+									ảnh chính</p>
+								<p class="text-xs mt-1">PNG, JPG, WEBP tối đa 5MB</p>
+							</div>
+							<div class="grid grid-cols-4 gap-2">
+								<div
+									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
+									<span class="material-symbols-outlined">add_photo_alternate</span>
+								</div>
+								<div
+									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
+									<span class="material-symbols-outlined">add_photo_alternate</span>
+								</div>
+								<div
+									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
+									<span class="material-symbols-outlined">add_photo_alternate</span>
+								</div>
+								<div
+									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
+									<span class="material-symbols-outlined">add_photo_alternate</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">visibility</span>
+							Trạng thái hiển thị
+						</h2>
+						<div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-xl">
+							<div class="flex flex-col">
+								<span class="text-sm font-bold text-gray-900 dark:text-white">Công khai</span>
+								<span class="text-xs text-gray-500 dark:text-gray-400">Sản phẩm sẽ hiển
+									thị trên web</span>
+							</div>
+							<div
+								class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
+								<input
+									class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-slate-300 shadow-sm"
+									id="toggle" name="toggle" type="checkbox" /> <label
+									class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-gray-600 cursor-pointer transition-colors duration-300"
+									for="toggle"></label>
+							</div>
+						</div>
+						<div class="space-y-3 pt-2">
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Trạng thái:</span> <span
+									class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+									<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+									Đang hoạt động
+								</span>
+							</div>
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Người tạo:</span> <span
+									class="font-bold text-gray-900 dark:text-white">Admin TechShop</span>
+							</div>
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Ngày tạo:</span> <span
+									class="font-bold text-gray-900 dark:text-white">Hôm nay</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

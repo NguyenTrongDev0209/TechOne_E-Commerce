@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-authentic :: view(title='Nhập mã xác nhận - TechShop', content=~{::content})}"
+    xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="mb-8 text-center">
+        <h1 class="text-2xl font-bold text-center tracking-tight text-[#1c100d] dark:text-white mb-2">
+            Nhập mã xác nhận
+        </h1>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            Chúng tôi đã gửi mã xác nhận đến <span class="font-medium text-[#1c100d] dark:text-gray-200">09**
+                *** 789</span> hoặc <span class="font-medium text-[#1c100d] dark:text-gray-200">u***@example.com</span>.
+        </p>
+    </div>
+    <form action="#" class="flex flex-col gap-6" method="POST" id="confirmOtpForm">
+        <div class="flex justify-between gap-2 sm:gap-3">
+            <input autofocus=""
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" value="5" />
+            <input
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" />
+            <input
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" />
+            <input
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" />
+            <input
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" />
+            <input
+                class="w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
+                maxlength="1" type="number" />
+        </div>
+        <div class="flex flex-col items-center gap-2">
+            <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Mã hết hạn sau <span class="font-mono font-bold text-primary" id="countdown">00:59</span>
+            </div>
+            <div class="text-center text-sm">
+                <span class="text-gray-500 dark:text-gray-400">Không nhận được mã?</span>
+                <a class="font-semibold text-gray-500 hover:text-primary transition-colors ml-1 cursor-pointer pointer-events-none opacity-50"
+                    href="#" id="resend-link">Gửi lại mã</a>
+            </div>
+        </div>
+        <button id="confirmButton"
+            class="w-full flex items-center justify-center h-12 bg-primary hover:bg-[#ff6b42] text-white font-bold rounded-lg shadow-lg shadow-primary/30 transition-all active:scale-[0.98] gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+            <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white hidden" id="confirmSpinner"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                </circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+            <span id="confirmButtonText">Xác nhận</span>
+            <span id="confirmButtonIcon" class="material-symbols-outlined text-[20px]">arrow_forward</span>
+        </button>
+
+        <div class="flex items-center justify-center pt-2">
+            <a th:href="@{/login}"
+                class="group flex items-center gap-2 text-gray-500 hover:text-primary transition-all text-sm font-bold">
+                <span
+                    class="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">arrow_back</span>
+                Quay lại đăng nhập
+            </a>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let timeLeft = 59;
+            const countdownElement = document.getElementById('countdown');
+            const resendLink = document.getElementById('resend-link');
+
+            const timer = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "00:00";
+                    resendLink.classList.remove('text-gray-500', 'pointer-events-none', 'opacity-50');
+                    resendLink.classList.add('text-primary');
+                } else {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    timeLeft--;
+                }
+            }, 1000);
+
+            // Loading State Logic
+            const confirmOtpForm = document.getElementById('confirmOtpForm');
+            const confirmButton = document.getElementById('confirmButton');
+            const confirmSpinner = document.getElementById('confirmSpinner');
+            const confirmButtonText = document.getElementById('confirmButtonText');
+            const confirmButtonIcon = document.getElementById('confirmButtonIcon');
+
+            if (confirmOtpForm) {
+                confirmOtpForm.addEventListener('submit', function (e) {
+                    // e.preventDefault(); // Uncomment if handling via AJAX
+                    confirmButton.disabled = true;
+                    confirmSpinner.classList.remove('hidden');
+                    confirmButtonIcon.classList.add('hidden');
+                    confirmButtonText.textContent = 'Đang xác thực...';
+                });
+            }
+        });
+    </script>
+</div>
+
+</html>
