@@ -70,4 +70,13 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account")
 	public List<Favourite> favourite;
+	
+	@OneToMany(mappedBy = "account")
+	public List<Review> review;
+	
+	@OneToMany(mappedBy = "account")
+	public List<ForgotPassword> forgotPassword;
+	
+	@OneToMany(mappedBy = "account")
+	public List<VoucherList> voucherList;
 }

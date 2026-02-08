@@ -58,4 +58,7 @@ public class Category {
 	
 	@OneToMany(mappedBy = "category")
 	public List<Post> post;
+	
+	@OneToMany(mappedBy = "category")
+	public List<Product> product;
 }
