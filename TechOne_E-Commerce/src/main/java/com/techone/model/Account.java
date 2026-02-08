@@ -79,4 +79,10 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account")
 	public List<VoucherList> voucherList;
+	
+	@OneToMany(mappedBy = "account")
+	public List<Variant> variant;
+	
+	@OneToMany(mappedBy = "account")
+	public List<CartItem> cartItem;
 }

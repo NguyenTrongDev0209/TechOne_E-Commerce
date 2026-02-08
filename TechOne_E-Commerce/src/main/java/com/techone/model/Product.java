@@ -42,9 +42,6 @@ public class Product {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
 	
-	@OneToMany(mappedBy = "product")
-	public List<ImageProduct> imageProduct;
-	
 	public Integer status;
 	
 	@Column(columnDefinition = "nvarchar(max)")
@@ -66,4 +63,7 @@ public class Product {
 	
 	@OneToMany(mappedBy = "product")
 	public List<Review> review;
+	
+	@OneToMany(mappedBy = "product")
+	public List<Variant> variant;
 }

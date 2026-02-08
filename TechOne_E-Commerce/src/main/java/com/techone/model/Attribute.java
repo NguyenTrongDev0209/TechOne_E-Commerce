@@ -1,12 +1,16 @@
 package com.techone.model;
 
+
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,21 +19,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "favourites")
-public class Favourite {
+@Table(name = "attributes")
+public class Attribute {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
-	@ManyToOne
-	@JoinColumn(name = "account_id")
-	Account account;
+	@Column(columnDefinition = "nvarchar(255)")
+	@NotBlank(message = "Tên không được để trống")
+	public String name;
 	
-	@ManyToOne
-	@JoinColumn(name = "post_id")
-	Post post;
-	
-	@ManyToOne
-	@JoinColumn(name = "variant_id")
-	Variant variant;
+	@OneToMany(mappedBy = "attribute")
+	public List<AttributeValue> attributeValue;
 }

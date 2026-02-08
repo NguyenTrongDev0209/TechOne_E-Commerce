@@ -1,5 +1,7 @@
 package com.techone.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,21 +17,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "favourites")
-public class Favourite {
+@Table(name = "voucher_applies")
+public class VoucherApplie {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "account_id")
-	Account account;
+	@JoinColumn(name = "voucher_list_id")
+	VoucherList voucherList;
 	
 	@ManyToOne
-	@JoinColumn(name = "post_id")
-	Post post;
-	
-	@ManyToOne
-	@JoinColumn(name = "variant_id")
-	Variant variant;
+	@JoinColumn(name = "order_id")
+	Order order;
 }

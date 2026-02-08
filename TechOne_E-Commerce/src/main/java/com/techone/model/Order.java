@@ -1,0 +1,41 @@
+package com.techone.model;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.FutureOrPresent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Entity
+@Table(name = "orders")
+public class Order {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Integer id;
+	
+	@FutureOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	public LocalDateTime createAt = LocalDateTime.now();
+	
+	public Integer status;
+	
+	@Column(columnDefinition = "nvarchar(max)")
+	public String note;
+	
+	@OneToMany(mappedBy = "order")
+	public List<OrderDetail> orderDetail;
+}

@@ -15,21 +15,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "favourites")
-public class Favourite {
+@Table(name = "variant_attribute_values")
+public class VariantAttributeValue {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "account_id")
-	Account account;
-	
-	@ManyToOne
-	@JoinColumn(name = "post_id")
-	Post post;
-	
-	@ManyToOne
 	@JoinColumn(name = "variant_id")
 	Variant variant;
+	
+	@ManyToOne
+	@JoinColumn(name = "attribute_value_id")
+	AttributeValue attributeValue;
 }
