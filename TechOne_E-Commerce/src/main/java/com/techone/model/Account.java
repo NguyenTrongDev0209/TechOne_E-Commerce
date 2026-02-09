@@ -85,4 +85,7 @@ public class Account {
 	
 	@OneToMany(mappedBy = "account")
 	public List<CartItem> cartItem;
+	
+	@OneToMany(mappedBy = "account")
+	public List<Address> address;
 }
