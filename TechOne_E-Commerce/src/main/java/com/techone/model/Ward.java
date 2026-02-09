@@ -35,7 +35,7 @@ public class Ward {
 	public String name;
 	
 	@ManyToOne
-	@JoinColumn(columnDefinition = "district_id")
+	@JoinColumn(name = "district_id")
 	District district;
 	
 	@OneToMany(mappedBy = "ward")

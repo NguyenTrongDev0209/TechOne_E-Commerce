@@ -35,7 +35,7 @@ public class District {
 	public String name;
 	
 	@ManyToOne
-	@JoinColumn(columnDefinition = "province_id")
+	@JoinColumn(name = "province_id")
 	Province province;
 	
 	@OneToMany(mappedBy = "district")

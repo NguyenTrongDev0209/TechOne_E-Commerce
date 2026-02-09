@@ -9,8 +9,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,10 +42,14 @@ public class Transaction {
 	
 	public Integer refId;
 	
-	@FutureOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
+	@PastOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
 	
 	@Column(columnDefinition = "varchar(255)")
 	public String log;
+	
+	@ManyToOne
+	@JoinColumn(name = "order_id")
+	Order order;
 }

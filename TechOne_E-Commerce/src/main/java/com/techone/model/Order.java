@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
-	@FutureOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
+	@PastOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
 	
@@ -41,4 +42,7 @@ public class Order {
 	
 	@OneToMany(mappedBy = "order")
 	public List<Shipment> shipment;
+	
+	@OneToMany(mappedBy = "order")
+	public List<Transaction> transaction;
 }
