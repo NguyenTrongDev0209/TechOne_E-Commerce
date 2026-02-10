@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title='Quản lý thương hiệu', menuItem='brands', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Quản lý thương hiệu</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Quản lý các thương hiệu sản phẩm trên hệ
+                        thống</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Left Column: Add Brand Form -->
+                <div class="col-span-12 lg:col-span-4 space-y-6">
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 sticky top-24">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Thêm thương hiệu mới</h3>
+                        <form action="#" method="POST" class="space-y-4">
+
+                            <!-- Logo, Name Grid -->
+                            <div class="grid grid-cols-1 gap-4">
+                                <!-- Logo -->
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Logo</label>
+                                    <div
+                                        class="w-full h-[120px] rounded border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 text-gray-400 bg-gray-50 dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors cursor-pointer group">
+                                        <span
+                                            class="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">image</span>
+                                        <span class="text-[10px] font-bold uppercase">Chọn Logo</span>
+                                    </div>
+                                </div>
+
+                                <!-- Name -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên
+                                        thương hiệu <span class="text-red-500">*</span></label>
+                                    <input type="text"
+                                        class="block w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
+                                        placeholder="Nhập tên thương hiệu..." required>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit"
+                                class="w-full bg-primary hover:bg-orange-700 text-white py-2.5 rounded font-bold text-sm transition-all shadow-lg shadow-primary/20">
+                                Thêm mới
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: List & Filters -->
+                <div class="col-span-12 lg:col-span-8">
+                    <!-- Tabs Navigation (Removed for Brands, keeping header style) -->
+                    <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
+                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                            <button
+                                class="tab-btn active border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2"
+                                aria-current="page">
+                                <span class="material-symbols-outlined text-[18px]">branding_watermark</span>
+                                Danh sách thương hiệu
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="mt-6">
+
+                        <!-- Brand List -->
+                        <div id="brands-list" class="tab-content block">
+                            <!-- Filter Section -->
+                            <div
+                                class="bg-white dark:bg-[#1e293b] rounded p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+                                <!-- Search -->
+                                <div class="flex-1 relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="material-symbols-outlined text-gray-400">search</span>
+                                    </div>
+                                    <input
+                                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
+                                        placeholder="Tìm kiếm thương hiệu..." type="text" />
+                                </div>
+                            </div>
+
+                            <!-- Table Card -->
+                            <div
+                                class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
+                                <!-- Table -->
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left text-sm">
+                                        <thead
+                                            class="bg-white text-slate-500 dark:text-gray-400 font-semibold border-b border-slate-100 dark:border-gray-700 text-xs uppercase tracking-wider">
+                                            <tr>
+                                                <th class="px-3 py-4 text-center w-12">STT</th>
+                                                <th class="px-3 py-4 text-center w-20">Logo</th>
+                                                <th
+                                                    class="px-3 py-4 text-left cursor-pointer hover:bg-gray-50 transition-colors group">
+                                                    <div class="flex items-center justify-start gap-1">
+                                                        <span>Tên thương hiệu</span>
+                                                        <span
+                                                            class="material-symbols-outlined text-[14px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                                    </div>
+                                                </th>
+                                                <th
+                                                    class="px-3 py-4 text-center w-32 cursor-pointer hover:bg-gray-50 transition-colors group hidden sm:table-cell">
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <span>Sản phẩm</span>
+                                                        <span
+                                                            class="material-symbols-outlined text-[14px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                                    </div>
+                                                </th>
+                                                <th class="px-3 py-4 text-center w-24">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 font-body">
+                                            <!-- Item 1 -->
+                                            <tr class="hover:bg-gray-50 transition-colors group">
+                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">1</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div
+                                                        class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+                                                        <span
+                                                            class="material-symbols-outlined text-gray-400">image</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                    Apple
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span class="text-gray-600 text-xs font-bold">156</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">edit</span>
+                                                        </button>
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Item 2 -->
+                                            <tr class="hover:bg-gray-50 transition-colors group">
+                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">2</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div
+                                                        class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+                                                        <span
+                                                            class="material-symbols-outlined text-gray-400">image</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                    Samsung
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span class="text-gray-600 text-xs font-bold">142</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">edit</span>
+                                                        </button>
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- Item 3 -->
+                                            <tr class="hover:bg-gray-50 transition-colors group">
+                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">3</td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div
+                                                        class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+                                                        <span
+                                                            class="material-symbols-outlined text-gray-400">image</span>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                                    Xiaomi
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <span class="text-gray-600 text-xs font-bold">89</span>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="flex items-center justify-center gap-1">
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">edit</span>
+                                                        </button>
+                                                        <button
+                                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
+                                                            <span
+                                                                class="material-symbols-outlined text-[20px]">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- Pagination Controls -->
+                                <div
+                                    class="rounded-b rounded-t-none px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
+                                        Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến
+                                        <span class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số
+                                        <span class="font-medium text-gray-900 dark:text-white">15</span> thương hiệu
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <nav aria-label="Page navigation"
+                                            class="flex items-center -space-x-px h-7 text-xs">
+                                            <button
+                                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                                            </button>
+                                            <button aria-current="page"
+                                                class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-primary-hover hover:text-white dark:border-gray-700 dark:bg-gray-700 dark:text-white transition-colors">
+                                                1
+                                            </button>
+                                            <button
+                                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                            </button>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

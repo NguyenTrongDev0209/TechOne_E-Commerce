@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html
 	th:replace="~{layouts/layout-admin :: view(title='TechShop Admin Dashboard - Thêm Sản Phẩm Mới', menuItem='products', content=~{:: #main-content}, subMenuItem=null)}">
 
@@ -26,10 +26,10 @@
 				</div>
 				<div class="flex items-center gap-3">
 					<button
-						class="px-4 py-2.5 rounded border border-gray-300 dark:border-gray-700 font-bold text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800 shadow-sm">
+						class="px-4 py-2.5 rounded border border-gray-300 dark:border-gray-700 font-bold text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800 shadow-sm">
 						Lưu tạm</button>
 					<button
-						class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+						class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
 						<span class="material-symbols-outlined text-[20px]">check</span>
 						Đăng sản phẩm
 					</button>
@@ -343,101 +343,136 @@
 						<!-- Variants Section -->
 						<div class="pt-6 border-t border-gray-100 dark:border-gray-700">
 							<h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">Biến thể</h3>
-							<div
-								class="text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
-								<p class="text-gray-500 dark:text-gray-400 text-sm italic">
-									Vui lòng thêm thuộc tính để tạo biến thể.
-								</p>
+
+							<div class="space-y-4">
+								<!-- Variant Item -->
+								<div
+									class="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800/50 overflow-hidden">
+									<!-- Row 1: Header -->
+									<div
+										class="bg-gray-50 dark:bg-slate-700/50 px-4 py-3 border-b border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
+										<div class="flex items-center gap-2">
+											<span class="text-primary">Biến thể:</span>
+											<span
+												class="bg-white dark:bg-slate-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">Màu
+												sắc: Đỏ</span>
+											<span class="text-gray-400">+</span>
+											<span
+												class="bg-white dark:bg-slate-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">Size:
+												XL</span>
+										</div>
+
+									</div>
+
+									<div class="p-4 space-y-4">
+										<!-- Row 2: Data Inputs -->
+										<!-- Row 2: Data Inputs -->
+										<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+											<div class="space-y-1.5">
+												<label
+													class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mã
+													SKU</label>
+												<input type="text"
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="SKU-RED-XL" />
+											</div>
+											<div class="space-y-1.5">
+												<label
+													class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Số
+													lượng</label>
+												<input type="number"
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="0" value="0" />
+											</div>
+											<div class="space-y-1.5 col-span-2">
+												<div class="flex gap-4">
+													<div class="flex-grow space-y-1.5">
+														<label
+															class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá
+															gốc (VND)</label>
+														<div class="relative">
+															<input type="number" id="priceInput-1"
+																class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+																placeholder="0" oninput="calculateFinalPrice(1)" />
+															<span
+																class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">đ</span>
+														</div>
+													</div>
+													<div class="w-24 space-y-1.5 shrink-0">
+														<label
+															class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giảm
+															(%)</label>
+														<div class="relative">
+															<input type="number" id="discountInput-1"
+																class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+																placeholder="0" oninput="calculateFinalPrice(1)" />
+															<span
+																class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">%</span>
+														</div>
+													</div>
+												</div>
+												<div class="pt-1">
+													<label
+														class="text-xs text-gray-500 dark:text-gray-400 font-medium">Giá
+														sau giảm: <span id="finalPrice-1"
+															class="text-primary font-bold text-sm ml-1">0
+															đ</span></label>
+												</div>
+											</div>
+										</div>
+
+										<!-- Row 3: Image Inputs -->
+										<div class="space-y-1.5">
+											<label
+												class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hình
+												ảnh biến thể</label>
+											<div class="flex items-center gap-2 mt-2 mb-3">
+												<input type="file" multiple
+													class="block w-auto text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 dark:text-gray-400"
+													onchange="updateVariantImageFiles(this)" />
+												<div
+													class="text-xs text-gray-500 dark:text-gray-400 italic variant-file-names flex-1 truncate">
+												</div>
+											</div>
+											<div class="grid grid-cols-5 gap-3">
+												<!-- Image Slot 1 -->
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												</div>
+												<!-- Image Slot 2 -->
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												</div>
+												<!-- Image Slot 3 -->
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												</div>
+												<!-- Image Slot 4 -->
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												</div>
+												<!-- Image Slot 5 -->
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 
-					<div
-						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-						<h2
-							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
-							<span class="material-symbols-outlined text-primary">image</span>
-							Media
-						</h2>
-						<div class="space-y-4">
-							<div
-								class="aspect-square w-full bg-gray-50 dark:bg-gray-800 rounded border-2 border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer group">
-								<span
-									class="material-symbols-outlined text-[48px] group-hover:text-primary transition-colors">cloud_upload</span>
-								<p
-									class="text-sm font-bold mt-2 text-gray-500 dark:text-gray-400 group-hover:text-primary">
-									Tải
-									ảnh chính</p>
-								<p class="text-xs mt-1">PNG, JPG, WEBP tối đa 5MB</p>
-							</div>
-							<div class="grid grid-cols-4 gap-2">
-								<div
-									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
-									<span class="material-symbols-outlined">add_photo_alternate</span>
-								</div>
-								<div
-									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
-									<span class="material-symbols-outlined">add_photo_alternate</span>
-								</div>
-								<div
-									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
-									<span class="material-symbols-outlined">add_photo_alternate</span>
-								</div>
-								<div
-									class="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary transition-colors">
-									<span class="material-symbols-outlined">add_photo_alternate</span>
-								</div>
-							</div>
-						</div>
-					</div>
-
-
-					<div
-						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-						<h2
-							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
-							<span class="material-symbols-outlined text-primary">attach_money</span>
-							Giá cả &amp; Kho hàng
-						</h2>
-						<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-							<div class="space-y-1.5">
-								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá
-									bán</label>
-								<div class="relative">
-									<input
-										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-12 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-										placeholder="0" type="number" /> <span
-										class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-bold text-xs">VND</span>
-								</div>
-							</div>
-							<div class="space-y-1.5">
-								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá
-									gốc (So sánh)</label>
-								<div class="relative">
-									<input
-										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-12 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-										placeholder="0" type="number" /> <span
-										class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 font-bold text-xs">VND</span>
-								</div>
-							</div>
-							<div class="space-y-1.5">
-								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Số
-									lượng tồn kho</label> <input
-									class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-									placeholder="0" type="number" />
-							</div>
-							<div class="space-y-1.5">
-								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Đơn
-									vị tính</label> <select
-									class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400">
-									<option>Cái</option>
-									<option>Bộ</option>
-									<option>Hộp</option>
-									<option>Chiếc</option>
-								</select>
-							</div>
-						</div>
-					</div>
 				</div>
 				<div class="lg:col-span-4 flex flex-col gap-6">
 					<div
@@ -569,14 +604,13 @@
 								<span class="text-xs text-gray-500 dark:text-gray-400">Sản phẩm sẽ hiển
 									thị trên web</span>
 							</div>
-							<div
-								class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-								<input
-									class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 border-slate-300 shadow-sm"
-									id="toggle" name="toggle" type="checkbox" /> <label
-									class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 dark:bg-gray-600 cursor-pointer transition-colors duration-300"
-									for="toggle"></label>
-							</div>
+							<label class="inline-flex items-center cursor-pointer relative z-0">
+								<input type="checkbox" id="displayStatusToggle" name="displayStatus"
+									class="sr-only peer" checked>
+								<div
+									class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+								</div>
+							</label>
 						</div>
 						<div class="space-y-3 pt-2">
 							<div class="flex items-center justify-between text-sm">
@@ -598,72 +632,107 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<script>
-			// --- Dropdown Logic ---
+			<style>
+				/* Chrome, Safari, Edge, Opera */
+				input[type=number]::-webkit-outer-spin-button,
+				input[type=number]::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+			</style>
+			<script>
+				// --- Dropdown Logic ---
 
-			// Category Dropdown
-			const categoryDropdownContainer = document.getElementById('categoryDropdownContainer');
-			const categoryMenu = document.getElementById('categoryMenu');
-			const categoryIdInput = document.getElementById('categoryId');
-			const categoryLabel = document.getElementById('categoryLabel');
+				// Category Dropdown
+				const categoryDropdownContainer = document.getElementById('categoryDropdownContainer');
+				const categoryMenu = document.getElementById('categoryMenu');
+				const categoryIdInput = document.getElementById('categoryId');
+				const categoryLabel = document.getElementById('categoryLabel');
 
-			function toggleCategoryDropdown() {
-				categoryMenu.classList.toggle('hidden');
-				brandMenu.classList.add('hidden'); // Close other dropdown
-			}
+				function toggleCategoryDropdown() {
+					categoryMenu.classList.toggle('hidden');
+					brandMenu.classList.add('hidden'); // Close other dropdown
+				}
 
-			function selectCategory(id, name) {
-				categoryIdInput.value = id;
-				categoryLabel.innerText = name;
-				categoryLabel.classList.remove('text-gray-500');
-				categoryLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
-				categoryMenu.classList.add('hidden');
-			}
-
-			// Brand Dropdown
-			const brandDropdownContainer = document.getElementById('brandDropdownContainer');
-			const brandMenu = document.getElementById('brandMenu');
-			const brandIdInput = document.getElementById('brandId');
-			const brandLabel = document.getElementById('brandLabel');
-
-			function toggleBrandDropdown() {
-				brandMenu.classList.toggle('hidden');
-				categoryMenu.classList.add('hidden'); // Close other dropdown
-			}
-
-			function selectBrand(id, name) {
-				brandIdInput.value = id;
-				brandLabel.innerText = name;
-				brandLabel.classList.remove('text-gray-500');
-				brandLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
-				brandMenu.classList.add('hidden');
-			}
-
-			// Close dropdowns when clicking outside
-			document.addEventListener('click', function (event) {
-				if (categoryDropdownContainer && !categoryDropdownContainer.contains(event.target)) {
+				function selectCategory(id, name) {
+					categoryIdInput.value = id;
+					categoryLabel.innerText = name;
+					categoryLabel.classList.remove('text-gray-500');
+					categoryLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
 					categoryMenu.classList.add('hidden');
 				}
-				if (brandDropdownContainer && !brandDropdownContainer.contains(event.target)) {
+
+				// Brand Dropdown
+				const brandDropdownContainer = document.getElementById('brandDropdownContainer');
+				const brandMenu = document.getElementById('brandMenu');
+				const brandIdInput = document.getElementById('brandId');
+				const brandLabel = document.getElementById('brandLabel');
+
+				function toggleBrandDropdown() {
+					brandMenu.classList.toggle('hidden');
+					categoryMenu.classList.add('hidden'); // Close other dropdown
+				}
+
+				function selectBrand(id, name) {
+					brandIdInput.value = id;
+					brandLabel.innerText = name;
+					brandLabel.classList.remove('text-gray-500');
+					brandLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
 					brandMenu.classList.add('hidden');
 				}
-			});
 
-			// Update file name
-			function updateFileName(input) {
-				const fileNameSpan = document.getElementById('excelFileName');
-				if (input.files && input.files.length > 0) {
-					fileNameSpan.textContent = input.files[0].name;
-					fileNameSpan.classList.remove('hidden');
-				} else {
-					fileNameSpan.textContent = '';
-					fileNameSpan.classList.add('hidden');
+				// Close dropdowns when clicking outside
+				document.addEventListener('click', function (event) {
+					if (categoryDropdownContainer && !categoryDropdownContainer.contains(event.target)) {
+						categoryMenu.classList.add('hidden');
+					}
+					if (brandDropdownContainer && !brandDropdownContainer.contains(event.target)) {
+						brandMenu.classList.add('hidden');
+					}
+				});
+
+				// Update file name
+				function updateFileName(input) {
+					const fileNameSpan = document.getElementById('excelFileName');
+					if (input.files && input.files.length > 0) {
+						fileNameSpan.textContent = input.files[0].name;
+						fileNameSpan.classList.remove('hidden');
+					} else {
+						fileNameSpan.textContent = '';
+						fileNameSpan.classList.add('hidden');
+					}
 				}
-			}
 
-		</script>
-	</div>
+				function updateVariantImageFiles(input) {
+					const displayDiv = input.parentElement.querySelector('.variant-file-names');
+					if (input.files && input.files.length > 0) {
+						const fileNames = Array.from(input.files).map(f => f.name).join(', ');
+						displayDiv.textContent = fileNames;
+						displayDiv.title = fileNames;
+					} else {
+						displayDiv.textContent = '';
+						displayDiv.removeAttribute('title');
+					}
+				}
+
+				function calculateFinalPrice(id) {
+					const priceInput = document.getElementById(`priceInput-${id}`);
+					const discountInput = document.getElementById(`discountInput-${id}`);
+					const finalPriceSpan = document.getElementById(`finalPrice-${id}`);
+
+					const price = parseFloat(priceInput.value) || 0;
+					const discount = parseFloat(discountInput.value) || 0;
+
+					if (price > 0) {
+						const finalPrice = price * (1 - discount / 100);
+						finalPriceSpan.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalPrice);
+					} else {
+						finalPriceSpan.textContent = '0 đ';
+					}
+				}
+
+			</script>
+		</div>
 	</div>
 
 
