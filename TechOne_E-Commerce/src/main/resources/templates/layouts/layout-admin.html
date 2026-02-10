@@ -145,6 +145,12 @@
                 <span>Khách hàng</span>
             </a>
             <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
+                th:classappend="${menuItem == 'transactions'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
+                th:href="@{/admin/transaction-manager}">
+                <span class="material-symbols-outlined group-hover:text-primary transition-colors">receipt_long</span>
+                <span>Giao dịch</span>
+            </a>
+            <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors group"
                 th:classappend="${menuItem == 'comments'} ? 'bg-primary/10 text-primary' : 'text-gray-600 hover:bg-gray-50 hover:text-[#1c100d]'"
                 th:href="@{/admin/comment-list}">
                 <span class="material-symbols-outlined group-hover:text-primary transition-colors">reviews</span>

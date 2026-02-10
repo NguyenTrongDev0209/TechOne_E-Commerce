@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title='TechShop Admin - Thêm Mã Giảm Giá', menuItem='vouchers', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex flex-col gap-1">
+                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                        <a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
+                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        <a class="hover:text-primary transition-colors" href="/admin/voucher-list">Mã giảm giá</a> <span
+                            class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        <span class="font-bold text-gray-900 dark:text-white">Tạo voucher</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <a href="/admin/voucher-list">
+                            <button
+                                class="group p-1.5 -ml-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+                                <span
+                                    class="material-symbols-outlined text-[28px] group-hover:text-slate-800">arrow_back</span>
+                            </button>
+                        </a>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Thêm
+                            mã giảm giá</h1>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button
+                        class="px-4 py-2.5 rounded border border-gray-300 dark:border-gray-700 font-bold text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800 shadow-sm">
+                        Hủy bỏ</button>
+                    <button
+                        class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">check</span>
+                        Lưu mã giảm giá
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Left Column: Main Info -->
+                <div class="lg:col-span-8 flex flex-col gap-6">
+                    <!-- General Info -->
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                        <h2
+                            class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">info</span>
+                            Thông tin chung
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
+                                        chương trình <span class="text-red-500">*</span>
+                                    </label> <input
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+                                        placeholder="VD: Khuyến mãi Tết 2026" type="text" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
+                                        Voucher <span class="text-red-500">*</span>
+                                    </label> <input
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500 uppercase"
+                                        placeholder="VD: TET2026" type="text" />
+                                </div>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mô tả</label>
+                                <textarea rows="3"
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+                                    placeholder="Mô tả chi tiết về chương trình khuyến mãi..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discount Settings -->
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                        <h2
+                            class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">percent</span>
+                            Thiết lập giảm giá
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Loại giảm
+                                        giá</label>
+                                    <select
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
+                                        <option value="percent">Theo phần trăm (%)</option>
+                                        <option value="mount">Theo số tiền (VND)</option>
+                                    </select>
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá trị
+                                        giảm</label>
+                                    <input
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        placeholder="0" type="number" />
+                                </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giảm tối
+                                        đa</label>
+                                    <input
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        placeholder="0 (Không giới hạn)" type="number" />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá trị đơn
+                                        hàng tối thiểu</label>
+                                    <input
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        placeholder="0" type="number" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Settings & Timing -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    <!-- Timing -->
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                        <h2
+                            class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">schedule</span>
+                            Thời gian áp dụng
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Ngày bắt
+                                    đầu</label>
+                                <div class="relative">
+                                    <input id="startDate"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        placeholder="Chọn ngày bắt đầu" type="text" readonly="readonly" />
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Ngày kết
+                                    thúc</label>
+                                <div class="relative">
+                                    <input id="endDate"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                        placeholder="Chọn ngày kết thúc" type="text" readonly="readonly" />
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Limits -->
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                        <h2
+                            class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">block</span>
+                            Giới hạn sử dụng
+                        </h2>
+                        <div class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tổng lượt sử
+                                    dụng tối đa</label>
+                                <input
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="0 (Không giới hạn)" type="number" />
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Lượt dùng tối đa
+                                    mỗi người</label>
+                                <input
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="1" type="number" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="font-bold text-gray-900 dark:text-white">Trạng thái hoạt động</h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Bật/Tắt voucher này</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flatpickr JS -->
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    flatpickr("#startDate", {
+                        locale: "vn",
+                        enableTime: true,
+                        dateFormat: "d/m/Y H:i",
+                        minDate: "today",
+                        disableMobile: "true",
+                    });
+                    flatpickr("#endDate", {
+                        locale: "vn",
+                        enableTime: true,
+                        dateFormat: "d/m/Y H:i",
+                        minDate: "today",
+                        disableMobile: "true",
+                    });
+                });
+            </script>
+
+            <!-- Flatpickr CSS with custom overrides -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+            <style>
+                .flatpickr-calendar {
+                    font-family: 'Inter', sans-serif !important;
+                    border-radius: 12px !important;
+                    margin-top: 8px !important;
+                    /* Gap requested by user */
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+                }
+
+                .dark .flatpickr-calendar {
+                    background: #1e293b !important;
+                    border: 1px solid #334155 !important;
+                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+                }
+
+                .flatpickr-day.selected,
+                .flatpickr-day.startRange,
+                .flatpickr-day.endRange,
+                .flatpickr-day.selected.inRange,
+                .flatpickr-day.startRange.inRange,
+                .flatpickr-day.endRange.inRange,
+                .flatpickr-day.selected:focus,
+                .flatpickr-day.startRange:focus,
+                .flatpickr-day.endRange:focus,
+                .flatpickr-day.selected:hover,
+                .flatpickr-day.startRange:hover,
+                .flatpickr-day.endRange:hover,
+                .flatpickr-day.selected.prevMonthDay,
+                .flatpickr-day.startRange.prevMonthDay,
+                .flatpickr-day.endRange.prevMonthDay,
+                .flatpickr-day.selected.nextMonthDay,
+                .flatpickr-day.startRange.nextMonthDay,
+                .flatpickr-day.endRange.nextMonthDay {
+                    background: #ea580c !important;
+                    border-color: #ea580c !important;
+                }
+
+                .flatpickr-day.todays-date {
+                    color: #ea580c !important;
+                    border-color: #ea580c !important;
+                }
+
+                /* Custom Header Styling */
+                .flatpickr-current-month {
+                    display: flex !important;
+                    justify-content: space-between !important;
+                    align-items: center !important;
+                    width: 75% !important;
+                    /* Ensure it fits between arrows */
+                    left: 12.5% !important;
+                    padding: 0 !important;
+                }
+
+                .flatpickr-monthDropdown-months {
+                    text-align: left !important;
+                    width: auto !important;
+                    font-size: 14px !important;
+                    /* Make it smaller */
+                    margin-left: 0 !important;
+                }
+
+                .numInputWrapper {
+                    width: auto !important;
+                    margin-right: 0 !important;
+                }
+
+                .flatpickr-current-month input.cur-year {
+                    font-size: 14px !important;
+                    /* Make year smaller */
+                    text-align: right !important;
+                    padding: 0 !important;
+                }
+
+                .flatpickr-current-month .numInputWrapper span.arrowUp {
+                    display: none;
+                    /* Optional: cleaner look */
+                }
+
+                .flatpickr-current-month .numInputWrapper span.arrowDown {
+                    display: none;
+                    /* Optional: cleaner look */
+                }
+            </style>
+        </div>
+    </div>
+</body>
+
+</html>

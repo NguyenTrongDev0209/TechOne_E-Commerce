@@ -10,4 +10,9 @@ public class EventManagerController {
     public String eventManager() {
         return "views/admin/event-manager";
     }
+
+    @GetMapping("/admin/event-manager/event-form")
+    public String eventForm() {
+        return "views/admin/event-form";
+    }
 }
