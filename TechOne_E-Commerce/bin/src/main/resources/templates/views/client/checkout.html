@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-client :: view(title='Thanh Toán', content=~{:: #checkout-content})}">
+
+<body>
+
+    <div id="checkout-content" class="w-full bg-background-light dark:bg-background-dark min-h-screen font-sans">
+
+        <style>
+            .peer:checked~.custom-radio-border {
+                border-color: #f94715;
+                background-color: rgba(249, 71, 21, 0.05);
+            }
+
+            .peer:checked~.custom-radio-border .radio-indicator {
+                border-color: #f94715;
+                background-color: #f94715;
+            }
+
+            .radio-indicator::after {
+                content: '';
+                display: block;
+                width: 8px;
+                height: 8px;
+                background: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0);
+                transition: transform 0.2s;
+            }
+
+            .peer:checked~.custom-radio-border .radio-indicator::after {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .no-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .no-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        </style>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="mb-6">
+                <a href="/cart"
+                    class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-primary transition-colors group">
+                    <span
+                        class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                    <span class="font-medium">Quay lại giỏ hàng</span>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <div class="lg:col-span-4 space-y-6 order-2 lg:order-2">
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 sticky top-24">
+                        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Đơn hàng của bạn</h2>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">2 sản phẩm trong giỏ hàng</p>
+
+
+
+                        <hr class="border-gray-200 dark:border-gray-700 my-6" />
+
+                        <div class="flex gap-2 mb-3">
+                            <div class="relative flex-1">
+                                <span
+                                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">local_offer</span>
+                                <input
+                                    class="w-full pl-9 pr-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-sm focus:ring-primary focus:border-primary dark:text-white dark:placeholder-gray-500"
+                                    placeholder="Mã giảm giá" type="text" />
+                            </div>
+                            <button
+                                class="bg-primary hover:bg-primary-hover text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                Áp dụng
+                            </button>
+                        </div>
+
+                        <!-- TechOne Voucher Selection -->
+                        <div onclick="toggleVoucherModal()"
+                            class="flex items-center justify-between mb-6 cursor-pointer hover:opacity-80 transition-opacity">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">confirmation_number</span>
+                                <span class="font-medium text-gray-900 dark:text-white">Voucher</span>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+                                <span>Chọn voucher</span>
+                                <span class="material-symbols-outlined text-lg">chevron_right</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-gray-600 dark:text-gray-300">
+                                <span>Tạm tính</span>
+                                <span class="font-medium text-gray-900 dark:text-white">4.680.000đ</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600 dark:text-gray-300">
+                                <span>Phí vận chuyển</span>
+                                <span class="font-medium text-gray-900 dark:text-white">30.000đ</span>
+                            </div>
+                            <div class="flex justify-between text-green-600 dark:text-green-400">
+                                <span>Giảm giá</span>
+                                <span class="font-medium">-0đ</span>
+                            </div>
+                            <div
+                                class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-start">
+                                <span class="font-bold text-gray-900 dark:text-white mt-1">Tổng cộng</span>
+                                <div class="text-right">
+                                    <span class="block text-xl font-bold text-primary">4.710.000đ</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">(Đã bao gồm VAT)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-700 my-6" />
+
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center flex flex-col items-center justify-center">
+                                <span class="material-symbols-outlined text-gray-400 mb-2">lock</span>
+                                <span class="text-[10px] uppercase font-semibold text-gray-500 dark:text-gray-400">Bảo
+                                    mật SSL</span>
+                            </div>
+                            <div class="text-center flex flex-col items-center justify-center">
+                                <span class="material-symbols-outlined text-gray-400 mb-2">sync</span>
+                                <span class="text-[10px] uppercase font-semibold text-gray-500 dark:text-gray-400">Đổi
+                                    trả 30 ngày</span>
+                            </div>
+                            <div class="text-center flex flex-col items-center justify-center">
+                                <span class="material-symbols-outlined text-gray-400 mb-2">headset_mic</span>
+                                <span class="text-[10px] uppercase font-semibold text-gray-500 dark:text-gray-400">Hỗ
+                                    trợ 24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="lg:col-span-8 space-y-6 order-1 lg:order-1">
+
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+                        <div class="relative">
+                            <!-- Progress Bar Background -->
+                            <div
+                                class="absolute left-0 top-4 -translate-y-1/2 w-full h-1 bg-gray-200 dark:bg-gray-600 rounded-full">
+                            </div>
+                            <!-- Progress Bar Active -->
+                            <div
+                                class="absolute left-0 top-4 -translate-y-1/2 w-1/2 h-1 bg-primary transition-all duration-500 rounded-full">
+                            </div>
+
+                            <div class="flex justify-between items-start w-full relative">
+                                <!-- Step 1: Cart (Completed) -->
+                                <div class="flex flex-col items-start gap-1 group cursor-pointer">
+                                    <div
+                                        class="relative z-10 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md shadow-orange-500/20 ring-2 ring-white dark:ring-[#1e293b] transition-transform group-hover:scale-110">
+                                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-primary uppercase tracking-wide mt-1">Giỏ
+                                        hàng</span>
+                                </div>
+
+                                <!-- Step 2: Checkout (Active) -->
+                                <div class="flex flex-col items-center gap-1">
+                                    <div
+                                        class="relative z-10 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md shadow-orange-500/30 ring-2 ring-orange-100 dark:ring-orange-900/30 animate-pulse-slow">
+                                        <span class="material-symbols-outlined text-[16px]">credit_card</span>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-primary uppercase tracking-wide mt-1">Thanh
+                                        toán</span>
+                                </div>
+
+                                <!-- Step 3: Success (Pending) -->
+                                <div class="flex flex-col items-end gap-1">
+                                    <div
+                                        class="relative z-10 w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 flex items-center justify-center ring-2 ring-white dark:ring-[#1e293b]">
+                                        <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                    </div>
+                                    <span
+                                        class="text-[10px] font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide mt-1">Hoàn
+                                        tất</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                                    1</div>
+                                <h2 class="text-lg font-bold text-gray-900 dark:text-white">Thông tin giao hàng</h2>
+                            </div>
+                        </div>
+
+                        <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Địa chỉ
+                                    nhận hàng</label>
+                                <div
+                                    class="border border-primary bg-orange-50 dark:bg-orange-900/10 rounded-lg p-4 relative">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A</span>
+                                        <span class="text-gray-500 dark:text-gray-400">|</span>
+                                        <span class="text-gray-600 dark:text-gray-300">0912345678</span>
+                                        <a href="javascript:void(0)" onclick="toggleAddressModal()"
+                                            class="ml-auto text-[13px] font-medium text-primary hover:text-orange-600 transition-colors">Thay
+                                            đổi địa chỉ</a>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                        Số 123, Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh
+                                    </p>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <span
+                                            class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Nhà
+                                            riêng</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Sản
+                                    phẩm</label>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-[80px_1fr_120px_40px] gap-4 items-center">
+                                        <div class="relative w-20 h-20 flex-shrink-0">
+                                            <img alt="Keychron K8 Pro"
+                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700"
+                                                src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=200" />
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Bàn phím cơ
+                                                Keychron
+                                                K8 Pro</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Switch: Red | LED: RGB
+                                            </p>
+                                            <div class="flex items-center gap-2 mt-1">
+                                                <span class="text-base font-bold text-primary">2.190.000đ</span>
+                                                <span class="text-xs text-gray-400 line-through">2.500.000đ</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                            SL : 1
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button class="text-red-500 hover:text-red-700 transition-colors">
+                                                <span class="material-symbols-outlined text-lg">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-[80px_1fr_120px_40px] gap-4 items-center">
+                                        <div class="relative w-20 h-20 flex-shrink-0">
+                                            <img alt="Logitech MX Master 3S"
+                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700"
+                                                src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=200" />
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Chuột Logitech
+                                                MX
+                                                Master 3S</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Xám | Kết nối:
+                                                Wireless</p>
+                                            <div class="flex items-center gap-2 mt-1">
+                                                <span class="text-base font-bold text-primary">2.490.000đ</span>
+                                                <span class="text-xs text-gray-400 line-through">2.990.000đ</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                            SL : 16
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <button class="text-red-500 hover:text-red-700 transition-colors">
+                                                <span class="material-symbols-outlined text-lg">delete</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ghi
+                                    chú
+                                    (Tùy chọn)</label>
+                                <textarea
+                                    class="w-full px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-primary focus:border-primary text-gray-900 dark:text-white text-sm shadow-sm"
+                                    placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..." rows="2"></textarea>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm">
+                                2</div>
+                            <h2 class="text-lg font-bold text-gray-900 dark:text-white">Phương thức thanh toán</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <label class="block cursor-pointer group">
+                                <input checked="" class="peer sr-only" name="payment" type="radio" />
+                                <div
+                                    class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                    <div
+                                        class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                    </div>
+                                    <div class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-md mr-4">
+                                        <span class="material-symbols-outlined">local_shipping</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-medium text-gray-900 dark:text-white">Thanh toán khi nhận
+                                            hàng
+                                            (COD)</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Thanh toán bằng tiền
+                                            mặt
+                                            khi giao hàng</div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="block cursor-pointer group">
+                                <input class="peer sr-only" name="payment" type="radio" />
+                                <div
+                                    class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                    <div
+                                        class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                    </div>
+                                    <div
+                                        class="p-2 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md mr-4">
+                                        <span class="material-symbols-outlined">credit_card</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-medium text-gray-900 dark:text-white">Thẻ tín dụng / Ghi nợ
+                                        </div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Visa, Mastercard, JCB
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="block cursor-pointer group">
+                                <input class="peer sr-only" name="payment" type="radio" />
+                                <div
+                                    class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                    <div
+                                        class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                    </div>
+                                    <div class="p-2 bg-purple-50 dark:bg-purple-900/30 text-purple-600 rounded-md mr-4">
+                                        <span class="material-symbols-outlined">account_balance_wallet</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-medium text-gray-900 dark:text-white">Ví điện tử</div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">Momo, ZaloPay,
+                                            ShopeePay
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <a th:href="@{/checkout/order-success}"
+                            class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 group text-center block">
+                            Hoàn tất đơn hàng
+                            <span
+                                class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </a>
+                        <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-4">
+                            Bằng việc nhấn "Hoàn tất đơn hàng", bạn đồng ý với <a class="text-primary hover:underline"
+                                href="#">Điều khoản dịch vụ</a> và <a class="text-primary hover:underline"
+                                href="#">Chính
+                                sách bảo mật</a> của chúng tôi.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <!-- Address Selection Modal -->
+        <div id="address-modal" class="fixed inset-0 z-50 hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity opacity-0"
+                id="address-backdrop">
+            </div>
+
+            <!-- Modal Content -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white dark:bg-[#1e293b] rounded-xl shadow-2xl transform transition-all scale-95 opacity-0 duration-300"
+                id="address-content">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Chọn địa chỉ nhận hàng</h3>
+                    <button onclick="toggleAddressModal()"
+                        class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <!-- Body (Address List) -->
+                <div class="p-4 max-h-[60vh] overflow-y-auto space-y-3 custom-scrollbar">
+                    <!-- Address Item 1 (Active) -->
+                    <label
+                        class="flex items-start gap-3 p-3 border border-primary bg-orange-50 dark:bg-orange-900/10 rounded-lg cursor-pointer transition-colors relative">
+                        <input type="radio" name="shipping_address"
+                            class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" checked>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A</span>
+                                <span class="text-gray-500 dark:text-gray-400">|</span>
+                                <span class="text-gray-600 dark:text-gray-300">0912345678</span>
+                                <span
+                                    class="ml-auto inline-block px-2 py-0.5 text-[10px] font-bold text-primary border border-primary rounded">Mặc
+                                    định</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                Số 123, Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh
+                            </p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span
+                                    class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Nhà
+                                    riêng</span>
+                                <button type="button"
+                                    class="text-xs text-primary hover:text-orange-600 font-medium">Sửa</button>
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Address Item 2 -->
+                    <label
+                        class="flex items-start gap-3 p-3 border border-gray-200 dark:border-gray-700 hover:border-primary/50 rounded-lg cursor-pointer transition-colors">
+                        <input type="radio" name="shipping_address"
+                            class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A (Công ty)</span>
+                                <span class="text-gray-500 dark:text-gray-400">|</span>
+                                <span class="text-gray-600 dark:text-gray-300">0987654321</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                Tòa nhà TechOne, 456 Võ Văn Kiệt, Quận 1, TP. Hồ Chí Minh
+                            </p>
+                            <div class="flex justify-between items-center mt-2">
+                                <span
+                                    class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Văn
+                                    phòng</span>
+                                <button type="button"
+                                    class="text-xs text-primary hover:text-orange-600 font-medium">Sửa</button>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Footer (Add Button) -->
+                <div
+                    class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-xl flex justify-between items-center">
+                    <button
+                        class="flex items-center gap-2 text-primary hover:text-orange-700 font-medium transition-colors">
+                        <span class="material-symbols-outlined">add</span>
+                        Thêm địa chỉ mới
+                    </button>
+                    <div class="flex gap-3">
+                        <button onclick="toggleAddressModal()"
+                            class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white font-medium transition-colors">Hủy</button>
+                        <button onclick="toggleAddressModal()"
+                            class="px-4 py-2 bg-primary hover:bg-orange-600 text-white rounded-lg font-medium shadow-sm transition-colors">Xác
+                            nhận</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voucher Selection Modal -->
+        <div id="voucher-modal" class="fixed inset-0 z-50 hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity opacity-0"
+                id="voucher-backdrop">
+            </div>
+
+            <!-- Modal Content -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-white dark:bg-[#1e293b] rounded-xl shadow-2xl transform transition-all scale-95 opacity-0 duration-300"
+                id="voucher-content">
+                <!-- Header -->
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Chọn TechOne Voucher</h3>
+                    <button onclick="toggleVoucherModal()"
+                        class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <!-- Body (Voucher List) -->
+                <div class="p-4 max-h-[60vh] overflow-y-auto space-y-4 custom-scrollbar bg-gray-50 dark:bg-gray-800/50">
+                    <!-- Voucher Item 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 transform"
+                        id="voucher-card-1">
+                        <div class="flex">
+                            <!-- Left: Image/Icon -->
+                            <div
+                                class="w-24 bg-orange-50 dark:bg-orange-900/10 flex flex-col items-center justify-center border-r border-dashed border-gray-300 dark:border-gray-700 p-2 relative h-32">
+                                <!-- Ticket Holes Simulation -->
+                                <div
+                                    class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-gray-50 dark:bg-gray-900 rounded-full">
+                                </div>
+                                <span
+                                    class="material-symbols-outlined text-primary text-3xl mb-1">confirmation_number</span>
+                                <span class="text-primary font-bold text-lg">15%</span>
+                                <span class="text-[10px] uppercase font-bold text-primary">Giảm tối đa</span>
+                            </div>
+                            <!-- Right: Info -->
+                            <div class="flex-1 p-3 flex flex-col justify-between h-32">
+                                <div>
+                                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Giảm 15% đơn từ 500k
+                                    </h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Áp dụng cho
+                                        các
+                                        sản phẩm công nghệ (Laptop, Điện thoại) trong tháng 5.</p>
+                                </div>
+                                <div class="flex justify-between items-end mt-2">
+                                    <div>
+                                        <p class="text-xs text-red-500 mt-1">HSD: 31/05/2026</p>
+                                        <button onclick="toggleVoucherDetails('voucher-details-1', 'voucher-card-1')"
+                                            class="text-xs text-blue-500 hover:underline flex items-center gap-0.5 mt-1">
+                                            Điều kiện
+                                            <span
+                                                class="material-symbols-outlined text-[10px] transition-transform duration-300"
+                                                id="icon-voucher-details-1">expand_more</span>
+                                        </button>
+                                    </div>
+                                    <button
+                                        class="px-3 py-1 bg-primary hover:bg-orange-600 text-white text-xs font-bold rounded shadow-sm transition-colors">
+                                        Dùng ngay
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Expanded Details -->
+                        <div id="voucher-details-1"
+                            class="hidden border-t border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-3 text-xs text-gray-600 dark:text-gray-400 transition-all duration-300 ease-in-out origin-top">
+                            <ul class="list-disc list-inside space-y-1 pl-1">
+                                <li>Giảm <strong>15%</strong> tối đa <strong>100k</strong>.</li>
+                                <li>Áp dụng cho đơn hàng từ <strong>500k</strong>.</li>
+                                <li>Sản phẩm: Laptop, Điện thoại, Phụ kiện TechOne.</li>
+                                <li>Không áp dụng chung với các khuyến mãi khác.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Voucher Item 2 -->
+                    <div
+                        class="flex bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden opacity-75 grayscale-[0.5]">
+                        <!-- Left: Image/Icon -->
+                        <div
+                            class="w-24 bg-orange-50 dark:bg-orange-900/10 flex flex-col items-center justify-center border-r border-dashed border-gray-300 dark:border-gray-700 p-2 relative">
+                            <!-- Ticket Holes Simulation -->
+                            <div
+                                class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-gray-50 dark:bg-gray-900 rounded-full">
+                            </div>
+                            <span class="material-symbols-outlined text-primary text-3xl mb-1">local_shipping</span>
+                            <span class="text-primary font-bold text-lg">Free</span>
+                            <span class="text-[10px] uppercase font-bold text-primary">Vận chuyển</span>
+                        </div>
+                        <!-- Right: Info -->
+                        <div class="flex-1 p-3 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Miễn phí vận chuyển</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Cho đơn hàng từ 0đ
+                                    (Tối đa 30k).</p>
+                            </div>
+                            <div class="flex justify-between items-end mt-2">
+                                <div>
+                                    <div
+                                        class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700 max-w-[100px]">
+                                        <div class="bg-primary h-1.5 rounded-full" style="width: 80%"></div>
+                                    </div>
+                                    <p class="text-[10px] text-primary">Đã dùng 80%</p>
+                                    <p class="text-xs text-red-500 mt-0.5">HSD: 31/05/2026</p>
+                                </div>
+                                <button
+                                    class="px-3 py-1 border border-primary text-primary hover:bg-primary hover:text-white text-xs font-bold rounded shadow-sm transition-colors">
+                                    Lưu lại
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div
+                    class="p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1e293b] rounded-b-xl flex justify-end">
+                    <button onclick="toggleVoucherModal()"
+                        class="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg font-medium transition-colors">Đóng</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // --- Address Modal Logic ---
+            function toggleAddressModal() {
+                const modal = document.getElementById('address-modal');
+                const backdrop = document.getElementById('address-backdrop');
+                const content = document.getElementById('address-content');
+
+                if (modal.classList.contains('hidden')) {
+                    // Open
+                    modal.classList.remove('hidden');
+                    // Animate in
+                    setTimeout(() => {
+                        backdrop.classList.remove('opacity-0');
+                        content.classList.remove('scale-95', 'opacity-0');
+                        content.classList.add('scale-100', 'opacity-100');
+                    }, 10);
+                } else {
+                    // Close animation
+                    backdrop.classList.add('opacity-0');
+                    content.classList.remove('scale-100', 'opacity-100');
+                    content.classList.add('scale-95', 'opacity-0');
+
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            // Close when clicking outside
+            document.getElementById('address-modal').addEventListener('click', function (e) {
+                if (e.target === this || e.target.id === 'address-backdrop') {
+                    toggleAddressModal();
+                }
+            });
+
+            // --- Voucher Modal Logic ---
+            function toggleVoucherModal() {
+                const modal = document.getElementById('voucher-modal');
+                const backdrop = document.getElementById('voucher-backdrop');
+                const content = document.getElementById('voucher-content');
+
+                if (modal.classList.contains('hidden')) {
+                    // Open
+                    modal.classList.remove('hidden');
+                    // Animate in
+                    setTimeout(() => {
+                        backdrop.classList.remove('opacity-0');
+                        content.classList.remove('scale-95', 'opacity-0');
+                        content.classList.add('scale-100', 'opacity-100');
+                    }, 10);
+                } else {
+                    // Close animation
+                    backdrop.classList.add('opacity-0');
+                    content.classList.remove('scale-100', 'opacity-100');
+                    content.classList.add('scale-95', 'opacity-0');
+
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            // Close Voucher Modal when clicking outside
+            document.getElementById('voucher-modal').addEventListener('click', function (e) {
+                if (e.target === this || e.target.id === 'voucher-backdrop') {
+                    toggleVoucherModal();
+                }
+            });
+
+            function toggleVoucherDetails(detailsId, cardId) {
+                const details = document.getElementById(detailsId);
+                const icon = document.getElementById('icon-' + detailsId);
+
+                if (details.classList.contains('hidden')) {
+                    // Open
+                    details.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    // Close
+                    details.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+        </script>
+
+
+    </div>
+</body>
+
+</html>

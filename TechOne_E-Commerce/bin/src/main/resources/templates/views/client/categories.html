@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-client :: view(title='Danh sách sản phẩm', content=~{:: #product-list-content})}">
+
+<body>
+
+    <div id="product-list-content" class="w-full bg-background-light dark:bg-background-dark min-h-screen">
+
+        <div class="max-w-[1440px] mx-auto px-4 md:px-10 py-6">
+            <nav class="flex flex-wrap gap-2 items-center mb-6 text-sm">
+                <a class="text-gray-500 hover:text-primary transition-colors" href="/">Trang chủ</a>
+                <span class="text-gray-400">/</span>
+                <span class="text-[#1c100d] dark:text-white font-medium">Laptop</span>
+            </nav>
+
+            <div class="relative w-full rounded-2xl overflow-hidden min-h-[240px] md:min-h-[300px] mb-10 group">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    style="background-image: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=1200');">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 p-6 md:p-10 text-white max-w-2xl">
+                    <h1 class="text-3xl md:text-5xl font-bold mb-3 tracking-tight">Laptop Cao Cấp & Gaming</h1>
+                    <p class="text-white/80 text-sm md:text-base font-medium">Hiệu năng đỉnh cao, thiết kế đột phá. Khám
+                        phá ngay bộ sưu tập mới nhất 2024.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8 relative">
+
+                <aside
+                    class="hidden lg:block w-[280px] shrink-0 space-y-6 sticky top-24 h-fit max-h-[calc(100vh-120px)] overflow-y-auto custom-scrollbar pr-2">
+                    <div class="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700">
+                        <h3 class="text-lg font-bold text-[#1c100d] dark:text-white">Bộ lọc</h3>
+                        <button class="text-primary text-sm font-medium hover:underline">Đặt lại</button>
+                    </div>
+
+                    <div class="flex flex-col gap-4">
+                        <details
+                            class="group border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-[#1e293b]"
+                            open="">
+                            <summary
+                                class="flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors select-none rounded-t-xl">
+                                <span class="font-semibold text-sm text-[#1c100d] dark:text-white">Thương hiệu</span>
+                                <span
+                                    class="material-symbols-outlined text-gray-500 group-open:rotate-180 transition-transform text-[20px]">expand_more</span>
+                            </summary>
+                            <div class="p-4 space-y-3 bg-white dark:bg-[#1e293b]">
+                                <label class="flex items-center gap-3 cursor-pointer group/item">
+                                    <input
+                                        class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">MacBook
+                                        (12)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group/item">
+                                    <input checked=""
+                                        class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">ASUS
+                                        (24)</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group/item">
+                                    <input
+                                        class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                        type="checkbox" />
+                                    <span
+                                        class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Dell
+                                        (18)</span>
+                                </label>
+
+                                <div id="brand-list-more" class="hidden space-y-3">
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            type="checkbox" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">HP
+                                            (15)</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            type="checkbox" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Lenovo
+                                            (21)</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            type="checkbox" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Acer
+                                            (9)</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            type="checkbox" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">MSI
+                                            (14)</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            type="checkbox" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">LG
+                                            (6)</span>
+                                    </label>
+                                </div>
+
+                                <button id="btn-toggle-brands" onclick="toggleBrands(this)"
+                                    class="w-full flex items-center justify-center gap-1 text-sm font-medium text-primary mt-2">
+                                    <span class="hover:underline">Xem thêm</span>
+                                    <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                                </button>
+
+                                <script>
+                                    function toggleBrands(btn) {
+                                        const moreList = document.getElementById('brand-list-more');
+                                        const isHidden = moreList.classList.contains('hidden');
+                                        const textSpan = btn.querySelector('span:first-child');
+                                        const iconSpan = btn.querySelector('span:last-child');
+
+                                        if (isHidden) {
+                                            moreList.classList.remove('hidden');
+                                            textSpan.textContent = 'Thu gọn';
+                                            iconSpan.textContent = 'expand_less';
+                                        } else {
+                                            moreList.classList.add('hidden');
+                                            textSpan.textContent = 'Xem thêm';
+                                            iconSpan.textContent = 'expand_more';
+                                        }
+                                    }
+                                </script>
+                            </div>
+                        </details>
+
+                        <details
+                            class="group border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-[#1e293b]"
+                            open="">
+                            <summary
+                                class="flex cursor-pointer items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors select-none rounded-t-xl">
+                                <span class="font-semibold text-sm text-[#1c100d] dark:text-white">Khoảng giá</span>
+                                <span
+                                    class="material-symbols-outlined text-gray-500 group-open:rotate-180 transition-transform text-[20px]">expand_more</span>
+                            </summary>
+                            <div class="p-4 bg-white dark:bg-[#1e293b]">
+                                <div class="flex items-center gap-1 mb-6">
+                                    <!-- Min Input -->
+                                    <div
+                                        class="flex-1 min-w-0 group/input flex items-center border border-gray-200 dark:border-gray-600 rounded-lg px-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20 bg-white dark:bg-gray-700 transition-colors">
+                                        <input id="price-min"
+                                            class="flex-1 min-w-0 p-0 py-2 text-sm border-none bg-transparent dark:text-white focus:ring-0 text-right peer placeholder:text-gray-400"
+                                            placeholder="0" type="text" inputmode="numeric" value="0" />
+                                        <span
+                                            class="text-gray-500 dark:text-gray-400 text-sm font-medium pl-0.5 pointer-events-none peer-focus:text-primary transition-colors">.000</span>
+                                    </div>
+
+                                    <span class="text-gray-400">-</span>
+
+                                    <!-- Max Input -->
+                                    <div
+                                        class="flex-1 min-w-0 group/input flex items-center border border-gray-200 dark:border-gray-600 rounded-lg px-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20 bg-white dark:bg-gray-700 transition-colors">
+                                        <input id="price-max"
+                                            class="flex-1 min-w-0 p-0 py-2 text-sm border-none bg-transparent dark:text-white focus:ring-0 text-right peer placeholder:text-gray-400"
+                                            placeholder="0" type="text" inputmode="numeric" value="50000" />
+                                        <span
+                                            class="text-gray-500 dark:text-gray-400 text-sm font-medium pl-0.5 pointer-events-none peer-focus:text-primary transition-colors">.000</span>
+                                    </div>
+                                </div>
+
+                                <div class="relative h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full mb-6 mx-2">
+                                    <div id="slider-track"
+                                        class="absolute h-full bg-primary rounded-full left-0 right-0"></div>
+                                    <input type="range" id="range-min" min="0" max="50000000" value="0" step="100000"
+                                        class="absolute w-full h-full -left-2 opacity-0 cursor-pointer z-10 pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4">
+                                    <input type="range" id="range-max" min="0" max="50000000" value="50000000"
+                                        step="100000"
+                                        class="absolute w-full h-full -left-2 opacity-0 cursor-pointer z-10 pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4">
+
+                                    <!-- Visual Thumbs with Centering Fix -->
+                                    <div id="thumb-min"
+                                        class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-4 bg-white border-2 border-primary rounded-full shadow pointer-events-none z-20"
+                                        style="left: 0%;"></div>
+                                    <div id="thumb-max"
+                                        class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 size-4 bg-white border-2 border-primary rounded-full shadow pointer-events-none z-20"
+                                        style="left: 100%;"></div>
+                                </div>
+
+                                <button
+                                    class="w-full py-2 bg-primary/10 text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-all text-sm mb-4">Áp
+                                    dụng</button>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const rangeMin = document.getElementById('range-min');
+                                        const rangeMax = document.getElementById('range-max');
+                                        const inputMin = document.getElementById('price-min');
+                                        const inputMax = document.getElementById('price-max');
+                                        const track = document.getElementById('slider-track');
+                                        const thumbMin = document.getElementById('thumb-min');
+                                        const thumbMax = document.getElementById('thumb-max');
+                                        const maxVal = 50000000;
+                                        const scaleFactor = 1000;
+
+                                        function updateUI(excludeInput = null) {
+                                            const min = Math.min(parseInt(rangeMin.value), parseInt(rangeMax.value));
+                                            const max = Math.max(parseInt(rangeMin.value), parseInt(rangeMax.value));
+
+                                            const minPercent = (min / maxVal) * 100;
+                                            const maxPercent = (max / maxVal) * 100;
+
+                                            track.style.left = minPercent + '%';
+                                            track.style.right = (100 - maxPercent) + '%';
+
+                                            thumbMin.style.left = minPercent + '%';
+                                            thumbMax.style.left = maxPercent + '%';
+
+                                            if (excludeInput !== inputMin) {
+                                                inputMin.value = Math.floor(min / scaleFactor);
+                                            }
+                                            if (excludeInput !== inputMax) {
+                                                inputMax.value = Math.floor(max / scaleFactor);
+                                            }
+                                        }
+
+                                        rangeMin.addEventListener('input', () => updateUI());
+                                        rangeMax.addEventListener('input', () => updateUI());
+
+                                        function handleInputChange(e) {
+                                            let valStr = e.target.value.replace(/\D/g, '');
+                                            // Allow empty string for typing
+                                            if (valStr === '') {
+                                                e.target.value = '';
+                                                return;
+                                            }
+
+                                            // Optional: remove leading zeros visually while typing if simpler
+                                            if (valStr.length > 1 && valStr.startsWith('0')) {
+                                                valStr = parseInt(valStr).toString();
+                                            }
+                                            e.target.value = valStr;
+
+                                            let val = parseInt(valStr);
+                                            let realVal = val * scaleFactor;
+
+                                            if (realVal > maxVal) realVal = maxVal;
+
+                                            if (e.target.id === 'price-min') {
+                                                rangeMin.value = realVal;
+                                            } else {
+                                                rangeMax.value = realVal;
+                                            }
+                                            // Update visual slider but NOT the input being typed
+                                            updateUI(e.target);
+                                        }
+
+                                        function handleBlur(e) {
+                                            let valStr = e.target.value.replace(/\D/g, '');
+                                            if (valStr === '') {
+                                                valStr = '0';
+                                                e.target.value = '0';
+                                            }
+                                            // Ensure value is clean number on blur
+                                            handleInputChange(e);
+                                            // Force full UI sync
+                                            updateUI();
+                                        }
+
+                                        inputMin.addEventListener('input', handleInputChange);
+                                        inputMax.addEventListener('input', handleInputChange);
+                                        inputMin.addEventListener('blur', handleBlur);
+                                        inputMax.addEventListener('blur', handleBlur);
+
+                                        updateUI();
+                                    });
+                                </script>
+                                <div class="space-y-3">
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            name="price" type="radio" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Dưới
+                                            15 triệu</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            name="price" type="radio" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">15
+                                            - 25 triệu</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            name="price" type="radio" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">25
+                                            - 50 triệu</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            name="price" type="radio" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Trên
+                                            50 triệu</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer group/item">
+                                        <input
+                                            class="size-4 border-gray-300 text-primary focus:ring-primary/20 cursor-pointer"
+                                            name="price" type="radio" />
+                                        <span
+                                            class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors">Trên
+                                            100 triệu</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </details>
+                    </div>
+                </aside>
+
+                <div class="flex-1 flex flex-col gap-6">
+
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-center gap-3">
+                            <button
+                                class="lg:hidden flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium hover:bg-gray-100 dark:text-white">
+                                <span class="material-symbols-outlined text-[18px]">tune</span>
+                                Bộ lọc
+                            </button>
+                            <p class="text-sm text-gray-500 dark:text-gray-400"><span
+                                    class="text-[#1c100d] dark:text-white font-bold">124</span> sản phẩm</p>
+                        </div>
+                        <div class="flex items-center gap-3 self-end sm:self-auto">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm text-gray-500 hidden sm:inline">Sắp xếp:</span>
+                                <div class="relative group">
+                                    <button
+                                        class="flex items-center gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium min-w-[140px] justify-between hover:bg-gray-100 dark:text-white">
+                                        <span>Nổi bật nhất</span>
+                                        <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                class="flex items-center bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-1">
+                                <button class="p-1.5 rounded-md bg-white dark:bg-[#1e293b] shadow-sm text-primary">
+                                    <span class="material-symbols-outlined text-[20px] block">grid_view</span>
+                                </button>
+                                <button
+                                    class="p-1.5 rounded-md text-gray-400 hover:text-[#1c100d] dark:hover:text-white">
+                                    <span class="material-symbols-outlined text-[20px] block">view_list</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                        <div
+                            class="group bg-white dark:bg-[#1e293b] rounded-2xl p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-xl transition-all duration-300 flex flex-col">
+                            <div
+                                class="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 mb-3">
+                                <span
+                                    class="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded-md z-10">-15%</span>
+                                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    src="https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=400" />
+                                <div
+                                    class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
+                                    <button
+                                        class="size-8 bg-white dark:bg-gray-700 rounded-full shadow-md flex items-center justify-center text-[#1c100d] dark:text-white hover:text-primary">
+                                        <span class="material-symbols-outlined text-[18px]">favorite</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <div class="flex items-center gap-1 mb-1">
+                                    <span
+                                        class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                                    <span class="text-xs font-medium text-[#1c100d] dark:text-white">4.9</span>
+                                    <span class="text-xs text-gray-400">(128)</span>
+                                </div>
+                                <h3
+                                    class="text-sm font-semibold text-[#1c100d] dark:text-white leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                                    MacBook Pro 14" M3 Pro 2024 - 18GB/512GB</h3>
+                                <div class="mt-auto">
+                                    <div class="flex items-baseline gap-2 mb-3">
+                                        <span class="text-accent">48.990.000₫</span>
+                                        <span class="text-xs text-gray-400 line-through">57.990.000₫</span>
+                                    </div>
+                                    <button
+                                        class="w-full py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#1c100d] dark:text-white text-sm font-bold group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                        Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="group bg-white dark:bg-[#1e293b] rounded-2xl p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-xl transition-all duration-300 flex flex-col">
+                            <div
+                                class="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 mb-3">
+                                <span
+                                    class="absolute top-2 left-2 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded-md z-10">Mới</span>
+                                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    src="https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&q=80&w=400" />
+                                <div
+                                    class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
+                                    <button
+                                        class="size-8 bg-white dark:bg-gray-700 rounded-full shadow-md flex items-center justify-center text-[#1c100d] dark:text-white hover:text-primary">
+                                        <span class="material-symbols-outlined text-[18px]">favorite</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <div class="flex items-center gap-1 mb-1">
+                                    <span
+                                        class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                                    <span class="text-xs font-medium text-[#1c100d] dark:text-white">4.7</span>
+                                    <span class="text-xs text-gray-400">(45)</span>
+                                </div>
+                                <h3
+                                    class="text-sm font-semibold text-[#1c100d] dark:text-white leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Laptop Gaming ASUS ROG Strix G15</h3>
+                                <div class="mt-auto">
+                                    <div class="flex items-baseline gap-2 mb-3">
+                                        <span class="text-accent">28.490.000₫</span>
+                                    </div>
+                                    <button
+                                        class="w-full py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#1c100d] dark:text-white text-sm font-bold group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                        Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="group bg-white dark:bg-[#1e293b] rounded-2xl p-3 border border-transparent hover:border-gray-200 dark:hover:border-gray-700 hover:shadow-xl transition-all duration-300 flex flex-col">
+                            <div
+                                class="relative w-full aspect-square rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800 mb-3">
+                                <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400" />
+                                <div
+                                    class="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0 duration-300">
+                                    <button
+                                        class="size-8 bg-white dark:bg-gray-700 rounded-full shadow-md flex items-center justify-center text-[#1c100d] dark:text-white hover:text-primary">
+                                        <span class="material-symbols-outlined text-[18px]">favorite</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <div class="flex items-center gap-1 mb-1">
+                                    <span
+                                        class="material-symbols-outlined text-yellow-400 text-[14px] fill-current">star</span>
+                                    <span class="text-xs font-medium text-[#1c100d] dark:text-white">5.0</span>
+                                    <span class="text-xs text-gray-400">(12)</span>
+                                </div>
+                                <h3
+                                    class="text-sm font-semibold text-[#1c100d] dark:text-white leading-snug mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                                    Dell XPS 13 Plus 9320</h3>
+                                <div class="mt-auto">
+                                    <div class="flex items-baseline gap-2 mb-3">
+                                        <span class="text-accent">41.990.000₫</span>
+                                        <span class="text-xs text-gray-400 line-through">45.000.000₫</span>
+                                    </div>
+                                    <button
+                                        class="w-full py-2 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-[#1c100d] dark:text-white text-sm font-bold group-hover:bg-primary group-hover:border-primary group-hover:text-white transition-all flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                        Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center gap-2">
+                            <button
+                                class="size-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-600 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+                            </button>
+                            <button
+                                class="size-9 flex items-center justify-center rounded-lg bg-accent text-white font-semibold">1</button>
+                            <button
+                                class="size-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-600 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 font-medium">2</button>
+                            <span class="px-2 text-gray-400">...</span>
+                            <button
+                                class="size-9 flex items-center justify-center rounded-lg border border-gray-200 dark:border-gray-600 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
+                                <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+                            </button>
+                        </nav>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

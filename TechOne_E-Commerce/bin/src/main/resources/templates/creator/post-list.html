@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>TechShop Creator Dashboard - Bài Viết Của Tôi</title>
+<th:block th:replace="~{fragments_creator/head_css :: head_css}"></th:block>
+</head>
+<body class="bg-bg-main text-text-main font-display antialiased overflow-hidden h-screen flex">
+
+    <div th:replace="~{fragments_creator/sidebar :: sidebar}"></div>
+
+    <div class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <header th:replace="~{fragments_creator/header :: header}" th:with="pageTitle='Chào mừng quay lại, Minh! 👋', pageSub='Hôm nay bạn có ý tưởng công nghệ nào mới không?'"></header>
+		<main
+			class="flex-1 flex flex-col overflow-y-auto bg-bg-main scroll-smooth">
+			<div
+				class="container mx-auto max-w-[1200px] p-4 md:p-8 flex flex-col gap-6 h-full">
+				<header class="flex flex-wrap items-center justify-between gap-4">
+					<div class="flex flex-col gap-1">
+						<h2
+							class="text-3xl md:text-4xl font-bold tracking-tight text-text-main">
+							Bài viết của tôi</h2>
+						<p class="text-text-muted text-base font-normal">Quản lý,
+							chỉnh sửa và theo dõi hiệu suất nội dung của bạn.</p>
+					</div>
+					<div class="hidden md:flex gap-3">
+						<button
+							class="flex items-center justify-center rounded-xl h-10 w-10 bg-white border border-border-subtle text-text-muted hover:border-primary hover:text-primary transition-colors shadow-sm">
+							<span class="material-symbols-outlined">notifications</span>
+						</button>
+						<button
+							class="flex h-10 cursor-pointer items-center justify-center rounded-xl bg-white px-4 text-sm font-bold text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm">
+							<span class="truncate">Xem trang của tôi</span>
+						</button>
+					</div>
+				</header>
+				<div
+					class="flex flex-col flex-1 bg-card-surface rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+					<div
+						class="p-5 border-b border-border-subtle flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+						<div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+							<div class="relative w-full sm:w-64">
+								<span
+									class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted material-symbols-outlined text-[20px]">search</span>
+								<input
+									class="w-full h-10 pl-10 pr-4 rounded-lg bg-bg-sidebar border-transparent focus:border-primary focus:bg-white focus:ring-0 text-sm text-text-main placeholder-text-muted transition-colors"
+									placeholder="Tìm kiếm bài viết..." type="text" />
+							</div>
+							<div
+								class="flex items-center p-1 bg-bg-sidebar rounded-lg border border-border-subtle overflow-x-auto">
+								<button
+									class="px-3 py-1.5 text-xs font-bold rounded-md bg-white text-primary shadow-sm border border-border-subtle/50 whitespace-nowrap">Tất
+									cả</button>
+								<button
+									class="px-3 py-1.5 text-xs font-medium text-text-muted hover:text-text-main hover:bg-white/50 rounded-md transition-colors whitespace-nowrap">Đã
+									xuất bản</button>
+								<button
+									class="px-3 py-1.5 text-xs font-medium text-text-muted hover:text-text-main hover:bg-white/50 rounded-md transition-colors whitespace-nowrap">Chờ
+									duyệt</button>
+								<button
+									class="px-3 py-1.5 text-xs font-medium text-text-muted hover:text-text-main hover:bg-white/50 rounded-md transition-colors whitespace-nowrap">Bản
+									nháp</button>
+							</div>
+						</div>
+						<a href="/creator/posts-manager/post-form">
+							<button
+							class="flex items-center justify-center gap-2 h-10 px-5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-md shadow-primary/20 transition-all">
+							<span class="material-symbols-outlined text-[20px]">add_circle</span>
+							<span>Viết bài mới</span>
+						</button>
+						</a>
+					</div>
+					<div class="flex-1 overflow-x-auto">
+						<table class="w-full text-left text-sm whitespace-nowrap">
+							<thead
+								class="bg-bg-sidebar text-text-muted font-medium border-b border-border-subtle">
+								<tr>
+									<th class="px-6 py-4 w-[400px]">Bài viết</th>
+									<th class="px-4 py-4">Chuyên mục</th>
+									<th class="px-4 py-4">Ngày tạo</th>
+									<th class="px-4 py-4">Lượt xem</th>
+									<th class="px-4 py-4">Tương tác</th>
+									<th class="px-4 py-4">Trạng thái</th>
+									<th class="px-6 py-4 text-right">Hành động</th>
+								</tr>
+							</thead>
+							<tbody class="divide-y divide-border-subtle text-text-main">
+								<tr class="group hover:bg-bg-sidebar/50 transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="h-12 w-16 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0 shadow-sm relative">
+												<img alt="Thumbnail" class="w-full h-full object-cover"
+													src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-ovzdTPeoCUwjOjqTr3_9sYyNZYasJr8r8e5qYgelxiD851V0oB-8fprWgOkTYw8ItNyiMZXzCy7iugTiDnbskd2EqUX3FiVDYgaemUhvzrRGlmoIEmDcoEc8bCydhiY03LpXjRJLu3mGbrOtZ1yIMLHaZz44OCZoSvat8YiH4rOTNWNUmoo4SMmGvRhq7g26q4-_mGHzZ3Es1hU_jWoqGUyFY-LeFEfOYYxqvU-uKERUSb0gdJUMv3e4Z9M2YT4hL8t6fESpxks" />
+											</div>
+											<div class="flex flex-col gap-0.5">
+												<a
+													class="font-bold text-text-main hover:text-primary transition-colors text-base truncate max-w-[200px] md:max-w-[280px]"
+													href="#">Đánh giá chi tiết iPhone 15 Pro Max</a> <span
+													class="text-xs text-text-muted">ID: #TS-29381</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-text-muted text-xs font-medium border border-gray-200">
+											Điện thoại </span></td>
+									<td class="px-4 py-4 text-text-muted">
+										<div class="flex flex-col">
+											<span class="font-medium text-text-main">12/10/2023</span> <span
+												class="text-xs">09:30 AM</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span class="font-medium">12.5k</span>
+									</td>
+									<td class="px-4 py-4">
+										<div class="flex items-center gap-3 text-text-muted text-xs">
+											<span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-pink-500 filled">favorite</span>
+												850</span> <span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-blue-500 filled">chat_bubble</span>
+												42</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 border border-emerald-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+											Đã xuất bản
+									</span></td>
+									<td class="px-6 py-4">
+										<div class="flex items-center justify-end gap-2">
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xem thực tế">
+												<span class="material-symbols-outlined text-[20px]">visibility</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-blue-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Chỉnh sửa">
+												<span class="material-symbols-outlined text-[20px]">edit</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xóa">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar/50 transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="h-12 w-16 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0 shadow-sm relative">
+												<img alt="Thumbnail" class="w-full h-full object-cover"
+													src="https://lh3.googleusercontent.com/aida-public/AB6AXuB63kdxoyWi70XLmw9X2x8d4EJ0e4zByxadVUSyBfBuiGF_i4SuZWNxfQeI_957ZOHU3ZGvoV5pfAPBqRe4DhHUHSs0M1hf3EeP5SbUQxUzcHZxCk3ahHL__QYyBU4RQy--6ENAOxyUnsSUsI8LXODqJUAzV6obE1cehELs-Vjt8j9QM2k8aDtvM1w1GxvzWF5E4kowKi49tGb2W23Ocx3xfPIZDEnh3-D0P3bxiiHKRVb_unqLySrGML0nUR_jOfV1HHx3VbN_KLs" />
+											</div>
+											<div class="flex flex-col gap-0.5">
+												<a
+													class="font-bold text-text-main hover:text-primary transition-colors text-base truncate max-w-[200px] md:max-w-[280px]"
+													href="#">Tương lai của AI trong năm 2024</a> <span
+													class="text-xs text-text-muted">ID: #TS-29382</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-text-muted text-xs font-medium border border-gray-200">
+											Công nghệ </span></td>
+									<td class="px-4 py-4 text-text-muted">
+										<div class="flex flex-col">
+											<span class="font-medium text-text-main">14/10/2023</span> <span
+												class="text-xs">02:15 PM</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="font-medium text-text-muted">--</span></td>
+									<td class="px-4 py-4">
+										<div
+											class="flex items-center gap-3 text-text-muted text-xs opacity-50">
+											<span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px]">favorite</span>
+												0</span> <span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px]">chat_bubble</span>
+												0</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-bold text-amber-600 border border-amber-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+											Chờ duyệt
+									</span></td>
+									<td class="px-6 py-4">
+										<div class="flex items-center justify-end gap-2">
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xem thực tế">
+												<span class="material-symbols-outlined text-[20px]">visibility</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-blue-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Chỉnh sửa">
+												<span class="material-symbols-outlined text-[20px]">edit</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xóa">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar/50 transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="h-12 w-16 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0 shadow-sm relative">
+												<img alt="Thumbnail" class="w-full h-full object-cover"
+													src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHDtT8Ezz6SCtbAPmMcXr7IoJw6rsGxWcmZRPCUjL8xjkPv4CvUbI9of3K-ScQ5dRsLqUWh5Kz-R23-APG1yvvrb9EXyM6x7cCHwJQkIh7CZ2J7XgMhnXjMuOIKBWawQQTBWh9daVeeuME-1iN2SAAEb4ueIT4U89wVf3igN_C7qcG13c-aWdIdGNTQ2h0tdcaW-1nZ1KV7kwXQiSFR2Ntp2OHGga_ylVVbOypjw0ycvBEJ31ZKGzyweG1_8aTMvxtp-_WqyK8EJw" />
+											</div>
+											<div class="flex flex-col gap-0.5">
+												<a
+													class="font-bold text-text-main hover:text-primary transition-colors text-base truncate max-w-[200px] md:max-w-[280px]"
+													href="#">Setup bàn làm việc tối giản</a> <span
+													class="text-xs text-text-muted">ID: #TS-29383</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-text-muted text-xs font-medium border border-gray-200">
+											Lifestyle </span></td>
+									<td class="px-4 py-4 text-text-muted">
+										<div class="flex flex-col">
+											<span class="font-medium text-text-main">--</span> <span
+												class="text-xs italic">Chưa xuất bản</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="font-medium text-text-muted">--</span></td>
+									<td class="px-4 py-4">
+										<div
+											class="flex items-center gap-3 text-text-muted text-xs opacity-50">
+											<span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px]">favorite</span>
+												0</span> <span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px]">chat_bubble</span>
+												0</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500 border border-slate-200">
+											<span class="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
+											Bản nháp
+									</span></td>
+									<td class="px-6 py-4">
+										<div class="flex items-center justify-end gap-2">
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xem thực tế">
+												<span class="material-symbols-outlined text-[20px]">visibility</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-blue-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Chỉnh sửa">
+												<span class="material-symbols-outlined text-[20px]">edit</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xóa">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar/50 transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="h-12 w-16 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0 shadow-sm relative">
+												<img alt="Thumbnail" class="w-full h-full object-cover"
+													src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWZYVwV1rLEQEUvGBHsfli9FAP8Gfrv7k0YM514SwCVFlHGo11JombDfmTgyD8yEzhgrt3FyE3HXEc_bIs0OB-8-jl0GjUAAR0IwYyztBRQyD8viH3lxbVg9zQXeNl4Xp4Tgytcs80oq2R7ag0ylIjn6O-ryhvPRNT48_j2D5zmjAy20Wnf1Km_KYnvimoUdGev43fVYDPTw9Lr95F5K0jkUt88sJrJ1_c3uIttWQBXowkJCXBiQh1g8epL-X0lPfdT5slGMGMy7w" />
+											</div>
+											<div class="flex flex-col gap-0.5">
+												<a
+													class="font-bold text-text-main hover:text-primary transition-colors text-base truncate max-w-[200px] md:max-w-[280px]"
+													href="#">Top 5 Game PC hay nhất 2023</a> <span
+													class="text-xs text-text-muted">ID: #TS-29380</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-text-muted text-xs font-medium border border-gray-200">
+											Gaming </span></td>
+									<td class="px-4 py-4 text-text-muted">
+										<div class="flex flex-col">
+											<span class="font-medium text-text-main">01/10/2023</span> <span
+												class="text-xs">10:00 AM</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span class="font-medium">28.4k</span>
+									</td>
+									<td class="px-4 py-4">
+										<div class="flex items-center gap-3 text-text-muted text-xs">
+											<span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-pink-500 filled">favorite</span>
+												2.1k</span> <span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-blue-500 filled">chat_bubble</span>
+												340</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 border border-emerald-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+											Đã xuất bản
+									</span></td>
+									<td class="px-6 py-4">
+										<div class="flex items-center justify-end gap-2">
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xem thực tế">
+												<span class="material-symbols-outlined text-[20px]">visibility</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-blue-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Chỉnh sửa">
+												<span class="material-symbols-outlined text-[20px]">edit</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xóa">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+								<tr class="group hover:bg-bg-sidebar/50 transition-colors">
+									<td class="px-6 py-4">
+										<div class="flex items-center gap-4">
+											<div
+												class="h-12 w-16 rounded-lg bg-slate-200 overflow-hidden flex-shrink-0 shadow-sm relative">
+												<img alt="Thumbnail" class="w-full h-full object-cover"
+													src="https://lh3.googleusercontent.com/aida-public/AB6AXuAizYg-n4BfFa6BUtY9fs1pSBU30ZF6nYqafmy9ectKWZJQBuLeAumaWn6q6gElvp8xBj0jhW195AwQx_DyjWOtTILkB0u9Hwd9Zbe9T9QuL0PZaQhqTWnEEn4-LTiqTqLewdDDTIa4TzMhjBLnHA4_7vTN8hDNonZzFq1FH8BzBnGJoXXxIO4ZQjcHSKt6RG7TTs_JT18yPsnpLzKlrKYobYZA-W5LmW38NIf-wue7wCy9KT6Fs7TgfizUJIndxeRPDIFidgRnST0" />
+											</div>
+											<div class="flex flex-col gap-0.5">
+												<a
+													class="font-bold text-text-main hover:text-primary transition-colors text-base truncate max-w-[200px] md:max-w-[280px]"
+													href="#">Học Javascript trong 24h</a> <span
+													class="text-xs text-text-muted">ID: #TS-29375</span>
+											</div>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center px-2.5 py-1 rounded-md bg-gray-100 text-text-muted text-xs font-medium border border-gray-200">
+											Lập trình </span></td>
+									<td class="px-4 py-4 text-text-muted">
+										<div class="flex flex-col">
+											<span class="font-medium text-text-main">30/09/2023</span> <span
+												class="text-xs">08:00 AM</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span class="font-medium">5.1k</span>
+									</td>
+									<td class="px-4 py-4">
+										<div class="flex items-center gap-3 text-text-muted text-xs">
+											<span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-pink-500 filled">favorite</span>
+												120</span> <span class="flex items-center gap-1"><span
+												class="material-symbols-outlined text-[14px] text-blue-500 filled">chat_bubble</span>
+												15</span>
+										</div>
+									</td>
+									<td class="px-4 py-4"><span
+										class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-bold text-emerald-600 border border-emerald-100">
+											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+											Đã xuất bản
+									</span></td>
+									<td class="px-6 py-4">
+										<div class="flex items-center justify-end gap-2">
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-primary hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xem thực tế">
+												<span class="material-symbols-outlined text-[20px]">visibility</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-blue-600 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Chỉnh sửa">
+												<span class="material-symbols-outlined text-[20px]">edit</span>
+											</button>
+											<button
+												class="p-2 rounded-lg text-text-muted hover:text-red-500 hover:bg-white hover:shadow-sm border border-transparent hover:border-border-subtle transition-all"
+												title="Xóa">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div
+						class="p-4 border-t border-border-subtle flex flex-col sm:flex-row justify-between items-center gap-4 bg-white">
+						<p class="text-sm text-text-muted">
+							Hiển thị <span class="font-bold text-text-main">1</span> đến <span
+								class="font-bold text-text-main">5</span> trong tổng số <span
+								class="font-bold text-text-main">42</span> bài viết
+						</p>
+						<div class="flex items-center gap-2">
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg border border-border-subtle bg-white text-text-muted hover:border-primary hover:text-primary transition-all disabled:opacity-50">
+								<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+							</button>
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg bg-primary text-white font-medium text-sm shadow-md shadow-primary/20">1</button>
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg border border-border-subtle bg-white text-text-muted hover:border-primary hover:text-primary hover:shadow-sm transition-all text-sm font-medium">2</button>
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg border border-border-subtle bg-white text-text-muted hover:border-primary hover:text-primary hover:shadow-sm transition-all text-sm font-medium">3</button>
+							<span class="px-1 text-text-muted">...</span>
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg border border-border-subtle bg-white text-text-muted hover:border-primary hover:text-primary hover:shadow-sm transition-all text-sm font-medium">8</button>
+							<button
+								class="h-8 w-8 flex items-center justify-center rounded-lg border border-border-subtle bg-white text-text-muted hover:border-primary hover:text-primary transition-all">
+								<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<footer
+					class="mt-auto pt-4 pb-8 text-center text-xs text-text-muted opacity-70">
+					© 2023 TechShop Inc. All rights reserved. </footer>
+			</div>
+		</main>
+	</div>
+
+</body>
+</html>
