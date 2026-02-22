@@ -7,20 +7,23 @@
         <div class="max-w-7xl mx-auto space-y-6">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Tổng
-                        quan TechShop
-                    </h1>
-                    <p class="text-gray-500 dark:text-gray-400 font-body">Chào Admin, đây là dữ liệu hôm nay <span
+                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        <a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
+                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        <span class="font-bold text-gray-900 dark:text-white">Dashboard</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Tổng quan TechShop</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Chào Admin, đây là dữ liệu hôm nay <span
                             class="font-medium text-slate-700">25/12/2025</span></p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button
-                        class="flex items-center gap-2 bg-white border border-gray-200 dark:border-gray-700 hover:border-primary/50 text-slate-700 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm">
+                        class="flex items-center gap-2 bg-white border border-gray-200 dark:border-gray-700 hover:border-primary/50 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-sm">
                         <span class="material-symbols-outlined text-[18px]">refresh</span>
                         Làm mới
                     </button>
                     <button
-                        class="flex items-center gap-2 bg-gray-900 dark:bg-gray-700 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-slate-900/20">
+                        class="flex items-center gap-2 bg-gray-900 dark:bg-gray-700 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all shadow-lg shadow-slate-900/20">
                         <span class="material-symbols-outlined text-[18px]">download</span>
                         Xuất báo cáo
                     </button>
@@ -28,7 +31,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <div
-                    class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-primary/30 transition-all duration-300">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-primary/30 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div
                             class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -46,7 +49,7 @@
                     </div>
                 </div>
                 <div
-                    class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-blue-500/30 transition-all duration-300">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-blue-500/30 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div
                             class="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
@@ -64,7 +67,7 @@
                 </div>
                 <!-- Card 3: Sản phẩm sắp hết (Low Stock) -->
                 <div
-                    class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-amber-500/30 transition-all duration-300">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-amber-500/30 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div
                             class="w-10 h-10 flex items-center justify-center bg-amber-50 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
@@ -83,7 +86,7 @@
 
                 <!-- Card 4: Yêu cầu bảo hành (RMA) -->
                 <div
-                    class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-red-500/30 transition-all duration-300">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col justify-between group hover:border-red-500/30 transition-all duration-300">
                     <div class="flex justify-between items-start mb-4">
                         <div
                             class="w-10 h-10 flex items-center justify-center bg-red-50 rounded-lg text-red-500 group-hover:bg-red-500 group-hover:text-white transition-colors">
@@ -610,7 +613,7 @@
                     class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center relative overflow-hidden">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white absolute top-6 left-6">Tỷ lệ xử lý</h3>
                     <div class="relative w-40 h-40 mt-6">
-                        <svg class="w-full h-full transform -rotate-90">
+                        <svg class="w-full h-full transform -rotate-90 overflow-visible" viewBox="0 0 160 160">
                             <circle cx="80" cy="80" fill="none" r="70" stroke="#f1f5f9" stroke-width="12"></circle>
                             <circle class="transition-all duration-1000 ease-out" cx="80" cy="80" fill="none" r="70"
                                 stroke="#22c55e" stroke-dasharray="440" stroke-dashoffset="35" stroke-linecap="round"
@@ -785,7 +788,7 @@
                     </div>
                 </div>
                 <div
-                    class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-full">
+                    class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col h-full">
                     <div class="flex justify-between items-center mb-6">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Top Trending Tech</h3>
@@ -883,7 +886,8 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div
+                class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Hành động nhanh</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     <button
