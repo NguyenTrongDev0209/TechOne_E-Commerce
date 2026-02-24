@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title='Cấu Hình Admin TechShop', menuItem='settings', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Cấu
+                        hình Website</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body">Quản lý toàn bộ thiết lập hệ thống, thanh toán
+                        và vận hành.</p>
+                </div>
+            </div>
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <div class="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-4 z-0">
+                    <div
+                        class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-2">
+                        <nav class="space-y-1">
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold transition-colors"
+                                href="#general">
+                                <span class="material-symbols-outlined text-[20px]">tune</span>
+                                Cấu hình chung
+                            </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white font-medium transition-colors"
+                                href="#seo">
+                                <span class="material-symbols-outlined text-[20px]">search</span>
+                                Cấu hình SEO
+                            </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white font-medium transition-colors"
+                                href="#payment">
+                                <span class="material-symbols-outlined text-[20px]">payments</span>
+                                Cấu hình thanh toán
+                            </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white font-medium transition-colors"
+                                href="#shipping">
+                                <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                                Cấu hình vận chuyển
+                            </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white font-medium transition-colors"
+                                href="#email-sms">
+                                <span class="material-symbols-outlined text-[20px]">mail</span>
+                                Email &amp; SMS
+                            </a>
+                            <a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white font-medium transition-colors"
+                                href="#social">
+                                <span class="material-symbols-outlined text-[20px]">share</span>
+                                Mạng xã hội
+                            </a>
+                        </nav>
+                    </div>
+                    <div
+                        class="mt-6 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl border border-gray-100 dark:border-gray-700">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-400 mt-0.5">info</span>
+                            <div>
+                                <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Phiên bản 2.5.0</h4>
+                                <p class="text-xs text-gray-700 dark:text-gray-300">Hệ thống đang chạy phiên bản mới
+                                    nhất. Cập nhật lần
+                                    cuối: 25/12/2025.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-1 space-y-8 w-full min-w-0">
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="general">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">tune</span>
+                                Thông tin chung
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="col-span-1 md:col-span-2">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Tên
+                                        Website</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="text" value="TechShop - Công nghệ đỉnh cao" />
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Hotline</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="text" value="1900 123 456" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Email
+                                        liên hệ</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="email" value="contact@techshop.vn" />
+                                </div>
+                                <div class="col-span-1 md:col-span-2">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Địa chỉ
+                                        trụ sở</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="text" value="Số 123, Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh" />
+                                </div>
+                                <div class="col-span-1 md:col-span-2">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Giờ làm
+                                        việc</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="text" value="Thứ 2 - Thứ 6: 8:00 - 17:30 | Thứ 7: 8:00 - 12:00" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Logo
+                                        Website</label>
+                                    <div
+                                        class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 dark:bg-gray-800 hover:border-primary/50 transition-all cursor-pointer group">
+                                        <div
+                                            class="w-20 h-20 mb-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                                            <img alt="Current Logo" class="max-w-full h-auto p-2"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDka0ATs7XEUnY6JLiU0DSWWEKrO9LQx4oly4UZd8dVBVCRxd2zLX4JPNvcH_Rrb3y0SuqV8JazTvWi-ucB-zrI9PyJowhj2KYvBCGexwSalWREomFjzxNxux8OlldC0ycVMXcFJ9jaJsNiOtKyai61ocrl6klgNbSL6nycuA4GSTL1gi6IL_-4zdz0rpIRp71jNIpfw2Sid-lCcwuQ_Jj1XSAdKta9uWzZsJJCF2P87TDVgu8vbDCkB0Ek-dw5QrQtmtYvqOoGjSs" />
+                                        </div>
+                                        <span class="text-xs font-semibold text-primary group-hover:underline">Tải lên
+                                            logo mới</span>
+                                        <span class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">PNG, JPG (Max
+                                            2MB)</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Favicon</label>
+                                    <div
+                                        class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 dark:bg-gray-800 hover:border-primary/50 transition-all cursor-pointer group">
+                                        <div
+                                            class="w-12 h-12 mb-3 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                                            <img alt="Current Favicon" class="w-8 h-8"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc_cwbJrQUemHGIy0WVq-NMh2aN77nrcxad2VBzktw4HhJLe7S91lKSdfYMoBLrjcUsdRS2AxS9g6lMgxFn82mP2Ti2VKIm9rf_y8ST8TqZWAArnEgQB0_3HJoqJ8NumdFuy6GjiPzHGVFR55vln3kkIGrZl1ruCVCPHh2DPutAyhTh9EQ7ZlB7byFK55Q0O-FZ5xehRt1g7_8TCs-MNKyuVxv26ybdxWEvo2aj4H_uOaIvwdYlPZJFbOm4tuD_pTYY0k0auxSauI" />
+                                        </div>
+                                        <span class="text-xs font-semibold text-primary group-hover:underline">Tải lên
+                                            favicon</span>
+                                        <span class="text-[10px] text-gray-400 dark:text-gray-500 mt-1">ICO, PNG
+                                            (32x32px)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row gap-3 justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 font-bold text-sm hover:bg-gray-50 dark:bg-gray-800 transition-colors">Khôi
+                                    phục mặc định</button>
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="seo">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">search</span>
+                                Cấu hình SEO
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Meta Title
+                                    (Mặc định)</label>
+                                <input
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                    type="text" value="TechShop - Mua sắm đồ công nghệ chính hãng giá tốt" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Meta
+                                    Description (Mặc
+                                    định)</label>
+                                <textarea
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                    rows="3">Chuyên cung cấp laptop, điện thoại, phụ kiện công nghệ chính hãng. Bảo hành 12 tháng, đổi trả 30 ngày, miễn phí vận chuyển.</textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Google
+                                        Analytics
+                                        ID</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        placeholder="UA-XXXXXXXX-X" type="text" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Google
+                                        Search Console
+                                        Code</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        placeholder="Verification Code" type="text" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Robot.txt
+                                    Editor</label>
+                                <textarea
+                                    class="w-full bg-slate-800 text-green-400 font-mono border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    rows="4">User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /checkout
+Sitemap: https://techshop.vn/sitemap.xml</textarea>
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="payment">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">payments</span>
+                                Phương thức thanh toán
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div
+                                class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-slate-100">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-green-600">
+                                        <span class="material-symbols-outlined text-2xl">paid</span>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 dark:text-white">COD (Thanh toán khi nhận
+                                            hàng)</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Cho phép khách hàng thanh
+                                            toán tiền mặt khi
+                                            nhận hàng</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                    <div
+                                        class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                    </div>
+                                </label>
+                            </div>
+                            <div
+                                class="flex flex-col p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-slate-100 gap-4">
+                                <div class="flex items-center justify-between w-full">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-blue-600 dark:text-blue-400">
+                                            <span class="material-symbols-outlined text-2xl">account_balance</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 dark:text-white">Chuyển khoản ngân hàng
+                                            </h4>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Hiển thị thông tin ngân
+                                                hàng khi checkout
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                        <div
+                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="pl-16 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input
+                                        class="bg-white border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm"
+                                        placeholder="Tên Ngân hàng" type="text" />
+                                    <input
+                                        class="bg-white border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm"
+                                        placeholder="Số tài khoản" type="text" />
+                                    <input
+                                        class="bg-white border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm md:col-span-2"
+                                        placeholder="Chủ tài khoản" type="text" />
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-slate-100 gap-4">
+                                <div class="flex items-center justify-between w-full">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm text-blue-800">
+                                            <span class="font-bold">Pay</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-900 dark:text-white">PayPal</h4>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">Thanh toán quốc tế qua
+                                                cổng PayPal</p>
+                                        </div>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input class="sr-only peer" type="checkbox" value="" />
+                                        <div
+                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="pl-16">
+                                    <input
+                                        class="w-full bg-white border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm mb-2"
+                                        placeholder="PayPal Client ID" type="password" />
+                                    <input
+                                        class="w-full bg-white border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-sm"
+                                        placeholder="PayPal Secret Key" type="password" />
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="shipping">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">local_shipping</span>
+                                Đơn vị vận chuyển
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div
+                                    class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-bold text-slate-800">Giao Hàng Nhanh (GHN)</span>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                        <div
+                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                                <div
+                                    class="p-4 border border-gray-200 dark:border-gray-700 rounded-xl flex items-center justify-between hover:border-primary/30 transition-colors">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-bold text-slate-800">Viettel Post</span>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input checked="" class="sr-only peer" type="checkbox" value="" />
+                                        <div
+                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div
+                                class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-50 dark:border-gray-700">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Phí
+                                        ship mặc định
+                                        (VND)</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        type="number" value="30000" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Khu vực
+                                        miễn phí vận
+                                        chuyển</label>
+                                    <input
+                                        class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                        placeholder="VD: Hồ Chí Minh, Hà Nội" type="text" />
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="email-sms">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">mail</span>
+                                Cấu hình Email &amp; SMS
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300">Email Templates</h4>
+                                <div class="flex gap-2 text-xs">
+                                    <button class="bg-primary text-white px-3 py-1 rounded-lg">Đơn mới</button>
+                                    <button
+                                        class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-lg hover:bg-slate-200">Xác
+                                        nhận</button>
+                                    <button
+                                        class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-3 py-1 rounded-lg hover:bg-slate-200">Hủy
+                                        đơn</button>
+                                </div>
+                            </div>
+                            <textarea
+                                class="w-full font-mono bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-700 dark:text-gray-300"
+                                rows="6">Xin chào {customer_name},
+Cảm ơn bạn đã đặt hàng tại TechShop. Đơn hàng #{order_id} của bạn đã được tiếp nhận.
+Tổng tiền: {total_amount}
+Chúng tôi sẽ liên hệ sớm để xác nhận.
+TechShop Team.
+                                </textarea>
+                            <div class="pt-4 border-t border-gray-50 dark:border-gray-700">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">SMS OTP</h4>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gửi mã xác thực qua tin nhắn
+                                            điện thoại</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input class="sr-only peer" type="checkbox" value="" />
+                                        <div
+                                            class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                                <input
+                                    class="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-900 dark:text-white"
+                                    placeholder="SMS Provider API Key" type="text" />
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden scroll-mt-24"
+                        id="social">
+                        <div
+                            class="px-6 py-5 border-b border-gray-50 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex items-center justify-between">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">share</span>
+                                Mạng xã hội
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="relative">
+                                <span
+                                    class="absolute left-3 top-2.5 text-blue-600 dark:text-blue-400 font-bold text-lg">f</span>
+                                <input
+                                    class="w-full pl-10 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="Facebook URL" type="text" />
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-pink-600 font-bold text-lg">In</span>
+                                <input
+                                    class="w-full pl-10 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="Instagram URL" type="text" />
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-red-600 font-bold text-lg">Y</span>
+                                <input
+                                    class="w-full pl-10 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="YouTube Channel URL" type="text" />
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-black font-bold text-lg">Tk</span>
+                                <input
+                                    class="w-full pl-10 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    placeholder="TikTok URL" type="text" />
+                            </div>
+                            <div class="pt-6 border-t border-slate-100 flex justify-end">
+                                <button
+                                    class="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all">Lưu
+                                    thay đổi</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-12"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

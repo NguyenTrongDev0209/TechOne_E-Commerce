@@ -7,16 +7,25 @@
             ký</h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">Điền thông tin bên dưới để bắt đầu</p>
     </div>
-    <form class="flex flex-col gap-5" id="registerForm">
+
+    <div th:if="${error}"
+        class="mb-4 p-4 text-sm text-red-800 bg-red-50 dark:bg-gray-800 dark:text-red-400 rounded-lg border border-red-200 flex items-center gap-2">
+        <span class="material-symbols-outlined text-[20px]">error</span>
+        <span th:text="${error}"></span>
+    </div>
+
+    <form class="flex flex-col gap-5" id="registerForm" th:action="@{/register}" th:object="${account}" method="post">
 
         <div class="flex flex-col gap-1.5">
             <label class="text-[#1c100d] dark:text-gray-200 text-sm font-semibold">Họ và tên</label>
             <div class="relative group">
                 <span
                     class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-[20px]">person</span>
-                <input
+                <input name="fullname" th:field="*{fullname}"
                     class="w-full h-12 pl-11 pr-4 rounded-lg border border-[#e9d4ce] dark:border-gray-700 bg-gray-50 dark:bg-[#2a1712] text-[#1c100d] dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-[#2a1712] text-sm transition-all"
                     placeholder="Nguyễn Văn A" type="text" />
+                <p class="text-xs text-red-500 mt-1" th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}">
+                </p>
             </div>
         </div>
 
@@ -25,9 +34,11 @@
             <div class="relative group">
                 <span
                     class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-[20px]">lock</span>
-                <input
+                <input name="password" th:field="*{password}"
                     class="w-full h-12 pl-11 pr-12 rounded-lg border border-[#e9d4ce] dark:border-gray-700 bg-gray-50 dark:bg-[#2a1712] text-[#1c100d] dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-[#2a1712] text-sm transition-all"
                     id="password" placeholder="••••••••" type="password" />
+                <p class="text-xs text-red-500 mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                </p>
                 <button
                     class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors flex items-center justify-center focus:outline-none"
                     id="togglePassword" type="button">
@@ -51,9 +62,10 @@
             <div class="relative group">
                 <span id="input-icon"
                     class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors text-[20px]">mail</span>
-                <input id="contact-input"
+                <input id="contact-input" name="contact" th:field="*{contact}"
                     class="w-full h-12 pl-11 pr-4 rounded-lg border border-[#e9d4ce] dark:border-gray-700 bg-gray-50 dark:bg-[#2a1712] text-[#1c100d] dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white dark:focus:bg-[#2a1712] text-sm transition-all"
                     placeholder="email@example.com" type="email" />
+                <p class="text-red-500 text-xs mt-1" th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}"></p>
             </div>
         </div>
 
@@ -114,7 +126,7 @@
         <div class="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
     </div>
     <div class="grid grid-cols-1 gap-4">
-        <button id="googleButton"
+        <a th:href="@{/oauth2/authorization/google}" id="googleButton"
             class="flex items-center justify-center gap-3 h-12 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-white/5 hover:border-gray-400 dark:hover:border-gray-500 hover:shadow-md transition-all font-medium text-sm text-[#1c100d] dark:text-white bg-white dark:bg-transparent disabled:opacity-50 disabled:cursor-not-allowed">
             <svg class="size-5" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -131,7 +143,7 @@
                     fill="#1976D2"></path>
             </svg>
             Google
-        </button>
+        </a>
     </div>
     <div class="mt-8 text-center">
         <p class="text-sm text-gray-500 dark:text-gray-400">

@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -33,12 +34,20 @@ public class Account {
 	@Column(columnDefinition = "varchar(255)")
 	public String provider;
 	
-	@Column(columnDefinition = "varchar(12)", unique = true)
+	@Column(columnDefinition = "varchar(12)")
 	public String phone;
 	
-	@Column(columnDefinition = "varchar(12)", unique = true)
-	@NotBlank(message = "Email không được để trống")
-	@Email(message = "Email nhập chưa đúng định dạng")
+	@Column(columnDefinition = "nvarchar(255)")
+	@NotBlank(message = "Họ và tên không được để trống")
+	public String fullname;
+	
+	@Transient // Không tạo cột trong DB
+//	@NotBlank(message = "Email hoặc Số điện thoại không được để trống")
+	public String contact;
+	
+	@Column(columnDefinition = "varchar(255)")
+//	@NotBlank(message = "Email không được để trống")
+//	@Email(message = "Email nhập chưa đúng định dạng")
 	public String email;
 	
 	@Column(columnDefinition = "varchar(255)")
@@ -59,7 +68,7 @@ public class Account {
 	
 	@PastOrPresent(message = "Ngày tạo không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
-	public LocalDate createAt = LocalDate.now();
+	public LocalDate createAt;
 	//Lấy ngày tạo tài khoản là ngày hôm đó luôn
 	
 	@OneToMany(mappedBy = "account")

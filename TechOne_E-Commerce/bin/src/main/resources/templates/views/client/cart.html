@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html th:replace="~{layouts/layout-client :: view(title='Giỏ hàng của bạn', content=~{:: #main-content})}">
+
+<body>
+
+    <div id="main-content" class="w-full bg-background-light dark:bg-background-dark min-h-screen font-display">
+
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <nav aria-label="Breadcrumb" class="flex">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary dark:text-gray-400"
+                            href="/">
+                            <span class="material-symbols-outlined text-[18px] mr-2">home</span>
+                            Trang chủ
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <span class="material-symbols-outlined text-gray-400">chevron_right</span>
+                            <span class="ml-1 text-sm font-medium text-gray-700 md:ml-2 dark:text-gray-200">Giỏ
+                                hàng</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-12">
+
+            <div class="mb-8">
+                <h2 class="text-3xl font-black text-[#1c100d] dark:text-white tracking-tight">Giỏ hàng của bạn <span
+                        class="text-lg font-medium text-gray-500 dark:text-gray-400 ml-2">(3 sản phẩm)</span></h2>
+                <div class="h-1 w-20 bg-primary mt-4 rounded-full"></div>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8 items-stretch">
+                <div class="flex-1">
+                    <!-- Header -->
+                    <div
+                        class="hidden md:grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 pb-4 border-b border-gray-100 text-sm font-bold text-gray-500 mb-6">
+                        <div class="col-span-2 flex items-center gap-3 pl-3">
+                            <input type="checkbox" id="select-all"
+                                class="w-4 h-4 rounded text-primary focus:ring-primary border-gray-300">
+                            <label for="select-all" class="cursor-pointer whitespace-nowrap">Tất cả sản phẩm</label>
+                        </div>
+                        <div></div> <!-- Col 3: Empty (or "Sản phẩm" here?) User wants specific alignment -->
+                        <div class="flex justify-start pl-2">
+                            <div class="w-28 text-center">Số lượng</div>
+                        </div>
+                        <div class="text-center">Tổng</div>
+                        <div></div>
+                    </div>
+
+                    <!-- Item 1 -->
+                    <div
+                        class="grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 py-6 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors rounded-xl px-2">
+                        <!-- Col 1: Checkbox -->
+                        <div class="flex justify-center">
+                            <input type="checkbox"
+                                class="cart-item-checkbox w-4 h-4 rounded text-primary focus:ring-primary border-gray-300">
+                        </div>
+
+                        <!-- Col 2: Image -->
+                        <div class="w-[100px] h-[100px] bg-white rounded-lg border border-gray-100 p-2 flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=200"
+                                alt="iPhone 15 Pro Max" class="w-full h-full object-contain" />
+                        </div>
+
+                        <!-- Col 3: Info (3 Rows) -->
+                        <div class="flex flex-col gap-2 pr-4">
+                            <!-- Row 1: Name -->
+                            <h3 class="font-bold text-[#1c100d] dark:text-white text-base truncate">
+                                iPhone 15 Pro Max
+                            </h3>
+
+                            <!-- Row 2: Variant Dropdown -->
+                            <div class="relative group w-fit">
+                                <button
+                                    class="flex items-center gap-1 text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors">
+                                    <span>Titan Tự Nhiên / 256GB</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                                </button>
+                                <!-- Dropdown Mockup (Hidden by default) -->
+                                <div
+                                    class="absolute top-full left-0 mt-1 w-64 bg-white shadow-xl rounded-xl border border-gray-100 p-3 hidden group-hover:block z-10 transition-all cursor-default">
+                                    <span class="text-xs font-bold text-gray-400 uppercase mb-2 block">Phiên bản</span>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span
+                                            class="px-2 py-1 border border-primary text-primary text-xs font-bold rounded cursor-pointer bg-primary/5">256GB</span>
+                                        <span
+                                            class="px-2 py-1 border border-gray-200 text-gray-600 text-xs rounded hover:border-primary cursor-pointer">512GB</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-400 uppercase mb-2 block">Màu sắc</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span
+                                            class="px-2 py-1 border border-primary text-primary text-xs font-bold rounded cursor-pointer bg-primary/5">Titan
+                                            Tự Nhiên</span>
+                                        <span
+                                            class="px-2 py-1 border border-gray-200 text-gray-600 text-xs rounded hover:border-primary cursor-pointer">Titan
+                                            Xanh</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Prices -->
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-primary">33.990.000₫</span>
+                                <span class="text-sm text-gray-400 line-through">35.990.000₫</span>
+                            </div>
+                        </div>
+
+                        <!-- Col 4: Quantity -->
+                        <div class="flex justify-start pl-2">
+                            <div class="flex items-center border border-gray-200 rounded-lg h-9 w-28">
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                <input type="text" value="1"
+                                    class="w-full h-full text-center text-sm font-bold text-gray-700 bg-transparent border-none focus:ring-0 p-0" />
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-r-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Col 5: Total -->
+                        <div class="text-center font-bold text-primary text-lg">
+                            33.990.000₫
+                        </div>
+
+                        <!-- Col 6: Trash -->
+                        <div class="flex justify-end">
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                title="Xóa">
+                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div
+                        class="grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 py-6 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors rounded-xl px-2">
+                        <div class="flex justify-center">
+                            <input type="checkbox"
+                                class="cart-item-checkbox w-4 h-4 rounded text-primary focus:ring-primary border-gray-300">
+                        </div>
+                        <div class="w-[100px] h-[100px] bg-white rounded-lg border border-gray-100 p-2 flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1588156979435-37918d4fe5e6?auto=format&fit=crop&q=80&w=200"
+                                alt="AirPods Pro" class="w-full h-full object-contain" />
+                        </div>
+                        <div class="flex flex-col gap-2 pr-4">
+                            <h3 class="font-bold text-[#1c100d] dark:text-white text-base truncate">
+                                AirPods Pro (Gen 2)
+                            </h3>
+                            <div class="relative group w-fit">
+                                <button
+                                    class="flex items-center gap-1 text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors">
+                                    <span>USB-C / MagSafe</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                                </button>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-primary">53.990.000₫</span>
+                                <span class="text-sm text-gray-400 line-through">6.190.000₫</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-start pl-2">
+                            <div class="flex items-center border border-gray-200 rounded-lg h-9 w-28">
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                <input type="text" value="1"
+                                    class="w-full h-full text-center text-sm font-bold text-gray-700 bg-transparent border-none focus:ring-0 p-0" />
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-r-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="text-center font-bold text-primary text-lg">
+                            5.990.000₫
+                        </div>
+                        <div class="flex justify-end">
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                title="Xóa">
+                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 py-6 border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors rounded-xl px-2">
+                        <!-- Col 1: Checkbox -->
+                        <div class="flex justify-center">
+                            <input type="checkbox"
+                                class="cart-item-checkbox w-4 h-4 rounded text-primary focus:ring-primary border-gray-300">
+                        </div>
+
+                        <!-- Col 2: Image -->
+                        <div class="w-[100px] h-[100px] bg-white rounded-lg border border-gray-100 p-2 flex-shrink-0">
+                            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=200"
+                                alt="iPhone 15 Pro Max" class="w-full h-full object-contain" />
+                        </div>
+
+                        <!-- Col 3: Info (3 Rows) -->
+                        <div class="flex flex-col gap-2 pr-4">
+                            <!-- Row 1: Name -->
+                            <h3 class="font-bold text-[#1c100d] dark:text-white text-base truncate">
+                                iPhone 15 Pro Max
+                            </h3>
+
+                            <!-- Row 2: Variant Dropdown -->
+                            <div class="relative group w-fit">
+                                <button
+                                    class="flex items-center gap-1 text-sm text-gray-500 bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg transition-colors">
+                                    <span>Titan Tự Nhiên / 256GB</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_drop_down</span>
+                                </button>
+                                <!-- Dropdown Mockup (Hidden by default) -->
+                                <div
+                                    class="absolute top-full left-0 mt-1 w-64 bg-white shadow-xl rounded-xl border border-gray-100 p-3 hidden group-hover:block z-10 transition-all cursor-default">
+                                    <span class="text-xs font-bold text-gray-400 uppercase mb-2 block">Phiên bản</span>
+                                    <div class="flex flex-wrap gap-2 mb-3">
+                                        <span
+                                            class="px-2 py-1 border border-primary text-primary text-xs font-bold rounded cursor-pointer bg-primary/5">256GB</span>
+                                        <span
+                                            class="px-2 py-1 border border-gray-200 text-gray-600 text-xs rounded hover:border-primary cursor-pointer">512GB</span>
+                                    </div>
+                                    <span class="text-xs font-bold text-gray-400 uppercase mb-2 block">Màu sắc</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span
+                                            class="px-2 py-1 border border-primary text-primary text-xs font-bold rounded cursor-pointer bg-primary/5">Titan
+                                            Tự Nhiên</span>
+                                        <span
+                                            class="px-2 py-1 border border-gray-200 text-gray-600 text-xs rounded hover:border-primary cursor-pointer">Titan
+                                            Xanh</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Prices -->
+                            <div class="flex items-center gap-3">
+                                <span class="font-bold text-primary">33.990.000₫</span>
+                                <span class="text-sm text-gray-400 line-through">35.990.000₫</span>
+                            </div>
+                        </div>
+
+                        <!-- Col 4: Quantity -->
+                        <div class="flex justify-start pl-2">
+                            <div class="flex items-center border border-gray-200 rounded-lg h-9 w-28">
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-l-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">remove</span>
+                                </button>
+                                <input type="text" value="1"
+                                    class="w-full h-full text-center text-sm font-bold text-gray-700 bg-transparent border-none focus:ring-0 p-0" />
+                                <button
+                                    class="w-8 h-full flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-r-lg transition-colors">
+                                    <span class="material-symbols-outlined text-[16px]">add</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Col 5: Total -->
+                        <div class="text-center font-bold text-primary text-lg">
+                            33.990.000₫
+                        </div>
+
+                        <!-- Col 6: Trash -->
+                        <div class="flex justify-end">
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                title="Xóa">
+                                <span class="material-symbols-outlined text-[20px]">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-6 p-4 rounded-xl bg-orange-50 dark:bg-orange-900/20 border border-orange-100 dark:border-orange-900/50 flex items-start gap-3">
+                        <span class="material-symbols-outlined text-blue-500 mt-0.5">info</span>
+                        <div class="text-sm text-blue-800 dark:text-blue-200">
+                            <p class="font-semibold">Chính sách đổi trả</p>
+                            <p class="mt-1 opacity-90">Miễn phí đổi trả trong vòng 30 ngày nếu sản phẩm có lỗi từ nhà
+                                sản xuất.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="lg:w-[380px] shrink-0">
+                    <div class="sticky top-28 space-y-6 z-30">
+                        <div
+                            class="bg-white dark:bg-[#1e293b] p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-6">Tổng đơn hàng</h3>
+
+                            <div class="space-y-4 mb-6 pb-6 border-b border-gray-100 dark:border-gray-700">
+                                <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                                    <span>Tạm tính</span>
+                                    <span class="font-medium text-[#1c100d] dark:text-white">40.680.000₫</span>
+                                </div>
+                                <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                                    <span>Phí vận chuyển</span>
+                                    <span class="font-medium text-green-600 dark:text-green-400">Miễn phí</span>
+                                </div>
+                                <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                                    <span>Giảm giá</span>
+                                    <span class="font-medium text-[#1c100d] dark:text-white">-0₫</span>
+                                </div>
+                            </div>
+
+
+
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-lg font-bold text-[#1c100d] dark:text-white mt-1">Tổng cộng</span>
+                                <div class="text-right">
+                                    <span class="block text-2xl font-black text-primary">40.680.000₫</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">(Đã bao gồm VAT)</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <a th:href="@{/checkout}"
+                                    class="block w-full py-4 bg-primary hover:bg-red-600 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30 transition-all hover:-translate-y-0.5 active:translate-y-0 text-center">
+                                    TIẾN HÀNH THANH TOÁN
+                                </a>
+                                <button
+                                    class="w-full py-3 bg-transparent border-2 border-gray-200 dark:border-gray-600 text-[#1c100d] dark:text-white font-bold rounded-xl hover:border-primary hover:text-primary transition-colors">
+                                    Tiếp tục mua sắm
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center gap-4 text-gray-400 grayscale opacity-70">
+                            <span class="text-xs font-medium">Bảo mật thanh toán 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative rounded-3xl mb-8"
+                    style="background-color: rgb(229, 231, 235);">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-bold text-[#1c100d] dark:text-gray-800 relative">
+                            Gợi ý cho bạn
+                            <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-primary rounded-full"></span>
+                        </h3>
+                    </div>
+
+                    <div class="relative group">
+
+                        <button id="cart-btn-prev"
+                            class="absolute left-0 top-1/2 -translate-y-1/2 -ml-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100 hidden">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+
+                        <div id="cart-slider-container"
+                            class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
+
+                            <a th:href="@{/product/product-detail}" th:each="i : ${#numbers.sequence(1, 10)}"
+                                class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full">
+
+                                <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                                    <span
+                                        class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+
+                                    <button onclick="event.preventDefault()"
+                                        class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+                                        <span
+                                            class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
+                                        <span
+                                            class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+                                    </button>
+
+                                    <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+                                        class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                                </div>
+
+                                <div class="p-4 flex flex-col gap-2">
+                                    <span
+                                        class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
+                                    <h4
+                                        class="text-[#1c100d] font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
+                                        MacBook Air M2 2023 15 inch 8GB/256GB - Chính Hãng VN/A
+                                    </h4>
+
+                                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
+                                        <span class="material-symbols-outlined text-[14px] fill-current"
+                                            style="font-variation-settings: 'FILL' 1">star</span>
+                                        <span class="material-symbols-outlined text-[14px] fill-current"
+                                            style="font-variation-settings: 'FILL' 1">star</span>
+                                        <span class="material-symbols-outlined text-[14px] fill-current"
+                                            style="font-variation-settings: 'FILL' 1">star</span>
+                                        <span class="material-symbols-outlined text-[14px] fill-current"
+                                            style="font-variation-settings: 'FILL' 1">star</span>
+                                        <span class="material-symbols-outlined text-[14px] fill-current"
+                                            style="font-variation-settings: 'FILL' 1">star_half</span>
+                                        <span class="text-gray-400 ml-1">(120)</span>
+                                    </div>
+
+                                    <div class="flex items-end justify-between mt-1">
+                                        <div class="flex flex-col">
+                                            <span class="text-gray-400 text-xs line-through font-medium">28.990k</span>
+                                            <span class="text-accent font-bold">21.490k</span>
+                                        </div>
+                                        <button
+                                            class="w-8 h-8 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg hover:scale-105">
+                                            <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+
+                        <button id="cart-btn-next"
+                            class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </section>
+                <style>
+                    .scrollbar-hide::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    .scrollbar-hide {
+                        -ms-overflow-style: none;
+                        scrollbar-width: none;
+                    }
+                </style>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        // Slider Logic
+                        const slider = document.getElementById('cart-slider-container');
+                        const prevBtn = document.getElementById('cart-btn-prev');
+                        const nextBtn = document.getElementById('cart-btn-next');
+
+                        if (slider && prevBtn && nextBtn) {
+                            const getScrollAmount = () => slider.firstElementChild.offsetWidth + 16;
+
+                            const updateButtons = () => {
+                                prevBtn.classList.toggle('hidden', slider.scrollLeft <= 5);
+                                nextBtn.classList.toggle('hidden', slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 5);
+                            };
+
+                            prevBtn.addEventListener('click', () => {
+                                slider.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
+                            });
+
+                            nextBtn.addEventListener('click', () => {
+                                slider.scrollBy({ left: getScrollAmount(), behavior: 'smooth' });
+                            });
+
+                            slider.addEventListener('scroll', updateButtons);
+                            updateButtons();
+                        }
+
+                        // Select All Logic
+                        const selectAllCheckbox = document.getElementById('select-all');
+                        const itemCheckboxes = document.querySelectorAll('.cart-item-checkbox');
+
+                        if (selectAllCheckbox && itemCheckboxes.length > 0) {
+                            // Toggle all items when "Select All" is clicked
+                            selectAllCheckbox.addEventListener('change', () => {
+                                itemCheckboxes.forEach(checkbox => {
+                                    checkbox.checked = selectAllCheckbox.checked;
+                                });
+                            });
+
+                            // Update "Select All" when individual items are toggled
+                            itemCheckboxes.forEach(checkbox => {
+                                checkbox.addEventListener('change', () => {
+                                    const allChecked = Array.from(itemCheckboxes).every(cb => cb.checked);
+                                    selectAllCheckbox.checked = allChecked;
+
+                                    // Optional: If you want Indeterminate state when some are checked
+                                    // selectAllCheckbox.indeterminate = !allChecked && Array.from(itemCheckboxes).some(cb => cb.checked);
+                                });
+                            });
+                        }
+                    });
+                </script>
+            </div>
+
+        </main>
+
+    </div>
+</body>
+
+</html>

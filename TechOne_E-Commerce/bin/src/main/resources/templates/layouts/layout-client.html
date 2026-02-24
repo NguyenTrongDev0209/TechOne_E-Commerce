@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html th:fragment="view(title, content)" class="light" lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <title th:text="${title}">TechOne Title</title>
+
+    <link rel="shortcut icon" th:href="@{/images/TechOne_Favicon.png}" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        // ĐỔI MÀU CHÍNH TẠI ĐÂY:
+                        "primary": "#ea580c",       /* Orange 600 - Cam đậm chủ đạo */
+                        "primary-hover": "#c2410c", /* Orange 700 - Hover đậm hơn */
+                        "accent": "#dc2626",        /* Red 600 - Đỏ cho sale/hot (tương phản với cam) */
+                        "accent-hover": "#b91c1c",  /* Red 700 */
+
+                        // Màu nền mát mẻ
+                        "background-light": "#f8fafc", /* Slate 50 - Trắng ánh xanh cực nhẹ */
+                        "background-dark": "#0f172a",  /* Slate 900 */
+                        "text-main": "#334155",        /* Slate 700 - Chữ màu xám xanh (sang hơn đen tuyền) */
+                        "text-secondary": "#64748b",   /* Slate 500 */
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col">
+
+    <!-- <div class="w-full bg-white border-b border-gray-200 relative z-40">
+
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex h-8 items-center justify-between text-xs font-medium text-slate-500">
+                <div class="hidden sm:flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-[16px]">local_shipping</span>
+                    <span>Freeship toàn quốc đơn từ <span class="text-primary font-bold">500k</span></span>
+                </div>
+                <div class="flex items-center gap-4 sm:gap-6 ml-auto">
+                    <a class="hover:text-primary transition-colors" href="#">Tin tức công nghệ</a>
+                    <div class="h-3 w-px bg-slate-200"></div>
+                    <a class="hover:text-primary transition-colors" href="#">Tra cứu đơn hàng</a>
+                    <div class="h-3 w-px bg-slate-200"></div>
+                    <a class="hover:text-primary transition-colors" href="#">Trung tâm bảo hành</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <header
+        class="sticky top-0 z-50 bg-[rgb(255,235,215)]/90 backdrop-blur-md w-full py-3 shadow-sm border-b border-orange-100 transition-all">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-5 lg:gap-10">
+
+                <div class="flex-shrink-0">
+                    <a class="flex items-center" href="/">
+                        <img th:src="@{/images/TechOne_Logo.png}" alt="TechOne Logo"
+                            class="h-10 w-auto object-contain hover:opacity-90 transition-opacity" />
+                    </a>
+                </div>
+
+                <div class="w-full max-w-2xl flex-1">
+                    <form th:action="@{/search}"
+                        class="flex w-full items-center rounded-lg bg-white border border-gray-200 hover:border-primary hover:shadow-sm overflow-hidden h-11 transition-all duration-300">
+
+                        <input
+                            class="flex-1 border-none bg-transparent px-4 text-base text-slate-700 placeholder-slate-400 focus:ring-0 h-full"
+                            placeholder="Tìm kiếm iPhone, Macbook, Phụ kiện..." type="text" />
+
+                        <button
+                            class="bg-[rgb(234,88,12)] hover:bg-[rgb(214,68,0)] text-white px-6 h-full flex items-center justify-center transition-all"
+                            type="submit">
+                            <span class="material-symbols-outlined">search</span>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="flex items-center gap-6 flex-shrink-0">
+                    <a class="group flex flex-col items-center gap-1" th:href="@{/account}">
+                        <div
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+                            <span class="material-symbols-outlined !text-[26px]">person</span>
+                        </div>
+                        <span
+                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Tài
+                            khoản</span>
+                    </a>
+
+                    <a class="group flex flex-col items-center gap-1" href="#">
+                        <div
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+                            <span class="material-symbols-outlined !text-[26px]">favorite</span>
+                            <span
+                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">0</span>
+                        </div>
+                        <span
+                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Yêu
+                            thích</span>
+                    </a>
+
+                    <a class="group flex flex-col items-center gap-1" th:href="@{/cart}">
+                        <div
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+                            <span class="material-symbols-outlined !text-[26px]">shopping_cart</span>
+                            <span
+                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">2</span>
+                        </div>
+                        <span
+                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Giỏ
+                            hàng</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div
+        class="w-full bg-white border-b border-slate-200 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.02)] relative z-30 hidden lg:block">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-8 h-12">
+
+                <div class="relative group h-full flex items-center">
+                    <a th:href="@{/categories}"
+                        class="flex items-center gap-2 bg-primary text-white hover:bg-primary-hover px-4 py-1.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20">
+                        <span class="material-symbols-outlined text-[20px]">widgets</span>
+                        <span>DANH MỤC</span>
+                    </a>
+                </div>
+
+                <nav class="flex items-center gap-8 h-full">
+                    <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center px-1"
+                        href="/">
+                        Trang chủ
+                        <span
+                            class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </a>
+                    <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center gap-1 px-1"
+                        href="#">
+                        Sản phẩm <span class="material-symbols-outlined text-[18px]">expand_more</span>
+                        <span
+                            class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </a>
+                    <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center px-1"
+                        th:href="@{/posts}">
+                        Tin tức
+                        <span
+                            class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </a>
+                    <a class="text-sm font-bold text-orange-500 hover:text-orange-600 relative group h-full flex items-center gap-1 px-1"
+                        th:href="@{/promotions}">
+                        <span class="material-symbols-outlined text-[18px] animate-pulse">local_fire_department</span>
+                        Khuyến mãi Hot
+                        <span
+                            class="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
+                    </a>
+                </nav>
+
+                <div class="ml-auto flex items-center gap-2 bg-primary px-4 py-1.5 rounded-full text-white shadow-sm">
+                    <span class="material-symbols-outlined text-[20px]">support_agent</span>
+                    <span class="text-sm font-bold">1800 6601</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 w-full" th:insert="${content}">
+    </div>
+
+    <footer class="bg-background-dark text-white pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <div class="flex flex-col gap-4">
+                    <a href="/" class="flex items-center gap-2">
+                        <img th:src="@{/images/TechOne_Logo.png}" alt="TechOne Logo"
+                            class="h-10 w-auto object-contain brightness-0 invert" />
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Hệ thống bán lẻ thiết bị công nghệ hàng đầu. Cam kết chính hãng 100%, bảo hành uy tín và dịch vụ
+                        khách hàng tận tâm.
+                    </p>
+                    <div class="flex gap-4 mt-2">
+                        <a class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors text-white"
+                            href="#"><span class="material-symbols-outlined text-sm">public</span></a>
+                        <a class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors text-white"
+                            href="#"><span class="material-symbols-outlined text-sm">mail</span></a>
+                        <a class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors text-white"
+                            href="#"><span class="material-symbols-outlined text-sm">call</span></a>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-bold">Về chúng tôi</h3>
+                    <ul class="flex flex-col gap-2 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" href="#">Giới thiệu công ty</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Tuyển dụng</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Hệ thống cửa hàng</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Liên hệ hợp tác</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-bold">Hỗ trợ khách hàng</h3>
+                    <ul class="flex flex-col gap-2 text-gray-400 text-sm">
+                        <li><a class="hover:text-primary transition-colors" th:href="@{/policy}">Hướng dẫn mua hàng</a>
+                        </li>
+                        <li><a class="hover:text-primary transition-colors" th:href="@{/policy}">Chính sách bảo hành</a>
+                        </li>
+                        <li><a class="hover:text-primary transition-colors" th:href="@{/policy}">Chính sách đổi trả</a>
+                        </li>
+                        <li><a class="hover:text-primary transition-colors" th:href="@{/policy}">Vận chuyển & Giao
+                                nhận</a></li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-bold">Phương thức thanh toán</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <div
+                            class="h-8 w-12 bg-white rounded flex items-center justify-center text-xs text-black font-bold">
+                            VISA</div>
+                        <div
+                            class="h-8 w-12 bg-white rounded flex items-center justify-center text-xs text-black font-bold">
+                            MC</div>
+                        <div
+                            class="h-8 w-12 bg-white rounded flex items-center justify-center text-xs text-black font-bold">
+                            ATM</div>
+                        <div
+                            class="h-8 w-12 bg-white rounded flex items-center justify-center text-xs text-black font-bold">
+                            Momo</div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <p>© 2024 TechShop. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a class="hover:text-white" href="#">Điều khoản sử dụng</a>
+                    <a class="hover:text-white" href="#">Chính sách bảo mật</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title='Quản lý bài viết', menuItem='posts', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Quản lý bài viết</h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Kiểm duyệt và quản lý các bài viết trên
+                        hệ thống</p>
+                </div>
+                <!-- Header Actions removed (moved to filter bar) -->
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">article</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tổng bài viết</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">142</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">hourglass_top</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Chờ duyệt</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">5</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Lượt xem tuần</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">12.5k</h3>
+                    </div>
+                </div>
+                <div
+                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined">flag</span>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Báo cáo</p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">2</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Section -->
+            <div
+                class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+                <!-- Search -->
+                <div class="flex-1 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-gray-400">search</span>
+                    </div>
+                    <input
+                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
+                        placeholder="Tìm kiếm bài viết..." type="text" />
+                </div>
+
+                <!-- Sort Dropdown -->
+                <div class="w-full md:w-48 relative">
+                    <input type="hidden" name="sort" id="sortInput" value="newest">
+                    <button id="sortFilterBtn" onclick="toggleSortDropdown()"
+                        class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+                        <span id="sortFilterLabel">Mới nhất</span>
+                        <span id="sortDropdownIcon"
+                            class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
+                    </button>
+
+                    <div id="sortDropdown"
+                        class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+                        <div class="p-1.5 space-y-0.5">
+                            <div onclick="selectSort('newest', 'Mới nhất')"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                <span>Mới nhất</span>
+                                <span
+                                    class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                            </div>
+                            <div onclick="selectSort('oldest', 'Cũ nhất')"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                <span>Cũ nhất</span>
+                                <span
+                                    class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                            </div>
+                            <div onclick="selectSort('views_desc', 'Xem nhiều nhất')"
+                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                <span>Xem nhiều nhất</span>
+                                <span
+                                    class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date Picker -->
+                <div class="w-full md:w-48 relative">
+                    <input id="dateFilter"
+                        class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+                        placeholder="Chọn ngày" type="text" readonly="readonly" />
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                    </div>
+                </div>
+
+                <!-- Add Button -->
+                <a href="/admin/posts/create"
+                    class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0 h-full">
+                    <span class="material-symbols-outlined text-[20px]">add</span>
+                    Viết bài mới
+                </a>
+            </div>
+
+            <!-- Content Card -->
+            <div
+                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead
+                            class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-100 dark:border-gray-700">
+                            <tr>
+                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Bài viết</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Chuyên mục</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Tác giả</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <span>Lượt xem</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Ngày đăng</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                    onclick="toggleSort(this)">
+                                    <div class="flex items-center justify-between">
+                                        <span>Trạng thái</span>
+                                        <span
+                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-right">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                            <!-- Post 1 -->
+                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox"
+                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-4">
+                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                            style="background-image: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
+                                        </div>
+                                        <div class="flex-1 min-w-0 max-w-xs">
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                                title="Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng">
+                                                Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng
+                                            </h4>
+                                            <span
+                                                class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded mt-1 inline-block">Review
+                                                sản phẩm</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8FHt1FUWoRj9MGyLY3D3ro2we4i860ngy0vNcGvoDjbpJbMj3hf031XjqaUzkR4krsLWvHwMSXUGCH5So5brGJZx5zGT7m0Np6VelWcTk3R8bxVgoZeotvdUv09gXebqXq7IO2oUILh1PKfbP8h2BGyVdkn-JVFUrdU1_laVWpk9d__bYhBeQVcp8mVLHYlN-gmGsoAUGT_jtLZ-BScEEOQeEpW8p4WI5WIvVALfTwxupUrYpW6l7RdyIU3CD9eq6mHjyKMA4hv0')">
+                                        </div>
+                                        <span class="text-sm text-gray-600">Nguyễn Văn A</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                        Đã xuất bản
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex flex-col text-xs">
+                                        <span>20/12/2025</span>
+                                        <span>14:30</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <div class="flex items-center gap-1" title="Lượt xem">
+                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
+                                            1.2k
+                                        </div>
+                                        <div class="flex items-center gap-1" title="Bình luận">
+                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                            45
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                            title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            title="Xoá">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Post 2 -->
+                            <tr class="hover:bg-orange-50/50 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <input type="checkbox"
+                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex gap-4">
+                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                            style="background-image: url('https://images.unsplash.com/photo-1550745165-90c231f428a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
+                                        </div>
+                                        <div class="flex-1 min-w-0 max-w-xs">
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                                title="Top 10 phụ kiện không thể thiếu cho Gamer">
+                                                Top 10 phụ kiện không thể thiếu cho Gamer
+                                            </h4>
+                                            <span
+                                                class="text-xs text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded mt-1 inline-block">Thủ
+                                                thuật</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
+                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdkfN4nVccJmULTdGrg5fbuq11izECHlxlbluxLfI4akg1jyLAXjn8DK5Gwcned5q0PtaYyqMEiqLPOnJw-8ANbrilKfGp1pSsKQU3Ddx7uJP7EndMgToiuRRQ2qTze_2E6KIntlADK5CnHYTHVOBfUXB727yBe8bQndhLzEHNqF0a28CLuFLi57ht7LAaobf1DbxgGt4Tpat48zeg7S-SPMHr0SycYXJSmCpD9vGUt7wY7RqX06c8GLLQyPLI0FLcQAZTUi4gZJM')">
+                                        </div>
+                                        <span class="text-sm text-gray-600">Trần Thị B</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
+                                        Chờ duyệt
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex flex-col text-xs">
+                                        <span>25/12/2025</span>
+                                        <span>09:15</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500">
+                                    <div class="flex items-center gap-3 text-xs">
+                                        <div class="flex items-center gap-1" title="Lượt xem">
+                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
+                                            0
+                                        </div>
+                                        <div class="flex items-center gap-1" title="Bình luận">
+                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
+                                            0
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button
+                                            class="p-1.5 text-white bg-green-500 hover:bg-green-600 rounded transition-colors shadow-sm"
+                                            title="Duyệt bài">
+                                            <span class="material-symbols-outlined text-[18px]">check</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                            title="Chỉnh sửa">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </button>
+                                        <button
+                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            title="Xoá">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination -->
+                <div class="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+                    <span class="text-sm text-gray-500">Hiển thị 1-2 trên 142 bài viết</span>
+                    <div class="flex gap-2">
+                        <button
+                            class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50">Previous</button>
+                        <button class="px-3 py-1 text-sm bg-primary text-white rounded hover:bg-orange-700">1</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function toggleSortDropdown() {
+                const dropdown = document.getElementById('sortDropdown');
+                const icon = document.getElementById('sortDropdownIcon');
+                dropdown.classList.toggle('hidden');
+                if (dropdown.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            }
+
+            function selectSort(value, label) {
+                document.getElementById('sortInput').value = value;
+                document.getElementById('sortFilterLabel').textContent = label;
+                document.getElementById('sortDropdown').classList.add('hidden');
+                document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function (event) {
+                const dropdown = document.getElementById('sortDropdown');
+                const button = document.getElementById('sortFilterBtn');
+                const icon = document.getElementById('sortDropdownIcon');
+
+                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                    if (!dropdown.classList.contains('hidden')) {
+                        dropdown.classList.add('hidden');
+                        icon.style.transform = 'rotate(0deg)';
+                    }
+                }
+            });
+
+            // Simple sort toggle function for headers
+            function toggleSort(header) {
+                const icon = header.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    if (icon.textContent === 'unfold_more') {
+                        icon.textContent = 'expand_less'; // Ascending
+                        icon.classList.add('text-primary');
+                        icon.classList.remove('text-gray-400');
+                    } else if (icon.textContent === 'expand_less') {
+                        icon.textContent = 'expand_more'; // Descending
+                    } else {
+                        icon.textContent = 'unfold_more'; // Reset
+                        icon.classList.remove('text-primary');
+                        icon.classList.add('text-gray-400');
+                    }
+                }
+            }
+        </script>
+
+        <!-- Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
+        <!-- Flatpickr CSS with custom overrides -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+        <style>
+            .flatpickr-calendar {
+                font-family: 'Inter', sans-serif !important;
+                border-radius: 12px !important;
+                margin-top: 8px !important;
+                /* Gap requested by user */
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            .dark .flatpickr-calendar {
+                background: #1e293b !important;
+                border: 1px solid #334155 !important;
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+            }
+
+            .flatpickr-day.selected,
+            .flatpickr-day.startRange,
+            .flatpickr-day.endRange,
+            .flatpickr-day.selected.inRange,
+            .flatpickr-day.startRange.inRange,
+            .flatpickr-day.endRange.inRange,
+            .flatpickr-day.selected:focus,
+            .flatpickr-day.startRange:focus,
+            .flatpickr-day.endRange:focus,
+            .flatpickr-day.selected:hover,
+            .flatpickr-day.startRange:hover,
+            .flatpickr-day.endRange:hover,
+            .flatpickr-day.selected.prevMonthDay,
+            .flatpickr-day.startRange.prevMonthDay,
+            .flatpickr-day.endRange.prevMonthDay,
+            .flatpickr-day.selected.nextMonthDay,
+            .flatpickr-day.startRange.nextMonthDay,
+            .flatpickr-day.endRange.nextMonthDay {
+                background: #ea580c !important;
+                border-color: #ea580c !important;
+            }
+
+            .flatpickr-day.todays-date {
+                color: #ea580c !important;
+                border-color: #ea580c !important;
+            }
+
+            /* Custom Header Styling */
+            .flatpickr-current-month {
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                width: 75% !important;
+                /* Ensure it fits between arrows */
+                left: 12.5% !important;
+                padding: 0 !important;
+            }
+
+            .flatpickr-monthDropdown-months {
+                text-align: left !important;
+                width: auto !important;
+                font-size: 14px !important;
+                /* Make it smaller */
+                margin-left: 0 !important;
+            }
+
+            .numInputWrapper {
+                width: auto !important;
+                margin-right: 0 !important;
+            }
+
+            .flatpickr-current-month input.cur-year {
+                font-size: 14px !important;
+                /* Make year smaller */
+                text-align: right !important;
+                padding: 0 !important;
+            }
+
+            .flatpickr-current-month .numInputWrapper span.arrowUp {
+                display: none;
+                /* Optional: cleaner look */
+            }
+
+            .flatpickr-current-month .numInputWrapper span.arrowDown {
+                display: none;
+                /* Optional: cleaner look */
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#dateFilter", {
+                    locale: "vn",
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
+                    disableMobile: "true",
+                });
+            });
+        </script>
+    </div>
+</body>
+
+</html>
