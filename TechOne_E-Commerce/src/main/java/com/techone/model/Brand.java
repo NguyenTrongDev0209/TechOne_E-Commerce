@@ -28,11 +28,8 @@ public class Brand {
 	@Column(columnDefinition = "nvarchar(255)")
 	public String name;
 	
-	@NotBlank(message = "Logo không được để trống")
 	@Column(columnDefinition = "varchar(255)")
 	public String logo;
-
-	public Boolean status = true;
 	
 	@OneToMany(mappedBy = "brand")
 	public List<Product> product;

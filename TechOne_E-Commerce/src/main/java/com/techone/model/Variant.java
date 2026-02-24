@@ -26,37 +26,33 @@ public class Variant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-
+	
 	@PositiveOrZero(message = "Giá không thể âm")
 	public Double price;
-
+	
 	@PositiveOrZero(message = "Số lượng tồn không thể âm")
 	public Integer stock;
 
-	@PositiveOrZero(message = "Giảm giá không thể âm")
-	public Double discount;
-
-	public Boolean status;
-	//true=dg hoat dong/false=an
-
+	public Integer status;
+	
 	@Column(columnDefinition = "varchar(255)")
 	@NotBlank(message = "Mã SKU không thể bỏ trống")
 	public String sku;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	Product product;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "account_id")
 	Account account;
-
+	
 	@OneToMany(mappedBy = "variant")
 	public List<Favourite> favourite;
-
+	
 	@OneToMany(mappedBy = "variant")
 	public List<CartItem> cartItem;
-
+	
 	@OneToMany(mappedBy = "variant")
 	public List<OrderDetail> orderDetail;
 }

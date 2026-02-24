@@ -1,1038 +1,740 @@
 ﻿<!DOCTYPE html>
 <html
-	th:replace="~{layouts/layout-admin :: view(title=(${editMode} ? 'Chỉnh Sửa Sản Phẩm' : 'Thêm Sản Phẩm Mới'), menuItem='products', content=~{:: #main-content}, subMenuItem=null)}">
+	th:replace="~{layouts/layout-admin :: view(title='TechShop Admin Dashboard - Thêm Sản Phẩm Mới', menuItem='products', content=~{:: #main-content}, subMenuItem=null)}">
 
 <body>
 	<div id="main-content">
-		<form id="productForm" th:action="@{/admin/product-list/product-form/save}" th:object="${product}" method="post"
-			enctype="multipart/form-data">
-			<input type="hidden" th:field="*{id}">
-			<div class="max-w-7xl mx-auto space-y-6">
-				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-					<div class="flex flex-col gap-1">
-						<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-							<a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
-							<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-							<a class="hover:text-primary transition-colors" href="/admin/product-list">Sản phẩm</a>
-							<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-							<span class="font-bold text-gray-900 dark:text-white"
-								th:text="${editMode ? 'Chỉnh sửa' : 'Thêm mới'}">Thêm mới</span>
-						</div>
-						
+		<div class="max-w-7xl mx-auto space-y-6">
+			<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+				<div class="flex flex-col gap-1">
+					<div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+						<a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
+						<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+						<a class="hover:text-primary transition-colors" href="/admin/product-list">Sản phẩm</a> <span
+							class="material-symbols-outlined text-[16px]">chevron_right</span>
+						<span class="font-bold text-gray-900 dark:text-white">Thêm mới</span>
 					</div>
 					<div class="flex items-center gap-3">
-						<button type="submit"
-							class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
-							<span class="material-symbols-outlined text-[20px]">check</span>
-							<span th:text="${editMode ? 'Cập nhật sản phẩm' : 'Thêm sản phẩm'}">Thêm sản phẩm</span>
-						</button>
+						<a href="/admin/product-list">
+							<button
+								class="group p-1.5 -ml-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
+								<span
+									class="material-symbols-outlined text-[28px] group-hover:text-slate-800">arrow_back</span>
+							</button>
+						</a>
+						<h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Thêm
+							sản phẩm mới</h1>
 					</div>
 				</div>
-				<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-					<div class="lg:col-span-8 flex flex-col gap-6">
-						<div
-							class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-							<h2
-								class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
-								<span class="material-symbols-outlined text-primary">info</span>
-								Thông tin chung
-							</h2>
-							<div class="space-y-4">
-								<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-									<div class="space-y-1.5">
-										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
-											sản phẩm <span class="text-red-500">*</span>
-										</label> <input th:field="*{name}"
-											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-											placeholder="Nhập tên sản phẩm..." type="text" />
-										<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-											class="text-red-500 text-[13px] mt-1 font-medium"></p>
-									</div>
-									<div class="space-y-1.5">
-										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
-											sản phẩm (SKU) <span class="text-red-500">*</span>
-										</label> <input th:field="*{slug}"
-											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-											placeholder="VD: SP001" type="text" />
-										<p th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"
-											class="text-red-500 text-[13px] mt-1 font-medium"></p>
-									</div>
-								</div>
-								<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-									<div class="space-y-1.5 relative" id="categoryDropdownContainer">
-										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Danh
-											mục sản phẩm</label>
-										<input type="hidden" th:field="*{category.id}" id="categoryId">
-
-										<!-- Trigger Button -->
-										<button type="button" onclick="toggleCategoryDropdown()"
-											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left">
-											<span id="categoryLabel"
-												th:text="${product.category != null ? product.category.name : 'Chọn danh mục...'}">Chọn
-												danh mục...</span>
-											<span class="material-symbols-outlined text-[20px]">expand_more</span>
-										</button>
-										<p th:if="${#fields.hasErrors('category')}" th:errors="*{category}"
-											class="text-red-500 text-[13px] mt-1 font-medium"></p>
-
-										<!-- Dropdown Menu -->
-										<div id="categoryMenu"
-											class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
-											<ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-												<!-- Parent Category Items -->
-												<li class="relative group/item" th:each="pCat : ${parentCategories}">
-													<button type="button"
-														class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
-														<span th:text="${pCat.name}">Tên cha</span>
-														<span
-															th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
-															class="material-symbols-outlined text-[16px]">chevron_right</span>
-													</button>
-													<!-- Submenu (Children) -->
-													<div th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
-														class="hidden group-hover/item:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
-														<ul class="py-1">
-															<li th:each="cCat : ${pCat.children}">
-																<button type="button" th:data-id="${cCat.id}"
-																	th:data-name="${cCat.name}"
-																	onclick="selectCategory(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-																	class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
-																	th:text="${cCat.name}">Tên con</button>
-															</li>
-														</ul>
-													</div>
-												</li>
-												<!-- Categories without parents if any elsewhere but usually we use parentCategories -->
-											</ul>
-										</div>
-									</div>
-									<div class="space-y-1.5 relative" id="brandDropdownContainer">
-										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Thương
-											hiệu</label>
-										<input type="hidden" th:field="*{brand.id}" id="brandId">
-
-										<!-- Trigger Button -->
-										<button type="button" onclick="toggleBrandDropdown()"
-											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left">
-											<span id="brandLabel"
-												th:text="${product.brand != null ? product.brand.name : 'Chọn thương hiệu...'}">Chọn
-												thương hiệu...</span>
-											<span class="material-symbols-outlined text-[20px]">expand_more</span>
-										</button>
-										<p th:if="${#fields.hasErrors('brand')}" th:errors="*{brand}"
-											class="text-red-500 text-[13px] mt-1 font-medium"></p>
-
-										<!-- Dropdown Menu -->
-										<div id="brandMenu"
-											class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
-											<ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-												<li th:each="b : ${brands}">
-													<button type="button" th:data-id="${b.id}" th:data-name="${b.name}"
-														onclick="selectBrand(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-														class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors"
-														th:text="${b.name}">Tên thương hiệu</button>
-												</li>
-											</ul>
-										</div>
-									</div>
+				<div class="flex items-center gap-3">
+					<button
+						class="px-4 py-2.5 rounded border border-gray-300 dark:border-gray-700 font-bold text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800 shadow-sm">
+						Lưu tạm</button>
+					<button
+						class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+						<span class="material-symbols-outlined text-[20px]">check</span>
+						Đăng sản phẩm
+					</button>
+				</div>
+			</div>
+			<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+				<div class="lg:col-span-8 flex flex-col gap-6">
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">info</span>
+							Thông tin chung
+						</h2>
+						<div class="space-y-4">
+							<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+								<div class="space-y-1.5">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
+										sản phẩm <span class="text-red-500">*</span>
+									</label> <input
+										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="Nhập tên sản phẩm..." type="text" />
 								</div>
 								<div class="space-y-1.5">
-									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mô
-										tả sản phẩm</label>
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
+										sản phẩm (SKU) <span class="text-red-500">*</span>
+									</label> <input
+										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+										placeholder="VD: IP15-PM-256" type="text" />
+								</div>
+							</div>
+							<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+								<div class="space-y-1.5 relative" id="categoryDropdownContainer">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Danh
+										mục sản phẩm</label>
+									<input type="hidden" name="categoryId" id="categoryId">
+
+									<!-- Trigger Button -->
+									<button type="button" onclick="toggleCategoryDropdown()"
+										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left">
+										<span id="categoryLabel">Chọn danh mục...</span>
+										<span class="material-symbols-outlined text-[20px]">expand_more</span>
+									</button>
+
+									<!-- Dropdown Menu -->
+									<div id="categoryMenu"
+										class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
+										<ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+											<!-- Parent Item: Điện thoại & Tablet -->
+											<li class="relative group/item">
+												<button type="button"
+													class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
+													<span>Điện thoại & Tablet</span>
+													<span
+														class="material-symbols-outlined text-[16px]">chevron_right</span>
+												</button>
+												<!-- Submenu (Right side) -->
+												<div
+													class="hidden group-hover/item:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
+													<ul class="py-1">
+														<li><button type="button"
+																onclick="selectCategory('1', 'iPhone')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">iPhone</button>
+														</li>
+														<li><button type="button"
+																onclick="selectCategory('2', 'Samsung')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Samsung</button>
+														</li>
+														<li><button type="button"
+																onclick="selectCategory('3', 'Xiaomi')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Xiaomi</button>
+														</li>
+														<li><button type="button" onclick="selectCategory('4', 'iPad')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">iPad</button>
+														</li>
+													</ul>
+												</div>
+											</li>
+
+											<!-- Parent Item: Laptop & PC -->
+											<li class="relative group/item">
+												<button type="button"
+													class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
+													<span>Laptop & PC</span>
+													<span
+														class="material-symbols-outlined text-[16px]">chevron_right</span>
+												</button>
+												<!-- Submenu -->
+												<div
+													class="hidden group-hover/item:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
+													<ul class="py-1">
+														<li><button type="button"
+																onclick="selectCategory('5', 'MacBook')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">MacBook</button>
+														</li>
+														<li><button type="button"
+																onclick="selectCategory('6', 'Dell XPS')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Dell
+																XPS</button></li>
+														<li><button type="button"
+																onclick="selectCategory('7', 'Gaming PC')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Gaming
+																PC</button></li>
+													</ul>
+												</div>
+											</li>
+
+											<!-- Parent Item: Âm thanh -->
+											<li class="relative group/item">
+												<button type="button"
+													class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
+													<span>Âm thanh</span>
+													<span
+														class="material-symbols-outlined text-[16px]">chevron_right</span>
+												</button>
+												<!-- Submenu -->
+												<div
+													class="hidden group-hover/item:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
+													<ul class="py-1">
+														<li><button type="button"
+																onclick="selectCategory('8', 'Tai nghe Bluetooth')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Tai
+																nghe Bluetooth</button></li>
+														<li><button type="button"
+																onclick="selectCategory('9', 'Loa JBL')"
+																class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary">Loa
+																JBL</button></li>
+													</ul>
+												</div>
+											</li>
+
+											<!-- Simple Item example -->
+											<li>
+												<button type="button" onclick="selectCategory('10', 'Phụ kiện khác')"
+													class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
+													<span>Phụ kiện khác</span>
+												</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+								<div class="space-y-1.5 relative" id="brandDropdownContainer">
+									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Thương
+										hiệu</label>
+									<input type="hidden" name="brandId" id="brandId">
+
+									<!-- Trigger Button -->
+									<button type="button" onclick="toggleBrandDropdown()"
+										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left">
+										<span id="brandLabel">Chọn thương hiệu...</span>
+										<span class="material-symbols-outlined text-[20px]">expand_more</span>
+									</button>
+
+									<!-- Dropdown Menu -->
+									<div id="brandMenu"
+										class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
+										<ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+											<li><button type="button" onclick="selectBrand('1', 'Apple')"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Apple</button>
+											</li>
+											<li><button type="button" onclick="selectBrand('2', 'Samsung')"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Samsung</button>
+											</li>
+											<li><button type="button" onclick="selectBrand('3', 'Sony')"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Sony</button>
+											</li>
+											<li><button type="button" onclick="selectBrand('4', 'Dell')"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Dell</button>
+											</li>
+											<li><button type="button" onclick="selectBrand('5', 'Asus')"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Asus</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="space-y-1.5">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mô
+									tả sản phẩm</label>
+								<div
+									class="border border-gray-300 dark:border-gray-700 rounded overflow-hidden bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
 									<div
-										class="border border-gray-300 dark:border-gray-700 rounded overflow-hidden bg-white dark:bg-gray-800 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
-										<div
-											class="bg-gray-50 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 px-3 py-2 flex items-center gap-1">
-											<button type="button" onclick="formatDoc('bold')" title="In đậm"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">format_bold</span>
-											</button>
-											<button type="button" onclick="formatDoc('italic')" title="In nghiêng"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">format_italic</span>
-											</button>
-											<button type="button" onclick="formatDoc('underline')" title="Gạch chân"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span
-													class="material-symbols-outlined text-[18px]">format_underlined</span>
-											</button>
-											<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
-											<button type="button" onclick="formatDoc('insertUnorderedList')"
-												title="Danh sách chấm"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span
-													class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
-											</button>
-											<button type="button" onclick="formatDoc('insertOrderedList')"
-												title="Danh sách số"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span
-													class="material-symbols-outlined text-[18px]">format_list_numbered</span>
-											</button>
-											<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
-											<button type="button" onclick="addLink()" title="Chèn liên kết"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">link</span>
-											</button>
-											<button type="button"
-												onclick="document.getElementById('editorImageUpload').click()"
-												title="Chèn hình ảnh"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">image</span>
-											</button>
-											<input type="file" id="editorImageUpload" accept="image/*" class="hidden"
-												onchange="addLocalImage(this)">
-										</div>
-										<textarea th:field="*{content}" id="descriptionContent"
-											style="display: none;"></textarea>
-										<div id="editor" contenteditable="true"
-											class="w-full border-none p-4 text-sm min-h-[12rem] focus:outline-none focus:ring-0 resize-none font-body bg-white dark:bg-gray-800 dark:text-white"
-											placeholder="Nhập mô tả chi tiết sản phẩm..." oninput="updateTextarea()">
-										</div>
+										class="bg-gray-50 dark:bg-gray-800 border-b border-gray-300 dark:border-gray-700 px-3 py-2 flex items-center gap-1">
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_bold</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_italic</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">format_underlined</span>
+										</button>
+										<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span
+												class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span
+												class="material-symbols-outlined text-[18px]">format_list_numbered</span>
+										</button>
+										<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">link</span>
+										</button>
+										<button
+											class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
+											<span class="material-symbols-outlined text-[18px]">image</span>
+										</button>
 									</div>
-									<p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
-										class="text-red-500 text-[13px] mt-1 font-medium"></p>
+									<textarea
+										class="w-full border-none p-4 text-sm h-32 focus:ring-0 resize-none font-body"
+										placeholder="Nhập mô tả chi tiết sản phẩm..."></textarea>
 								</div>
 							</div>
 						</div>
-
-						<div
-							class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-							<h2
-								class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
-								<span class="material-symbols-outlined text-primary">style</span>
-								Cài đặt biến thể
-							</h2>
-
-							<div class="space-y-4" id="attributesContainer">
-								<!-- Rendered by JS -->
-							</div>
-							<div class="mt-4">
-								<button type="button" onclick="variantManager.addAttribute()"
-									class="flex items-center gap-2 text-primary font-bold text-sm bg-primary/5 hover:bg-primary/10 px-4 py-2.5 rounded transition-colors border border-dashed border-primary/20 w-full justify-center">
-									<span class="material-symbols-outlined text-[20px]">add_circle</span>
-									Thêm thuộc tính
-								</button>
-							</div>
-
-							<div class="pt-6 border-t border-gray-100 dark:border-gray-700 mt-6" style="display: none;"
-								id="variantsSection">
-								<h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">Danh sách biến thể
-								</h3>
-								<div class="space-y-4" id="variantsContainer">
-									<!-- Rendered by JS -->
-								</div>
-							</div>
-						</div>
-
 					</div>
-					<div class="lg:col-span-4 flex flex-col gap-6">
-						<div
-							class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-							<div class="border-b border-gray-50 dark:border-gray-700 pb-4 mb-2">
-								<h2
-									class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
-									<span class="material-symbols-outlined text-primary">settings</span>
-									Thông số kỹ thuật
-								</h2>
-								<div class="space-y-4" id="specificationsContainer">
-									<!-- Specification Groups will be rendered here by JS -->
-								</div>
-								<div class="pt-2">
-									<button type="button" onclick="specificationManager.addGroup()"
-										class="flex items-center gap-2 text-gray-600 dark:text-gray-300 font-bold text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2.5 rounded transition-colors w-full justify-center border border-transparent hover:border-gray-300 dark:hover:border-gray-500">
-										<span class="material-symbols-outlined text-[20px]">library_add</span>
-										Thêm nhóm thông số
-									</button>
-								</div>
-								<!-- Hidden input to carry JSON payload to form submit -->
-								<input type="hidden" name="specificationsJson" id="specificationsJsonInput" />
+
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">style</span>
+							Cài đặt biến thể
+						</h2>
+
+						<div class="space-y-4">
+							<div class="flex justify-between items-center">
+								<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Thuộc
+									tính</label>
 							</div>
+
+							<!-- Attribute Item Example -->
 							<div
-								class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
-								<h2
-									class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
-									<span class="material-symbols-outlined text-primary">visibility</span>
-									Trạng thái hiển thị
-								</h2>
-								<div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded">
-									<div class="flex flex-col">
-										<span class="text-sm font-bold text-gray-900 dark:text-white">Công khai</span>
-										<span class="text-xs text-gray-500 dark:text-gray-400">Sản phẩm sẽ hiển thị trên
-											web</span>
+								class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 relative group/attr">
+								<button type="button"
+									class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors p-1"
+									title="Xóa thuộc tính">
+									<span class="material-symbols-outlined text-[20px]">close</span>
+								</button>
+								<div class="space-y-4">
+									<div class="space-y-1.5">
+										<label
+											class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tên
+											thuộc tính</label>
+										<input type="text"
+											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+											value="Màu sắc" placeholder="VD: Màu sắc, Kích thước..." />
 									</div>
-									<label class="inline-flex items-center cursor-pointer relative z-0">
-										<!-- "updateDisplayStatus" handles the styling updates -->
-										<input type="checkbox" id="displayStatusToggle" th:field="*{status}"
-											th:value="1" onchange="updateDisplayStatus(this)" class="sr-only peer">
-										<div
-											class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
-										</div>
-									</label>
-								</div>
-								<div class="space-y-3 pt-2">
-									<div class="flex items-center justify-between text-sm">
-										<span class="text-gray-500 dark:text-gray-400 font-medium">Trạng thái:</span>
-										<span id="statusBadge" th:if="${product.status == 1}"
-											class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
-											<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-											Đang hoạt động
-										</span>
-										<span id="statusBadge" th:unless="${product.status == 1}"
-											class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
-											<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-											Đã ẩn
-										</span>
-									</div>
-
-									<script>
-										function updateDisplayStatus(checkbox) {
-											const badge = document.getElementById('statusBadge');
-											if (checkbox.checked) {
-												// Switch to Active View
-												badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700';
-												badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Đang hoạt động';
-											} else {
-												// Switch to Hidden View
-												badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700';
-												badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> Đã ẩn';
-											}
-										}
-									</script>
-									<div class="flex items-center justify-between text-sm">
-										<span class="text-gray-500 dark:text-gray-400 font-medium">Người tạo:</span>
-										<span class="font-bold text-gray-900 dark:text-white"></span>
-									</div>
-									<div class="flex items-center justify-between text-sm">
-										<span class="text-gray-500 dark:text-gray-400 font-medium">Ngày tạo:</span>
-										<span class="font-bold text-gray-900 dark:text-white"
-											th:text="${product.createAt != null ? #temporals.format(product.createAt, 'dd/MM/yyyy HH:mm') : 'Mới'}">Hôm
-											nay</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<style>
-						/* Chrome, Safari, Edge, Opera */
-						input[type=number]::-webkit-outer-spin-button,
-						input[type=number]::-webkit-inner-spin-button {
-							-webkit-appearance: none;
-							margin: 0;
-						}
-
-						/* Editor Styles */
-						#editor ul {
-							list-style-type: disc;
-							padding-left: 1.5rem;
-							margin-top: 0.5rem;
-							margin-bottom: 0.5rem;
-						}
-
-						#editor ol {
-							list-style-type: decimal;
-							padding-left: 1.5rem;
-							margin-top: 0.5rem;
-							margin-bottom: 0.5rem;
-						}
-
-						#editor a {
-							color: #ea580c;
-							text-decoration: underline;
-						}
-
-						#editor p {
-							margin-bottom: 0.5rem;
-						}
-
-						#editor img {
-							max-width: 100%;
-							height: auto;
-							border-radius: 0.5rem;
-							margin-top: 0.5rem;
-						}
-
-						#editor [placeholder]:empty:before {
-							content: attr(placeholder);
-							color: #9ca3af;
-							pointer-events: none;
-							display: block;
-							/* For Firefox */
-						}
-					</style>
-					<script>
-						// --- Dropdown Logic ---
-
-						// Category Dropdown
-						const categoryDropdownContainer = document.getElementById('categoryDropdownContainer');
-						const categoryMenu = document.getElementById('categoryMenu');
-						const categoryIdInput = document.getElementById('categoryId');
-						const categoryLabel = document.getElementById('categoryLabel');
-
-						function toggleCategoryDropdown() {
-							categoryMenu.classList.toggle('hidden');
-							brandMenu.classList.add('hidden'); // Close other dropdown
-						}
-
-						function selectCategory(id, name) {
-							categoryIdInput.value = id;
-							categoryLabel.innerText = name;
-							categoryLabel.classList.remove('text-gray-500');
-							categoryLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
-							categoryMenu.classList.add('hidden');
-						}
-
-						// Brand Dropdown
-						const brandDropdownContainer = document.getElementById('brandDropdownContainer');
-						const brandMenu = document.getElementById('brandMenu');
-						const brandIdInput = document.getElementById('brandId');
-						const brandLabel = document.getElementById('brandLabel');
-
-						function toggleBrandDropdown() {
-							brandMenu.classList.toggle('hidden');
-							categoryMenu.classList.add('hidden'); // Close other dropdown
-						}
-
-						function selectBrand(id, name) {
-							brandIdInput.value = id;
-							brandLabel.innerText = name;
-							brandLabel.classList.remove('text-gray-500');
-							brandLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
-							brandMenu.classList.add('hidden');
-						}
-
-						// Close dropdowns when clicking outside
-						document.addEventListener('click', function (event) {
-							if (categoryDropdownContainer && !categoryDropdownContainer.contains(event.target)) {
-								categoryMenu.classList.add('hidden');
-							}
-							if (brandDropdownContainer && !brandDropdownContainer.contains(event.target)) {
-								brandMenu.classList.add('hidden');
-							}
-						});
-
-						// Update file name
-						function updateFileName(input) {
-							const fileNameSpan = document.getElementById('excelFileName');
-							if (input.files && input.files.length > 0) {
-								fileNameSpan.textContent = input.files[0].name;
-								fileNameSpan.classList.remove('hidden');
-							} else {
-								fileNameSpan.textContent = '';
-								fileNameSpan.classList.add('hidden');
-							}
-						}
-
-						function updateVariantImageFiles(input) {
-							const container = input.parentElement.parentElement;
-							const displayDiv = container.querySelector('.variant-file-names');
-							const errorDiv = container.querySelector('.image-error-msg');
-							const grid = container.querySelector('.grid');
-
-							// Clear previous state
-							if (errorDiv) {
-								errorDiv.textContent = '';
-								errorDiv.classList.add('hidden');
-							}
-							displayDiv.textContent = '';
-							displayDiv.removeAttribute('title');
-
-							// Reset grid slots
-							const slots = grid.querySelectorAll('.group\\/img');
-							slots.forEach(slot => {
-								slot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
-							});
-
-							if (!input.files || input.files.length === 0) return;
-
-							const maxSize = 20 * 1024 * 1024; // 20MB
-							const validFiles = [];
-
-							for (let i = 0; i < input.files.length; i++) {
-								const file = input.files[i];
-								if (file.size > maxSize) {
-									if (errorDiv) {
-										errorDiv.textContent = `Lỗi: Tệp "${file.name}" vượt quá dung lượng cho phép (20MB).`;
-										errorDiv.classList.remove('hidden');
-									}
-									input.value = ''; // Reset input
-									displayDiv.textContent = '';
-									slots.forEach(slot => {
-										slot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
-									});
-									return; // Stop processing
-								}
-								validFiles.push(file);
-							}
-
-							// Display file names
-							const fileNames = validFiles.map(f => f.name).join(', ');
-							displayDiv.textContent = fileNames;
-							displayDiv.title = fileNames;
-
-							// Display image previews in slots
-							validFiles.forEach((file, i) => {
-								if (i >= slots.length) return; // Max 5 slots shown
-
-								const reader = new FileReader();
-								reader.onload = function (e) {
-									slots[i].innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover" />`;
-								};
-								reader.readAsDataURL(file);
-							});
-						}
-
-						function calculateFinalPrice(id) {
-							const priceInput = document.getElementById(`priceInput-${id}`);
-							const discountInput = document.getElementById(`discountInput-${id}`);
-							const finalPriceSpan = document.getElementById(`finalPrice-${id}`);
-
-							const price = parseFloat(priceInput.value) || 0;
-							const discount = parseFloat(discountInput.value) || 0;
-
-							if (price > 0) {
-								const finalPrice = price * (1 - discount / 100);
-								finalPriceSpan.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalPrice);
-							} else {
-								finalPriceSpan.textContent = '0 đ';
-							}
-						}
-
-						// --- Rich Text Editor Logic ---
-						function formatDoc(cmd, value = null) {
-							document.execCommand(cmd, false, value);
-							document.getElementById('editor').focus();
-							updateTextarea();
-						}
-
-						function addLink() {
-							const url = prompt("Nhập đường dẫn liên kết (VD: https://techone.vn):");
-							if (url) {
-								formatDoc('createLink', url);
-							}
-						}
-
-						function addLocalImage(input) {
-							if (input.files && input.files[0]) {
-								const reader = new FileReader();
-								reader.onload = function (e) {
-									formatDoc('insertImage', e.target.result);
-									input.value = ''; // Reset input so same file can be selected again
-								}
-								reader.readAsDataURL(input.files[0]);
-							}
-						}
-
-						function updateTextarea() {
-							const content = document.getElementById('editor').innerHTML;
-							document.getElementById('descriptionContent').value = content;
-						}
-
-						// Initialize editor
-						document.addEventListener('DOMContentLoaded', function () {
-							const form = document.getElementById('productForm');
-
-							const textarea = document.getElementById('descriptionContent');
-							const editor = document.getElementById('editor');
-							if (textarea && editor) {
-								editor.innerHTML = textarea.value;
-							}
-							variantManager.init(); // Initialize Variant Manager
-						});
-
-						// --- Variant Manager ---
-						const variantManager = {
-							attributes: [], // { id: 1, name: 'Màu sắc', values: ['Đỏ', 'Xanh'] }
-							variants: [], // { sku: '', stock: 0, price: 0, discount: 0, attributes: {'Màu sắc': 'Đỏ', 'Size': 'XL'} }
-
-							init() {
-								this.renderAttributes();
-								this.generateVariants();
-							},
-
-							addAttribute() {
-								const id = Date.now();
-								this.attributes.push({ id, name: '', values: [] });
-								this.renderAttributes();
-							},
-
-							removeAttribute(id) {
-								this.attributes = this.attributes.filter(a => a.id !== id);
-								this.generateVariants();
-								this.renderAttributes();
-							},
-
-							updateAttributeName(id, name) {
-								const attr = this.attributes.find(a => a.id === id);
-								if (attr) {
-									attr.name = name;
-									this.generateVariants();
-								}
-							},
-
-							addValue(attrId) {
-								// Using Custom Modal Native Call
-								openAddValueModal(attrId);
-							},
-
-							removeValue(attrId, value) {
-								const attr = this.attributes.find(a => a.id === attrId);
-								if (attr) {
-									attr.values = attr.values.filter(v => v !== value);
-									this.generateVariants();
-									this.renderAttributes();
-								}
-							},
-
-							// Cartesian Product to generate variants
-							generateVariants() {
-								const form = document.getElementById('productForm');
-								let variantsJsonInput = document.getElementById('variantsJsonInput');
-								if (!variantsJsonInput) {
-									variantsJsonInput = document.createElement('input');
-									variantsJsonInput.type = 'hidden';
-									variantsJsonInput.id = 'variantsJsonInput';
-									variantsJsonInput.name = 'variantsJson';
-									form.appendChild(variantsJsonInput);
-								}
-
-								const validAttributes = this.attributes.filter(a => a.name.trim() !== '' && a.values.length > 0);
-								let combos = [];
-
-								if (validAttributes.length === 0) {
-									combos = [{ 'Mặc định': 'Mặc định' }];
-								} else {
-									combos = [{}];
-									for (const attr of validAttributes) {
-										const nextCombos = [];
-										for (const combo of combos) {
-											for (const val of attr.values) {
-												nextCombos.push({ ...combo, [attr.name.trim()]: val });
-											}
-										}
-										combos = nextCombos;
-									}
-								}
-
-								// Merge existing variants to keep user inputs across re-generations
-								const newVariants = combos.map((combo, index) => {
-									const existing = this.variants.find(v => JSON.stringify(v.attributes) === JSON.stringify(combo));
-									if (existing) return existing;
-
-									// Auto-generate a basic SKU from values
-									const generatedSku = Object.values(combo).map(v => v.substring(0, 3).toUpperCase()).join('-');
-									return {
-										id: Date.now() + index, // Temp ID for UI mapping
-										sku: 'SKU-' + generatedSku,
-										stock: null,
-										price: null,
-										discount: 0,
-										attributes: combo,
-										imageInputName: `variantImages_${Date.now()}_${index}`
-									};
-								});
-
-								this.variants = newVariants;
-								this.syncVariantsToInput();
-								this.renderVariants();
-							},
-
-							syncVariantsToInput() {
-								const variantsJsonInput = document.getElementById('variantsJsonInput');
-								if (variantsJsonInput) {
-									variantsJsonInput.value = JSON.stringify(this.variants);
-								}
-							},
-
-							updateVariantProp(index, prop, value) {
-								if (this.variants[index]) {
-									this.variants[index][prop] = value;
-									this.syncVariantsToInput();
-								}
-							},
-
-							renderAttributes() {
-								const container = document.getElementById('attributesContainer');
-								container.innerHTML = '';
-
-								this.attributes.forEach(attr => {
-									const attrHtml = `
-								<div class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 relative group/attr">
-									<button type="button" onclick="variantManager.removeAttribute(${attr.id})" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors p-1" title="Xóa thuộc tính">
-										<span class="material-symbols-outlined text-[20px]">close</span>
-									</button>
-									<div class="space-y-4">
-										<div class="space-y-1.5">
-											<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tên thuộc tính</label>
-											<input type="text" value="${attr.name}" onchange="variantManager.updateAttributeName(${attr.id}, this.value)" class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" placeholder="VD: Màu sắc, Kích thước..." />
-										</div>
-										<div class="space-y-2">
-											<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá trị</label>
-											<div class="flex flex-wrap gap-2 items-center">
-												${attr.values.map(val => `
-												<div class="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md pl-3 pr-2 py-1.5 shadow-sm group/value hover:border-primary transition-colors cursor-default">
-													<span class="text-sm font-medium text-gray-700 dark:text-gray-200">${val}</span>
-													<button type="button" onclick="variantManager.removeValue(${attr.id}, '${val}')" class="ml-1 text-gray-400 hover:text-red-500 opacity-0 group-hover/value:opacity-100 transition-opacity">
-														<span class="material-symbols-outlined text-[16px]">close</span>
-													</button>
-												</div>`).join('')}
-												<button type="button" onclick="variantManager.addValue(${attr.id})" class="flex items-center gap-1 px-3 py-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-600 text-gray-500 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all text-sm font-medium">
-													<span class="material-symbols-outlined text-[18px]">add</span>
-													Thêm giá trị
+									<div class="space-y-2">
+										<label
+											class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá
+											trị</label>
+										<div class="flex flex-wrap gap-2 items-center">
+											<!-- Value 1: Red with Image -->
+											<div
+												class="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md pl-1 pr-2 py-1 shadow-sm group/value hover:border-primary transition-colors cursor-default">
+												<div
+													class="w-6 h-6 rounded bg-gray-100 dark:bg-gray-700 overflow-hidden shrink-0">
+													<img src="https://placehold.co/24x24/red/white?text= "
+														class="w-full h-full object-cover">
+												</div>
+												<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Màu
+													đỏ</span>
+												<button type="button"
+													class="ml-1 text-gray-400 hover:text-red-500 opacity-0 group-hover/value:opacity-100 transition-opacity">
+													<span class="material-symbols-outlined text-[16px]">close</span>
 												</button>
 											</div>
+
+											<!-- Value 2: Blue with Plus Icon -->
+											<div
+												class="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md pl-1 pr-2 py-1 shadow-sm group/value hover:border-primary transition-colors cursor-default">
+												<div
+													class="w-6 h-6 rounded bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+													<span class="material-symbols-outlined text-[16px]">add</span>
+												</div>
+												<span class="text-sm font-medium text-gray-700 dark:text-gray-200">Màu
+													Xanh</span>
+												<button type="button"
+													class="ml-1 text-gray-400 hover:text-red-500 opacity-0 group-hover/value:opacity-100 transition-opacity">
+													<span class="material-symbols-outlined text-[16px]">close</span>
+												</button>
+											</div>
+
+											<!-- Add Value Button -->
+											<button type="button"
+												class="flex items-center gap-1 px-3 py-1.5 rounded-md border border-dashed border-gray-300 dark:border-gray-600 text-gray-500 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all text-sm font-medium">
+												<span class="material-symbols-outlined text-[18px]">add</span>
+												Thêm giá trị
+											</button>
 										</div>
 									</div>
-								</div>`;
-									container.insertAdjacentHTML('beforeend', attrHtml);
-								});
-							},
+								</div>
+							</div>
 
-							renderVariants() {
-								const container = document.getElementById('variantsContainer');
-								const section = document.getElementById('variantsSection');
+							<!-- Add Attribute Button -->
+							<button
+								class="flex items-center gap-2 text-primary font-bold text-sm bg-primary/5 hover:bg-primary/10 px-4 py-2.5 rounded transition-colors border border-dashed border-primary/20 w-full justify-center">
+								<span class="material-symbols-outlined text-[20px]">add_circle</span>
+								Thêm thuộc tính
+							</button>
+						</div>
 
-								section.style.display = 'block';
-								container.innerHTML = '';
+						<!-- Variants Section -->
+						<div class="pt-6 border-t border-gray-100 dark:border-gray-700">
+							<h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">Biến thể</h3>
 
-								// Check if variant error exists in thymeleaf and inject it once into the container if present
-								const variantErrorStr = `[(${variantError != null ? variantError : ''})]`;
-
-
-								// Parse specific field errors
-								const vFieldErrorsStr = `[(${variantFieldErrors != null ? variantFieldErrors : '{}'})]`;
-								let vFieldErrors = {};
-								try {
-									vFieldErrors = JSON.parse(vFieldErrorsStr);
-								} catch (e) { console.error('Error parsing variantFieldErrors', e); }
-
-								this.variants.forEach((v, index) => {
-									const isDefault = Object.keys(v.attributes).length === 1 && v.attributes['Mặc định'] === 'Mặc định';
-									const labelsHtml = isDefault
-										? '<span class="bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">Sản phẩm tiêu chuẩn</span>'
-										: Object.entries(v.attributes).map(([key, val]) => `
-									<span class="bg-white dark:bg-slate-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">${key}: ${val}</span>
-								`).join('<span class="text-gray-400 mx-1">+</span>');
-
-									const finalPriceStr = calculateFinalPriceSync(v.price, v.discount);
-									const errors = vFieldErrors[index] || {};
-									const errHtml = (field) => errors[field] ? `<div class="text-red-500 text-[11px] mt-1 font-medium">${errors[field]}</div>` : '';
-
-									const variantHtml = `
-								<div class="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800/50 overflow-hidden mb-4">
-									<div class="bg-gray-50 dark:bg-slate-700/50 px-4 py-3 border-b border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
-										<div class="flex items-center flex-wrap gap-1">
-											<span class="text-primary mr-2">Biến thể:</span>
-											${labelsHtml}
+							<div class="space-y-4">
+								<!-- Variant Item -->
+								<div
+									class="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800/50 overflow-hidden">
+									<!-- Row 1: Header -->
+									<div
+										class="bg-gray-50 dark:bg-slate-700/50 px-4 py-3 border-b border-gray-100 dark:border-gray-700 text-sm font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
+										<div class="flex items-center gap-2">
+											<span class="text-primary">Biến thể:</span>
+											<span
+												class="bg-white dark:bg-slate-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">Màu
+												sắc: Đỏ</span>
+											<span class="text-gray-400">+</span>
+											<span
+												class="bg-white dark:bg-slate-600 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-600 text-xs text-gray-600 dark:text-gray-300">Size:
+												XL</span>
 										</div>
+
 									</div>
 
 									<div class="p-4 space-y-4">
+										<!-- Row 2: Data Inputs -->
+										<!-- Row 2: Data Inputs -->
 										<div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
-											<div class="space-y-1.5 align-top">
-												<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mã SKU</label>
-												<input type="text" value="${v.sku}" onchange="variantManager.updateVariantProp(${index}, 'sku', this.value)" class="w-full bg-white dark:bg-gray-800 ${errors['sku'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" />
-												${errHtml('sku')}
+											<div class="space-y-1.5">
+												<label
+													class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Mã
+													SKU</label>
+												<input type="text"
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="SKU-RED-XL" />
 											</div>
-											<div class="space-y-1.5 align-top">
-												<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Số lượng</label>
-												<input type="number" value="${v.stock !== null ? v.stock : ''}" onchange="variantManager.updateVariantProp(${index}, 'stock', this.value === '' ? null : parseInt(this.value))" class="w-full bg-white dark:bg-gray-800 ${errors['stock'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" />
-												${errHtml('stock')}
+											<div class="space-y-1.5">
+												<label
+													class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Số
+													lượng</label>
+												<input type="number"
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="0" value="0" />
 											</div>
-											<div class="space-y-1.5 col-span-2 align-top">
+											<div class="space-y-1.5 col-span-2">
 												<div class="flex gap-4">
 													<div class="flex-grow space-y-1.5">
-														<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá gốc (VND)</label>
+														<label
+															class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá
+															gốc (VND)</label>
 														<div class="relative">
-															<input type="number" value="${v.price !== null ? v.price : ''}" oninput="updatePriceDOM(this, ${index}, 'price')" class="w-full bg-white dark:bg-gray-800 ${errors['price'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" />
-															<span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">đ</span>
+															<input type="number" id="priceInput-1"
+																class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+																placeholder="0" oninput="calculateFinalPrice(1)" />
+															<span
+																class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">đ</span>
 														</div>
-														${errHtml('price')}
 													</div>
-													<div class="w-24 space-y-1.5 shrink-0 align-top">
-														<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giảm (%)</label>
+													<div class="w-24 space-y-1.5 shrink-0">
+														<label
+															class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giảm
+															(%)</label>
 														<div class="relative">
-															<input type="number" value="${v.discount !== null ? v.discount : ''}" oninput="updatePriceDOM(this, ${index}, 'discount')" class="w-full bg-white dark:bg-gray-800 ${errors['discount'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" />
-															<span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">%</span>
+															<input type="number" id="discountInput-1"
+																class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+																placeholder="0" oninput="calculateFinalPrice(1)" />
+															<span
+																class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">%</span>
 														</div>
-														${errHtml('discount')}
 													</div>
 												</div>
 												<div class="pt-1">
-													<label class="text-xs text-gray-500 dark:text-gray-400 font-medium">Giá sau giảm: <span id="finalPriceDisplay-${index}" class="text-primary font-bold text-sm ml-1">${finalPriceStr}</span></label>
+													<label
+														class="text-xs text-gray-500 dark:text-gray-400 font-medium">Giá
+														sau giảm: <span id="finalPrice-1"
+															class="text-primary font-bold text-sm ml-1">0
+															đ</span></label>
 												</div>
 											</div>
 										</div>
 
-										<!-- Variant Images (Multipart) -->
-										<div class="space-y-1.5 w-full overflow-hidden">
-											<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hình ảnh biến thể</label>
+										<!-- Row 3: Image Inputs -->
+										<div class="space-y-1.5">
+											<label
+												class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Hình
+												ảnh biến thể</label>
 											<div class="flex items-center gap-2 mt-2 mb-3">
-												<input type="file" multiple accept="image/*" name="${v.imageInputName}" class="block w-auto text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 dark:text-gray-400" onchange="updateVariantImageFiles(this)" />
-												<div class="text-xs text-gray-500 dark:text-gray-400 italic variant-file-names flex-1 truncate"></div>
+												<input type="file" multiple
+													class="block w-auto text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 dark:text-gray-400"
+													onchange="updateVariantImageFiles(this)" />
+												<div
+													class="text-xs text-gray-500 dark:text-gray-400 italic variant-file-names flex-1 truncate">
+												</div>
 											</div>
-											<div class="image-error-msg hidden text-red-500 text-xs font-medium mb-3"></div>
 											<div class="grid grid-cols-5 gap-3">
 												<!-- Image Slot 1 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>
 												<!-- Image Slot 2 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>
 												<!-- Image Slot 3 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>
 												<!-- Image Slot 4 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>
 												<!-- Image Slot 5 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
+												<div
+													class="aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img">
+													<span
+														class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>
 											</div>
 										</div>
 									</div>
-								</div>`;
-									container.insertAdjacentHTML('beforeend', variantHtml);
-								});
-							}
-						};
-
-						// Helper for dynamic price calculation
-						function updatePriceDOM(inputElem, index, field) {
-							let val = inputElem.value === '' ? null : parseFloat(inputElem.value);
-							variantManager.updateVariantProp(index, field, val);
-							const finalPriceStr = calculateFinalPriceSync(variantManager.variants[index].price, variantManager.variants[index].discount);
-							document.getElementById(`finalPriceDisplay-${index}`).textContent = finalPriceStr;
-						}
-
-						function calculateFinalPriceSync(price, discount) {
-							const p = parseFloat(price) || 0;
-							const d = parseFloat(discount) || 0;
-							if (p > 0) {
-								const fp = p * (1 - d / 100);
-								return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(fp);
-							}
-							return '0 đ';
-						}
-
-					</script>
-				</div>
-		</form>
-
-		<!-- Custom Modal for Adding Value -->
-		<div id="addValueModal" class="fixed inset-0 z-[100] hidden items-center justify-center">
-			<!-- Overlay -->
-			<div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closeAddValueModal()"></div>
-			<!-- Modal Content -->
-			<div
-				class="relative bg-white dark:bg-slate-800 rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden transform transition-all">
-				<div class="p-6">
-					<h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-						<span class="material-symbols-outlined text-primary">add_circle</span>
-						Thêm giá trị thuộc tính
-					</h3>
-					<div class="space-y-3">
-						<label class="block text-sm font-medium text-slate-700 dark:text-slate-300">Nhập giá trị (VD:
-							Đỏ, XL, 128GB...)</label>
-						<input type="text" id="addValueInput"
-							class="w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg py-2.5 px-4 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-slate-400"
-							placeholder="Nhập giá trị mới..." onkeyup="if(event.key === 'Enter') confirmAddValue()" />
-						<input type="hidden" id="currentAttrIdForModal" />
-					</div>
-				</div>
-				<div
-					class="px-6 py-4 bg-slate-50 dark:bg-slate-900/50 flex justify-end gap-3 border-t border-slate-100 dark:border-slate-700">
-					<button type="button" onclick="closeAddValueModal()"
-						class="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Hủy</button>
-					<button type="button" onclick="confirmAddValue()"
-						class="px-5 py-2 rounded-lg text-sm font-semibold bg-primary text-white hover:bg-primary-hover shadow-sm transition-colors">Đồng
-						ý</button>
-				</div>
-			</div>
-		</div>
-
-		<script>
-			function openAddValueModal(attrId) {
-				document.getElementById('currentAttrIdForModal').value = attrId;
-				document.getElementById('addValueInput').value = '';
-				const modal = document.getElementById('addValueModal');
-				modal.classList.remove('hidden');
-				modal.classList.add('flex');
-				setTimeout(() => document.getElementById('addValueInput').focus(), 100);
-			}
-
-			function closeAddValueModal() {
-				const modal = document.getElementById('addValueModal');
-				modal.classList.add('hidden');
-				modal.classList.remove('flex');
-			}
-
-			function confirmAddValue() {
-				const attrIdStr = document.getElementById('currentAttrIdForModal').value;
-				const val = document.getElementById('addValueInput').value;
-				if (attrIdStr && val && val.trim() !== '') {
-					const attrId = parseInt(attrIdStr);
-					const attr = variantManager.attributes.find(a => a.id === attrId);
-					if (attr && !attr.values.includes(val.trim())) {
-						attr.values.push(val.trim());
-						variantManager.generateVariants();
-						variantManager.renderAttributes();
-					}
-				}
-				closeAddValueModal();
-			}
-		</script>
-
-		<!-- Specification Manager JS -->
-		<script>
-			const specificationManager = {
-				groups: [],
-
-				init() {
-					// We can pre-load existing specifications if needed (e.g for Edit Mode)
-					this.groups = [];
-					this.renderGroups();
-				},
-
-				addGroup() {
-					const newGroupId = Date.now();
-					this.groups.push({
-						id: newGroupId,
-						groupName: '',
-						items: [
-							{ id: Date.now() + 1, name: '', value: '' }
-						]
-					});
-					this.renderGroups();
-				},
-
-				removeGroup(groupId) {
-					this.groups = this.groups.filter(g => g.id !== groupId);
-					this.renderGroups();
-				},
-
-				updateGroupName(groupId, newName) {
-					const group = this.groups.find(g => g.id === groupId);
-					if (group) {
-						group.groupName = newName;
-						this.syncToInput();
-					}
-				},
-
-				addItem(groupId) {
-					const group = this.groups.find(g => g.id === groupId);
-					if (group) {
-						group.items.push({ id: Date.now(), name: '', value: '' });
-						this.renderGroups();
-					}
-				},
-
-				removeItem(groupId, itemId) {
-					const group = this.groups.find(g => g.id === groupId);
-					if (group) {
-						group.items = group.items.filter(i => i.id !== itemId);
-						this.renderGroups();
-					}
-				},
-
-				updateItem(groupId, itemId, field, value) {
-					const group = this.groups.find(g => g.id === groupId);
-					if (group) {
-						const item = group.items.find(i => i.id === itemId);
-						if (item) {
-							item[field] = value;
-							this.syncToInput();
-						}
-					}
-				},
-
-				syncToInput() {
-					const jsonInput = document.getElementById('specificationsJsonInput');
-					if (jsonInput) {
-						// Strip out UI-internal tracking IDs before stringifying
-						const cleanPayload = this.groups.map(g => ({
-							groupName: g.groupName,
-							items: g.items.map(i => ({ name: i.name, value: i.value }))
-						}));
-						jsonInput.value = JSON.stringify(cleanPayload);
-					}
-				},
-
-				renderGroups() {
-					const container = document.getElementById('specificationsContainer');
-					container.innerHTML = '';
-
-					this.groups.forEach(group => {
-						const itemsHtml = group.items.map(item => `
-							<div class="flex items-center gap-3">
-								<div class="flex-1">
-									<input type="text" value="${item.name}" onchange="specificationManager.updateItem(${group.id}, ${item.id}, 'name', this.value)"
-										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-										placeholder="Tên thông số" />
-								</div>
-								<div class="flex-1">
-									<input type="text" value="${item.value}" onchange="specificationManager.updateItem(${group.id}, ${item.id}, 'value', this.value)"
-										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-										placeholder="Giá trị" />
-								</div>
-								<button type="button" onclick="specificationManager.removeItem(${group.id}, ${item.id})"
-									class="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded transition-colors w-10 h-10 flex items-center justify-center" title="Xóa thông số">
-									<span class="material-symbols-outlined text-[20px]">delete</span>
-								</button>
-							</div>
-						`).join('');
-
-						const groupHtml = `
-						<div class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 relative group/spec-group mb-4">
-							<div class="space-y-4">
-								<div class="space-y-1.5">
-									<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Nhóm thông số</label>
-									<input type="text" value="${group.groupName}" onchange="specificationManager.updateGroupName(${group.id}, this.value)"
-										class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-										placeholder="VD: Cấu hình chung, Màn hình, Pin..." />
-								</div>
-								<div class="flex gap-3 px-1">
-									<div class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Tên thông số</div>
-									<div class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá trị</div>
-									<div class="w-10"></div>
-								</div>
-								
-								<div class="space-y-3">
-									${itemsHtml}
-								</div>
-								
-								<div class="flex items-center gap-3">
-									<button type="button" onclick="specificationManager.addItem(${group.id})"
-										class="flex-1 flex items-center gap-2 text-primary font-bold text-sm bg-primary/5 hover:bg-primary/10 px-4 py-2.5 rounded transition-colors border border-dashed border-primary/20 justify-center">
-										<span class="material-symbols-outlined text-[20px]">add_circle</span>
-										Thêm thông số
-									</button>
-									<button type="button" onclick="specificationManager.removeGroup(${group.id})"
-										class="w-10 h-10 rounded text-white bg-orange-500 hover:bg-orange-600 transition-colors flex items-center justify-center shadow-sm"
-										title="Xóa nhóm">
-										<span class="material-symbols-outlined text-[20px]">delete</span>
-									</button>
 								</div>
 							</div>
 						</div>
-						`;
-						container.insertAdjacentHTML('beforeend', groupHtml);
-					});
+					</div>
 
-					this.syncToInput();
+				</div>
+				<div class="lg:col-span-4 flex flex-col gap-6">
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<div class="border-b border-gray-50 dark:border-gray-700 pb-4 mb-2">
+							<h2 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-3">
+								<span class="material-symbols-outlined text-primary">settings</span>
+								Thông số kỹ thuật
+							</h2>
+							<div class="flex items-center gap-3">
+								<label
+									class="px-4 py-2 rounded-md text-xs font-bold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 cursor-pointer shadow-sm">
+									<span class="material-symbols-outlined text-[16px]">upload_file</span>
+									Tải file mẫu
+									<input type="file" id="excelFile" class="hidden" onchange="updateFileName(this)">
+								</label>
+								<span id="excelFileName"
+									class="text-sm text-gray-500 dark:text-gray-400 italic hidden"></span>
+							</div>
+						</div>
+						<div class="space-y-6" id="specificationsContainer">
+							<!-- Specification Group Item -->
+							<div
+								class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-slate-800/50 relative group/spec-group">
+
+								<div class="space-y-4">
+									<div class="space-y-1.5">
+										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Nhóm
+											thông
+											số</label>
+										<input type="text"
+											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+											placeholder="VD: Cấu hình chung, Màn hình, Pin..." />
+									</div>
+									<div class="flex gap-3 px-1">
+										<div
+											class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+											Tên
+											thông số</div>
+										<div
+											class="flex-1 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+											Giá
+											trị</div>
+										<div class="w-10"></div>
+									</div>
+									<div class="space-y-3">
+										<div class="flex items-center gap-3">
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="VD: Chipset" type="text" value="Apple A17 Pro" />
+											</div>
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="VD: 3nm process" type="text" value="6-core CPU" />
+											</div>
+											<button
+												class="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded transition-colors w-10 h-10 flex items-center justify-center">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+										<div class="flex items-center gap-3">
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="Tên thông số" type="text" value="RAM" />
+											</div>
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="Giá trị" type="text" value="8GB" />
+											</div>
+											<button
+												class="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded transition-colors w-10 h-10 flex items-center justify-center">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+										<div class="flex items-center gap-3">
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="Tên thông số" type="text" />
+											</div>
+											<div class="flex-1">
+												<input
+													class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+													placeholder="Giá trị" type="text" />
+											</div>
+											<button
+												class="p-2 text-gray-400 dark:text-gray-500 hover:text-red-500 hover:bg-red-50 rounded transition-colors w-10 h-10 flex items-center justify-center">
+												<span class="material-symbols-outlined text-[20px]">delete</span>
+											</button>
+										</div>
+									</div>
+									<div class="flex items-center gap-3">
+										<button
+											class="flex-1 flex items-center gap-2 text-primary font-bold text-sm bg-primary/5 hover:bg-primary/10 px-4 py-2.5 rounded transition-colors border border-dashed border-primary/20 justify-center">
+											<span class="material-symbols-outlined text-[20px]">add_circle</span>
+											Thêm thông số
+										</button>
+										<button type="button"
+											class="w-10 h-10 rounded text-white bg-orange-500 hover:bg-orange-600 transition-colors flex items-center justify-center shadow-sm"
+											title="Xóa nhóm">
+											<span class="material-symbols-outlined text-[20px]">delete</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="pt-2">
+							<button
+								class="flex items-center gap-2 text-gray-600 dark:text-gray-300 font-bold text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 px-4 py-2.5 rounded transition-colors w-full justify-center border border-transparent hover:border-gray-300 dark:hover:border-gray-500">
+								<span class="material-symbols-outlined text-[20px]">library_add</span>
+								Thêm nhóm thông số
+							</button>
+						</div>
+					</div>
+					<div
+						class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+						<h2
+							class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+							<span class="material-symbols-outlined text-primary">visibility</span>
+							Trạng thái hiển thị
+						</h2>
+						<div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded">
+							<div class="flex flex-col">
+								<span class="text-sm font-bold text-gray-900 dark:text-white">Công khai</span>
+								<span class="text-xs text-gray-500 dark:text-gray-400">Sản phẩm sẽ hiển
+									thị trên web</span>
+							</div>
+							<label class="inline-flex items-center cursor-pointer relative z-0">
+								<input type="checkbox" id="displayStatusToggle" name="displayStatus"
+									class="sr-only peer" checked>
+								<div
+									class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+								</div>
+							</label>
+						</div>
+						<div class="space-y-3 pt-2">
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Trạng thái:</span> <span
+									class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+									<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+									Đang hoạt động
+								</span>
+							</div>
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Người tạo:</span> <span
+									class="font-bold text-gray-900 dark:text-white">Admin TechShop</span>
+							</div>
+							<div class="flex items-center justify-between text-sm">
+								<span class="text-gray-500 dark:text-gray-400 font-medium">Ngày tạo:</span> <span
+									class="font-bold text-gray-900 dark:text-white">Hôm nay</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<style>
+				/* Chrome, Safari, Edge, Opera */
+				input[type=number]::-webkit-outer-spin-button,
+				input[type=number]::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
 				}
-			};
+			</style>
+			<script>
+				// --- Dropdown Logic ---
 
-			// Init the specificationManager on DOM load
-			document.addEventListener('DOMContentLoaded', function () {
-				specificationManager.init();
-			});
-		</script>
+				// Category Dropdown
+				const categoryDropdownContainer = document.getElementById('categoryDropdownContainer');
+				const categoryMenu = document.getElementById('categoryMenu');
+				const categoryIdInput = document.getElementById('categoryId');
+				const categoryLabel = document.getElementById('categoryLabel');
+
+				function toggleCategoryDropdown() {
+					categoryMenu.classList.toggle('hidden');
+					brandMenu.classList.add('hidden'); // Close other dropdown
+				}
+
+				function selectCategory(id, name) {
+					categoryIdInput.value = id;
+					categoryLabel.innerText = name;
+					categoryLabel.classList.remove('text-gray-500');
+					categoryLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
+					categoryMenu.classList.add('hidden');
+				}
+
+				// Brand Dropdown
+				const brandDropdownContainer = document.getElementById('brandDropdownContainer');
+				const brandMenu = document.getElementById('brandMenu');
+				const brandIdInput = document.getElementById('brandId');
+				const brandLabel = document.getElementById('brandLabel');
+
+				function toggleBrandDropdown() {
+					brandMenu.classList.toggle('hidden');
+					categoryMenu.classList.add('hidden'); // Close other dropdown
+				}
+
+				function selectBrand(id, name) {
+					brandIdInput.value = id;
+					brandLabel.innerText = name;
+					brandLabel.classList.remove('text-gray-500');
+					brandLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
+					brandMenu.classList.add('hidden');
+				}
+
+				// Close dropdowns when clicking outside
+				document.addEventListener('click', function (event) {
+					if (categoryDropdownContainer && !categoryDropdownContainer.contains(event.target)) {
+						categoryMenu.classList.add('hidden');
+					}
+					if (brandDropdownContainer && !brandDropdownContainer.contains(event.target)) {
+						brandMenu.classList.add('hidden');
+					}
+				});
+
+				// Update file name
+				function updateFileName(input) {
+					const fileNameSpan = document.getElementById('excelFileName');
+					if (input.files && input.files.length > 0) {
+						fileNameSpan.textContent = input.files[0].name;
+						fileNameSpan.classList.remove('hidden');
+					} else {
+						fileNameSpan.textContent = '';
+						fileNameSpan.classList.add('hidden');
+					}
+				}
+
+				function updateVariantImageFiles(input) {
+					const displayDiv = input.parentElement.querySelector('.variant-file-names');
+					if (input.files && input.files.length > 0) {
+						const fileNames = Array.from(input.files).map(f => f.name).join(', ');
+						displayDiv.textContent = fileNames;
+						displayDiv.title = fileNames;
+					} else {
+						displayDiv.textContent = '';
+						displayDiv.removeAttribute('title');
+					}
+				}
+
+				function calculateFinalPrice(id) {
+					const priceInput = document.getElementById(`priceInput-${id}`);
+					const discountInput = document.getElementById(`discountInput-${id}`);
+					const finalPriceSpan = document.getElementById(`finalPrice-${id}`);
+
+					const price = parseFloat(priceInput.value) || 0;
+					const discount = parseFloat(discountInput.value) || 0;
+
+					if (price > 0) {
+						const finalPrice = price * (1 - discount / 100);
+						finalPriceSpan.textContent = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(finalPrice);
+					} else {
+						finalPriceSpan.textContent = '0 đ';
+					}
+				}
+
+			</script>
+		</div>
 	</div>
 
 
