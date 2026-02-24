@@ -303,13 +303,14 @@
                         </div>
                         <div class="space-y-4">
                             <label class="block cursor-pointer group">
-                                <input checked="" class="peer sr-only" name="payment" type="radio" />
+                                <input checked="" class="peer sr-only" name="payment" type="radio" value="COD" />
                                 <div
                                     class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
                                     <div
                                         class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
                                     </div>
-                                    <div class="p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-md mr-4">
+                                    <div
+                                        class="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl mr-4">
                                         <span class="material-symbols-outlined">local_shipping</span>
                                     </div>
                                     <div class="flex-1">
@@ -323,14 +324,14 @@
                                 </div>
                             </label>
                             <label class="block cursor-pointer group">
-                                <input class="peer sr-only" name="payment" type="radio" />
+                                <input class="peer sr-only" name="payment" type="radio" value="CARD" />
                                 <div
                                     class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
                                     <div
                                         class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
                                     </div>
                                     <div
-                                        class="p-2 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-md mr-4">
+                                        class="w-12 h-12 flex items-center justify-center bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl mr-4">
                                         <span class="material-symbols-outlined">credit_card</span>
                                     </div>
                                     <div class="flex-1">
@@ -342,13 +343,14 @@
                                 </div>
                             </label>
                             <label class="block cursor-pointer group">
-                                <input class="peer sr-only" name="payment" type="radio" />
+                                <input class="peer sr-only" name="payment" type="radio" value="WALLET" />
                                 <div
                                     class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
                                     <div
                                         class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
                                     </div>
-                                    <div class="p-2 bg-purple-50 dark:bg-purple-900/30 text-purple-600 rounded-md mr-4">
+                                    <div
+                                        class="w-12 h-12 flex items-center justify-center bg-purple-50 dark:bg-purple-900/30 text-purple-600 rounded-xl mr-4">
                                         <span class="material-symbols-outlined">account_balance_wallet</span>
                                     </div>
                                     <div class="flex-1">
@@ -359,16 +361,36 @@
                                     </div>
                                 </div>
                             </label>
+                            <label class="block cursor-pointer group">
+                                <input class="peer sr-only" name="payment" type="radio" value="QR" />
+                                <div
+                                    class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                    <div
+                                        class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                    </div>
+                                    <div
+                                        class="w-12 h-12 flex items-center justify-center bg-orange-50 dark:bg-orange-900/30 text-primary rounded-xl mr-4">
+                                        <span class="material-symbols-outlined">qr_code_2</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="font-medium text-gray-900 dark:text-white">Thanh toán qua mã QR
+                                        </div>
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">VietQR, Chuyển khoản ngân
+                                            hàng
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
                         </div>
                     </div>
 
                     <div class="pt-4">
-                        <a th:href="@{/checkout/order-success}"
+                        <button type="button" onclick="handleCheckoutSubmit()"
                             class="w-full bg-primary hover:bg-primary-hover text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 group text-center block">
                             Hoàn tất đơn hàng
                             <span
                                 class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </a>
+                        </button>
                         <p class="text-xs text-center text-gray-500 dark:text-gray-400 mt-4">
                             Bằng việc nhấn "Hoàn tất đơn hàng", bạn đồng ý với <a class="text-primary hover:underline"
                                 href="#">Điều khoản dịch vụ</a> và <a class="text-primary hover:underline"
@@ -597,6 +619,109 @@
             </div>
         </div>
 
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="fixed inset-0 z-[60] hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-md transition-opacity opacity-0"
+                id="payment-backdrop">
+            </div>
+
+            <!-- Modal Content -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl bg-white dark:bg-[#1e293b] rounded-2xl shadow-2xl transform transition-all scale-95 opacity-0 duration-300 overflow-hidden"
+                id="payment-content">
+
+                <div class="flex flex-col md:flex-row min-h-[500px]">
+                    <!-- Left: QR Code Section -->
+                    <div
+                        class="w-full md:w-5/12 p-8 border-b md:border-b-0 md:border-r border-slate-100 dark:border-gray-700 flex flex-col items-center justify-center bg-slate-50/50 dark:bg-gray-800/30">
+                        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-gray-700">
+                            <!-- Placeholder for QR Code (Dynamic simulation) -->
+                            <img src="https://img.vietqr.io/image/MB-970422-compact.png?amount=4710000&addInfo=Thanh%20toan%20don%20hang%20TechOne&accountName=LE%20QUOC%20MINH"
+                                alt="QR Code thanh toán"
+                                class="w-full max-w-[240px] aspect-square object-contain mx-auto">
+                        </div>
+                        <p class="mt-6 text-center text-slate-600 dark:text-gray-400 text-sm">
+                            Mở App Ngân hàng hoặc Ví điện tử để <br> quét mã QR
+                        </p>
+                    </div>
+
+                    <!-- Right: Payment Info -->
+                    <div class="w-full md:w-7/12 p-8 flex flex-col">
+                        <div class="flex items-center justify-between mb-8">
+                            <h3 class="text-xl font-bold text-slate-800 dark:text-white">Thanh toán đơn hàng</h3>
+                            <button onclick="togglePaymentModal()"
+                                class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        <div class="space-y-3.5 flex-grow">
+                            <div class="flex items-center justify-between py-1 pt-2">
+                                <span class="text-slate-500 dark:text-gray-400 text-sm font-medium">Ngân hàng</span>
+                                <span class="text-[13px] font-bold text-slate-800 dark:text-white">MB Bank</span>
+                            </div>
+
+                            <div class="flex items-center justify-between py-1 group">
+                                <span class="text-slate-500 dark:text-gray-400 text-sm font-medium">Số tài khoản</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base font-bold text-slate-800 dark:text-white tracking-wide"
+                                        id="modal-account-number">970422</span>
+                                    <button onclick="copyToClipboard('modal-account-number')"
+                                        class="w-8 h-8 flex items-center justify-center bg-slate-100 dark:bg-white/5 hover:bg-primary/10 hover:text-primary border border-slate-200 dark:border-gray-700 rounded text-slate-500 transition-all">
+                                        <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between py-1">
+                                <span class="text-slate-500 dark:text-gray-400 text-sm font-medium">Chủ tài khoản</span>
+                                <span class="text-[13px] font-bold text-slate-800 dark:text-white uppercase">LE QUOC
+                                    MINH</span>
+                            </div>
+
+                            <div class="flex items-center justify-between py-1">
+                                <span class="text-slate-500 dark:text-gray-400 text-sm font-medium">Số tiền</span>
+                                <span class="text-xl font-bold text-primary">4.710.000 VNĐ</span>
+                            </div>
+
+                            <div class="pt-4 border-t border-dashed border-slate-200 dark:border-gray-700">
+                                <div class="flex items-start justify-between">
+                                    <span class="text-slate-500 dark:text-gray-400 text-sm font-medium mt-1">Nội
+                                        dung</span>
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="text-[13px] font-bold text-slate-800 dark:text-white text-right break-all"
+                                            id="modal-payment-content">TECHONE ORDER 0442</span>
+                                        <button onclick="copyToClipboard('modal-payment-content')"
+                                            class="w-8 h-8 flex-shrink-0 flex items-center justify-center bg-slate-100 dark:bg-white/5 hover:bg-primary/10 hover:text-primary border border-slate-200 dark:border-gray-700 rounded text-slate-500 transition-all">
+                                            <span class="material-symbols-outlined text-[18px]">content_copy</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                class="p-3 bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-900/30 rounded-xl flex gap-3 mt-4">
+                                <span
+                                    class="material-symbols-outlined text-yellow-600 dark:text-yellow-500 text-[20px] shrink-0">info</span>
+                                <p class="text-xs text-yellow-800 dark:text-yellow-400 leading-relaxed">
+                                    Vui lòng nhập chính xác <strong>Nội dung chuyển khoản</strong> để đơn hàng được
+                                    duyệt tự động.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <button onclick="togglePaymentModal()"
+                                class="w-full py-3 rounded-xl border border-slate-200 dark:border-gray-700 text-slate-500 dark:text-gray-400 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+                                Hủy thanh toán
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script>
             // --- Address Modal Logic ---
             function toggleAddressModal() {
@@ -679,6 +804,50 @@
                     details.classList.add('hidden');
                     icon.style.transform = 'rotate(0deg)';
                 }
+            }
+
+            function handleCheckoutSubmit() {
+                const selectedPayment = document.querySelector('input[name="payment"]:checked').value;
+                if (selectedPayment === 'QR') {
+                    togglePaymentModal();
+                } else {
+                    window.location.href = '/checkout/order-success';
+                }
+            }
+
+            // --- Payment Modal Logic ---
+            let paymentTimerInterval;
+            function togglePaymentModal() {
+                const modal = document.getElementById('payment-modal');
+                const backdrop = document.getElementById('payment-backdrop');
+                const content = document.getElementById('payment-content');
+
+                if (modal.classList.contains('hidden')) {
+                    // Open
+                    modal.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                    setTimeout(() => {
+                        backdrop.classList.remove('opacity-0');
+                        content.classList.remove('scale-95', 'opacity-0');
+                        content.classList.add('scale-100', 'opacity-100');
+                    }, 10);
+                } else {
+                    // Close
+                    backdrop.classList.add('opacity-0');
+                    content.classList.remove('scale-100', 'opacity-100');
+                    content.classList.add('scale-95', 'opacity-0');
+                    document.body.style.overflow = '';
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                }
+            }
+
+            function copyToClipboard(elementId) {
+                const text = document.getElementById(elementId).innerText;
+                navigator.clipboard.writeText(text).then(() => {
+                    // Success
+                }).catch(err => console.error('Lỗi copy:', err));
             }
         </script>
 
