@@ -3,7 +3,7 @@
     th:replace="~{layouts/layout-admin :: view(title='Quản lý thương hiệu', menuItem='brands', content=~{:: #main-content}, subMenuItem=null)}">
 
 <body>
-    <div id="main-content">
+    <div id="main-content" th:fragment="main-content">
         <div class="max-w-7xl mx-auto space-y-6">
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -19,13 +19,42 @@
                 </div>
             </div>
 
+            <!-- Alerts -->
+            <div th:if="${param.success}"
+                class="p-4 mb-4 text-sm text-green-800 rounded bg-green-50 dark:bg-gray-800 dark:text-green-400"
+                role="alert">
+                Thêm thương hiệu thành công!
+            </div>
+            <div th:if="${param.updated}"
+                class="p-4 mb-4 text-sm text-blue-800 rounded bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                role="alert">
+                Cập nhật thương hiệu thành công!
+            </div>
+            <div th:if="${param.deleted}"
+                class="p-4 mb-4 text-sm text-red-800 rounded bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                Xóa thương hiệu thành công!
+            </div>
+            <div th:if="${param.message}"
+                class="p-4 mb-4 text-sm text-yellow-800 rounded bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400"
+                role="alert">
+                <span th:text="${param.message}"></span>
+            </div>
+
             <div class="grid grid-cols-12 gap-6">
-                <!-- Left Column: Add Brand Form -->
+                <!-- Left Column: Add/Edit Brand Form -->
                 <div class="col-span-12 lg:col-span-4 space-y-6">
                     <div
                         class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 sticky top-24">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Thêm thương hiệu mới</h3>
-                        <form action="#" method="POST" class="space-y-4">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4"
+                            th:text="${editMode ? 'Chỉnh sửa thương hiệu' : 'Thêm thương hiệu mới'}">Thêm thương hiệu
+                            mới</h3>
+                        <form th:action="${editMode ? '/admin/brand/update' : '/admin/brand/add'}" th:object="${brand}"
+                            method="POST" enctype="multipart/form-data" class="space-y-4">
+                            <input type="hidden" th:field="*{id}" />
+                            <input type="hidden" th:field="*{logo}" />
+                            <!-- Page context for redirection -->
+                            <input type="hidden" name="pageNum" th:value="${page.number}" />
+                            <input type="hidden" name="keyword" th:value="${keyword}" />
 
                             <!-- Logo, Name Grid -->
                             <div class="grid grid-cols-1 gap-4">
@@ -33,70 +62,101 @@
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Logo</label>
-                                    <div
-                                        class="w-full h-[120px] rounded border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 text-gray-400 bg-gray-50 dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors cursor-pointer group">
-                                        <span
-                                            class="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">image</span>
-                                        <span class="text-[10px] font-bold uppercase">Chọn Logo</span>
+                                    <div onclick="document.getElementById('logoInput').click()"
+                                        class="w-full h-[120px] rounded border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 text-gray-400 bg-gray-50 dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors cursor-pointer group relative overflow-hidden">
+
+                                        <div th:if="*{logo}" class="absolute inset-0">
+                                            <img th:src="@{'/images/brands/' + *{logo}}"
+                                                class="w-full h-full object-contain" id="previewImg" />
+                                        </div>
+                                        <div th:unless="*{logo}" id="placeholder" class="flex flex-col items-center">
+                                            <span
+                                                class="material-symbols-outlined text-[28px] group-hover:scale-110 transition-transform">image</span>
+                                            <span class="text-[10px] font-bold uppercase">Chọn Logo</span>
+                                        </div>
+
+                                        <input type="file" id="logoInput" name="logoFile" class="hidden"
+                                            onchange="previewFile(this)" />
                                     </div>
+                                    <p th:if="${#fields.hasErrors('logo')}" th:errors="*{logo}"
+                                        class="text-red-500 text-xs mt-1"></p>
                                 </div>
 
                                 <!-- Name -->
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên
                                         thương hiệu <span class="text-red-500">*</span></label>
-                                    <input type="text"
+                                    <input type="text" th:field="*{name}"
                                         class="block w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
-                                        placeholder="Nhập tên thương hiệu..." required>
+                                        placeholder="Nhập tên thương hiệu...">
+                                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                        class="text-red-500 text-xs mt-1"></p>
+                                </div>
+
+                                <!-- Status (Only in Edit Mode) -->
+                                <div th:if="${editMode}">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trạng
+                                        thái</label>
+                                    <select th:field="*{status}"
+                                        class="block w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary">
+                                        <option th:value="true">Hoạt động</option>
+                                        <option th:value="false">Ngưng hoạt động</option>
+                                    </select>
                                 </div>
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit"
-                                class="w-full bg-primary hover:bg-orange-700 text-white py-2.5 rounded font-bold text-sm transition-all shadow-lg shadow-primary/20">
-                                Thêm mới
-                            </button>
+                            <div class="flex gap-2">
+                                <button type="submit"
+                                    class="flex-1 bg-primary hover:bg-orange-700 text-white py-2.5 rounded font-bold text-sm transition-all shadow-lg shadow-primary/20"
+                                    th:text="${editMode ? 'Cập nhật' : 'Thêm mới'}">
+                                    Thêm mới
+                                </button>
+                                <a th:if="${editMode}"
+                                    th:href="@{/admin/brand-manager(pageNum=${page.number}, keyword=${keyword})}"
+                                    class="px-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                    Hủy
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>
 
                 <!-- Right Column: List & Filters -->
                 <div class="col-span-12 lg:col-span-8">
-                    <!-- Tabs Navigation (Removed for Brands, keeping header style) -->
+                    <!-- Tabs Navigation -->
                     <div class="border-b border-gray-200 dark:border-gray-700 mb-6">
-                        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                        <nav class="-mb-px flex space-x-8">
                             <button
-                                class="tab-btn active border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2"
-                                aria-current="page">
+                                class="border-primary text-primary whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[18px]">branding_watermark</span>
                                 Danh sách thương hiệu
                             </button>
                         </nav>
                     </div>
 
-                    <!-- Tab Contents -->
                     <div class="mt-6">
-
-                        <!-- Brand List -->
-                        <div id="brands-list" class="tab-content block">
+                        <div id="brands-list">
                             <!-- Filter Section -->
-                            <div
+                            <form th:action="@{/admin/brand-manager}" method="GET"
                                 class="bg-white dark:bg-[#1e293b] rounded p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
                                 <!-- Search -->
                                 <div class="flex-1 relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <span class="material-symbols-outlined text-gray-400">search</span>
                                     </div>
-                                    <input
+                                    <input name="keyword" th:value="${keyword}"
                                         class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
                                         placeholder="Tìm kiếm thương hiệu..." type="text" />
                                 </div>
-                            </div>
+                                <button type="submit"
+                                    class="px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded text-sm font-medium hover:bg-gray-200 transition-colors">Tìm
+                                    kiếm</button>
+                            </form>
 
                             <!-- Table Card -->
                             <div
                                 class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
-                                <!-- Table -->
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-left text-sm">
                                         <thead
@@ -104,50 +164,43 @@
                                             <tr>
                                                 <th class="px-3 py-4 text-center w-12">STT</th>
                                                 <th class="px-3 py-4 text-center w-20">Logo</th>
-                                                <th
-                                                    class="px-3 py-4 text-left cursor-pointer hover:bg-gray-50 transition-colors group">
-                                                    <div class="flex items-center justify-start gap-1">
-                                                        <span>Tên thương hiệu</span>
-                                                        <span
-                                                            class="material-symbols-outlined text-[14px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
-                                                    </div>
-                                                </th>
-                                                <th
-                                                    class="px-3 py-4 text-center w-32 cursor-pointer hover:bg-gray-50 transition-colors group hidden sm:table-cell">
-                                                    <div class="flex items-center justify-center gap-1">
-                                                        <span>Sản phẩm</span>
-                                                        <span
-                                                            class="material-symbols-outlined text-[14px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
-                                                    </div>
-                                                </th>
+                                                <th class="px-3 py-4 text-left">Tên thương hiệu</th>
+                                                <th class="px-3 py-4 text-center w-24">Trạng thái</th>
                                                 <th class="px-3 py-4 text-center w-24">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700 font-body">
-                                            <!-- Item 1 -->
-                                            <tr class="hover:bg-gray-50 transition-colors group">
-                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">1</td>
+                                            <tr th:each="item, state : ${list}"
+                                                class="hover:bg-gray-50 transition-colors group">
+                                                <td class="px-6 py-4 font-medium text-slate-500 text-center"
+                                                    th:text="${page.number * page.size + state.index + 1}">1</td>
                                                 <td class="px-6 py-4 text-center">
                                                     <div
                                                         class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
-                                                        <span
+                                                        <img th:if="${item.logo}"
+                                                            th:src="@{'/images/brands/' + ${item.logo}}"
+                                                            class="w-full h-full object-contain" />
+                                                        <span th:unless="${item.logo}"
                                                             class="material-symbols-outlined text-gray-400">image</span>
                                                     </div>
                                                 </td>
-                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                    Apple
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <span class="text-gray-600 text-xs font-bold">156</span>
+                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white"
+                                                    th:text="${item.name}">Apple</td>
+                                                <td class="px-3 py-4 text-center">
+                                                    <a th:href="@{'/admin/brand/toggle-status/' + ${item.id}}"
+                                                        th:class="${item.status ? 'inline-block whitespace-nowrap px-2 py-1 text-[10px] font-bold uppercase rounded bg-green-100 text-green-600' : 'inline-block whitespace-nowrap px-2 py-1 text-[10px] font-bold uppercase rounded bg-red-100 text-red-600'}"
+                                                        th:text="${item.status ? 'Hoạt động' : 'Ẩn'}">
+                                                        Hoạt động
+                                                    </a>
                                                 </td>
                                                 <td class="px-6 py-4 text-center">
                                                     <div class="flex items-center justify-center gap-1">
-                                                        <button
+                                                        <a th:href="@{/admin/brand/edit/{id}(id=${item.id}, pageNum=${page.number}, keyword=${keyword})}"
                                                             class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
                                                             <span
                                                                 class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </button>
-                                                        <button
+                                                        </a>
+                                                        <button th:onclick="'confirmDelete(' + ${item.id} + ')'"
                                                             class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
                                                             <span
                                                                 class="material-symbols-outlined text-[20px]">delete</span>
@@ -155,106 +208,86 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <!-- Item 2 -->
-                                            <tr class="hover:bg-gray-50 transition-colors group">
-                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">2</td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <div
-                                                        class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
-                                                        <span
-                                                            class="material-symbols-outlined text-gray-400">image</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                    Samsung
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <span class="text-gray-600 text-xs font-bold">142</span>
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <div class="flex items-center justify-center gap-1">
-                                                        <button
-                                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
-                                                            <span
-                                                                class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </button>
-                                                        <button
-                                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
-                                                            <span
-                                                                class="material-symbols-outlined text-[20px]">delete</span>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <!-- Item 3 -->
-                                            <tr class="hover:bg-gray-50 transition-colors group">
-                                                <td class="px-6 py-4 font-medium text-slate-500 text-center">3</td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <div
-                                                        class="w-10 h-10 mx-auto rounded bg-gray-100 flex items-center justify-center overflow-hidden">
-                                                        <span
-                                                            class="material-symbols-outlined text-gray-400">image</span>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                                    Xiaomi
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <span class="text-gray-600 text-xs font-bold">89</span>
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <div class="flex items-center justify-center gap-1">
-                                                        <button
-                                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded transition-colors">
-                                                            <span
-                                                                class="material-symbols-outlined text-[20px]">edit</span>
-                                                        </button>
-                                                        <button
-                                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors">
-                                                            <span
-                                                                class="material-symbols-outlined text-[20px]">delete</span>
-                                                        </button>
-                                                    </div>
-                                                </td>
+                                            <tr th:if="${#lists.isEmpty(list)}">
+                                                <td colspan="5" class="px-6 py-10 text-center text-gray-500">Không tìm
+                                                    thấy thương hiệu nào</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
+
                                 <!-- Pagination Controls -->
-                                <div
-                                    class="rounded-b rounded-t-none px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
+                                <div th:if="${page.totalPages > 0}"
+                                    class="rounded-b px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
                                     <div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
-                                        Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến
-                                        <span class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số
-                                        <span class="font-medium text-gray-900 dark:text-white">15</span> thương hiệu
+                                        Đang xem <span class="font-medium text-gray-900 dark:text-white"
+                                            th:text="${page.number * page.size + 1}">1</span>
+                                        đến <span class="font-medium text-gray-900 dark:text-white"
+                                            th:text="${(page.number + 1) * page.size > page.totalElements ? page.totalElements : (page.number + 1) * page.size}">10</span>
+                                        trong tổng số <span class="font-medium text-gray-900 dark:text-white"
+                                            th:text="${page.totalElements}">15</span> thương hiệu
                                     </div>
 
                                     <div class="flex items-center gap-2">
                                         <nav aria-label="Page navigation"
                                             class="flex items-center -space-x-px h-7 text-xs">
-                                            <button
-                                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                            <a th:href="@{/admin/brand-manager(pageNum=${page.number - 1}, keyword=${keyword})}"
+                                                th:classappend="${page.first ? 'pointer-events-none opacity-50' : ''}"
+                                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 transition-colors">
                                                 <span class="material-symbols-outlined text-[16px]">chevron_left</span>
-                                            </button>
-                                            <button aria-current="page"
-                                                class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-primary-hover hover:text-white dark:border-gray-700 dark:bg-gray-700 dark:text-white transition-colors">
-                                                1
-                                            </button>
-                                            <button
-                                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                            </a>
+
+                                            <div class="flex -space-x-px">
+                                                <a th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+                                                    th:href="@{/admin/brand-manager(pageNum=${i}, keyword=${keyword})}"
+                                                    th:text="${i + 1}"
+                                                    th:classappend="${i == page.number ? 'z-10 text-white border-primary bg-primary' : 'text-gray-500 bg-white border-gray-300 hover:bg-gray-100 hover:text-gray-700'}"
+                                                    class="flex items-center justify-center size-7 leading-tight border transition-colors">
+                                                </a>
+                                            </div>
+
+                                            <a th:href="@{/admin/brand-manager(pageNum=${page.number + 1}, keyword=${keyword})}"
+                                                th:classappend="${page.last ? 'pointer-events-none opacity-50' : ''}"
+                                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 transition-colors">
                                                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                                            </button>
+                                            </a>
                                         </nav>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
+        <script th:inline="javascript">
+            function previewFile(input) {
+                const preview = document.getElementById('previewImg') || document.createElement('img');
+                const placeholder = document.getElementById('placeholder');
+
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        if (!document.getElementById('previewImg')) {
+                            preview.id = 'previewImg';
+                            preview.className = 'w-full h-full object-contain';
+                            input.parentElement.appendChild(preview);
+                        }
+                        preview.src = e.target.result;
+                        if (placeholder) placeholder.style.display = 'none';
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            function confirmDelete(id) {
+                if (confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')) {
+                    window.location.href = '/admin/brand/delete/' + id;
+                }
+            }
+        </script>
     </div>
+
 </body>
 
 </html>
