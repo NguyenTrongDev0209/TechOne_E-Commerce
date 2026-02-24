@@ -1,14 +1,77 @@
 package com.techone.controller.authentic;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.techone.model.Account;
+import com.techone.repository.AccountRepository;
+import com.techone.utils.SessionUtils;
 
 @Controller
 public class LoginController {
 
+	@Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@GetMapping("/login")
 	public String loginForm() {
 		return "views/authentic/login";
 	}
 
+	@PostMapping("/login")
+	public String login(@RequestParam("username") String username, 
+	                    @RequestParam("password") String password, 
+	                    Model model) {
+	    
+	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
+
+	    if (userOpt.isPresent()) {
+	        Account account = userOpt.get();
+	        if (passwordEncoder.matches(password, account.getPassword())) {
+	            
+	            // 1. Lưu vào Session tùy chỉnh của bạn (để Thymeleaf hiển thị tên)
+	            com.techone.utils.SessionUtils.set("user", account);
+
+	            // 2. QUAN TRỌNG: Thông báo cho Spring Security rằng người dùng này đã hợp lệ
+	            // Tạo danh sách quyền (Roles)
+	            List<GrantedAuthority> authorities = new ArrayList<>();
+	            authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
+
+	            // Tạo đối tượng Authentication
+	            UsernamePasswordAuthenticationToken auth = 
+	                new UsernamePasswordAuthenticationToken(username, null, authorities);
+
+	            // Lưu vào Security Context
+	            SecurityContextHolder.getContext().setAuthentication(auth);
+
+	            return "redirect:/";
+	        }
+	    }
+
+	    model.addAttribute("error", "Tài khoản hoặc mật khẩu không chính xác");
+	    return "views/authentic/login";
+	}
+    
+    @GetMapping("/logout")
+    public String logout() {
+        SessionUtils.invalidate(); // Hủy session
+        return "redirect:/login";
+    }
+	
 }

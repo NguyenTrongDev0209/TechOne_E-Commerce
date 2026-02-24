@@ -96,15 +96,32 @@
                 </div>
 
                 <div class="flex items-center gap-6 flex-shrink-0">
-                    <a class="group flex flex-col items-center gap-1" th:href="@{/account}">
-                        <div
-                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
-                            <span class="material-symbols-outlined !text-[26px]">person</span>
-                        </div>
-                        <span
-                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Tài
-                            khoản</span>
-                    </a>
+                    <a th:if="${session.user == null}" 
+				   class="group flex flex-col items-center gap-1" 
+				   th:href="@{/login}">
+				    <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+				        <span class="material-symbols-outlined !text-[26px]">person</span>
+				    </div>
+				    <span class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">
+				        Đăng nhập
+				    </span>
+				</a>
+				
+				<a th:unless="${session.user == null}" 
+				   class="group flex flex-col items-center gap-1" 
+				   th:href="@{/account}">
+				    <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+				        <img th:if="${session.user.avatar != null}" 
+				             th:src="${session.user.avatar}" 
+				             class="w-full h-full rounded-2xl object-cover">
+				        <span th:unless="${session.user.avatar != null}" 
+				              class="material-symbols-outlined !text-[26px]">person</span>
+				    </div>
+				    <span class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide" 
+				          th:text="${session.user.fullname}">
+				        Tên người dùng
+				    </span>
+				</a>
 
                     <a class="group flex flex-col items-center gap-1" href="#">
                         <div
