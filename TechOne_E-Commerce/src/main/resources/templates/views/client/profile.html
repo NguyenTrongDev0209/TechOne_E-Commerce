@@ -21,7 +21,7 @@
                         <div
                             class="size-32 rounded-full overflow-hidden border-4 border-gray-50 dark:border-gray-800 shadow-sm">
                             <img alt="Large user avatar" class="w-full h-full object-cover"
-                                src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random&size=256" />
+                                th:src="${session.user.avatar != null ? session.user.avatar : 'https://ui-avatars.com/api/?name=' + session.user.fullname + '&background=random&size=256'}" />
                         </div>
                     </div>
                     <button
@@ -48,7 +48,7 @@
                                         tên</label>
                                     <input
                                         class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary"
-                                        type="text" value="Nguyen Van A" />
+                                        type="text" th:value="${session.user.fullname}" value="Nguyen Van A" />
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Ngày
@@ -89,7 +89,8 @@
                                         <div class="relative">
                                             <input
                                                 class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed pr-10"
-                                                disabled="" type="email" value="nguyenvana@example.com" />
+                                                disabled="" type="email" th:value="${session.user.email}"
+                                                value="nguyenvana@example.com" />
                                             <span
                                                 class="absolute right-3 top-2.5 text-gray-400 material-symbols-outlined text-[20px]">lock</span>
                                         </div>
@@ -110,7 +111,7 @@
                                             điện thoại</label>
                                         <input
                                             class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary"
-                                            type="tel" value="0912345678" />
+                                            type="tel" th:value="${session.user.phone}" value="0912345678" />
                                     </div>
                                     <div class="w-full sm:w-auto">
                                         <button
