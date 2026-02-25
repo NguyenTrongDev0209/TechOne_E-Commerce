@@ -43,40 +43,109 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        
-        #chatbot-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; font-family: Arial, sans-serif; }
-    
-		    /* Nút tròn */
-		    #chat-trigger {
-		        width: 60px; height: 60px; background: #007bff; border-radius: 50%;
-		        display: flex; align-items: center; justify-content: center;
-		        cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.3s;
-		    }
-		    #chat-trigger:hover { transform: scale(1.1); }
-		
-		    /* Khung Chat */
-		    #chat-window {
-		        display: none;
-			    position: absolute;
-			    bottom: 80px; 
-			    right: 0;
-			    z-index: 10000; width: 350px; height: 450px; background: white;
-		        border-radius: 15px; flex-direction: column; box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-		        position: absolute; bottom: 80px; right: 0; overflow: hidden;
-		    }
-		
-		    #chat-header { background: #007bff; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between; }
-		    #chat-messages { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-		    #chat-input-area { border-top: 1px solid #eee; padding: 10px; display: flex; }
-		    #chat-input-area input { flex: 1; border: none; outline: none; padding: 10px; }
-		    
-		    /* Tin nhắn */
-		    .msg { padding: 8px 12px; border-radius: 10px; max-width: 80%; font-size: 14px; }
-		    .user { align-self: flex-end; background: #007bff; color: white; }
-		    .ai { align-self: flex-start; background: #f1f0f0; color: #333; }
-		    
-		    /* Hiệu ứng đang gõ */
-		    .typing { font-style: italic; color: #aaa; font-size: 12px; }
+
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Nút tròn */
+        #chat-trigger {
+            width: 60px;
+            height: 60px;
+            background: #007bff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        #chat-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        /* Khung Chat */
+        #chat-window {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            z-index: 10000;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 15px;
+            flex-direction: column;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            overflow: hidden;
+        }
+
+        #chat-header {
+            background: #007bff;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #chat-input-area {
+            border-top: 1px solid #eee;
+            padding: 10px;
+            display: flex;
+        }
+
+        #chat-input-area input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px;
+        }
+
+        /* Tin nhắn */
+        .msg {
+            padding: 8px 12px;
+            border-radius: 10px;
+            max-width: 80%;
+            font-size: 14px;
+        }
+
+        .user {
+            align-self: flex-end;
+            background: #007bff;
+            color: white;
+        }
+
+        .ai {
+            align-self: flex-start;
+            background: #f1f0f0;
+            color: #333;
+        }
+
+        /* Hiệu ứng đang gõ */
+        .typing {
+            font-style: italic;
+            color: #aaa;
+            font-size: 12px;
+        }
     </style>
 </head>
 
@@ -130,32 +199,33 @@
                 </div>
 
                 <div class="flex items-center gap-6 flex-shrink-0">
-                    <a th:if="${session.user == null}" 
-				   class="group flex flex-col items-center gap-1" 
-				   th:href="@{/login}">
-				    <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
-				        <span class="material-symbols-outlined !text-[26px]">person</span>
-				    </div>
-				    <span class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">
-				        Đăng nhập
-				    </span>
-				</a>
-				
-				<a th:unless="${session.user == null}" 
-				   class="group flex flex-col items-center gap-1" 
-				   th:href="@{/account}">
-				    <div class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
-				        <img th:if="${session.user.avatar != null}" 
-				             th:src="${session.user.avatar}" 
-				             class="w-full h-full rounded-2xl object-cover">
-				        <span th:unless="${session.user.avatar != null}" 
-				              class="material-symbols-outlined !text-[26px]">person</span>
-				    </div>
-				    <span class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide" 
-				          th:text="${session.user.fullname}">
-				        Tên người dùng
-				    </span>
-				</a>
+                    <a th:if="${session.user == null}" class="group flex flex-col items-center gap-1"
+                        th:href="@{/login}">
+                        <div
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+                            <span class="material-symbols-outlined !text-[26px]">person</span>
+                        </div>
+                        <span
+                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">
+                            Đăng nhập
+                        </span>
+                    </a>
+
+                    <a th:unless="${session.user == null}" class="group flex flex-col items-center gap-1"
+                        th:href="@{/account}">
+                        <div
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
+                            <img th:if="${session.user.avatar != null}" th:src="${session.user.avatar}"
+                                class="w-full h-full rounded-2xl object-cover">
+                            <span th:unless="${session.user.avatar != null}"
+                                class="material-symbols-outlined !text-[26px]">person</span>
+                        </div>
+                        <span
+                            class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide"
+                            th:text="${session.user.fullname}">
+                            Tên người dùng
+                        </span>
+                    </a>
 
                     <a class="group flex flex-col items-center gap-1" href="#">
                         <div
@@ -173,8 +243,9 @@
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
                             <span class="material-symbols-outlined !text-[26px]">shopping_cart</span>
-                            <span
-                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">2</span>
+                            <span th:if="${session.cartCount != null and session.cartCount > 0}"
+                                th:text="${session.cartCount}"
+                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">0</span>
                         </div>
                         <span
                             class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Giỏ
@@ -206,7 +277,7 @@
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                     </a>
                     <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center gap-1 px-1"
-                        href="#">
+                        href="/categories">
                         Sản phẩm <span class="material-symbols-outlined text-[18px]">expand_more</span>
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
@@ -234,73 +305,75 @@
         </div>
     </div>
 
-	<div id="chatbot-container">
-            <div id="chat-window" style="display: none;"> <div id="chat-header">
-                    <span>Tech1 AI Assistant</span>
-                    <span style="cursor:pointer" onclick="toggleChat()">✖</span>
-                </div>
-                <div id="chat-messages">
-                    <div class="msg ai">Chào bạn tôi là T1AA, bạn cần cái del gì?</div>
-                </div>
-                <div id="chat-input-area">
-                    <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="checkEnter(event)">
-                    <button onclick="sendMessage()" style="border:none; background:none; color:#007bff; cursor:pointer; font-weight:bold;">Gửi</button>
-                </div>
+    <div id="chatbot-container">
+        <div id="chat-window" style="display: none;">
+            <div id="chat-header">
+                <span>Tech1 AI Assistant</span>
+                <span style="cursor:pointer" onclick="toggleChat()">✖</span>
             </div>
-            
-            <div id="chat-trigger" onclick="toggleChat()">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
-                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                </svg>
+            <div id="chat-messages">
+                <div class="msg ai">Chào bạn tôi là T1AA, bạn cần cái del gì?</div>
+            </div>
+            <div id="chat-input-area">
+                <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="checkEnter(event)">
+                <button onclick="sendMessage()"
+                    style="border:none; background:none; color:#007bff; cursor:pointer; font-weight:bold;">Gửi</button>
             </div>
         </div>
-        
-        <script>
-            function toggleChat() {
-                const win = document.getElementById('chat-window');
-                if (win.style.display === 'none' || win.style.display === '') {
-                    win.style.display = 'flex';
-                } else {
-                    win.style.display = 'none';
-                }
+
+        <div id="chat-trigger" onclick="toggleChat()">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+            </svg>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const win = document.getElementById('chat-window');
+            if (win.style.display === 'none' || win.style.display === '') {
+                win.style.display = 'flex';
+            } else {
+                win.style.display = 'none';
             }
+        }
 
-            function checkEnter(e) {
-                if (e.key === 'Enter') sendMessage();
+        function checkEnter(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-messages');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Hiện tin nhắn của người dùng
+            box.innerHTML += `<div class="msg user">${text}</div>`;
+            input.value = '';
+            box.scrollTop = box.scrollHeight;
+
+            // Hiệu ứng chờ
+            const tempId = 'typing-' + Date.now();
+            box.innerHTML += `<div class="msg ai typing" id="${tempId}">Đang suy nghĩ...</div>`;
+
+            try {
+                const res = await fetch('/api/chat/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+
+                document.getElementById(tempId).remove();
+                box.innerHTML += `<div class="msg ai">${data.reply}</div>`;
+            } catch (e) {
+                document.getElementById(tempId).innerText = "Lỗi kết nối!";
             }
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
 
-            async function sendMessage() {
-                const input = document.getElementById('chat-input');
-                const box = document.getElementById('chat-messages');
-                const text = input.value.trim();
-                if (!text) return;
-
-                // Hiện tin nhắn của người dùng
-                box.innerHTML += `<div class="msg user">${text}</div>`;
-                input.value = '';
-                box.scrollTop = box.scrollHeight;
-
-                // Hiệu ứng chờ
-                const tempId = 'typing-' + Date.now();
-                box.innerHTML += `<div class="msg ai typing" id="${tempId}">Đang suy nghĩ...</div>`;
-
-                try {
-                    const res = await fetch('/api/chat/send', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ message: text })
-                    });
-                    const data = await res.json();
-                    
-                    document.getElementById(tempId).remove();
-                    box.innerHTML += `<div class="msg ai">${data.reply}</div>`;
-                } catch (e) {
-                    document.getElementById(tempId).innerText = "Lỗi kết nối!";
-                }
-                box.scrollTop = box.scrollHeight;
-            }
-        </script>
-        
     <div class="flex-1 w-full" th:insert="${content}">
     </div>
 

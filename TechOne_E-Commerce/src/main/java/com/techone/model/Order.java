@@ -27,22 +27,22 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-	
-	@PastOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
+
+	@PastOrPresent(message = "Ngày tạo Oder không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
-	
+
 	public Integer status;
-	
+
 	@Column(columnDefinition = "nvarchar(max)")
 	public String note;
-	
+
 	@OneToMany(mappedBy = "order")
 	public List<OrderDetail> orderDetail;
-	
+
 	@OneToMany(mappedBy = "order")
 	public List<Shipment> shipment;
-	
+
 	@OneToMany(mappedBy = "order")
 	public List<Transaction> transaction;
 }

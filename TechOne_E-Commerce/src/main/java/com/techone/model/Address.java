@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
@@ -28,28 +27,28 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-	
+
 	@Column(columnDefinition = "nvarchar(255)")
 	@NotBlank(message = "Full address không thể để trống")
 	public String fullAddress;
-	
-	@PastOrPresent(message = "Ngày tạo Oder không thể ở tương lai")
+
+	@PastOrPresent(message = "Ngày tạo địa chỉ không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
-	
+
 	public Boolean status;
-	
+
 	@Column(columnDefinition = "nvarchar(100)")
 	@NotBlank
 	public String name;
-	
+
 	@Column(columnDefinition = "varchar(12)", unique = true)
 	public String phone;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "ward_id")
 	Ward ward;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "account_id")
 	Account account;

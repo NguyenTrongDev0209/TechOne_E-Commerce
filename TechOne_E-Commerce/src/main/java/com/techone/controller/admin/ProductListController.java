@@ -18,9 +18,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techone.model.Product;
+import com.techone.model.Category;
+import com.techone.model.Variant;
+import com.techone.model.Specification;
 import com.techone.repository.BrandRepository;
 import com.techone.repository.CategoryRepository;
 import com.techone.repository.ProductRepository;
+import com.techone.repository.VariantRepository;
+import com.techone.repository.SpecificationRepository;
+import com.techone.repository.ImageProductRepository;
+import com.techone.repository.VariantAttributeValueRepository;
+import com.techone.repository.VariantImageRepository;
+import com.techone.repository.SpecificationTitleRepository;
+import com.techone.repository.SpecificationValueRepository;
+import com.techone.repository.CartItemRepository;
+import com.techone.repository.FavouriteRepository;
+import com.techone.repository.OrderDetailRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Controller
 public class ProductListController {
@@ -34,6 +48,36 @@ public class ProductListController {
 	@Autowired
 	BrandRepository brandRepository;
 
+	@Autowired
+	VariantRepository variantRepository;
+
+	@Autowired
+	SpecificationRepository specificationRepository;
+
+	@Autowired
+	ImageProductRepository imageProductRepository;
+
+	@Autowired
+	VariantAttributeValueRepository variantAttributeValueRepository;
+
+	@Autowired
+	VariantImageRepository variantImageRepository;
+
+	@Autowired
+	SpecificationTitleRepository specificationTitleRepository;
+
+	@Autowired
+	SpecificationValueRepository specificationValueRepository;
+
+	@Autowired
+	CartItemRepository cartItemRepository;
+
+	@Autowired
+	FavouriteRepository favouriteRepository;
+
+	@Autowired
+	OrderDetailRepository orderDetailRepository;
+
 	@GetMapping("/admin/product-list")
 	public String listProducts(Model model,
 			@RequestParam("pageNum") Optional<Integer> pageNum,
@@ -41,16 +85,16 @@ public class ProductListController {
 			@RequestParam("keyword") Optional<String> keyword,
 			@RequestParam("categoryId") Optional<Integer> categoryId,
 			@RequestParam("brandId") Optional<Integer> brandId,
-			@RequestParam("status") Optional<Integer> status,
-			@RequestParam("fromDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> fromDate,
-			@RequestParam("toDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> toDate) {
+			@RequestParam("status") Optional<Boolean> status,
+			@RequestParam("fromDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Optional<LocalDate> fromDate,
+			@RequestParam("toDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Optional<LocalDate> toDate) {
 
 		int pageNumber = pageNum.orElse(0);
 		int pageSizes = pageSize.orElse(10);
 		String searchKeyword = keyword.orElse(null);
 		Integer searchCategoryId = categoryId.orElse(null);
 		Integer searchBrandId = brandId.orElse(null);
-		Integer searchStatus = status.orElse(null);
+		Boolean searchStatus = status.orElse(null);
 
 		LocalDateTime startDateTime = fromDate.isPresent() ? fromDate.get().atStartOfDay() : null;
 		LocalDateTime endDateTime = toDate.isPresent() ? toDate.get().atTime(LocalTime.MAX) : null;
@@ -68,7 +112,11 @@ public class ProductListController {
 
 		model.addAttribute("list", page.getContent());
 		model.addAttribute("page", page);
-		model.addAttribute("categories", categoryRepository.findByType(true)); // Product Categories
+		model.addAttribute("categories", categoryRepository.findByTypeAndStatus(true, true)); // Active Product
+																								// Categories
+		model.addAttribute("parentCategories", categoryRepository.findByTypeAndParentIsNullAndStatus(true, true)); // Active
+																													// Parent
+																													// Categories
 		model.addAttribute("brands", brandRepository.findAll());
 		model.addAttribute("active", "products");
 
@@ -77,8 +125,17 @@ public class ProductListController {
 		model.addAttribute("categoryId", searchCategoryId);
 		model.addAttribute("brandId", searchBrandId);
 		model.addAttribute("status", searchStatus);
-		model.addAttribute("fromDate", fromDate.orElse(null));
-		model.addAttribute("toDate", toDate.orElse(null));
+
+		// Resolve selected category name for UI label
+		String catName = "Tất cả danh mục";
+		if (searchCategoryId != null) {
+			Optional<Category> cat = categoryRepository.findById(searchCategoryId);
+			if (cat.isPresent()) {
+				catName = cat.get().getName();
+			}
+		}
+		model.addAttribute("categoryName", catName);
+		model.addAttribute("status", searchStatus);
 
 		return "views/admin/product-list";
 	}
@@ -87,22 +144,83 @@ public class ProductListController {
 	public String toggleStatus(@PathVariable("id") Integer id) {
 		Product product = productRepository.findById(id).orElse(null);
 		if (product != null) {
-			product.setStatus(product.getStatus() == 1 ? 0 : 1);
+			boolean currentStatus = product.getStatus() != null && product.getStatus();
+			boolean nextStatus = !currentStatus;
+
+			if (nextStatus) { // Trying to activate
+				if (product.getCategory() != null && Boolean.FALSE.equals(product.getCategory().getStatus())) {
+					return "redirect:/admin/product-list?error=CategoryIsHidden";
+				}
+				if (product.getBrand() != null && Boolean.FALSE.equals(product.getBrand().getStatus())) {
+					return "redirect:/admin/product-list?error=BrandIsHidden";
+				}
+			}
+
+			product.setStatus(nextStatus);
 			productRepository.save(product);
 			return "redirect:/admin/product-list?updated=true";
 		}
 		return "redirect:/admin/product-list?error=ProductNotFound";
 	}
 
+	@Transactional
 	@GetMapping("/admin/product/delete/{id}")
 	public String deleteProduct(@PathVariable("id") Integer id) {
 		Product product = productRepository.findById(id).orElse(null);
 		if (product != null) {
-			// Check for constraints (orders, etc.) - simple delete for now or soft delete
 			try {
+				// Delete Image Products
+				if (product.getImageProduct() != null) {
+					imageProductRepository.deleteAll(product.getImageProduct());
+				}
+
+				// Delete Specifications
+				java.util.List<Specification> specs = specificationRepository.findByProduct(product);
+				if (specs != null) {
+					for (Specification spec : specs) {
+						if (spec.getSpecificationTitles() != null) {
+							for (com.techone.model.SpecificationTitle title : spec.getSpecificationTitles()) {
+								if (title.getSpecificationValues() != null) {
+									specificationValueRepository.deleteAll(title.getSpecificationValues());
+								}
+								specificationTitleRepository.delete(title);
+							}
+						}
+						specificationRepository.delete(spec);
+					}
+				}
+
+				// Delete Variants
+				if (product.getVariant() != null) {
+					for (Variant v : product.getVariant()) {
+						// CRITICAL: Check if variant is in any orders
+						if (!orderDetailRepository.findByVariant(v).isEmpty()) {
+							return "redirect:/admin/product-list?error=ProductInOrder";
+						}
+
+						// Delete dependent data
+						java.util.List<com.techone.model.VariantAttributeValue> vavs = variantAttributeValueRepository
+								.findByVariant(v);
+						if (vavs != null)
+							variantAttributeValueRepository.deleteAll(vavs);
+
+						java.util.List<com.techone.model.VariantImage> vImages = variantImageRepository
+								.findByVariant(v);
+						if (vImages != null)
+							variantImageRepository.deleteAll(vImages);
+
+						// Clean up favorites and cart items
+						favouriteRepository.deleteByVariant(v);
+						cartItemRepository.deleteByVariant(v);
+
+						variantRepository.delete(v);
+					}
+				}
+
 				productRepository.deleteById(id);
 				return "redirect:/admin/product-list?deleted=true";
 			} catch (Exception e) {
+				e.printStackTrace(); // Log the error for debugging
 				return "redirect:/admin/product-list?error=DeleteFailed";
 			}
 		}

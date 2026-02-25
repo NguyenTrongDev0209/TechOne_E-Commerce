@@ -7,5 +7,5 @@ import com.techone.model.Specification;
 
 @Repository
 public interface SpecificationRepository extends JpaRepository<Specification, Integer> {
-
+    java.util.List<Specification> findByProduct(com.techone.model.Product product);
 }

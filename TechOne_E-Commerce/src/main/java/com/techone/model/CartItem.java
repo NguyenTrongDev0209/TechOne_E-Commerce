@@ -11,8 +11,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,26 +22,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "cart_items")
+@Table(name = "cart_items", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "cart_id", "variant_id" })
+})
 public class CartItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-	
+
 	@PositiveOrZero(message = "Số lượng không thể âm")
 	public Integer quantity;
-	
+
 	public Integer status;
-	
-	@FutureOrPresent(message = "Ngày tạo không thể ở quá khứ")
+
+	@PastOrPresent(message = "Ngày tạo không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
-	
+
 	@ManyToOne
-	@JoinColumn(name = "variant_id", unique = true)
+	@JoinColumn(name = "variant_id", unique = false)
 	Variant variant;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "account_id", unique = true)
-	Account account;
+	@JoinColumn(name = "cart_id", unique = false)
+	Cart cart;
 }

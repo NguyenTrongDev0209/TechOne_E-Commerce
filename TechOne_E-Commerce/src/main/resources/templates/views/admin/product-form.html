@@ -18,7 +18,7 @@
 							<span class="font-bold text-gray-900 dark:text-white"
 								th:text="${editMode ? 'Chỉnh sửa' : 'Thêm mới'}">Thêm mới</span>
 						</div>
-						
+
 					</div>
 					<div class="flex items-center gap-3">
 						<button type="submit"
@@ -38,22 +38,55 @@
 								Thông tin chung
 							</h2>
 							<div class="space-y-4">
+								<script th:inline="none">
+									function generateSlug(text) {
+										return text.toString().toLowerCase()
+											.replace(/\s+/g, '-')           // Replace spaces with -
+											.replace(/[áàảạãăắằẳẵặâấầẩẫậ]/gi, 'a')
+											.replace(/[éèẻẽẹêếềểễệ]/gi, 'e')
+											.replace(/[iíìỉĩị]/gi, 'i')
+											.replace(/[óòỏõọôốồổỗộơớờởỡợ]/gi, 'o')
+											.replace(/[úùủũụưứừửữự]/gi, 'u')
+											.replace(/[ýỳỷỹỵ]/gi, 'y')
+											.replace(/đ/gi, 'd')
+											.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+											.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+											.replace(/^-+/, '')             // Trim - from start of text
+											.replace(/-+$/, '');            // Trim - from end of text
+									}
+									function removeAccents(str) {
+										return str.toString()
+											.normalize('NFD')
+											.replace(/[\u0300-\u036f]/g, '')
+											.replace(/đ/g, 'd')
+											.replace(/Đ/g, 'D')
+											.replace(/[^\w\s-]/g, '')
+											.trim();
+									}
+									function updateSlug() {
+										const nameInput = document.getElementById('name');
+										const slugInput = document.getElementById('slug');
+										if (nameInput && slugInput) {
+											slugInput.value = generateSlug(nameInput.value);
+										}
+									}
+								</script>
 								<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 									<div class="space-y-1.5">
 										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
 											sản phẩm <span class="text-red-500">*</span>
-										</label> <input th:field="*{name}"
+										</label> <input th:field="*{name}" id="name" oninput="updateSlug()"
 											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
 											placeholder="Nhập tên sản phẩm..." type="text" />
 										<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
 											class="text-red-500 text-[13px] mt-1 font-medium"></p>
 									</div>
 									<div class="space-y-1.5">
-										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
-											sản phẩm (SKU) <span class="text-red-500">*</span>
-										</label> <input th:field="*{slug}"
+										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Slug
+											<span class="text-red-500">*</span>
+										</label> <input th:field="*{slug}" id="slug"
 											class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-											placeholder="VD: SP001" type="text" />
+											placeholder="VD: san-pham" type="text" readonly />
 										<p th:if="${#fields.hasErrors('slug')}" th:errors="*{slug}"
 											class="text-red-500 text-[13px] mt-1 font-medium"></p>
 									</div>
@@ -63,6 +96,8 @@
 										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Danh
 											mục sản phẩm</label>
 										<input type="hidden" th:field="*{category.id}" id="categoryId">
+										<input type="hidden" id="categoryStatus"
+											th:value="${product.category != null ? product.category.status : true}">
 
 										<!-- Trigger Button -->
 										<button type="button" onclick="toggleCategoryDropdown()"
@@ -110,6 +145,8 @@
 										<label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Thương
 											hiệu</label>
 										<input type="hidden" th:field="*{brand.id}" id="brandId">
+										<input type="hidden" id="brandStatus"
+											th:value="${product.brand != null ? product.brand.status : true}">
 
 										<!-- Trigger Button -->
 										<button type="button" onclick="toggleBrandDropdown()"
@@ -222,6 +259,8 @@
 								<div class="space-y-4" id="variantsContainer">
 									<!-- Rendered by JS -->
 								</div>
+								<input type="hidden" name="variantsJson" id="variantsJsonInput"
+									th:value="${variantsJson}" />
 							</div>
 						</div>
 
@@ -246,7 +285,8 @@
 									</button>
 								</div>
 								<!-- Hidden input to carry JSON payload to form submit -->
-								<input type="hidden" name="specificationsJson" id="specificationsJsonInput" />
+								<input type="hidden" name="specificationsJson" id="specificationsJsonInput"
+									th:value="${specificationsJson}" />
 							</div>
 							<div
 								class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
@@ -264,25 +304,32 @@
 									<label class="inline-flex items-center cursor-pointer relative z-0">
 										<!-- "updateDisplayStatus" handles the styling updates -->
 										<input type="checkbox" id="displayStatusToggle" th:field="*{status}"
-											th:value="1" onchange="updateDisplayStatus(this)" class="sr-only peer">
+											th:disabled="${(product.category != null and product.category.status == false) or (product.brand != null and product.brand.status == false)}"
+											onchange="updateDisplayStatus(this)" class="sr-only peer">
 										<div
 											class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
 										</div>
 									</label>
 								</div>
+								<p th:if="${#fields.hasErrors('status')}" th:errors="*{status}"
+									class="text-red-500 text-[13px] mt-1 font-medium"></p>
 								<div class="space-y-3 pt-2">
 									<div class="flex items-center justify-between text-sm">
 										<span class="text-gray-500 dark:text-gray-400 font-medium">Trạng thái:</span>
-										<span id="statusBadge" th:if="${product.status == 1}"
+										<span id="statusBadge" th:if="${product.status != null && product.status}"
 											class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
 											<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
 											Đang hoạt động
 										</span>
-										<span id="statusBadge" th:unless="${product.status == 1}"
+										<span id="statusBadge" th:unless="${product.status != null && product.status}"
 											class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700">
 											<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
 											Đã ẩn
 										</span>
+										<div th:if="${(product.category != null and product.category.status == false) or (product.brand != null and product.brand.status == false)}"
+											class="text-[11px] text-amber-600 font-medium mt-1">
+											(Vô hiệu hóa do Danh mục hoặc Thương hiệu đang bị ẩn)
+										</div>
 									</div>
 
 									<script>
@@ -301,7 +348,9 @@
 									</script>
 									<div class="flex items-center justify-between text-sm">
 										<span class="text-gray-500 dark:text-gray-400 font-medium">Người tạo:</span>
-										<span class="font-bold text-gray-900 dark:text-white"></span>
+										<span class="font-bold text-gray-900 dark:text-white"
+											th:text="${product.account != null ? product.account.fullname : 'Hệ thống'}">Hệ
+											thống</span>
 									</div>
 									<div class="flex items-center justify-between text-sm">
 										<span class="text-gray-500 dark:text-gray-400 font-medium">Ngày tạo:</span>
@@ -380,6 +429,10 @@
 							categoryLabel.classList.remove('text-gray-500');
 							categoryLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
 							categoryMenu.classList.add('hidden');
+
+							// Since dropdown only shows active items, setting to active
+							document.getElementById('categoryStatus').value = 'true';
+							checkStatusConstraint();
 						}
 
 						// Brand Dropdown
@@ -399,6 +452,25 @@
 							brandLabel.classList.remove('text-gray-500');
 							brandLabel.classList.add('text-gray-900', 'dark:text-white', 'font-medium');
 							brandMenu.classList.add('hidden');
+
+							// Since dropdown only shows active items, setting to active
+							document.getElementById('brandStatus').value = 'true';
+							checkStatusConstraint();
+						}
+
+						function checkStatusConstraint() {
+							const catStatus = document.getElementById('categoryStatus').value === 'true';
+							const brandStatus = document.getElementById('brandStatus').value === 'true';
+							const toggle = document.getElementById('displayStatusToggle');
+							const badge = document.getElementById('statusBadge');
+
+							if (!catStatus || !brandStatus) {
+								toggle.disabled = true;
+								toggle.checked = false;
+								updateDisplayStatus(toggle);
+							} else {
+								toggle.disabled = false;
+							}
 						}
 
 						// Close dropdowns when clicking outside
@@ -546,6 +618,40 @@
 							variants: [], // { sku: '', stock: 0, price: 0, discount: 0, attributes: {'Màu sắc': 'Đỏ', 'Size': 'XL'} }
 
 							init() {
+								// Read potential JSON payload mapped from Spring Controller
+								const variantsJsonInput = document.getElementById('variantsJsonInput');
+								if (variantsJsonInput.value && variantsJsonInput.value.trim() !== '' && variantsJsonInput.value !== 'null') {
+									try {
+										// Decode entities since thymeleaf might escape JSON strings
+										const decodedJson = variantsJsonInput.value.replace(/&quot;/g, '"');
+										const initialVariants = JSON.parse(decodedJson);
+
+										// Reconstruct Attributes from variants
+										const attrMap = {};
+										initialVariants.forEach(v => {
+											if (v.attributes) {
+												Object.entries(v.attributes).forEach(([key, val]) => {
+													if (key !== 'Mặc định') {
+														if (!attrMap[key]) attrMap[key] = new Set();
+														attrMap[key].add(val);
+													}
+												});
+											}
+										});
+
+										let attrIdCounter = Date.now();
+										this.attributes = Object.keys(attrMap).map(key => ({
+											id: attrIdCounter++,
+											name: key,
+											values: Array.from(attrMap[key])
+										}));
+
+										this.variants = initialVariants;
+									} catch (e) {
+										console.error("Error parsing initial variantsJson", e);
+									}
+								}
+
 								this.renderAttributes();
 								this.generateVariants();
 							},
@@ -620,7 +726,7 @@
 									if (existing) return existing;
 
 									// Auto-generate a basic SKU from values
-									const generatedSku = Object.values(combo).map(v => v.substring(0, 3).toUpperCase()).join('-');
+									const generatedSku = Object.values(combo).map(v => removeAccents(v).substring(0, 3).toUpperCase()).join('-');
 									return {
 										id: Date.now() + index, // Temp ID for UI mapping
 										sku: 'SKU-' + generatedSku,
@@ -628,7 +734,8 @@
 										price: null,
 										discount: 0,
 										attributes: combo,
-										imageInputName: `variantImages_${Date.now()}_${index}`
+										imageInputName: `variantImages_${Date.now()}_${index}`,
+										existingImages: []
 									};
 								});
 
@@ -648,6 +755,14 @@
 								if (this.variants[index]) {
 									this.variants[index][prop] = value;
 									this.syncVariantsToInput();
+								}
+							},
+
+							removeExistingImage(index, imgUrl) {
+								if (this.variants[index] && this.variants[index].existingImages) {
+									this.variants[index].existingImages = this.variants[index].existingImages.filter(url => url !== imgUrl);
+									this.syncVariantsToInput();
+									this.renderVariants();
 								}
 							},
 
@@ -692,7 +807,11 @@
 								const container = document.getElementById('variantsContainer');
 								const section = document.getElementById('variantsSection');
 
-								section.style.display = 'block';
+								if (this.variants.length > 0 && this.attributes.length > 0) {
+									section.style.display = 'block';
+								} else {
+									section.style.display = 'none';
+								}
 								container.innerHTML = '';
 
 								// Check if variant error exists in thymeleaf and inject it once into the container if present
@@ -717,6 +836,20 @@
 									const finalPriceStr = calculateFinalPriceSync(v.price, v.discount);
 									const errors = vFieldErrors[index] || {};
 									const errHtml = (field) => errors[field] ? `<div class="text-red-500 text-[11px] mt-1 font-medium">${errors[field]}</div>` : '';
+
+									// Render Existing Images
+									let existingImagesHtml = '';
+									if (v.existingImages && v.existingImages.length > 0) {
+										v.existingImages.forEach(imgUrl => {
+											existingImagesHtml += `
+												<div class="aspect-square sm:aspect-video relative group/img overflow-hidden rounded border border-gray-100 dark:border-gray-700">
+													<img src="/images/variants/${imgUrl}" class="w-full h-full object-cover" />
+													<button type="button" onclick="variantManager.removeExistingImage(${index}, '${imgUrl}')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">
+														<span class="material-symbols-outlined text-[14px]">close</span>
+													</button>
+												</div>`;
+										});
+									}
 
 									const variantHtml = `
 								<div class="border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-slate-800/50 overflow-hidden mb-4">
@@ -771,28 +904,15 @@
 												<input type="file" multiple accept="image/*" name="${v.imageInputName}" class="block w-auto text-xs text-slate-500 file:mr-2 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 dark:text-gray-400" onchange="updateVariantImageFiles(this)" />
 												<div class="text-xs text-gray-500 dark:text-gray-400 italic variant-file-names flex-1 truncate"></div>
 											</div>
+											${errHtml('pathImage')}
 											<div class="image-error-msg hidden text-red-500 text-xs font-medium mb-3"></div>
 											<div class="grid grid-cols-5 gap-3">
-												<!-- Image Slot 1 -->
+												${existingImagesHtml}
+												<!-- Placeholder Slots (up to 5 total) -->
+												${Array(Math.max(0, 5 - (v.existingImages ? v.existingImages.length : 0))).fill(0).map(() => `
 												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
 													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
-												</div>
-												<!-- Image Slot 2 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
-												</div>
-												<!-- Image Slot 3 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
-												</div>
-												<!-- Image Slot 4 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
-												</div>
-												<!-- Image Slot 5 -->
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
-													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
-												</div>
+												</div>`).join('')}
 											</div>
 										</div>
 									</div>
@@ -896,6 +1016,29 @@
 				init() {
 					// We can pre-load existing specifications if needed (e.g for Edit Mode)
 					this.groups = [];
+					const specsJsonInput = document.getElementById('specificationsJsonInput');
+					if (specsJsonInput.value && specsJsonInput.value.trim() !== '' && specsJsonInput.value !== 'null') {
+						try {
+							const decodedJson = specsJsonInput.value.replace(/&quot;/g, '"');
+							const initialSpecs = JSON.parse(decodedJson);
+
+							let groupIdCounter = Date.now();
+							let itemIdCounter = Date.now() + 1000;
+
+							this.groups = initialSpecs.map(g => ({
+								id: groupIdCounter++,
+								groupName: g.groupName,
+								items: (g.items || []).map(i => ({
+									id: itemIdCounter++,
+									name: i.name,
+									value: i.value
+								}))
+							}));
+						} catch (e) {
+							console.error("Error parsing initial specificationsJson", e);
+						}
+					}
+
 					this.renderGroups();
 				},
 
@@ -1035,7 +1178,48 @@
 		</script>
 	</div>
 
+	<!-- View Mode JS -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		const isViewMode = /*[[${viewMode != null ? viewMode : false}]]*/ false;
+		if (isViewMode) {
+			document.addEventListener('DOMContentLoaded', () => {
+				const form = document.getElementById('productForm');
+				if (form) {
+					// Disable all form controls
+					const elements = form.querySelectorAll('input, select, textarea, button');
+					elements.forEach(el => {
+						el.disabled = true;
+						el.classList.add('cursor-not-allowed', 'opacity-70');
+					});
 
+					// Hide specific action buttons container (like the bottom save panel)
+					const actionButtons = form.querySelectorAll('button[type="submit"], button[type="button"]:not(#sortFilterBtn)');
+					actionButtons.forEach(btn => {
+						btn.style.display = 'none';
+					});
+
+					// Re-enable back button manually if it was selected above
+					const backBtn = document.querySelector('a[href="/admin/product-list"] button');
+					if (backBtn) {
+						backBtn.disabled = false;
+						backBtn.classList.remove('cursor-not-allowed', 'opacity-70');
+						backBtn.style.display = 'flex';
+					}
+
+					// Hide the Rich Text Editor commands if present
+					const formatControls = document.querySelectorAll('.format-btn');
+					formatControls.forEach(c => c.style.display = 'none');
+					const editorNode = document.getElementById('editor');
+					if (editorNode) {
+						editorNode.contentEditable = "false";
+						editorNode.classList.add('bg-gray-100', 'cursor-not-allowed');
+					}
+				}
+			});
+		}
+		/*]]>*/
+	</script>
 </body>
 
 </html>
