@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html
+    th:replace="~{layouts/layout-admin :: view(title=(${editMode} ? 'Chỉnh sửa bài viết' : 'Thêm bài viết mới'), menuItem='posts', content=~{:: #main-content}, subMenuItem=null)}">
+
+<body>
+    <div id="main-content">
+        <form id="postForm" th:action="@{/admin/post-list/post-form/save}" th:object="${post}" method="post"
+            enctype="multipart/form-data">
+            <input type="hidden" th:field="*{id}">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <!-- Header Actions -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                            <a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
+                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            <a class="hover:text-primary transition-colors" href="/admin/post-list">Bài viết</a>
+                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            <span class="font-bold text-gray-900 dark:text-white"
+                                th:text="${editMode ? 'Chỉnh sửa' : 'Thêm mới'}">Thêm mới</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button type="submit"
+                            class="px-5 py-2.5 rounded-xl bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]">check</span>
+                            <span th:text="${editMode ? 'Cập nhật bài viết' : 'Đăng bài viết'}">Đăng bài viết</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Main Column -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Content Card -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            <h2
+                                class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
+                                <span class="material-symbols-outlined text-primary">edit_note</span>
+                                Nội dung bài viết
+                            </h2>
+
+                            <div class="space-y-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">
+                                        Tiêu đề bài viết <span class="text-red-500">*</span>
+                                    </label>
+                                    <input th:field="*{title}"
+                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-white"
+                                        placeholder="Nhập tiêu đề hấp dẫn cho bài viết..." type="text" />
+                                    <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
+                                        class="text-red-500 text-[13px] mt-1 font-medium"></p>
+                                </div>
+
+                                <div class="space-y-1.5">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Nội dung chi
+                                        tiết</label>
+                                    <div
+                                        class="border border-gray-200 dark:border-gray-600 rounded-2xl overflow-hidden bg-white dark:bg-gray-700 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                                        <div
+                                            class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 px-3 py-2 flex items-center gap-1 flex-wrap">
+                                            <button type="button" onclick="formatDoc('bold')" title="In đậm"
+                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">format_bold</span>
+                                            </button>
+                                            <button type="button" onclick="formatDoc('italic')" title="In nghiêng"
+                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">format_italic</span>
+                                            </button>
+                                            <div class="w-px h-4 bg-gray-200 dark:bg-gray-600 mx-1"></div>
+                                            <button type="button" onclick="formatDoc('insertUnorderedList')"
+                                                title="Danh sách"
+                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
+                                                <span
+                                                    class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
+                                            </button>
+                                            <button type="button" onclick="addLink()" title="Chèn link"
+                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">link</span>
+                                            </button>
+                                            <button type="button"
+                                                onclick="document.getElementById('editorImageUpload').click()"
+                                                title="Chèn ảnh"
+                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">image</span>
+                                            </button>
+                                            <input type="file" id="editorImageUpload" accept="image/*" class="hidden"
+                                                onchange="addLocalImage(this)">
+                                        </div>
+                                        <textarea th:field="*{content}" id="descriptionContent"
+                                            style="display: none;"></textarea>
+                                        <div id="editor" contenteditable="true"
+                                            class="w-full border-none p-4 text-sm min-h-[20rem] focus:outline-none focus:ring-0 font-body bg-white dark:bg-gray-700 dark:text-white"
+                                            placeholder="Bắt đầu viết nội dung tại đây..." oninput="updateTextarea()">
+                                        </div>
+                                    </div>
+                                    <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
+                                        class="text-red-500 text-[13px] mt-1 font-medium"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Images Card -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-4">
+                            <h2
+                                class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
+                                <span class="material-symbols-outlined text-primary">image</span>
+                                Hình ảnh minh họa
+                            </h2>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="imagePreviewContainer">
+                                <!-- Existing images if any -->
+                                <div th:each="img : ${post.imagePost}"
+                                    class="relative group aspect-square rounded-xl overflow-hidden border border-gray-200">
+                                    <img th:src="@{'/images/posts/' + ${img.pathImage}}"
+                                        class="w-full h-full object-cover">
+                                    <div
+                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <button type="button"
+                                            class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600">
+                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- Upload Button Slot -->
+                                <label
+                                    class="aspect-square rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center cursor-pointer group">
+                                    <span
+                                        class="material-symbols-outlined text-gray-400 group-hover:text-primary mb-2">add_photo_alternate</span>
+                                    <span class="text-xs font-bold text-gray-500 group-hover:text-primary">Tải ảnh
+                                        lên</span>
+                                    <input type="file" name="imageFiles" multiple accept="image/*" class="hidden"
+                                        onchange="previewImages(this)">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Side Column -->
+                    <div class="lg:col-span-4 space-y-6">
+                        <!-- Categorization -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            <h2
+                                class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
+                                <span class="material-symbols-outlined text-primary">category</span>
+                                Phân loại
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="space-y-1.5 relative" id="categoryDropdownContainer">
+                                    <label
+                                        class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Danh
+                                        mục bài viết</label>
+                                    <input type="hidden" th:field="*{category.id}" id="categoryId">
+                                    <button type="button" onclick="toggleCategoryDropdown()"
+                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-white flex justify-between items-center text-left">
+                                        <span id="categoryLabel"
+                                            th:text="${post.category != null and post.category.name != null ? post.category.name : 'Chọn danh mục...'}">Chọn
+                                            danh mục...</span>
+                                        <span class="material-symbols-outlined text-[20px] transition-transform"
+                                            id="categoryChevron">expand_more</span>
+                                    </button>
+                                    <div id="categoryMenu"
+                                        class="hidden absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                                        <ul class="py-1">
+                                            <li th:each="cat : ${postCategories}">
+                                                <button type="button" th:data-id="${cat.id}" th:data-name="${cat.name}"
+                                                    onclick="selectCategory(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                                    class="w-full text-left px-4 py-3 text-sm hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group">
+                                                    <span th:text="${cat.name}">Tên danh mục</span>
+                                                    <span
+                                                        class="material-symbols-outlined opacity-0 group-hover:opacity-100 text-[18px]">check</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <p th:if="${#fields.hasErrors('category')}" th:errors="*{category}"
+                                        class="text-red-500 text-[13px] mt-1 font-medium"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status & Schedule -->
+                        <div
+                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            <h2
+                                class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
+                                <span class="material-symbols-outlined text-primary">visibility</span>
+                                Trạng thái & Hiển thị
+                            </h2>
+                            <div class="space-y-4">
+                                <div
+                                    class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-bold text-gray-900 dark:text-white">Xuất bản bài
+                                            viết</span>
+                                        <span class="text-[11px] text-gray-500">Mọi người có thể thấy bài này</span>
+                                    </div>
+                                    <label class="inline-flex items-center cursor-pointer relative">
+                                        <input type="checkbox" th:field="*{status}" onchange="updateStatusLabel(this)"
+                                            class="sr-only peer">
+                                        <div
+                                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="flex flex-col gap-3 px-1">
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-gray-500 font-medium">Trạng thái hiện tại:</span>
+                                        <span id="statusBadge"
+                                            class="font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg transition-all"
+                                            th:classappend="${post.status} ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'">
+                                            <span class="w-1.5 h-1.5 rounded-full"
+                                                th:classappend="${post.status} ? 'bg-green-500' : 'bg-amber-500'"></span>
+                                            <span th:text="${post.status ? 'Đã xuất bản' : 'Tạm ẩn'}"></span>
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-gray-500 font-medium">Tác giả:</span>
+                                        <span class="text-gray-900 dark:text-white font-bold"
+                                            th:text="${post.account != null ? post.account.fullname : 'Admin'}">Admin</span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span class="text-gray-500 font-medium">Ngày tạo:</span>
+                                        <span class="text-gray-900 dark:text-white font-bold"
+                                            th:text="${post.createAt != null ? #temporals.format(post.createAt, 'dd/MM/yyyy') : 'Hôm nay'}">Hôm
+                                            nay</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <style>
+            #editor [placeholder]:empty:before {
+                content: attr(placeholder);
+                color: #9ca3af;
+                pointer-events: none;
+                display: block;
+            }
+
+            #editor ul {
+                list-style-type: disc;
+                padding-left: 1.5rem;
+                margin: 0.5rem 0;
+            }
+
+            #editor ol {
+                list-style-type: decimal;
+                padding-left: 1.5rem;
+                margin: 0.5rem 0;
+            }
+
+            #editor a {
+                color: #ea580c;
+                text-decoration: underline;
+            }
+
+            #editor img {
+                max-width: 100%;
+                border-radius: 1rem;
+                margin-top: 0.5rem;
+            }
+        </style>
+
+        <script>
+            // --- Editor Logic ---
+            const editor = document.getElementById('editor');
+            const textarea = document.getElementById('descriptionContent');
+
+            function formatDoc(cmd, value = null) {
+                document.execCommand(cmd, false, value);
+                editor.focus();
+                updateTextarea();
+            }
+
+            function addLink() {
+                const url = prompt("Nhập liên kết:");
+                if (url) formatDoc('createLink', url);
+            }
+
+            function addLocalImage(input) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => formatDoc('insertImage', e.target.result);
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            function updateTextarea() {
+                textarea.value = editor.innerHTML;
+            }
+
+            // --- Dropdown Logic ---
+            function toggleCategoryDropdown() {
+                const menu = document.getElementById('categoryMenu');
+                const chevron = document.getElementById('categoryChevron');
+                menu.classList.toggle('hidden');
+                chevron.style.transform = menu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+            }
+
+            function selectCategory(id, name) {
+                document.getElementById('categoryId').value = id;
+                document.getElementById('categoryLabel').innerText = name;
+                document.getElementById('categoryLabel').classList.add('text-gray-900', 'font-bold');
+                toggleCategoryDropdown();
+            }
+
+            // --- UI Updates ---
+            function updateStatusLabel(checkbox) {
+                const badge = document.getElementById('statusBadge');
+                if (checkbox.checked) {
+                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg bg-green-50 text-green-700 transition-all';
+                    badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Đã xuất bản';
+                } else {
+                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 transition-all';
+                    badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Tạm ẩn';
+                }
+            }
+
+            function previewImages(input) {
+                const container = document.getElementById('imagePreviewContainer');
+                // For new uploads, we keep the label at the end
+                const label = container.querySelector('label');
+
+                if (input.files) {
+                    Array.from(input.files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm';
+                            wrapper.innerHTML = `
+                                <img src="${e.target.result}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                    <button type="button" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-transform active:scale-95">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </div>
+                            `;
+                            container.insertBefore(wrapper, label);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            }
+
+            // Outside click to close dropdowns
+            document.addEventListener('click', (e) => {
+                const container = document.getElementById('categoryDropdownContainer');
+                if (container && !container.contains(e.target)) {
+                    document.getElementById('categoryMenu').classList.add('hidden');
+                    document.getElementById('categoryChevron').style.transform = 'rotate(0deg)';
+                }
+            });
+
+            // Initialize editor content
+            document.addEventListener('DOMContentLoaded', () => {
+                if (textarea.value) editor.innerHTML = textarea.value;
+            });
+        </script>
+    </div>
+</body>
+
+</html>

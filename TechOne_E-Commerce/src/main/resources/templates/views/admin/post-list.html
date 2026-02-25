@@ -6,59 +6,75 @@
     <div id="main-content">
         <div class="max-w-7xl mx-auto space-y-6">
             <!-- Header -->
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
                 <div>
                     <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-1">
                         <a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
                         <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                         <span class="font-bold text-gray-900 dark:text-white">Bài viết</span>
                     </div>
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Quản lý bài viết</h1>
-                    <p class="text-gray-500 dark:text-gray-400 font-body mt-1">Kiểm duyệt và quản lý các bài viết trên
-                        hệ thống</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight mb-1">Quản lý bài viết
+                    </h1>
+                    <p class="text-gray-500 dark:text-gray-400 font-body">Kiểm duyệt và quản lý các bài viết trên hệ
+                        thống</p>
                 </div>
-                <!-- Header Actions removed (moved to filter bar) -->
+                <div class="flex items-center gap-3">
+                    <button onclick="refreshPage()"
+                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Làm mới
+                    </button>
+                    <a th:href="@{/admin/post-list/post-form}"
+                        class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0">
+                        <span class="material-symbols-outlined text-[20px]">add</span>
+                        Viết bài mới
+                    </a>
+                </div>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
                         <span class="material-symbols-outlined">article</span>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Tổng bài viết</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng bài
+                            viết</p>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">142</h3>
                     </div>
                 </div>
                 <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
                         <span class="material-symbols-outlined">hourglass_top</span>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Chờ duyệt</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tạm ẩn
+                        </p>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">5</h3>
                     </div>
                 </div>
                 <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-green-50 text-green-600 rounded-lg">
                         <span class="material-symbols-outlined">visibility</span>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Lượt xem tuần</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Lượt xem
+                            tuần</p>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">12.5k</h3>
                     </div>
                 </div>
                 <div
-                    class="bg-white dark:bg-[#1e293b] p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center">
+                    class="bg-white dark:bg-[#1e293b] p-5 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex items-center gap-4">
+                    <div class="p-3 bg-red-50 text-red-600 rounded-lg">
                         <span class="material-symbols-outlined">flag</span>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Báo cáo</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Báo cáo
+                        </p>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">2</h3>
                     </div>
                 </div>
@@ -66,9 +82,9 @@
 
             <!-- Filter Section -->
             <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+                class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6 relative z-20 overflow-visible items-end">
                 <!-- Search -->
-                <div class="flex-1 relative">
+                <div class="flex-1 relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="material-symbols-outlined text-gray-400">search</span>
                     </div>
@@ -77,34 +93,34 @@
                         placeholder="Tìm kiếm bài viết..." type="text" />
                 </div>
 
-                <!-- Sort Dropdown -->
-                <div class="w-full md:w-48 relative">
-                    <input type="hidden" name="sort" id="sortInput" value="newest">
-                    <button id="sortFilterBtn" onclick="toggleSortDropdown()"
+                <!-- Status Dropdown -->
+                <div class="w-full md:w-48 relative z-30">
+                    <input type="hidden" name="status" id="statusInput" value="all">
+                    <button id="statusFilterBtn"
                         class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                        <span id="sortFilterLabel">Mới nhất</span>
-                        <span id="sortDropdownIcon"
+                        <span id="statusFilterLabel">Tất cả trạng thái</span>
+                        <span id="statusDropdownIcon"
                             class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
                     </button>
 
-                    <div id="sortDropdown"
+                    <div id="statusDropdown"
                         class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
                         <div class="p-1.5 space-y-0.5">
-                            <div onclick="selectSort('newest', 'Mới nhất')"
-                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                <span>Mới nhất</span>
+                            <div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+                                data-value="all" data-label="Tất cả trạng thái">
+                                <span>Tất cả trạng thái</span>
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
-                            <div onclick="selectSort('oldest', 'Cũ nhất')"
-                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                <span>Cũ nhất</span>
+                            <div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+                                data-value="published" data-label="Đã xuất bản">
+                                <span>Đã xuất bản</span>
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
-                            <div onclick="selectSort('views_desc', 'Xem nhiều nhất')"
-                                class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                <span>Xem nhiều nhất</span>
+                            <div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+                                data-value="pending" data-label="Tạm ẩn">
+                                <span>Tạm ẩn</span>
                                 <span
                                     class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                             </div>
@@ -112,34 +128,45 @@
                     </div>
                 </div>
 
-                <!-- Date Picker -->
-                <div class="w-full md:w-48 relative">
-                    <input id="dateFilter"
-                        class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
-                        placeholder="Chọn ngày" type="text" readonly="readonly" />
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-                        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                <!-- Date Filters -->
+                <div class="relative w-full md:w-48">
+                    <div class="relative">
+                        <input id="dateFrom"
+                            class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+                            placeholder="Từ ngày" type="text" readonly="readonly" />
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                            <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Add Button -->
-                <a href="/admin/posts/create"
-                    class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0 h-full">
-                    <span class="material-symbols-outlined text-[20px]">add</span>
-                    Viết bài mới
-                </a>
+                <div class="hidden md:flex items-center justify-center pb-2 text-gray-400">
+                    <span>-</span>
+                </div>
+                <div class="relative w-full md:w-48">
+                    <div class="relative">
+                        <input id="dateTo"
+                            class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
+                            placeholder="Đến ngày" type="text" readonly="readonly" />
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                            <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Content Card -->
             <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col">
                 <!-- Table -->
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead
-                            class="bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-semibold border-b border-gray-100 dark:border-gray-700">
+                            class="bg-white dark:bg-gray-800 text-slate-500 dark:text-gray-400 font-semibold border-b border-gray-100 dark:border-gray-700 text-xs uppercase tracking-wider">
                             <tr>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                <th class="px-6 py-5 text-center">STT</th>
+                                <th class="px-6 py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-between">
                                         <span>Bài viết</span>
@@ -147,190 +174,153 @@
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
-                                    onclick="toggleSort(this)">
-                                    <div class="flex items-center justify-between">
-                                        <span>Chuyên mục</span>
-                                        <span
-                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
-                                    </div>
-                                </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
-                                    onclick="toggleSort(this)">
-                                    <div class="flex items-center justify-between">
-                                        <span>Tác giả</span>
-                                        <span
-                                            class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
-                                    </div>
-                                </th>
-                                <th class="px-6 py-4 text-center cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                <th class="px-6 py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group text-center"
                                     onclick="toggleSort(this)">
                                     <div class="flex items-center justify-center gap-2">
-                                        <span>Lượt xem</span>
+                                        <span>Danh mục</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                <th class="px-6 py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group text-center"
                                     onclick="toggleSort(this)">
-                                    <div class="flex items-center justify-between">
+                                    <div class="flex items-center justify-center gap-2">
                                         <span>Ngày đăng</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                                <th class="px-6 py-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors group text-center"
                                     onclick="toggleSort(this)">
-                                    <div class="flex items-center justify-between">
+                                    <div class="flex items-center justify-center gap-2">
                                         <span>Trạng thái</span>
                                         <span
                                             class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
                                     </div>
                                 </th>
-                                <th class="px-6 py-4 text-right">Hành động</th>
+                                <th class="px-6 py-5 text-right">Hành động</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800">
                             <!-- Post 1 -->
-                            <tr class="hover:bg-orange-50/50 transition-colors group">
-                                <td class="px-6 py-4">
-                                    <input type="checkbox"
-                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
-                                </td>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+                                <td class="px-6 py-4 font-medium text-slate-500 text-center">1</td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-4">
-                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                        <div class="w-16 h-12 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0 border border-gray-100 shadow-sm"
                                             style="background-image: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
                                         </div>
                                         <div class="flex-1 min-w-0 max-w-xs">
-                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors"
                                                 title="Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng">
                                                 Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng
                                             </h4>
-                                            <span
-                                                class="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded mt-1 inline-block">Review
-                                                sản phẩm</span>
+                                            <div class="flex items-center gap-3 mt-1">
+                                                <div class="flex items-center gap-1">
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400">chat_bubble</span>
+                                                    <span class="text-xs text-gray-500">45</span>
+                                                </div>
+                                                <div class="flex items-center gap-1">
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400">visibility</span>
+                                                    <span class="text-xs text-gray-500">1.2k views</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
-                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8FHt1FUWoRj9MGyLY3D3ro2we4i860ngy0vNcGvoDjbpJbMj3hf031XjqaUzkR4krsLWvHwMSXUGCH5So5brGJZx5zGT7m0Np6VelWcTk3R8bxVgoZeotvdUv09gXebqXq7IO2oUILh1PKfbP8h2BGyVdkn-JVFUrdU1_laVWpk9d__bYhBeQVcp8mVLHYlN-gmGsoAUGT_jtLZ-BScEEOQeEpW8p4WI5WIvVALfTwxupUrYpW6l7RdyIU3CD9eq6mHjyKMA4hv0')">
-                                        </div>
-                                        <span class="text-sm text-gray-600">Nguyễn Văn A</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-center">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
-                                        Đã xuất bản
-                                    </span>
+                                        class="text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded font-bold">Review
+                                        sản phẩm</span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">
+                                <td class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 font-medium">
                                     <div class="flex flex-col text-xs">
                                         <span>20/12/2025</span>
                                         <span>14:30</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">
-                                    <div class="flex items-center gap-3 text-xs">
-                                        <div class="flex items-center gap-1" title="Lượt xem">
-                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
-                                            1.2k
-                                        </div>
-                                        <div class="flex items-center gap-1" title="Bình luận">
-                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
-                                            45
-                                        </div>
-                                    </div>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Đã xuất bản
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button
-                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                    <div class="flex items-center justify-end gap-1">
+                                        <a th:href="@{/admin/post-list/post-form/1}"
+                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded-lg transition-colors"
                                             title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[18px]">edit</span>
-                                        </button>
+                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                        </a>
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                             title="Xoá">
-                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
 
                             <!-- Post 2 -->
-                            <tr class="hover:bg-orange-50/50 transition-colors group">
-                                <td class="px-6 py-4">
-                                    <input type="checkbox"
-                                        class="rounded border-gray-300 text-primary focus:ring-primary cursor-pointer">
-                                </td>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+                                <td class="px-6 py-4 font-medium text-slate-500 text-center">2</td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-4">
-                                        <div class="w-20 h-14 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0"
+                                        <div class="w-16 h-12 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0 border border-gray-100 shadow-sm"
                                             style="background-image: url('https://images.unsplash.com/photo-1550745165-90c231f428a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
                                         </div>
                                         <div class="flex-1 min-w-0 max-w-xs">
-                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate"
+                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors"
                                                 title="Top 10 phụ kiện không thể thiếu cho Gamer">
                                                 Top 10 phụ kiện không thể thiếu cho Gamer
                                             </h4>
-                                            <span
-                                                class="text-xs text-purple-600 bg-purple-50 px-1.5 py-0.5 rounded mt-1 inline-block">Thủ
-                                                thuật</span>
+                                            <div class="flex items-center gap-3 mt-1">
+                                                <div class="flex items-center gap-1">
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400">chat_bubble</span>
+                                                    <span class="text-xs text-gray-500">0</span>
+                                                </div>
+                                                <div class="flex items-center gap-1">
+                                                    <span
+                                                        class="material-symbols-outlined text-[14px] text-gray-400">visibility</span>
+                                                    <span class="text-xs text-gray-500">0 views</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-6 h-6 rounded-full bg-gray-200 bg-cover bg-center"
-                                            style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdkfN4nVccJmULTdGrg5fbuq11izECHlxlbluxLfI4akg1jyLAXjn8DK5Gwcned5q0PtaYyqMEiqLPOnJw-8ANbrilKfGp1pSsKQU3Ddx7uJP7EndMgToiuRRQ2qTze_2E6KIntlADK5CnHYTHVOBfUXB727yBe8bQndhLzEHNqF0a28CLuFLi57ht7LAaobf1DbxgGt4Tpat48zeg7S-SPMHr0SycYXJSmCpD9vGUt7wY7RqX06c8GLLQyPLI0FLcQAZTUi4gZJM')">
-                                        </div>
-                                        <span class="text-sm text-gray-600">Trần Thị B</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 text-center">
                                     <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-700">
-                                        Chờ duyệt
-                                    </span>
+                                        class="text-xs text-purple-600 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded font-bold">Thủ
+                                        thuật</span>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">
+                                <td class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 font-medium">
                                     <div class="flex flex-col text-xs">
                                         <span>25/12/2025</span>
                                         <span>09:15</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500">
-                                    <div class="flex items-center gap-3 text-xs">
-                                        <div class="flex items-center gap-1" title="Lượt xem">
-                                            <span class="material-symbols-outlined text-[14px]">visibility</span>
-                                            0
-                                        </div>
-                                        <div class="flex items-center gap-1" title="Bình luận">
-                                            <span class="material-symbols-outlined text-[14px]">chat_bubble</span>
-                                            0
-                                        </div>
-                                    </div>
+                                <td class="px-6 py-4 text-center">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                        Tạm ẩn
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button
-                                            class="p-1.5 text-white bg-green-500 hover:bg-green-600 rounded transition-colors shadow-sm"
-                                            title="Duyệt bài">
-                                            <span class="material-symbols-outlined text-[18px]">check</span>
-                                        </button>
-                                        <button
-                                            class="p-1.5 text-gray-400 hover:text-primary hover:bg-orange-50 rounded transition-colors"
+                                    <div class="flex items-center justify-end gap-1">
+                                        <a th:href="@{/admin/post-list/post-form/2}"
+                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded-lg transition-colors"
                                             title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[18px]">edit</span>
-                                        </button>
+                                            <span class="material-symbols-outlined text-[20px]">edit</span>
+                                        </a>
                                         <button
-                                            class="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
+                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                             title="Xoá">
-                                            <span class="material-symbols-outlined text-[18px]">delete</span>
+                                            <span class="material-symbols-outlined text-[20px]">delete</span>
                                         </button>
                                     </div>
                                 </td>
@@ -338,65 +328,220 @@
                         </tbody>
                     </table>
                 </div>
+
                 <!-- Pagination -->
-                <div class="p-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
-                    <span class="text-sm text-gray-500">Hiển thị 1-2 trên 142 bài viết</span>
-                    <div class="flex gap-2">
-                        <button
-                            class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-50">Previous</button>
-                        <button class="px-3 py-1 text-sm bg-primary text-white rounded hover:bg-orange-700">1</button>
-                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">2</button>
-                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">3</button>
-                        <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">Next</button>
+                <div
+                    class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
+                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
+                        Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến <span
+                            class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số <span
+                            class="font-medium text-gray-900 dark:text-white">142</span> bài viết
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 mr-4">
+                            <span class="text-xs text-gray-500 dark:text-gray-400">Xem</span>
+
+                            <!-- Custom Pagination Dropdown -->
+                            <div class="relative">
+                                <button onclick="togglePaginationDropdown()" id="paginationDropdownBtn"
+                                    class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
+                                    <span id="itemsPerPageLabel">10</span>
+                                    <span id="paginationDropdownIcon"
+                                        class="material-symbols-outlined text-gray-400 text-[16px] transition-transform duration-200">expand_more</span>
+                                </button>
+
+                                <div id="paginationDropdown"
+                                    class="hidden absolute top-full mt-1 left-0 w-full min-w-[56px] bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
+                                    <div class="p-1 space-y-0.5">
+                                        <div onclick="selectItemsPerPage('10')"
+                                            class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+                                            10
+                                        </div>
+                                        <div onclick="selectItemsPerPage('20')"
+                                            class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+                                            20
+                                        </div>
+                                        <div onclick="selectItemsPerPage('50')"
+                                            class="px-2 py-1 text-xs font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors text-center">
+                                            50
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="text-xs text-gray-500 dark:text-gray-400">mục</span>
+                        </div>
+
+                        <nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
+                            <button
+                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                            </button>
+                            <button aria-current="page"
+                                class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-orange-700 transition-colors">
+                                1
+                            </button>
+                            <button
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                2
+                            </button>
+                            <button
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                3
+                            </button>
+                            <span
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
+                            <button
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            </button>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
         <script>
-            function toggleSortDropdown() {
-                const dropdown = document.getElementById('sortDropdown');
-                const icon = document.getElementById('sortDropdownIcon');
-                dropdown.classList.toggle('hidden');
-                if (dropdown.classList.contains('hidden')) {
-                    icon.style.transform = 'rotate(0deg)';
-                } else {
-                    icon.style.transform = 'rotate(180deg)';
-                }
-            }
+            // Initialization
+            document.addEventListener('DOMContentLoaded', function () {
+                // Dropdown Setup
+                setupDropdown('statusFilterBtn', 'statusDropdown', 'statusDropdownIcon');
 
-            function selectSort(value, label) {
-                document.getElementById('sortInput').value = value;
-                document.getElementById('sortFilterLabel').textContent = label;
-                document.getElementById('sortDropdown').classList.add('hidden');
-                document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
-            }
+                // Item Selection Setup
+                setupSelection('statusDropdown', 'select-status-item', function (value, label) {
+                    document.getElementById('statusInput').value = value;
+                    document.getElementById('statusFilterLabel').textContent = label;
+                });
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (event) {
-                const dropdown = document.getElementById('sortDropdown');
-                const button = document.getElementById('sortFilterBtn');
-                const icon = document.getElementById('sortDropdownIcon');
-
-                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                    if (!dropdown.classList.contains('hidden')) {
-                        dropdown.classList.add('hidden');
-                        icon.style.transform = 'rotate(0deg)';
-                    }
-                }
+                // Datepickers
+                flatpickr("#dateFrom", {
+                    locale: "vn",
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
+                    disableMobile: "true",
+                });
+                flatpickr("#dateTo", {
+                    locale: "vn",
+                    dateFormat: "d/m/Y",
+                    maxDate: "today",
+                    disableMobile: "true",
+                });
             });
 
-            // Simple sort toggle function for headers
+            // Dropdown Helpers
+            function setupDropdown(btnId, dropdownId, iconId) {
+                const btn = document.getElementById(btnId);
+                const dropdown = document.getElementById(dropdownId);
+                const icon = document.getElementById(iconId);
+
+                if (btn && dropdown) {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const isHidden = dropdown.classList.contains('hidden');
+
+                        // Close other dropdowns
+                        document.querySelectorAll('[id$="Dropdown"]').forEach(d => {
+                            if (d.id !== dropdownId) d.classList.add('hidden');
+                        });
+                        document.querySelectorAll('[id$="DropdownIcon"]').forEach(i => {
+                            if (i.id !== iconId) i.style.transform = 'rotate(0deg)';
+                        });
+
+                        if (isHidden) {
+                            dropdown.classList.remove('hidden');
+                            if (icon) icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            dropdown.classList.add('hidden');
+                            if (icon) icon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                }
+            }
+
+            function setupSelection(dropdownId, itemClass, callback) {
+                const dropdown = document.getElementById(dropdownId);
+                if (!dropdown) return;
+
+                const items = dropdown.querySelectorAll('.' + itemClass);
+                items.forEach(item => {
+                    item.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        // Reset checks
+                        items.forEach(i => {
+                            const check = i.querySelector('.material-symbols-outlined');
+                            if (check) check.classList.add('opacity-0');
+                        });
+                        // Set check
+                        const check = this.querySelector('.material-symbols-outlined');
+                        if (check) check.classList.remove('opacity-0');
+
+                        const value = this.getAttribute('data-value');
+                        const label = this.getAttribute('data-label');
+
+                        if (callback) callback(value, label);
+
+                        // Close dropdown
+                        dropdown.classList.add('hidden');
+                        const iconId = dropdownId + 'Icon';
+                        const icon = document.getElementById(iconId);
+                        if (icon) icon.style.transform = 'rotate(0deg)';
+                    });
+                });
+            }
+
+            // Pagination Helpers
+            function togglePaginationDropdown() {
+                const dropdown = document.getElementById('paginationDropdown');
+                const icon = document.getElementById('paginationDropdownIcon');
+
+                if (dropdown.classList.contains('hidden')) {
+                    dropdown.classList.remove('hidden');
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    dropdown.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            }
+
+            function selectItemsPerPage(value) {
+                document.getElementById('itemsPerPageLabel').textContent = value;
+                const dropdown = document.getElementById('paginationDropdown');
+                dropdown.classList.add('hidden');
+                const icon = document.getElementById('paginationDropdownIcon');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+                // Add logic here to reload page or update query param if needed
+            }
+
+            // Global Click to Close
+            document.addEventListener('click', function (event) {
+                const dropdowns = [
+                    { id: 'statusDropdown', btn: 'statusFilterBtn', icon: 'statusDropdownIcon' },
+                    { id: 'paginationDropdown', btn: 'paginationDropdownBtn', icon: 'paginationDropdownIcon' }
+                ];
+
+                dropdowns.forEach(d => {
+                    const el = document.getElementById(d.id);
+                    const btn = document.getElementById(d.btn);
+                    const icon = document.getElementById(d.icon);
+                    if (el && !el.classList.contains('hidden') && !el.contains(event.target) && !btn.contains(event.target)) {
+                        el.classList.add('hidden');
+                        if (icon) icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+
+            // Table Sort Toggle
             function toggleSort(header) {
                 const icon = header.querySelector('.material-symbols-outlined');
                 if (icon) {
                     if (icon.textContent === 'unfold_more') {
-                        icon.textContent = 'expand_less'; // Ascending
+                        icon.textContent = 'expand_less';
                         icon.classList.add('text-primary');
                         icon.classList.remove('text-gray-400');
                     } else if (icon.textContent === 'expand_less') {
-                        icon.textContent = 'expand_more'; // Descending
+                        icon.textContent = 'expand_more';
                     } else {
-                        icon.textContent = 'unfold_more'; // Reset
+                        icon.textContent = 'unfold_more';
                         icon.classList.remove('text-primary');
                         icon.classList.add('text-gray-400');
                     }
@@ -415,7 +560,6 @@
                 font-family: 'Inter', sans-serif !important;
                 border-radius: 12px !important;
                 margin-top: 8px !important;
-                /* Gap requested by user */
                 box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
             }
 
@@ -427,81 +571,27 @@
 
             .flatpickr-day.selected,
             .flatpickr-day.startRange,
-            .flatpickr-day.endRange,
-            .flatpickr-day.selected.inRange,
-            .flatpickr-day.startRange.inRange,
-            .flatpickr-day.endRange.inRange,
-            .flatpickr-day.selected:focus,
-            .flatpickr-day.startRange:focus,
-            .flatpickr-day.endRange:focus,
-            .flatpickr-day.selected:hover,
-            .flatpickr-day.startRange:hover,
-            .flatpickr-day.endRange:hover,
-            .flatpickr-day.selected.prevMonthDay,
-            .flatpickr-day.startRange.prevMonthDay,
-            .flatpickr-day.endRange.prevMonthDay,
-            .flatpickr-day.selected.nextMonthDay,
-            .flatpickr-day.startRange.nextMonthDay,
-            .flatpickr-day.endRange.nextMonthDay {
+            .flatpickr-day.endRange {
                 background: #ea580c !important;
                 border-color: #ea580c !important;
             }
 
             .flatpickr-day.todays-date {
-                color: #ea580c !important;
                 border-color: #ea580c !important;
+                color: #ea580c !important;
             }
 
-            /* Custom Header Styling */
             .flatpickr-current-month {
                 display: flex !important;
                 justify-content: space-between !important;
                 align-items: center !important;
-                width: 75% !important;
-                /* Ensure it fits between arrows */
-                left: 12.5% !important;
-                padding: 0 !important;
-            }
-
-            .flatpickr-monthDropdown-months {
-                text-align: left !important;
-                width: auto !important;
-                font-size: 14px !important;
-                /* Make it smaller */
-                margin-left: 0 !important;
-            }
-
-            .numInputWrapper {
-                width: auto !important;
-                margin-right: 0 !important;
-            }
-
-            .flatpickr-current-month input.cur-year {
-                font-size: 14px !important;
-                /* Make year smaller */
-                text-align: right !important;
-                padding: 0 !important;
-            }
-
-            .flatpickr-current-month .numInputWrapper span.arrowUp {
-                display: none;
-                /* Optional: cleaner look */
-            }
-
-            .flatpickr-current-month .numInputWrapper span.arrowDown {
-                display: none;
-                /* Optional: cleaner look */
+                padding: 0 10px !important;
             }
         </style>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                flatpickr("#dateFilter", {
-                    locale: "vn",
-                    dateFormat: "d/m/Y",
-                    maxDate: "today",
-                    disableMobile: "true",
-                });
-            });
+            function refreshPage() {
+                window.location.reload();
+            }
         </script>
     </div>
 </body>
