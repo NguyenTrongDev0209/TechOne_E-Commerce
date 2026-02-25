@@ -78,10 +78,4 @@ public class LoginController {
 	    return "views/authentic/login";
 	}
     
-    @GetMapping("/logout")
-    public String logout() {
-        SessionUtils.invalidate(); // Hủy session
-        return "redirect:/login";
-    }
-	
 }

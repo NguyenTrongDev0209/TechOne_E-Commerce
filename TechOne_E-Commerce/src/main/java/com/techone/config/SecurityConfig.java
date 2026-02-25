@@ -21,32 +21,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 	
-//	@Bean
-//<<<<<<< Updated upstream
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf(csrf -> csrf.disable()) // Tạm thời disable để test form submit dễ hơn
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/register", "/login", "/", "/product/product-detail",
-//                		"/posts/**", "/account/**","/promotions/**", "/categories","/css/**", "/js/**", "/images/**").permitAll() // Cho phép truy cập công khai
-//				.anyRequest().authenticated()
-//            )
-////            .formLogin(login -> login
-////                .loginPage("/login") 
-////                .permitAll()
-////            )
-//            .formLogin(login -> login.disable())
-//        	.oauth2Login(oauth -> oauth
-//                .loginPage("/login")
-//                .userInfoEndpoint(userInfo -> userInfo
-//                    .userService(oauthUserService) 
-//                )
-//                .defaultSuccessUrl("/", true) // Chuyển hướng sau khi login thành công
-//            );
-//        
-//        return http.build();
-//    }
-//=======
+	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
 	        .csrf(csrf -> csrf.disable())
@@ -60,13 +35,23 @@ public class SecurityConfig {
 	            .requestMatchers("/admin/**").hasRole("ADMIN")
 
 	            // 3. Các trang bắt buộc phải đăng nhập (Bất kể ADMIN hay USER)
-	            // Ví dụ: Thông tin tài khoản, Giỏ hàng, Thanh toán
 	            .requestMatchers("/account/**", "/cart/**", "/checkout/**").authenticated()
 
 	            // 4. Các yêu cầu còn lại đều phải xác thực
 	            .anyRequest().authenticated()
 	        )
-	        .formLogin(login -> login.disable())
+	        .formLogin(login -> login
+	            .loginPage("/login")
+	            .permitAll()
+	        )
+	        .logout(logout -> logout
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login")
+	            .invalidateHttpSession(true)
+	            .clearAuthentication(true)
+	            .deleteCookies("JSESSIONID")
+	            .permitAll()
+	        )
 	        .oauth2Login(oauth -> oauth
 	            .loginPage("/login")
 	            .userInfoEndpoint(userInfo -> userInfo
@@ -74,9 +59,8 @@ public class SecurityConfig {
 	            )
 	            .successHandler(successHandler())
 	        )
-	        // Cấu hình trang báo lỗi khi truy cập trái phép (tùy chọn)
 	        .exceptionHandling(exception -> exception
-	            .accessDeniedPage("/error-page") // Bạn có thể tạo trang 403.html đẹp mắt
+	            .accessDeniedPage("/error-page") 
 	        );
 	    
 	    return http.build();
