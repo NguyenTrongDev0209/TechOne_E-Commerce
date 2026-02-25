@@ -22,12 +22,35 @@ public class SecurityConfig {
     }
 	
 	@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable()) // Tạm thời disable để test form submit dễ hơn
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/register", "/login", "/", "/product/product-detail",
+                		"/posts/**", "/account/**","/promotions/**", "/categories","/css/**", "/js/**", "/images/**").permitAll() // Cho phép truy cập công khai
+				.anyRequest().authenticated()
+            )
+//            .formLogin(login -> login
+//                .loginPage("/login") 
+//                .permitAll()
+//            )
+            .formLogin(login -> login.disable())
+        	.oauth2Login(oauth -> oauth
+                .loginPage("/login")
+                .userInfoEndpoint(userInfo -> userInfo
+                    .userService(oauthUserService) 
+                )
+                .defaultSuccessUrl("/", true) // Chuyển hướng sau khi login thành công
+            );
+        
+        return http.build();
+    }
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
 	        .csrf(csrf -> csrf.disable())
 	        .authorizeHttpRequests(auth -> auth
 	            // 1. Cho phép truy cập công khai các file tĩnh và các trang chủ, chi tiết
-	            .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/403").permitAll()
+	            .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page").permitAll()
 	            .requestMatchers("/product/product-detail", "/categories", "/promotions/**", "/posts/**").permitAll()
 	            .requestMatchers("/forgot-password/**", "/verify-otp/**", "/reset-password/**").permitAll()
 
