@@ -58,8 +58,10 @@ public class Account {
 	public String avatar;
 	
 	@Past(message = "Ngày sinh phải là một ngày trong quá khứ")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public LocalDate birthday;
+
+	public Boolean gender;
 	
 	public Integer status;
 	
