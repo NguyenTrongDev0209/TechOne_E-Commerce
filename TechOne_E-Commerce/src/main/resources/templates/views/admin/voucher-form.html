@@ -11,35 +11,24 @@
                     <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                         <a class="hover:text-primary transition-colors" href="#">Tổng quan</a>
                         <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                        <a class="hover:text-primary transition-colors" href="/admin/voucher-list">Mã giảm giá</a> <span
-                            class="material-symbols-outlined text-[16px]">chevron_right</span>
-                        <span class="font-bold text-gray-900 dark:text-white">Tạo voucher</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <a href="/admin/voucher-list">
-                            <button
-                                class="group p-1.5 -ml-2 rounded-lg hover:bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 transition-colors">
-                                <span
-                                    class="material-symbols-outlined text-[28px] group-hover:text-slate-800">arrow_back</span>
-                            </button>
-                        </a>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Thêm
-                            mã giảm giá</h1>
+                        <a class="hover:text-primary transition-colors" href="/admin/voucher-list">Mã giảm giá</a>
+                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        <span class="font-bold text-gray-900 dark:text-white"
+                            th:text="${id != null ? 'Chỉnh sửa' : 'Thêm mới'}">Thêm mới</span>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button
-                        class="px-4 py-2.5 rounded border border-gray-300 dark:border-gray-700 font-bold text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:bg-gray-800 hover:text-gray-900 dark:text-white transition-all bg-white dark:bg-gray-800 shadow-sm">
-                        Hủy bỏ</button>
-                    <button
+                    <button type="submit" form="voucher-form"
                         class="px-4 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
                         <span class="material-symbols-outlined text-[20px]">check</span>
-                        Lưu mã giảm giá
+                        <span th:text="${id != null ? 'Cập nhật voucher' : 'Thêm voucher'}">Thêm voucher</span>
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <form th:id="voucher-form" th:action="@{/admin/voucher-list/save}" th:object="${voucherPercent}"
+                method="post" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <input type="hidden" th:field="*{id}">
                 <!-- Left Column: Main Info -->
                 <div class="lg:col-span-8 flex flex-col gap-6">
                     <!-- General Info -->
@@ -54,25 +43,22 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tên
-                                        chương trình <span class="text-red-500">*</span>
-                                    </label> <input
+                                        mã giảm <span class="text-red-500">*</span>
+                                    </label> <input th:field="*{name}"
                                         class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
                                         placeholder="VD: Khuyến mãi Tết 2026" type="text" />
+                                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mã
                                         Voucher <span class="text-red-500">*</span>
-                                    </label> <input
+                                    </label> <input th:field="*{code}"
                                         class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500 uppercase"
                                         placeholder="VD: TET2026" type="text" />
+                                    <p th:if="${#fields.hasErrors('code')}" th:errors="*{code}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
-                            </div>
-
-                            <div class="space-y-1.5">
-                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Mô tả</label>
-                                <textarea rows="3"
-                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
-                                    placeholder="Mô tả chi tiết về chương trình khuyến mãi..."></textarea>
                             </div>
                         </div>
                     </div>
@@ -86,39 +72,66 @@
                             Thiết lập giảm giá
                         </h2>
                         <div class="space-y-4">
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                <div class="space-y-1.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div class="space-y-1.5 relative" id="voucherTypeDropdownContainer">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Loại giảm
                                         giá</label>
-                                    <select
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all">
-                                        <option value="percent">Theo phần trăm (%)</option>
-                                        <option value="mount">Theo số tiền (VND)</option>
-                                    </select>
+                                    <input type="hidden" th:field="*{voucherType}" id="voucherTypeInput">
+
+                                    <!-- Trigger Button -->
+                                    <button type="button" onclick="toggleVoucherTypeDropdown()"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left">
+                                        <span id="voucherTypeLabel"
+                                            th:text="${voucherPercent.voucherType == true ? 'Giảm giá' : 'Miễn phí vận chuyển'}">Giảm
+                                            giá</span>
+                                        <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                                    </button>
+
+                                    <!-- Dropdown Menu -->
+                                    <div id="voucherTypeMenu"
+                                        class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
+                                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                                            <li>
+                                                <button type="button" onclick="selectVoucherType(true, 'Giảm giá')"
+                                                    class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Giảm
+                                                    giá</button>
+                                            </li>
+                                            <li>
+                                                <button type="button"
+                                                    onclick="selectVoucherType(false, 'Miễn phí vận chuyển')"
+                                                    class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Miễn
+                                                    phí vận chuyển</button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá trị
-                                        giảm</label>
-                                    <input
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                                        placeholder="0" type="number" />
+                                        giảm (%) <span class="text-red-500">*</span></label>
+                                    <input th:field="*{percentVoucher}"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+                                        placeholder="0" type="number" step="0.01" min="0" max="100" />
+                                    <p th:if="${#fields.hasErrors('percentVoucher')}" th:errors="*{percentVoucher}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giảm tối
                                         đa</label>
-                                    <input
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                                        placeholder="0 (Không giới hạn)" type="number" />
+                                    <input th:field="*{maxPrice}"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+                                        placeholder="0 (Không giới hạn)" type="number" step="0.01" />
                                 </div>
-                            </div>
-
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="space-y-1.5">
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Giá trị đơn
-                                        hàng tối thiểu</label>
-                                    <input
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                                        placeholder="0" type="number" />
+                                        hàng tối thiểu <span class="text-red-500">*</span></label>
+                                    <input th:field="*{minPrice}"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
+                                        placeholder="0" type="number" step="0.01" />
+                                    <p th:if="${#fields.hasErrors('minPrice')}" th:errors="*{minPrice}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
                             </div>
                         </div>
@@ -138,28 +151,32 @@
                         <div class="space-y-4">
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Ngày bắt
-                                    đầu</label>
+                                    đầu <span class="text-red-500">*</span></label>
                                 <div class="relative">
-                                    <input id="startDate"
-                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                    <input id="startDate" th:field="*{activeDay}"
+                                        class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
                                         placeholder="Chọn ngày bắt đầu" type="text" readonly="readonly" />
                                     <div
                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
                                         <span class="material-symbols-outlined text-[20px]">calendar_today</span>
                                     </div>
+                                    <p th:if="${#fields.hasErrors('activeDay')}" th:errors="*{activeDay}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
                             </div>
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Ngày kết
-                                    thúc</label>
+                                    thúc <span class="text-red-500">*</span></label>
                                 <div class="relative">
-                                    <input id="endDate"
+                                    <input id="endDate" th:field="*{endAt}"
                                         class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 pl-3 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                                         placeholder="Chọn ngày kết thúc" type="text" readonly="readonly" />
                                     <div
                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
                                         <span class="material-symbols-outlined text-[20px]">calendar_today</span>
                                     </div>
+                                    <p th:if="${#fields.hasErrors('endAt')}" th:errors="*{endAt}"
+                                        class="text-xs text-red-500"></p>
                                 </div>
                             </div>
                         </div>
@@ -177,38 +194,52 @@
                             <div class="space-y-1.5">
                                 <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Tổng lượt sử
                                     dụng tối đa</label>
-                                <input
-                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                <input th:field="*{quantity}"
+                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500"
                                     placeholder="0 (Không giới hạn)" type="number" />
-                            </div>
-                            <div class="space-y-1.5">
-                                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Lượt dùng tối đa
-                                    mỗi người</label>
-                                <input
-                                    class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                                    placeholder="1" type="number" />
                             </div>
                         </div>
                     </div>
 
-                    <!-- Status -->
                     <div
-                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="font-bold text-gray-900 dark:text-white">Trạng thái hoạt động</h3>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Bật/Tắt voucher này</p>
+                        class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                        <h2
+                            class="text-lg font-bold text-gray-900 dark:text-white border-b border-gray-50 dark:border-gray-700 pb-4 mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary">visibility</span>
+                            Trạng thái hiển thị
+                        </h2>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded">
+                            <div class="flex flex-col">
+                                <span class="text-sm font-bold text-gray-900 dark:text-white">Công khai</span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">Voucher sẽ hiển thị cho khách
+                                    hàng</span>
                             </div>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer" checked>
+                            <label class="inline-flex items-center cursor-pointer relative z-0">
+                                <input type="checkbox" id="displayStatusToggle" th:field="*{status}" th:value="1"
+                                    onchange="updateDisplayStatus(this)" class="sr-only peer">
                                 <div
-                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
+                                    class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary">
                                 </div>
                             </label>
                         </div>
+                        <div class="space-y-3 pt-2">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500 dark:text-gray-400 font-medium">Trạng thái:</span>
+                                <span id="statusBadge" th:if="${voucherPercent.status == 1}"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                    Đang hoạt động
+                                </span>
+                                <span id="statusBadge" th:unless="${voucherPercent.status == 1}"
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-500">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                                    Dừng hoạt động
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <!-- Flatpickr JS -->
             <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -229,6 +260,47 @@
                         minDate: "today",
                         disableMobile: "true",
                     });
+
+                    // Update display status
+                    const toggle = document.getElementById('displayStatusToggle');
+                    if (toggle) {
+                        updateDisplayStatus(toggle);
+                    }
+                });
+
+                function updateDisplayStatus(checkbox) {
+                    const badge = document.getElementById('statusBadge');
+                    if (!badge) return;
+                    if (checkbox.checked) {
+                        badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700';
+                        badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Đang hoạt động';
+                    } else {
+                        badge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-500';
+                        badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span> Dừng hoạt động';
+                    }
+                }
+
+                // Dropdown Logic
+                const voucherTypeDropdownContainer = document.getElementById('voucherTypeDropdownContainer');
+                const voucherTypeMenu = document.getElementById('voucherTypeMenu');
+                const voucherTypeInput = document.getElementById('voucherTypeInput');
+                const voucherTypeLabel = document.getElementById('voucherTypeLabel');
+
+                function toggleVoucherTypeDropdown() {
+                    voucherTypeMenu.classList.toggle('hidden');
+                }
+
+                function selectVoucherType(value, name) {
+                    voucherTypeInput.value = value;
+                    voucherTypeLabel.innerText = name;
+                    voucherTypeMenu.classList.add('hidden');
+                }
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function (event) {
+                    if (voucherTypeDropdownContainer && !voucherTypeDropdownContainer.contains(event.target)) {
+                        voucherTypeMenu.classList.add('hidden');
+                    }
                 });
             </script>
 

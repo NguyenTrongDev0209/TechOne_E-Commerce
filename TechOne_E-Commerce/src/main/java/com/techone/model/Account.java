@@ -87,7 +87,7 @@ public class Account {
 	public List<ForgotPassword> forgotPassword;
 	
 	@OneToMany(mappedBy = "account")
-	public List<VoucherList> voucherList;
+	public List<VoucherItem> voucherList;
 	
 	@OneToMany(mappedBy = "account")
 	public List<Variant> variant;
