@@ -8,6 +8,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 import com.techone.controller.authentic.CustomOAuth2UserController;
 
@@ -21,6 +23,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 	
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new HttpSessionSecurityContextRepository();
+    }
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
@@ -42,6 +49,7 @@ public class SecurityConfig {
 	        )
 	        .formLogin(login -> login
 	            .loginPage("/login")
+	            .loginProcessingUrl("/perform_login") // Change this to not conflict with LoginController
 	            .permitAll()
 	        )
 	        .logout(logout -> logout

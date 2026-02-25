@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,9 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 	
+    @Autowired
+    private SecurityContextRepository securityContextRepository;
+
 	@GetMapping("/login")
 	public String loginForm() {
 		return "views/authentic/login";
@@ -67,8 +72,11 @@ public class LoginController {
 	            UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-	            // Lưu vào Security Context
-	            SecurityContextHolder.getContext().setAuthentication(auth);
+	            // 3. QUAN TRỌNG: Lưu vào SecurityContext và PERSIST (lưu bền vững) vào Session
+	            SecurityContext context = SecurityContextHolder.createEmptyContext();
+	            context.setAuthentication(auth);
+	            SecurityContextHolder.setContext(context);
+	            securityContextRepository.saveContext(context, request, response);
 
 	            return "redirect:/";
 	        }

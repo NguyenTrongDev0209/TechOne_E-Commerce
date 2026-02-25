@@ -35,7 +35,7 @@
                         <div class="flex items-center gap-3 mb-6 px-3 py-2">
                             <div class="size-12 rounded-full overflow-hidden bg-gray-200 relative group">
                                 <img alt="User avatar" class="w-full h-full object-cover"
-                                    src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=random" />
+                                    th:src="${session.user.avatar != null ? (session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar) : 'https://ui-avatars.com/api/?name=' + session.user.fullname + '&background=random'}" />
                                 <div
                                     class="absolute inset-0 bg-black/30 hidden group-hover:flex items-center justify-center text-white cursor-pointer">
                                     <span class="material-symbols-outlined text-sm">edit</span>
@@ -43,7 +43,8 @@
                             </div>
                             <div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">Tài khoản của</p>
-                                <p class="font-bold text-[#1c100d] dark:text-white truncate max-w-[140px]">Nguyen Van A
+                                <p class="font-bold text-[#1c100d] dark:text-white truncate max-w-[140px]"
+                                    th:text="${session.user.fullname}">Nguyen Van A
                                 </p>
                             </div>
                         </div>
