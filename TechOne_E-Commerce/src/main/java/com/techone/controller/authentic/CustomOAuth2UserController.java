@@ -5,12 +5,16 @@ import com.techone.repository.AccountRepository;
 import com.techone.utils.SessionUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,9 +57,12 @@ public class CustomOAuth2UserController extends DefaultOAuth2UserService {
             }
         }
 
+        String roleName = account.getRole() ? "ROLE_ADMIN" : "ROLE_USER";
+        List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(roleName));
+        
         // Lưu thông tin account vào session để hiển thị trên UI
         SessionUtils.set("user", account);
 
-        return oAuth2User;
+        return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), "email");
     }
 }

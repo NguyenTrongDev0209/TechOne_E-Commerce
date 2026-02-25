@@ -10,6 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +23,9 @@ import com.techone.model.Account;
 import com.techone.repository.AccountRepository;
 import com.techone.utils.SessionUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class LoginController {
 
@@ -28,6 +34,8 @@ public class LoginController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 	
 	@GetMapping("/login")
 	public String loginForm() {
@@ -37,30 +45,32 @@ public class LoginController {
 	@PostMapping("/login")
 	public String login(@RequestParam("username") String username, 
 	                    @RequestParam("password") String password, 
+	                    HttpServletRequest request, // Thêm tham số này
+	                    HttpServletResponse response, // Thêm tham số này
 	                    Model model) {
 	    
 	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
-
 	    if (userOpt.isPresent()) {
 	        Account account = userOpt.get();
 	        if (passwordEncoder.matches(password, account.getPassword())) {
 	            
-	            // 1. Lưu vào Session tùy chỉnh của bạn (để Thymeleaf hiển thị tên)
+	            // 1. Lưu session cho UI
 	            com.techone.utils.SessionUtils.set("user", account);
-
-	            // 2. QUAN TRỌNG: Thông báo cho Spring Security rằng người dùng này đã hợp lệ
-	            // Tạo danh sách quyền (Roles)
+	            // 2. Tạo gói xác thực cho Spring Security
 	            List<GrantedAuthority> authorities = new ArrayList<>();
 	            authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
-
-	            // Tạo đối tượng Authentication
 	            UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(username, null, authorities);
-
-	            // Lưu vào Security Context
-	            SecurityContextHolder.getContext().setAuthentication(auth);
-
-	            return "redirect:/";
+	            // 3. QUAN TRỌNG: Lưu vào SecurityContext và PERSIST (lưu bền vững) vào Session
+	            SecurityContext context = SecurityContextHolder.createEmptyContext();
+	            context.setAuthentication(auth);
+	            SecurityContextHolder.setContext(context);
+	            securityContextRepository.saveContext(context, request, response);
+	            if (account.getRole()) { 
+	                return "redirect:/admin/dashboard";
+	            } else {
+	                return "redirect:/"; 
+	            }
 	        }
 	    }
 
@@ -68,10 +78,16 @@ public class LoginController {
 	    return "views/authentic/login";
 	}
     
-    @GetMapping("/logout")
-    public String logout() {
-        SessionUtils.invalidate(); // Hủy session
-        return "redirect:/login";
-    }
+	@GetMapping("/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+	    // 1. Xóa session UI của bạn
+	    SessionUtils.invalidate(); 
+	    
+	    // 2. Xóa sạch Security Context của Spring
+	    SecurityContextHolder.clearContext();
+	    
+	    return "redirect:/login";
+	}
+
 	
 }

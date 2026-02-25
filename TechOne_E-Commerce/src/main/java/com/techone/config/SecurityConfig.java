@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.techone.controller.authentic.CustomOAuth2UserController;
 
@@ -21,7 +22,6 @@ public class SecurityConfig {
     }
 	
 	@Bean
-<<<<<<< Updated upstream
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable()) // Tạm thời disable để test form submit dễ hơn
@@ -45,7 +45,6 @@ public class SecurityConfig {
         
         return http.build();
     }
-=======
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
 	        .csrf(csrf -> csrf.disable())
@@ -94,5 +93,4 @@ public class SecurityConfig {
 	        }
 	    };
 	}
->>>>>>> Stashed changes
 }
