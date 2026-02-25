@@ -214,9 +214,10 @@
                     <a th:unless="${session.user == null}" class="group flex flex-col items-center gap-1"
                         th:href="@{/account}">
                         <div
-                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
-                            <img th:if="${session.user.avatar != null}" th:src="${session.user.avatar}"
-                                class="w-full h-full rounded-2xl object-cover">
+                            class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all overflow-hidden">
+                            <img th:if="${session.user.avatar != null}"
+                                th:src="${session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar}"
+                                class="w-full h-full object-cover">
                             <span th:unless="${session.user.avatar != null}"
                                 class="material-symbols-outlined !text-[26px]">person</span>
                         </div>
@@ -227,7 +228,7 @@
                         </span>
                     </a>
 
-                    <a class="group flex flex-col items-center gap-1" href="#">
+                    <a class="group flex flex-col items-center gap-1" th:href="@{/account/favourited}">
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
                             <span class="material-symbols-outlined !text-[26px]">favorite</span>

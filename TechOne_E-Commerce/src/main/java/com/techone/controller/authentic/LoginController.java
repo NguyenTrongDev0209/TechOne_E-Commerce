@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,9 @@ import com.techone.model.Account;
 import com.techone.repository.AccountRepository;
 import com.techone.utils.SessionUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class LoginController {
 
@@ -29,6 +34,9 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 	
+    @Autowired
+    private SecurityContextRepository securityContextRepository;
+
 	@GetMapping("/login")
 	public String loginForm() {
 		return "views/authentic/login";
@@ -37,7 +45,14 @@ public class LoginController {
 	@PostMapping("/login")
 	public String login(@RequestParam("username") String username, 
 	                    @RequestParam("password") String password, 
+	                    HttpServletRequest request, 
+	                    HttpServletResponse response, 
 	                    Model model) {
+	    
+	    if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+	        model.addAttribute("error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu");
+	        return "views/authentic/login";
+	    }
 	    
 	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
 
@@ -57,8 +72,11 @@ public class LoginController {
 	            UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(username, null, authorities);
 
-	            // Lưu vào Security Context
-	            SecurityContextHolder.getContext().setAuthentication(auth);
+	            // 3. QUAN TRỌNG: Lưu vào SecurityContext và PERSIST (lưu bền vững) vào Session
+	            SecurityContext context = SecurityContextHolder.createEmptyContext();
+	            context.setAuthentication(auth);
+	            SecurityContextHolder.setContext(context);
+	            securityContextRepository.saveContext(context, request, response);
 
 	            return "redirect:/";
 	        }
@@ -68,10 +86,4 @@ public class LoginController {
 	    return "views/authentic/login";
 	}
     
-    @GetMapping("/logout")
-    public String logout() {
-        SessionUtils.invalidate(); // Hủy session
-        return "redirect:/login";
-    }
-	
 }

@@ -12,36 +12,52 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Voucher Item 1 -->
-            <div
+            <!-- Dynamic Voucher Items -->
+            <div th:each="item : ${voucherItems}"
                 class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm flex gap-4 relative overflow-hidden group">
                 <!-- Left Side (Icon/Amount) -->
-                <div
-                    class="w-24 bg-orange-50 dark:bg-orange-900/20 rounded-lg flex flex-col items-center justify-center p-2 border border-orange-100 dark:border-orange-800/30 flex-shrink-0">
-                    <span class="material-symbols-outlined text-orange-500 text-3xl mb-1">confirmation_number</span>
-                    <span class="font-bold text-orange-600 dark:text-orange-400 text-lg">15%</span>
-                    <span class="text-[10px] text-orange-500 uppercase font-bold">Giảm tối đa</span>
+                <div th:classappend="${item.voucherPercent.voucherType == true ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-800/30' : 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30'}"
+                    class="w-24 rounded-lg flex flex-col items-center justify-center p-2 border flex-shrink-0">
+                    <span class="material-symbols-outlined text-3xl mb-1"
+                        th:classappend="${item.voucherPercent.voucherType == true ? 'text-orange-500' : 'text-blue-500'}"
+                        th:text="${item.voucherPercent.voucherType == true ? 'confirmation_number' : 'local_shipping'}">confirmation_number</span>
+                    <span class="font-bold text-lg"
+                        th:classappend="${item.voucherPercent.voucherType == true ? 'text-orange-600 dark:text-orange-400' : 'text-blue-600 dark:text-blue-400'}"
+                        th:text="${item.voucherPercent.voucherType == true ? #numbers.formatDecimal(item.voucherPercent.percentVoucher, 0, 0) + '%' : 'Free'}">15%</span>
+                    <span class="text-[10px] uppercase font-bold"
+                        th:classappend="${item.voucherPercent.voucherType == true ? 'text-orange-500' : 'text-blue-500'}"
+                        th:text="${item.voucherPercent.voucherType == true ? 'Giảm tối đa' : 'Vận chuyển'}">Giảm tối
+                        đa</span>
                 </div>
 
                 <!-- Right Side (Info) -->
                 <div class="flex-1 flex flex-col justify-between py-1">
                     <div>
                         <div class="flex justify-between items-start">
-                            <h3 class="font-bold text-[#1c100d] dark:text-white">Giảm 15% đơn từ 500k</h3>
-                            <button onclick="openVoucherModal()"
+                            <h3 class="font-bold text-[#1c100d] dark:text-white" th:text="${item.voucherPercent.name}">
+                                Giảm 15% đơn từ 500k</h3>
+                            <button type="button" th:data-code="${item.voucherPercent.code}"
+                                th:data-expiry="${#temporals.format(item.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
+                                th:data-value="${item.voucherPercent.percentVoucher}"
+                                th:data-minprice="${item.voucherPercent.minPrice}" onclick="handleOpenModal(this)"
                                 class="text-primary text-xs font-bold hover:underline">Điều kiện</button>
                         </div>
-                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">Áp dụng cho các sản phẩm công nghệ (Laptop,
-                            Điện thoại) trong tháng 5.</p>
+                        <p class="text-xs text-gray-500 mt-1 line-clamp-2"
+                            th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(item.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(item.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                            Áp dụng cho các sản phẩm công nghệ (Laptop, Điện thoại) trong tháng 5.</p>
                     </div>
 
                     <div class="flex justify-between items-center mt-3">
                         <div class="text-xs text-gray-500">
-                            HSD: <span class="text-red-500 font-medium">31/05/2024</span>
+                            HSD: <span class="text-red-500 font-medium"
+                                th:text="${#temporals.format(item.voucherPercent.endAt, 'dd/MM/yyyy')}">31/05/2024</span>
                         </div>
-                        <button
+                        <button th:if="${item.status == 0}"
                             class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
                             ngay</button>
+                        <span th:if="${item.status == 1}"
+                            class="px-3 py-1.5 bg-gray-100 text-gray-400 text-xs font-bold rounded-lg cursor-not-allowed">Đã
+                            dùng</span>
                     </div>
                 </div>
 
@@ -54,42 +70,12 @@
                 </div>
             </div>
 
-            <!-- Voucher Item 2 -->
-            <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm flex gap-4 relative overflow-hidden group">
-                <div
-                    class="w-24 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex flex-col items-center justify-center p-2 border border-blue-100 dark:border-blue-800/30 flex-shrink-0">
-                    <span class="material-symbols-outlined text-blue-500 text-3xl mb-1">local_shipping</span>
-                    <span class="font-bold text-blue-600 dark:text-blue-400 text-lg">Free</span>
-                    <span class="text-[10px] text-blue-500 uppercase font-bold">Vận chuyển</span>
-                </div>
-
-                <div class="flex-1 flex flex-col justify-between py-1">
-                    <div>
-                        <div class="flex justify-between items-start">
-                            <h3 class="font-bold text-[#1c100d] dark:text-white">Miễn phí vận chuyển</h3>
-                            <button onclick="openVoucherModal()"
-                                class="text-primary text-xs font-bold hover:underline">Điều kiện</button>
-                        </div>
-                        <p class="text-xs text-gray-500 mt-1 line-clamp-2">Áp dụng cho đơn hàng từ 200k. Tối đa 30k.</p>
-                    </div>
-
-                    <div class="flex justify-between items-center mt-3">
-                        <div class="text-xs text-gray-500">
-                            HSD: <span class="text-red-500 font-medium">15/06/2024</span>
-                        </div>
-                        <button
-                            class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
-                            ngay</button>
-                    </div>
-                </div>
-
-                <div
-                    class="absolute -left-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
-                </div>
-                <div
-                    class="absolute -right-2 top-1/2 -translate-y-1/2 size-4 bg-background-light dark:bg-background-dark rounded-full">
-                </div>
+            <!-- Empty State -->
+            <div th:if="${#lists.isEmpty(voucherItems)}"
+                class="col-span-full py-12 flex flex-col items-center justify-center bg-white dark:bg-[#1e293b] rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700">
+                <span class="material-symbols-outlined text-6xl text-gray-300 mb-4">confirmation_number</span>
+                <p class="text-gray-500 font-medium">Bạn chưa có mã giảm giá nào</p>
+                <a href="/" class="text-primary text-sm font-bold mt-2 hover:underline">Khám phá sản phẩm ngay</a>
             </div>
         </div>
 
@@ -109,8 +95,9 @@
                         <div>
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Mã voucher</h4>
                             <div class="flex items-center gap-2">
-                                <span class="text-primary font-mono font-bold text-lg">TECHONE15</span>
-                                <button class="text-xs text-gray-500 hover:text-primary">
+                                <span class="text-primary font-mono font-bold text-lg"
+                                    id="modalVoucherCode">TECHONE15</span>
+                                <button class="text-xs text-gray-500 hover:text-primary" onclick="copyVoucherCode()">
                                     <span class="material-symbols-outlined text-[16px]">content_copy</span>
                                 </button>
                             </div>
@@ -118,14 +105,14 @@
 
                         <div>
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Hạn sử dụng</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-300">00:00 31/05/2024 - 23:59 01/06/2024</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300" id="modalExpiry">00:00 31/05/2024 -
+                                23:59 01/06/2024</p>
                         </div>
 
                         <div>
                             <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Chi tiết ưu đãi</h4>
                             <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 space-y-1">
-                                <li>Giảm 15% tối đa 100k cho đơn hàng từ 500k.</li>
-                                <li>Áp dụng cho các sản phẩm thuộc danh mục Điện thoại, Laptop.</li>
+                                <li id="modalDetail">Giảm 15% tối đa 100k cho đơn hàng từ 500k.</li>
                                 <li>Mỗi tài khoản chỉ được sử dụng 1 lần.</li>
                                 <li>Không áp dụng đồng thời với các chương trình khuyến mãi khác.</li>
                             </ul>
@@ -143,7 +130,27 @@
         </div>
 
         <script>
-            function openVoucherModal() {
+            function copyVoucherCode() {
+                const code = document.getElementById('modalVoucherCode').innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    alert('Đã sao chép mã: ' + code);
+                });
+            }
+
+            function handleOpenModal(button) {
+                const code = button.getAttribute('data-code');
+                const expiry = button.getAttribute('data-expiry');
+                const value = button.getAttribute('data-value');
+                const minPrice = parseFloat(button.getAttribute('data-minprice'));
+
+                openVoucherModal(code, expiry, value, minPrice);
+            }
+
+            function openVoucherModal(code, expiry, value, minPrice) {
+                document.getElementById('modalVoucherCode').innerText = code;
+                document.getElementById('modalExpiry').innerText = expiry;
+                document.getElementById('modalDetail').innerText = 'Giảm ' + value + '% cho đơn hàng từ ' +
+                    minPrice.toLocaleString() + 'đ.';
                 document.getElementById('voucherTermsModal').classList.remove('hidden');
             }
         </script>

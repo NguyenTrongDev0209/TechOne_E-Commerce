@@ -59,9 +59,11 @@ public class Account {
 	public String avatar;
 
 	@Past(message = "Ngày sinh phải là một ngày trong quá khứ")
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public LocalDate birthday;
 
+	public Boolean gender;
+	
 	public Integer status;
 
 	public Boolean role = false;
@@ -88,8 +90,8 @@ public class Account {
 	public List<ForgotPassword> forgotPassword;
 
 	@OneToMany(mappedBy = "account")
-	public List<VoucherList> voucherList;
-
+	public List<VoucherItem> voucherList;
+	
 	@OneToMany(mappedBy = "account")
 	public List<Variant> variant;
 
