@@ -1,4 +1,4 @@
-package com.techone.controller.client.api;
+package com.techone.api;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
