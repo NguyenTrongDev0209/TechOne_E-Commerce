@@ -2,6 +2,8 @@ package com.techone.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,21 +25,21 @@ import lombok.NoArgsConstructor;
 @Table(name = "wards")
 public class Ward {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer id;
-	
+	@Column(name = "id")
+	public String id;
+
 	@Column(columnDefinition = "varchar(255)")
-	@NotBlank(message = "Code province không được để trống")
 	public String code;
-	
+
 	@Column(columnDefinition = "nvarchar(255)")
-	@NotBlank(message = "Tên quận/huyện không được để trống")
 	public String name;
-	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "district_id")
 	District district;
-	
-	@OneToMany(mappedBy = "ward")
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "ward", cascade = CascadeType.ALL)
 	public List<Address> address;
 }
