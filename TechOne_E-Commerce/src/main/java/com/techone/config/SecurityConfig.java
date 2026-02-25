@@ -21,6 +21,7 @@ public class SecurityConfig {
     }
 	
 	@Bean
+<<<<<<< Updated upstream
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable()) // Tạm thời disable để test form submit dễ hơn
@@ -44,4 +45,54 @@ public class SecurityConfig {
         
         return http.build();
     }
+=======
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	    http
+	        .csrf(csrf -> csrf.disable())
+	        .authorizeHttpRequests(auth -> auth
+	            // 1. Cho phép truy cập công khai các file tĩnh và các trang chủ, chi tiết
+	            .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page").permitAll()
+	            .requestMatchers("/product/product-detail", "/categories", "/promotions/**", "/posts/**").permitAll()
+	            .requestMatchers("/forgot-password/**", "/verify-otp/**", "/reset-password/**").permitAll()
+
+	            // 2. CHỈ ADMIN mới được vào các trang bắt đầu bằng /admin
+	            .requestMatchers("/admin/**").hasRole("ADMIN")
+
+	            // 3. Các trang bắt buộc phải đăng nhập (Bất kể ADMIN hay USER)
+	            // Ví dụ: Thông tin tài khoản, Giỏ hàng, Thanh toán
+	            .requestMatchers("/account/**", "/cart/**", "/checkout/**").authenticated()
+
+	            // 4. Các yêu cầu còn lại đều phải xác thực
+	            .anyRequest().authenticated()
+	        )
+	        .formLogin(login -> login.disable())
+	        .oauth2Login(oauth -> oauth
+	            .loginPage("/login")
+	            .userInfoEndpoint(userInfo -> userInfo
+	                .userService(oauthUserService)
+	            )
+	            .successHandler(successHandler())
+	        )
+	        // Cấu hình trang báo lỗi khi truy cập trái phép (tùy chọn)
+	        .exceptionHandling(exception -> exception
+	            .accessDeniedPage("/error-page") // Bạn có thể tạo trang 403.html đẹp mắt
+	        );
+	    
+	    return http.build();
+	}
+	
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+	    return (request, response, authentication) -> {
+	        // Kiểm tra xem trong danh sách quyền có ROLE_ADMIN không
+	        boolean isAdmin = authentication.getAuthorities().stream()
+	                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+	        if (isAdmin) {
+	            response.sendRedirect("/admin/dashboard");
+	        } else {
+	            response.sendRedirect("/");
+	        }
+	    };
+	}
+>>>>>>> Stashed changes
 }
