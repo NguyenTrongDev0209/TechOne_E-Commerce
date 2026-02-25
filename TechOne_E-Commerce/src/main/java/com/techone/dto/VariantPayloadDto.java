@@ -29,5 +29,6 @@ public class VariantPayloadDto {
     private Double discount;
 
     private String imageInputName;
+    private java.util.List<String> existingImages;
     private Map<String, String> attributes; // Key: Attribute Name, Value: Attribute Value
 }

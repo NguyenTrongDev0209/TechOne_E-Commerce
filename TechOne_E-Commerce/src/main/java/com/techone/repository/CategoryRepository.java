@@ -53,10 +53,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	int countPosts(@Param("categoryId") Integer categoryId);
 
 	@Query("SELECT c FROM Category c WHERE c.type = :type AND c.parent IS NULL "
-			+ "AND (:keyword IS NULL OR c.name LIKE %:keyword%) "
-			+ "AND (:fromDate IS NULL OR c.createAt >= :fromDate) "
-			+ "AND (:toDate IS NULL OR c.createAt <= :toDate)")
+			+ "AND (:keyword IS NULL OR c.name LIKE %:keyword%)")
 	org.springframework.data.domain.Page<Category> search(@Param("keyword") String keyword,
-			@Param("fromDate") java.time.LocalDate fromDate, @Param("toDate") java.time.LocalDate toDate,
 			@Param("type") Boolean type, org.springframework.data.domain.Pageable pageable);
 }

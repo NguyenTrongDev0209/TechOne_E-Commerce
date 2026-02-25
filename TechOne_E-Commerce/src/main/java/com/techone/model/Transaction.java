@@ -28,27 +28,27 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-	
+
 	@PositiveOrZero(message = "Tổng tiền không thể âm")
 	public Double amount;
-	
+
 	@Column(columnDefinition = "varchar(255)")
 	public String paymentMethod;
-	
+
 	public Integer status;
-	
+
 	@Column(columnDefinition = "varchar(255)")
 	public String transactionType;
-	
+
 	public Integer refId;
-	
-	@PastOrPresent(message = "Ngày tạo Oder không thể ở quá khứ")
+
+	@PastOrPresent(message = "Ngày tạo giao dịch không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
-	
+
 	@Column(columnDefinition = "varchar(255)")
 	public String log;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	Order order;

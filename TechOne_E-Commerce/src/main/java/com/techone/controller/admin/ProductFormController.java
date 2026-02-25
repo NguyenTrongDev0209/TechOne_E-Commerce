@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.techone.model.Brand;
 import com.techone.model.Category;
 import com.techone.model.Product;
+import com.techone.model.Account;
+import com.techone.utils.SessionUtils;
 import com.techone.repository.BrandRepository;
 import com.techone.repository.CategoryRepository;
 import com.techone.repository.ProductRepository;
@@ -30,6 +32,7 @@ import com.techone.dto.VariantPayloadDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import com.techone.utils.FileUploadUtils;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
@@ -75,18 +78,19 @@ public class ProductFormController {
 	com.techone.repository.SpecificationValueRepository specificationValueRepository;
 
 	@Autowired
-	jakarta.servlet.ServletContext servletContext;
+	FileUploadUtils fileUploadUtils;
 
 	@Autowired
 	Validator validator;
 
+	@org.springframework.transaction.annotation.Transactional(readOnly = true)
 	@GetMapping("/admin/product-list/product-form")
 	public String showForm(Model model) {
 		Product product = new Product();
-		product.setStatus(1); // Default status Active
+		product.setStatus(true); // Default status Active
 		product.setCreateAt(LocalDateTime.now());
-		product.setCategory(new com.techone.model.Category());
-		product.setBrand(new com.techone.model.Brand());
+		product.setCategory(new Category());
+		product.setBrand(new Brand());
 		model.addAttribute("product", product);
 		model.addAttribute("editMode", false);
 		loadFormAttributes(model);
@@ -94,9 +98,19 @@ public class ProductFormController {
 		return "views/admin/product-form";
 	}
 
-	@GetMapping("/admin/product-list/product-form/{id}")
-	public String editProduct(Model model, @PathVariable("id") Integer id) {
-		Product product = productRepository.findById(id).orElse(null);
+	@org.springframework.transaction.annotation.Transactional(readOnly = true)
+	@GetMapping("/admin/product-list/product-form/{slug}")
+	public String editProduct(Model model, @PathVariable("slug") String slug) {
+		Product product = productRepository.findBySlug(slug).orElse(null);
+		if (product == null) {
+			try {
+				Integer id = Integer.parseInt(slug);
+				product = productRepository.findById(id).orElse(null);
+			} catch (NumberFormatException e) {
+				// Not an ID, keep product as null
+			}
+		}
+
 		if (product == null) {
 			return "redirect:/admin/product-list?error=ProductNotFound";
 		}
@@ -104,13 +118,93 @@ public class ProductFormController {
 			product.setCategory(new Category());
 		if (product.getBrand() == null)
 			product.setBrand(new Brand());
+
+		// Convert existing variants and specifications back to JSON for the frontend
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+
+			// Transform Variants
+			if (product.getVariant() != null && !product.getVariant().isEmpty()) {
+				java.util.List<VariantPayloadDto> vList = new java.util.ArrayList<>();
+				for (Variant v : product.getVariant()) {
+					VariantPayloadDto dto = new VariantPayloadDto();
+					dto.setSku(v.getSku());
+					dto.setPrice(v.getPrice());
+					dto.setDiscount(v.getDiscount());
+					dto.setStock(v.getStock());
+
+					java.util.Map<String, String> attrs = new java.util.HashMap<>();
+					java.util.List<VariantAttributeValue> vvs = variantAttributeValueRepository.findByVariant(v);
+					if (vvs != null) {
+						for (VariantAttributeValue vav : vvs) {
+							if (vav.getAttributeValue() != null && vav.getAttributeValue().getAttribute() != null) {
+								attrs.put(vav.getAttributeValue().getAttribute().getName(),
+										vav.getAttributeValue().getValue());
+							}
+						}
+					}
+					// If no attributes, it's a default variant
+					if (attrs.isEmpty()) {
+						attrs.put("Mặc định", "Mặc định");
+					}
+					java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(v);
+					if (vImages != null && !vImages.isEmpty()) {
+						dto.setExistingImages(vImages.stream().map(VariantImage::getPathImage)
+								.collect(java.util.stream.Collectors.toList()));
+					}
+
+					dto.setAttributes(attrs);
+					vList.add(dto);
+				}
+				model.addAttribute("variantsJson", mapper.writeValueAsString(vList));
+			}
+
+			// Transform Specifications
+			java.util.List<com.techone.model.Specification> specs = specificationRepository.findByProduct(product);
+			if (specs != null && !specs.isEmpty()) {
+				com.techone.model.Specification spec = specs.get(0);
+				java.util.List<com.techone.dto.SpecificationPayloadDto> sList = new java.util.ArrayList<>();
+				if (spec.getSpecificationTitles() != null) {
+					for (com.techone.model.SpecificationTitle title : spec.getSpecificationTitles()) {
+						com.techone.dto.SpecificationPayloadDto gDto = new com.techone.dto.SpecificationPayloadDto();
+						gDto.setGroupName(title.getName());
+
+						java.util.List<com.techone.dto.SpecificationItemDto> items = new java.util.ArrayList<>();
+						if (title.getSpecificationValues() != null) {
+							for (com.techone.model.SpecificationValue val : title.getSpecificationValues()) {
+								com.techone.dto.SpecificationItemDto iDto = new com.techone.dto.SpecificationItemDto();
+								String rawName = val.getName();
+								if (rawName != null && rawName.contains(": ")) {
+									String[] parts = rawName.split(": ", 2);
+									iDto.setName(parts[0]);
+									iDto.setValue(parts[1]);
+								} else {
+									iDto.setName(rawName);
+									iDto.setValue("");
+								}
+								items.add(iDto);
+							}
+						}
+						gDto.setItems(items);
+						sList.add(gDto);
+					}
+				}
+				model.addAttribute("specificationsJson", mapper.writeValueAsString(sList));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		model.addAttribute("product", product);
 		model.addAttribute("editMode", true);
+		model.addAttribute("viewMode", false);
 		loadFormAttributes(model);
 		model.addAttribute("active", "products");
 		return "views/admin/product-form";
 	}
 
+	@org.springframework.transaction.annotation.Transactional
 	@PostMapping("/admin/product-list/product-form/save")
 	public String saveProduct(Model model,
 			@ModelAttribute("product") @Valid Product product,
@@ -126,6 +220,24 @@ public class ProductFormController {
 		}
 		if (product.getBrand() == null || product.getBrand().getId() == null) {
 			errors.rejectValue("brand", "error.product", "Chưa chọn thương hiệu");
+		}
+
+		// Validation for Category/Brand Status if product is Active
+		if (Boolean.TRUE.equals(product.getStatus())) {
+			if (product.getCategory() != null && product.getCategory().getId() != null) {
+				Category cat = categoryRepository.findById(product.getCategory().getId()).orElse(null);
+				if (cat != null && Boolean.FALSE.equals(cat.getStatus())) {
+					errors.rejectValue("status", "error.product",
+							"Không thể kích hoạt sản phẩm vì danh mục đang bị ẩn");
+				}
+			}
+			if (product.getBrand() != null && product.getBrand().getId() != null) {
+				Brand brand = brandRepository.findById(product.getBrand().getId()).orElse(null);
+				if (brand != null && Boolean.FALSE.equals(brand.getStatus())) {
+					errors.rejectValue("status", "error.product",
+							"Không thể kích hoạt sản phẩm vì thương hiệu đang bị ẩn");
+				}
+			}
 		}
 
 		// Validation for images (at least one image if new product, or check size)
@@ -183,6 +295,28 @@ public class ProductFormController {
 							}
 						}
 					}
+
+					// Validate Variant Images (pathImage)
+					boolean hasImage = false;
+					if (payload.getImageInputName() != null) {
+						org.springframework.web.multipart.MultipartFile[] variantImagesFiles = req
+								.getFiles(payload.getImageInputName())
+								.toArray(new org.springframework.web.multipart.MultipartFile[0]);
+						for (org.springframework.web.multipart.MultipartFile f : variantImagesFiles) {
+							if (!f.isEmpty()) {
+								hasImage = true;
+								break;
+							}
+						}
+					}
+
+					if (!hasImage) {
+						java.util.Map<String, String> fMap = fieldErrorsMap.getOrDefault(index,
+								new java.util.HashMap<>());
+						fMap.put("pathImage", "Hình ảnh không được trống");
+						fieldErrorsMap.put(index, fMap);
+					}
+
 					index++;
 				}
 
@@ -207,6 +341,8 @@ public class ProductFormController {
 			loadFormAttributes(model);
 			model.addAttribute("active", "products");
 			model.addAttribute("editMode", product.getId() != null);
+			model.addAttribute("variantsJson", variantsJson);
+			model.addAttribute("specificationsJson", specificationsJson);
 			return "views/admin/product-form";
 		}
 
@@ -215,41 +351,80 @@ public class ProductFormController {
 			product.setSlug(SlugUtils.toSlug(product.getName()));
 		}
 
-		// Set CreateAt if new
-		if (product.getId() == null) {
+		// Determine if this is an edit or new creation before saving the entity
+		boolean isEdit = product.getId() != null;
+
+		// Set CreateAt and Account if new
+		if (!isEdit) {
 			product.setCreateAt(LocalDateTime.now());
+			Account currentUser = SessionUtils.get("user");
+			if (currentUser != null) {
+				product.setAccount(currentUser);
+			}
 		} else {
 			Product existing = productRepository.findById(product.getId()).orElse(null);
 			if (existing != null) {
 				product.setCreateAt(existing.getCreateAt());
+				product.setAccount(existing.getAccount());
 			}
 		}
 
 		Product savedProduct = productRepository.save(product);
+
+		// Handle Deleting old Variants and Specifications if Edit Mode
+		if (isEdit) {
+			// 1. Delete old Variants
+			java.util.List<Variant> oldVariants = variantRepository.findByProduct(savedProduct);
+			if (oldVariants != null) {
+				for (Variant v : oldVariants) {
+					// Delete associated attribute values
+					java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository.findByVariant(v);
+					if (vavs != null)
+						variantAttributeValueRepository.deleteAll(vavs);
+
+					// Delete associated images
+					java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(v);
+					if (vImages != null)
+						variantImageRepository.deleteAll(vImages);
+
+					variantRepository.delete(v);
+				}
+			}
+
+			// 2. Delete old Specifications
+			java.util.List<com.techone.model.Specification> oldSpecs = specificationRepository
+					.findByProduct(savedProduct);
+			if (oldSpecs != null) {
+				for (com.techone.model.Specification spec : oldSpecs) {
+					if (spec.getSpecificationTitles() != null) {
+						for (com.techone.model.SpecificationTitle title : spec.getSpecificationTitles()) {
+							if (title.getSpecificationValues() != null) {
+								specificationValueRepository.deleteAll(title.getSpecificationValues());
+							}
+							specificationTitleRepository.delete(title);
+						}
+					}
+					specificationRepository.delete(spec);
+				}
+			}
+			// Flush to ensure deletions are committed before creating new ones (avoids SKU
+			// conflicts)
+			variantRepository.flush();
+			specificationRepository.flush();
+		}
 
 		// Handle Images Saving
 		if (hasNewImages) {
 			for (org.springframework.web.multipart.MultipartFile image : images) {
 				if (image != null && !image.isEmpty()) {
 					try {
-						String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-						String path = servletContext.getRealPath("/images/products/");
-
-						if (path != null) {
-							java.io.File dir = new java.io.File(path);
-							if (!dir.exists())
-								dir.mkdirs();
-
-							java.io.File file = new java.io.File(path + java.io.File.separator + filename);
-							image.transferTo(file);
-
-							com.techone.model.ImageProduct imageProduct = new com.techone.model.ImageProduct();
-							imageProduct.setUrl(filename);
-							imageProduct.setProduct(savedProduct);
-							imageProductRepository.save(imageProduct);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
+						String vFilename = fileUploadUtils.saveImage(image, "products");
+						com.techone.model.ImageProduct imageProduct = new com.techone.model.ImageProduct();
+						imageProduct.setUrl(vFilename);
+						imageProduct.setProduct(savedProduct);
+						imageProductRepository.save(imageProduct);
+					} catch (java.io.IOException e) {
+						throw new RuntimeException("Lỗi lưu file hình ảnh sản phẩm", e);
 					}
 				}
 			}
@@ -324,22 +499,29 @@ public class ProductFormController {
 							for (org.springframework.web.multipart.MultipartFile vi : variantImagesFiles) {
 								if (!vi.isEmpty()) {
 									try {
-										String vFilename = System.currentTimeMillis() + "_" + vi.getOriginalFilename();
-										String vPath = servletContext.getRealPath("/images/variants/");
-										java.io.File vDir = new java.io.File(vPath);
-										if (!vDir.exists())
-											vDir.mkdirs();
-										vi.transferTo(new java.io.File(vPath + java.io.File.separator + vFilename));
-
+										String vFilename = fileUploadUtils.saveImage(vi, "variants");
 										VariantImage variantImage = new VariantImage();
 										variantImage.setVariant(savedVariant);
 										variantImage.setPathImage(vFilename);
 										variantImage.setCreateAt(LocalDateTime.now());
 										variantImageRepository.save(variantImage);
-									} catch (Exception e) {
-										e.printStackTrace();
+									} catch (java.io.IOException e) {
+										throw new RuntimeException("Lỗi lưu file hình ảnh biến thể", e);
 									}
 								}
+							}
+						}
+					}
+
+					// 4. Restore Existing Images if any
+					if (payload.getExistingImages() != null && !payload.getExistingImages().isEmpty()) {
+						for (String existingPath : payload.getExistingImages()) {
+							if (existingPath != null && !existingPath.trim().isEmpty()) {
+								VariantImage variantImage = new VariantImage();
+								variantImage.setVariant(savedVariant);
+								variantImage.setPathImage(existingPath);
+								variantImage.setCreateAt(LocalDateTime.now());
+								variantImageRepository.save(variantImage);
 							}
 						}
 					}
@@ -355,8 +537,10 @@ public class ProductFormController {
 				}
 				productRepository.save(savedProduct);
 
-			} catch (Exception e) {
+			} catch (com.fasterxml.jackson.core.JsonProcessingException e) {
 				e.printStackTrace();
+				model.addAttribute("variantError", "Lỗi xử lý dữ liệu JSON biến thể.");
+				throw new RuntimeException("Lỗi JSON biến thể", e);
 			}
 		}
 
@@ -398,12 +582,13 @@ public class ProductFormController {
 						}
 					}
 				}
-			} catch (Exception e) {
+			} catch (com.fasterxml.jackson.core.JsonProcessingException e) {
 				e.printStackTrace();
+				model.addAttribute("specError", "Lỗi xử lý dữ liệu JSON thông số kỹ thuật.");
+				throw new RuntimeException("Lỗi JSON thông số", e);
 			}
 		}
 
-		boolean isEdit = product.getId() != null;
 		return "redirect:/admin/product-list?" + (isEdit ? "updated=true" : "success=true");
 	}
 
@@ -415,6 +600,21 @@ public class ProductFormController {
 																													// Product
 																													// Categories
 		model.addAttribute("brands", brandRepository.findByStatus(true)); // Active Brands
+
+		// Add default values for Thymeleaf script variables if they are not already
+		// present in the model
+		if (!model.containsAttribute("variantsJson")) {
+			model.addAttribute("variantsJson", "[]");
+		}
+		if (!model.containsAttribute("specificationsJson")) {
+			model.addAttribute("specificationsJson", "[]");
+		}
+		if (!model.containsAttribute("variantError")) {
+			model.addAttribute("variantError", "");
+		}
+		if (!model.containsAttribute("variantFieldErrors")) {
+			model.addAttribute("variantFieldErrors", "{}");
+		}
 	}
 
 }

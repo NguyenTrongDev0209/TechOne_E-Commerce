@@ -244,8 +244,9 @@
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
                             <span class="material-symbols-outlined !text-[26px]">shopping_cart</span>
-                            <span
-                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">2</span>
+                            <span th:if="${session.cartCount != null and session.cartCount > 0}"
+                                th:text="${session.cartCount}"
+                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">0</span>
                         </div>
                         <span
                             class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Giỏ
@@ -277,7 +278,7 @@
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                     </a>
                     <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center gap-1 px-1"
-                        href="#">
+                        href="/categories">
                         Sản phẩm <span class="material-symbols-outlined text-[18px]">expand_more</span>
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>

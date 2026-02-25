@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
@@ -34,7 +33,7 @@ public class Address {
 	@NotBlank(message = "Địa chỉ cụ thể không thể để trống")
 	public String fullAddress;
 
-	@PastOrPresent(message = "Ngày tạo Oder không thể ở tương lai")
+	@PastOrPresent(message = "Ngày tạo địa chỉ không thể ở tương lai")
 	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
 

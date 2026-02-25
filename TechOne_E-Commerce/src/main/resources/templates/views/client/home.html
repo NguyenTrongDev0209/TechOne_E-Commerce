@@ -34,7 +34,6 @@
                 scrollbar-width: none;
                 /* Firefox */
             }
-            
         </style>
 
         <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
@@ -101,58 +100,24 @@
         <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-text-main">Danh mục nổi bật</h3>
-                <a href="#" class="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
+                <a th:href="@{/categories}"
+                    class="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
                     Xem tất cả <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                 </a>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <a href="#"
+                <a th:each="category : ${categories}" th:href="@{'/product/category/' + ${category.slug}}"
                     class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
                     <div
-                        class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">laptop_mac</span>
+                        class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300 overflow-hidden">
+                        <img th:if="${category.image != null}" th:src="@{'/images/categories/' + ${category.image}}"
+                            alt=""
+                            class="w-2/3 h-2/3 object-contain transition-all group-hover:invert group-hover:brightness-0 group-hover:white" />
+                        <span th:unless="${category.image != null}"
+                            class="material-symbols-outlined text-3xl">category</span>
                     </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Laptop</span>
-                </a>
-                <a href="#"
-                    class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
-                    <div
-                        class="w-14 h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">smartphone</span>
-                    </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Điện thoại</span>
-                </a>
-                <a href="#"
-                    class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
-                    <div
-                        class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">headphones</span>
-                    </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Tai nghe</span>
-                </a>
-                <a href="#"
-                    class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
-                    <div
-                        class="w-14 h-14 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-orange-600 group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">watch</span>
-                    </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Smartwatch</span>
-                </a>
-                <a href="#"
-                    class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
-                    <div
-                        class="w-14 h-14 rounded-full bg-orange-50 text-orange-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">videogame_asset</span>
-                    </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Gaming</span>
-                </a>
-                <a href="#"
-                    class="group flex flex-col items-center gap-3 p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/20 hover:-translate-y-1 transition-all duration-300">
-                    <div
-                        class="w-14 h-14 rounded-full bg-gray-50 text-gray-600 flex items-center justify-center group-hover:scale-110 group-hover:bg-gray-600 group-hover:text-white transition-all duration-300">
-                        <span class="material-symbols-outlined text-3xl">cable</span>
-                    </div>
-                    <span class="font-semibold text-gray-700 group-hover:text-primary">Phụ kiện</span>
+                    <span class="font-semibold text-gray-700 group-hover:text-primary"
+                        th:text="${category.name}">Laptop</span>
                 </a>
             </div>
         </section>
@@ -246,7 +211,7 @@
                         </div>
                     </div>
                     <a class="text-white hover:text-primary font-bold hover:underline transition-colors flex items-center gap-1"
-                        href="#">
+                        th:href="@{/search}">
                         Xem tất cả deal <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </a>
                 </div>
@@ -259,279 +224,12 @@
 
                     <div id="flash-sale-slider"
                         class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full cursor-pointer group/card">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
-                                <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                                <div
-                                    class="absolute bottom-2 left-2 right-2 flex gap-2 translate-y-[120%] group-hover/card:translate-y-0 opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20">
-                                    <button
-                                        class="flex-1 text-orange-700 font-bold text-base rounded-lg hover:bg-orange-100 transition-colors shadow-lg"
-                                        style="background-color: rgb(245, 221, 204);">
-                                        Mua ngay
-                                    </button>
-                                    <button
-                                        class="w-9 h-9 flex-shrink-0 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary-hover shadow-lg transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    MacBook Air M2 2023 15 inch 8GB/256GB
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star_half</span>
-                                    <span class="text-gray-400 ml-1">(120)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">28.990.000₫</span>
-                                        <span class="text-accent font-bold">21.490.000₫</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 45%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1">Đã bán 12</p>
-                            </div>
-                        </a>
+                        <div
+                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full group/card">
+                            </a>
 
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full cursor-pointer group/card">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-10%</span>
-                                <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-air-select-wifi-blue-202203?wid=940&hei=1112&fmt=png-alpha&.v=1645065732688"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                                <div
-                                    class="absolute bottom-2 left-2 right-2 flex gap-2 translate-y-[120%] group-hover/card:translate-y-0 opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20">
-                                    <button
-                                        class="flex-1 text-orange-700 font-bold text-base rounded-lg hover:bg-orange-100 transition-colors shadow-lg"
-                                        style="background-color: rgb(245, 221, 204);">
-                                        Mua ngay
-                                    </button>
-                                    <button
-                                        class="w-9 h-9 flex-shrink-0 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary-hover shadow-lg transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    iPad Air 5 M1 WiFi 64GB
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star_half</span>
-                                    <span class="text-gray-400 ml-1">(45)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">15.990.000₫</span>
-                                        <span class="text-accent font-bold">13.490.000₫</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 80%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1">Sắp cháy hàng</p>
-                            </div>
-                        </a>
 
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full cursor-pointer group/card">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
-                                <img src="https://m.media-amazon.com/images/I/61pUul1oDlL.jpg"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                                <div
-                                    class="absolute bottom-2 left-2 right-2 flex gap-2 translate-y-[120%] group-hover/card:translate-y-0 opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20">
-                                    <button
-                                        class="flex-1 text-orange-700 font-bold text-base rounded-lg hover:bg-orange-100 transition-colors shadow-lg"
-                                        style="background-color: rgb(245, 221, 204);">
-                                        Mua ngay
-                                    </button>
-                                    <button
-                                        class="w-9 h-9 flex-shrink-0 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary-hover shadow-lg transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Logitech</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Chuột Gaming Logitech G Pro Wireless
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="text-gray-400 ml-1">(89)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">2.990.000₫</span>
-                                        <span class="text-accent font-bold">2.490.000₫</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 20%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1">Đã bán 5</p>
-                            </div>
-                        </a>
 
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full cursor-pointer group/card">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-5%</span>
-                                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=800"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                                <div
-                                    class="absolute bottom-2 left-2 right-2 flex gap-2 translate-y-[120%] group-hover/card:translate-y-0 opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20">
-                                    <button
-                                        class="flex-1 text-orange-700 font-bold text-base rounded-lg hover:bg-orange-100 transition-colors shadow-lg"
-                                        style="background-color: rgb(245, 221, 204);">
-                                        Mua ngay
-                                    </button>
-                                    <button
-                                        class="w-9 h-9 flex-shrink-0 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary-hover shadow-lg transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Apple Watch Series 9 GPS 41mm
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="text-gray-400 ml-1">(210)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">10.990.000₫</span>
-                                        <span class="text-accent font-bold">9.590.000₫</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 60%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1">Vừa mở bán</p>
-                            </div>
-                        </a>
-
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary hover:shadow-lg transition-all duration-300 h-full cursor-pointer group/card">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-20%</span>
-                                <img src="https://images.unsplash.com/photo-1593121925328-369cc8459c08?auto=format&fit=crop&q=80&w=800"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                                <div
-                                    class="absolute bottom-2 left-2 right-2 flex gap-2 translate-y-[120%] group-hover/card:translate-y-0 opacity-0 group-hover/card:opacity-100 transition-all duration-300 z-20">
-                                    <button
-                                        class="flex-1 text-orange-700 font-bold text-base rounded-lg hover:bg-orange-100 transition-colors shadow-lg"
-                                        style="background-color: rgb(245, 221, 204);">
-                                        Mua ngay
-                                    </button>
-                                    <button
-                                        class="w-9 h-9 flex-shrink-0 bg-primary text-white rounded-lg flex items-center justify-center hover:bg-primary-hover shadow-lg transition-all">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Android</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Xiaomi 13T Pro 5G 12GB/512GB
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star_half</span>
-                                    <span class="text-gray-400 ml-1">(56)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">15.990.000₫</span>
-                                        <span class="text-accent font-bold">13.990.000₫</span>
-                                    </div>
-                                </div>
-                                <div class="mt-2 w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
-                                    <div class="bg-primary h-1.5 rounded-full" style="width: 30%"></div>
-                                </div>
-                                <p class="text-[10px] text-gray-500 mt-1">Đã bán 8</p>
-                            </div>
-                        </a>
-
-                    </div>
-
-                    <button id="flash-sale-next"
-                        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
-                </div>
-            </div>
         </section>
 
         <!-- Banner & Product Mixed Section -->
@@ -585,154 +283,7 @@
                     <div id="mixed-slider-container"
                         class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
                         <!-- Product Card 1 -->
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] lg:w-[calc(33.33%-11px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-10%</span>
-                                <button onclick="event.preventDefault()"
-                                    class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
-                                    <span
-                                        class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
-                                    <span
-                                        class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
-                                </button>
-                                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=800"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    MacBook Pro 14 M3
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="text-gray-400 ml-1">(12)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">45.990.000₫</span>
-                                        <span class="text-accent font-bold">39.990.000₫</span>
-                                    </div>
-                                    <button
-                                        class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
 
-                        <!-- Product Card 2 -->
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] lg:w-[calc(33.33%-11px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-5%</span>
-                                <button onclick="event.preventDefault()"
-                                    class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
-                                    <span
-                                        class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
-                                    <span
-                                        class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
-                                </button>
-                                <img src="https://images.unsplash.com/photo-1598327105659-60331943ead9?auto=format&fit=crop&q=80&w=800"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Sony</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Tai nghe Sony WH-1000XM5
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star_half</span>
-                                    <span class="text-gray-400 ml-1">(45)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">8.490.000₫</span>
-                                        <span class="text-accent font-bold">6.490.000₫</span>
-                                    </div>
-                                    <button
-                                        class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Product Card 3 -->
-                        <a th:href="@{/product/product-detail}"
-                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] lg:w-[calc(33.33%-11px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
-                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                                <span
-                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-20%</span>
-                                <button onclick="event.preventDefault()"
-                                    class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
-                                    <span
-                                        class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
-                                    <span
-                                        class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
-                                </button>
-                                <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=800"
-                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
-                            </div>
-                            <div class="p-4 flex flex-col gap-2">
-                                <span
-                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Apple Watch Series 9
-                                </h4>
-                                <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="material-symbols-outlined text-[14px] fill-current"
-                                        style="font-variation-settings: 'FILL' 1">star</span>
-                                    <span class="text-gray-400 ml-1">(88)</span>
-                                </div>
-                                <div class="flex items-end justify-between mt-1">
-                                    <div class="flex flex-col">
-                                        <span class="text-gray-400 text-xs line-through font-medium">11.990.000₫</span>
-                                        <span class="text-accent font-bold">9.290.000₫</span>
-                                    </div>
-                                    <button
-                                        class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative rounded-3xl mb-8"
@@ -754,32 +305,43 @@
                 <div id="slider-container"
                     class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
 
-                    <a th:href="@{/product/product-detail}" th:each="i : ${#numbers.sequence(1, 10)}"
-                        class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full">
+                    <div th:each="product : ${products}"
+                        class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card h-full">
 
                         <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                            <a th:href="@{'/product/product-detail/' + ${product.slug}}"
+                                class="absolute inset-0 z-10"></a>
                             <span
-                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-25%</span>
+                                th:if="${product.variant != null && !product.variant.empty && product.variant[0].discount > 0}"
+                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-20"
+                                th:text="${'-' + #numbers.formatDecimal(product.variant[0].discount, 0, 0) + '%'}">-25%</span>
 
                             <button onclick="event.preventDefault()"
-                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+                                class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
                                 <span
                                     class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
                                 <span
                                     class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
                             </button>
 
-                            <img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665"
+                            <img th:if="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                th:src="@{'/images/variants/' + ${product.variant[0].variantImages[0].pathImage}}"
+                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                            <img th:unless="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                src="https://via.placeholder.com/300"
                                 class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
                         </div>
 
                         <div class="p-4 flex flex-col gap-2">
-                            <span
-                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit">APPLE</span>
-                            <h4
-                                class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                MacBook Air M2 2023 15 inch 8GB/256GB - Chính Hãng VN/A
-                            </h4>
+                            <span th:if="${product.brand != null}"
+                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit"
+                                th:text="${product.brand.name}">APPLE</span>
+                            <a th:href="@{'/product/product-detail/' + ${product.slug}}">
+                                <h4 class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm"
+                                    th:text="${product.name}">
+                                    MacBook Air M2 2023 15 inch 8GB/256GB - Chính Hãng VN/A
+                                </h4>
+                            </a>
 
                             <div class="flex items-center gap-1 text-yellow-400 text-xs">
                                 <span class="material-symbols-outlined text-[14px] fill-current"
@@ -797,102 +359,103 @@
 
                             <div class="flex items-end justify-between mt-1">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-400 text-xs line-through font-medium">28.990k</span>
-                                    <span class="text-accent font-bold">21.490k</span>
+                                    <span th:if="${product.variant != null && !product.variant.empty}"
+                                        class="text-gray-400 text-xs line-through font-medium"
+                                        th:text="${#numbers.formatDecimal(product.variant[0].price, 0, 'COMMA', 0, 'POINT') + '₫'}">28.990k</span>
+                                    <span th:if="${product.variant != null && !product.variant.empty}"
+                                        class="text-accent font-bold"
+                                        th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">21.490k</span>
                                 </div>
-                                <button
-                                    class="w-9 h-9 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
-                                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                </button>
+                                
                             </div>
                         </div>
-                    </a>
+                        </a>
+                    </div>
+
+                    <button id="btn-next"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
                 </div>
 
-                <button id="btn-next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
-            </div>
+                <div class="mt-8 flex justify-center">
+                    <button
+                        class="px-10 py-3 border border-gray-200 rounded-full font-semibold text-gray-600 hover:text-white hover:bg-primary hover:border-primary transition-all bg-white shadow-sm hover:shadow-lg">
+                        Xem thêm 240 sản phẩm
+                    </button>
+                </div>
 
-            <div class="mt-8 flex justify-center">
-                <button
-                    class="px-10 py-3 border border-gray-200 rounded-full font-semibold text-gray-600 hover:text-white hover:bg-primary hover:border-primary transition-all bg-white shadow-sm hover:shadow-lg">
-                    Xem thêm 240 sản phẩm
-                </button>
-            </div>
+                <script>
+                    // Hàm khởi tạo Slider (Dùng chung cho mọi slider)
+                    function setupSlider(containerId, prevBtnId, nextBtnId) {
+                        const slider = document.getElementById(containerId);
+                        const prevBtn = document.getElementById(prevBtnId);
+                        const nextBtn = document.getElementById(nextBtnId);
 
-            <script>
-                // Hàm khởi tạo Slider (Dùng chung cho mọi slider)
-                function setupSlider(containerId, prevBtnId, nextBtnId) {
-                    const slider = document.getElementById(containerId);
-                    const prevBtn = document.getElementById(prevBtnId);
-                    const nextBtn = document.getElementById(nextBtnId);
+                        // Nếu không tìm thấy element thì bỏ qua
+                        if (!slider || !prevBtn || !nextBtn) return;
 
-                    // Nếu không tìm thấy element thì bỏ qua
-                    if (!slider || !prevBtn || !nextBtn) return;
-
-                    // Hàm tính khoảng cách cuộn (chiều rộng item + gap)
-                    function getScrollStep() {
-                        const card = slider.firstElementChild;
-                        if (!card) return 0;
-                        // Tính toán gap dựa trên style thực tế (16px cho gap-4)
-                        return card.offsetWidth + 16;
-                    }
-
-                    // Hàm cập nhật trạng thái nút
-                    function updateButtonState() {
-                        // Ẩn nút trái nếu ở đầu
-                        if (slider.scrollLeft <= 5) { // Cho sai số nhỏ 5px
-                            prevBtn.classList.add('hidden');
-                        } else {
-                            prevBtn.classList.remove('hidden');
+                        // Hàm tính khoảng cách cuộn (chiều rộng item + gap)
+                        function getScrollStep() {
+                            const card = slider.firstElementChild;
+                            if (!card) return 0;
+                            // Tính toán gap dựa trên style thực tế (16px cho gap-4)
+                            return card.offsetWidth + 16;
                         }
 
-                        // Ẩn nút phải nếu đã cuộn hết
-                        // Math.ceil để làm tròn, đảm bảo chính xác trên các màn hình retina
-                        if (Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth - 5) {
-                            nextBtn.classList.add('hidden');
-                        } else {
-                            nextBtn.classList.remove('hidden');
+                        // Hàm cập nhật trạng thái nút
+                        function updateButtonState() {
+                            // Ẩn nút trái nếu ở đầu
+                            if (slider.scrollLeft <= 5) { // Cho sai số nhỏ 5px
+                                prevBtn.classList.add('hidden');
+                            } else {
+                                prevBtn.classList.remove('hidden');
+                            }
+
+                            // Ẩn nút phải nếu đã cuộn hết
+                            // Math.ceil để làm tròn, đảm bảo chính xác trên các màn hình retina
+                            if (Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth - 5) {
+                                nextBtn.classList.add('hidden');
+                            } else {
+                                nextBtn.classList.remove('hidden');
+                            }
                         }
+
+                        // Sự kiện Click Next
+                        nextBtn.addEventListener('click', () => {
+                            slider.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+                        });
+
+                        // Sự kiện Click Prev
+                        prevBtn.addEventListener('click', () => {
+                            slider.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+                        });
+
+                        // Lắng nghe sự kiện scroll và resize
+                        slider.addEventListener('scroll', updateButtonState);
+                        window.addEventListener('resize', updateButtonState);
+
+                        // Chạy lần đầu
+                        updateButtonState();
                     }
 
-                    // Sự kiện Click Next
-                    nextBtn.addEventListener('click', () => {
-                        slider.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
-                    });
+                    // --- KÍCH HOẠT CÁC SLIDER ---
 
-                    // Sự kiện Click Prev
-                    prevBtn.addEventListener('click', () => {
-                        slider.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
-                    });
+                    // 1. Slider "Gợi ý cho bạn" (Sản phẩm)
+                    setupSlider('slider-container', 'btn-prev', 'btn-next');
 
-                    // Lắng nghe sự kiện scroll và resize
-                    slider.addEventListener('scroll', updateButtonState);
-                    window.addEventListener('resize', updateButtonState);
+                    // 2. Slider Banner Quảng cáo (Mới thêm)
+                    setupSlider('sub-banner-container', 'sub-banner-prev', 'sub-banner-next');
 
-                    // Chạy lần đầu
-                    updateButtonState();
-                }
+                    // 3. Slider Flash Sale (Mới thêm)
+                    setupSlider('flash-sale-slider', 'flash-sale-prev', 'flash-sale-next');
 
-                // --- KÍCH HOẠT CÁC SLIDER ---
+                    // 4. Slider Sản phẩm đã xem (Mới thêm)
+                    setupSlider('viewed-slider-container', 'viewed-btn-prev', 'viewed-btn-next');
 
-                // 1. Slider "Gợi ý cho bạn" (Sản phẩm)
-                setupSlider('slider-container', 'btn-prev', 'btn-next');
-
-                // 2. Slider Banner Quảng cáo (Mới thêm)
-                setupSlider('sub-banner-container', 'sub-banner-prev', 'sub-banner-next');
-
-                // 3. Slider Flash Sale (Mới thêm)
-                setupSlider('flash-sale-slider', 'flash-sale-prev', 'flash-sale-next');
-
-                // 4. Slider Sản phẩm đã xem (Mới thêm)
-                setupSlider('viewed-slider-container', 'viewed-btn-prev', 'viewed-btn-next');
-
-                // 5. Slider Mixed Section (Mới thêm)
-                setupSlider('mixed-slider-container', 'mixed-btn-prev', 'mixed-btn-next');
-            </script>
+                    // 5. Slider Mixed Section (Mới thêm)
+                    setupSlider('mixed-slider-container', 'mixed-btn-prev', 'mixed-btn-next');
+                </script>
         </section>
 
         <!-- SẢN PHẨM ĐÃ XEM -->
@@ -915,15 +478,16 @@
                 <div id="viewed-slider-container"
                     class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
 
-                    <a th:href="@{/product/product-detail}" th:each="i : ${#numbers.sequence(1, 6)}"
-                        class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] block bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card cursor-pointer h-full">
+                    <div th:each="i : ${#numbers.sequence(1, 6)}"
+                        class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card h-full">
 
                         <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                            <a href="#" class="absolute inset-0 z-10"></a>
                             <span
-                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
+                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-20">-15%</span>
 
                             <button onclick="event.preventDefault()"
-                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+                                class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
                                 <span
                                     class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
                                 <span
@@ -937,10 +501,12 @@
                         <div class="p-4 flex flex-col gap-2">
                             <span
                                 class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Xiaomi</span>
-                            <h4
-                                class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                Xiaomi 13T Pro 5G 12GB/512GB (Sản phẩm demo)
-                            </h4>
+                            <a href="#">
+                                <h4
+                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
+                                    Xiaomi 13T Pro 5G 12GB/512GB (Sản phẩm demo)
+                                </h4>
+                            </a>
 
                             <div class="flex items-center gap-1 text-yellow-400 text-xs">
                                 <span class="material-symbols-outlined text-[14px] fill-current"
@@ -961,20 +527,20 @@
                                     <span class="text-gray-400 text-xs line-through font-medium">15.990.000₫</span>
                                     <span class="text-accent font-bold">13.990.000₫</span>
                                 </div>
-                                <button
+                                <a th:href="@{/cart}"
                                     class="w-9 h-9 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
                                     <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                </button>
+                                </a>
                             </div>
                         </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
 
-                <button id="viewed-btn-next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
-            </div>
+                    <button id="viewed-btn-next"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
         </section>
 
         <section class="w-full py-12 overflow-hidden bg-white border-t border-gray-100">
@@ -986,52 +552,10 @@
             <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8 items-center justify-items-center">
 
-                    <a href="#"
+                    <a th:each="brand : ${brands}" th:href="@{'/product/brand/' + ${brand.name.toLowerCase()}}"
                         class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-black transition-colors">APPLE</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-blue-700 transition-colors">SAMSUNG</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-blue-900 transition-colors">DELL</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-black transition-colors">SONY</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-orange-500 transition-colors">XIAOMI</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-blue-600 transition-colors">ASUS</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-green-600 transition-colors">OPPO</span>
-                    </a>
-
-                    <a href="#"
-                        class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span
-                            class="text-3xl font-black text-gray-300 group-hover:text-red-600 transition-colors">MSI</span>
+                        <span th:text="${brand.name}"
+                            class="text-3xl font-black text-gray-300 group-hover:text-primary transition-colors uppercase">BRAND</span>
                     </a>
 
                 </div>
@@ -1041,7 +565,7 @@
         <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-gray-100">
             <div class="flex items-center justify-between mb-8">
                 <h3 class="text-2xl font-bold text-text-main">Tin công nghệ mới</h3>
-                <a href="#" class="text-primary text-sm font-semibold hover:underline">Xem Blog ></a>
+                <a th:href="@{/posts}" class="text-primary text-sm font-semibold hover:underline">Xem Blog ></a>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1111,7 +635,8 @@
                     <span class="material-symbols-outlined text-primary">campaign</span>
                     Tin tức & Sự kiện
                 </h3>
-                <a href="#" class="text-primary text-sm font-semibold hover:underline flex items-center gap-1">
+                <a th:href="@{/posts}"
+                    class="text-primary text-sm font-semibold hover:underline flex items-center gap-1">
                     Xem tất cả <span class="material-symbols-outlined text-sm">chevron_right</span>
                 </a>
             </div>
@@ -1276,4 +801,5 @@
         </section>
     </main>
 </body>
+
 </html>

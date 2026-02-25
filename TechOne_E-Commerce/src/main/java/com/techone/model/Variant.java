@@ -37,7 +37,7 @@ public class Variant {
 	public Double discount;
 
 	public Boolean status;
-	//true=dg hoat dong/false=an
+	// true=dg hoat dong/false=an
 
 	@Column(columnDefinition = "varchar(255)")
 	@NotBlank(message = "Mã SKU không thể bỏ trống")
@@ -59,4 +59,11 @@ public class Variant {
 
 	@OneToMany(mappedBy = "variant")
 	public List<OrderDetail> orderDetail;
+	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER)
+	@lombok.ToString.Exclude
+	public List<VariantImage> variantImages;
+
+	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER)
+	@lombok.ToString.Exclude
+	public List<VariantAttributeValue> variantAttributeValues;
 }

@@ -42,7 +42,8 @@ public class Product {
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public LocalDateTime createAt = LocalDateTime.now();
 
-	public Integer status;
+	public Boolean status;
+	// true = đang hoạt động / false = ẩn
 
 	// 0: Hết hàng, 1: Còn hàng, 2: Sắp hết hàng
 	public Integer stockStatus;
@@ -51,27 +52,37 @@ public class Product {
 	@NotBlank(message = "Mô tả sản phẩm không được trống")
 	public String content;
 
-	@ManyToOne
+	@ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	@jakarta.validation.constraints.NotNull(message = "Chưa chọn danh mục")
+	@lombok.ToString.Exclude
 	Category category;
 
-	@ManyToOne
+	@ManyToOne(fetch = jakarta.persistence.FetchType.EAGER)
 	@JoinColumn(name = "brand_id")
 	@jakarta.validation.constraints.NotNull(message = "Chưa chọn thương hiệu")
+	@lombok.ToString.Exclude
 	Brand brand;
 
 	public String specifications;
 
+	@ManyToOne
+	@JoinColumn(name = "account_id")
+	public Account account;
+
 	@OneToMany(mappedBy = "product")
+	@lombok.ToString.Exclude
 	public List<Sale> sale;
 
 	@OneToMany(mappedBy = "product")
+	@lombok.ToString.Exclude
 	public List<Review> review;
 
 	@OneToMany(mappedBy = "product")
+	@lombok.ToString.Exclude
 	public List<Variant> variant;
 
 	@OneToMany(mappedBy = "product")
+	@lombok.ToString.Exclude
 	public List<ImageProduct> imageProduct;
 }

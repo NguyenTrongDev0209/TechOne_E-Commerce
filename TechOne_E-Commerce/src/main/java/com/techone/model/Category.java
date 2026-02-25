@@ -52,15 +52,19 @@ public class Category {
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id")
+	@lombok.ToString.Exclude
 	public Category parent;
 
-	@OneToMany(mappedBy = "parent")
+	@OneToMany(mappedBy = "parent", fetch = jakarta.persistence.FetchType.EAGER)
 	@jakarta.persistence.OrderBy("id ASC")
+	@lombok.ToString.Exclude
 	public List<Category> children;
 
 	@OneToMany(mappedBy = "category")
+	@lombok.ToString.Exclude
 	public List<Post> post;
 
 	@OneToMany(mappedBy = "category")
+	@lombok.ToString.Exclude
 	public List<Product> product;
 }
