@@ -20,6 +20,9 @@ import com.techone.model.Account;
 import com.techone.repository.AccountRepository;
 import com.techone.utils.SessionUtils;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 @Controller
 public class LoginController {
 
@@ -37,7 +40,14 @@ public class LoginController {
 	@PostMapping("/login")
 	public String login(@RequestParam("username") String username, 
 	                    @RequestParam("password") String password, 
+	                    HttpServletRequest request, 
+	                    HttpServletResponse response, 
 	                    Model model) {
+	    
+	    if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+	        model.addAttribute("error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu");
+	        return "views/authentic/login";
+	    }
 	    
 	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
 
