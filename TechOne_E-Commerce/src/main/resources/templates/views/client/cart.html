@@ -69,11 +69,11 @@
                     <!-- Items List -->
                     <div class="space-y-4">
                         <div th:each="item : ${cartItems}" th:id="'cart-item-' + ${item.id}"
-                            class="cart-item-row grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 py-6 border-b border-gray-100 dark:border-gray-700 last:border-0 bg-white dark:bg-[#1e293b] md:bg-transparent rounded-2xl px-2">
+                            class="cart-item-row grid grid-cols-[40px_100px_1fr_140px_200px_40px] items-center gap-4 py-6 border border-gray-100 dark:border-gray-700 bg-white dark:bg-[#1e293b] rounded-2xl px-4 shadow-sm">
 
                             <!-- Col 1: Checkbox -->
                             <div class="flex justify-center">
-                                <input type="checkbox" checked
+                                <input type="checkbox" checked th:value="${item.id}"
                                     class="cart-item-checkbox w-4 h-4 rounded text-primary focus:ring-primary border-gray-300">
                             </div>
 
@@ -102,6 +102,7 @@
                                 <div class="flex items-center gap-3">
                                     <span class="item-price font-bold text-primary"
                                         th:data-price="${item.variant.price - (item.variant.price * item.variant.discount / 100)}"
+                                        th:data-original-price="${item.variant.price}"
                                         th:text="${#numbers.formatDecimal(item.variant.price - (item.variant.price * item.variant.discount / 100), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
                                     <span th:if="${item.variant.discount > 0}"
                                         class="text-sm text-gray-400 line-through"
@@ -171,12 +172,14 @@
                                     class="flex items-center justify-between py-4 border-b border-gray-100 dark:border-gray-700">
                                     <span class="text-gray-500">Tạm tính:</span>
                                     <span id="sub-total" class="font-bold text-[#1c100d] dark:text-white"
-                                        th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![quantity * (variant.price * (1 - variant.discount/100))]), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
+                                        th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![quantity * variant.price]), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
                                 </div>
                                 <div
                                     class="flex items-center justify-between py-4 border-b border-gray-100 dark:border-gray-700">
                                     <span class="text-gray-500">Giảm giá:</span>
-                                    <span class="font-bold text-green-500">0₫</span>
+                                    <span id="discount" class="font-bold text-green-500"
+                                        th:with="totalDiscount=${#aggregates.sum(cartItems.![quantity * (variant.price * variant.discount / 100)])}"
+                                        th:text="${totalDiscount > 0 ? '- ' + #numbers.formatDecimal(totalDiscount, 0, 'COMMA', 0, 'POINT') + '₫' : '0₫'}">0₫</span>
                                 </div>
                                 <div
                                     class="flex items-center justify-between py-4 border-b border-gray-100 dark:border-gray-700">
@@ -191,11 +194,11 @@
                             </div>
 
                             <div class="mt-8 space-y-3">
-                                <a th:href="@{/checkout}"
+                                <button type="button" onclick="proceedToCheckout()"
                                     class="w-full py-4 bg-primary text-white font-bold rounded-2xl hover:bg-primary-hover transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-2 transform active:scale-[0.98] text-center">
                                     TIẾN HÀNH THANH TOÁN
                                     <span class="material-symbols-outlined">arrow_forward</span>
-                                </a>
+                                </button>
                                 <a href="/"
                                     class="w-full py-4 bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-gray-400 font-bold rounded-2xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-2">
                                     MUA THÊM SẢN PHẨM
@@ -333,17 +336,31 @@
 
             function updateTotals() {
                 let subTotal = 0;
+                let totalDiscount = 0;
+                let finalTotal = 0;
+
                 document.querySelectorAll('.cart-item-row').forEach(row => {
                     const checkbox = row.querySelector('.cart-item-checkbox');
                     if (checkbox && checkbox.checked) {
                         const qty = parseInt(row.querySelector('input[type="text"]').value);
-                        const price = parseFloat(row.querySelector('.item-price').dataset.price);
-                        subTotal += qty * price;
+                        const priceEl = row.querySelector('.item-price');
+
+                        const actualPrice = parseFloat(priceEl.dataset.price);
+                        const originalPrice = parseFloat(priceEl.dataset.originalPrice || actualPrice);
+                        const discountAmount = originalPrice - actualPrice;
+
+                        subTotal += qty * originalPrice;
+                        totalDiscount += qty * discountAmount;
+                        finalTotal += qty * actualPrice;
                     }
                 });
 
                 document.getElementById('sub-total').innerText = formatCurrency(subTotal);
-                document.getElementById('total-amount').innerText = formatCurrency(subTotal);
+                const discountText = totalDiscount > 0 ? '- ' + formatCurrency(totalDiscount) : '0₫';
+                if (document.getElementById('discount')) {
+                    document.getElementById('discount').innerText = discountText;
+                }
+                document.getElementById('total-amount').innerText = formatCurrency(finalTotal);
             }
 
             function updateCartBadge(count) {
@@ -380,6 +397,17 @@
                 container.className = 'fixed bottom-8 right-8 z-[100] flex flex-col gap-3';
                 document.body.appendChild(container);
                 return container;
+            }
+
+            function proceedToCheckout() {
+                const checkboxes = document.querySelectorAll('.cart-item-checkbox:checked');
+                if (checkboxes.length === 0) {
+                    showToast('Vui lòng chọn ít nhất một sản phẩm để thanh toán', 'error');
+                    return;
+                }
+
+                const itemIds = Array.from(checkboxes).map(cb => cb.value).join(',');
+                window.location.href = '/checkout?itemIds=' + itemIds;
             }
 
             document.addEventListener('DOMContentLoaded', () => {

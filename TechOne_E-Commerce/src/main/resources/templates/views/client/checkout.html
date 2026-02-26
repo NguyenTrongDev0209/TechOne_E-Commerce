@@ -96,21 +96,29 @@
                         <div class="space-y-3 text-sm">
                             <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                 <span>Tạm tính</span>
-                                <span class="font-medium text-gray-900 dark:text-white">4.680.000đ</span>
+                                <span id="subtotal-amount" class="font-medium text-gray-900 dark:text-white"
+                                    th:data-value="${#aggregates.sum(cartItems.![quantity * variant.price])}"
+                                    th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![quantity * variant.price]), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
                             </div>
                             <div class="flex justify-between text-gray-600 dark:text-gray-300">
                                 <span>Phí vận chuyển</span>
-                                <span class="font-medium text-gray-900 dark:text-white">30.000đ</span>
+                                <span id="shipping-fee-amount" class="font-medium text-gray-900 dark:text-white"
+                                    data-value="0">Miễn phí</span>
                             </div>
                             <div class="flex justify-between text-green-600 dark:text-green-400">
                                 <span>Giảm giá</span>
-                                <span class="font-medium">-0đ</span>
+                                <span id="discount-amount" class="font-medium"
+                                    th:with="totalDiscount=${#aggregates.sum(cartItems.![quantity * (variant.price * variant.discount / 100)])}"
+                                    th:data-value="${totalDiscount}"
+                                    th:text="${totalDiscount > 0 ? '- ' + #numbers.formatDecimal(totalDiscount, 0, 'COMMA', 0, 'POINT') + '₫' : '0₫'}">0₫</span>
                             </div>
                             <div
                                 class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-start">
                                 <span class="font-bold text-gray-900 dark:text-white mt-1">Tổng cộng</span>
                                 <div class="text-right">
-                                    <span class="block text-xl font-bold text-primary">4.710.000đ</span>
+                                    <span id="total-amount" class="block text-xl font-bold text-primary"
+                                        th:data-base-value="${#aggregates.sum(cartItems.![quantity * (variant.price * (1 - variant.discount/100))])}"
+                                        th:text="${#numbers.formatDecimal(#aggregates.sum(cartItems.![quantity * (variant.price * (1 - variant.discount/100))]), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
                                     <span class="text-xs text-gray-500 dark:text-gray-400">(Đã bao gồm VAT)</span>
                                 </div>
                             </div>
@@ -204,80 +212,83 @@
                             <div class="col-span-1 md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Địa chỉ
                                     nhận hàng</label>
-                                <div
+                                <div id="selected-address-container" th:if="${defaultAddress != null}"
+                                    th:data-district-id="${defaultAddress.ward.district.id}"
+                                    th:data-ward-code="${defaultAddress.ward.code}"
                                     class="border border-primary bg-orange-50 dark:bg-orange-900/10 rounded-lg p-4 relative">
                                     <div class="flex items-center gap-2 mb-2">
-                                        <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A</span>
+                                        <span id="display-address-name" class="font-bold text-gray-900 dark:text-white"
+                                            th:text="${defaultAddress.name}">Nguyễn Văn A</span>
                                         <span class="text-gray-500 dark:text-gray-400">|</span>
-                                        <span class="text-gray-600 dark:text-gray-300">0912345678</span>
+                                        <span id="display-address-phone" class="text-gray-600 dark:text-gray-300"
+                                            th:text="${defaultAddress.phone}">0912345678</span>
                                         <a href="javascript:void(0)" onclick="toggleAddressModal()"
                                             class="ml-auto text-[13px] font-medium text-primary hover:text-orange-600 transition-colors">Thay
                                             đổi địa chỉ</a>
                                     </div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                    <p id="display-address-full"
+                                        class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+                                        th:text="${defaultAddress.fullAddress} + ', ' + ${defaultAddress.ward.name} + ', ' + ${defaultAddress.ward.district.name} + ', ' + ${defaultAddress.ward.district.province.name}">
                                         Số 123, Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh
                                     </p>
                                     <div class="flex justify-between items-center mt-2">
-                                        <span
-                                            class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Nhà
-                                            riêng</span>
+                                        <span id="display-address-default" th:if="${defaultAddress.status}"
+                                            class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Mặc
+                                            định</span>
+                                        <span id="display-address-default" th:unless="${defaultAddress.status}"
+                                            style="display:none;"
+                                            class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Mặc
+                                            định</span>
                                     </div>
+                                </div>
+                                <div th:unless="${defaultAddress != null}"
+                                    class="border border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6 flex flex-col items-center justify-center text-center">
+                                    <span
+                                        class="material-symbols-outlined text-gray-400 mb-2 text-3xl">location_off</span>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Bạn chưa có địa chỉ nhận
+                                        hàng nào</p>
+                                    <button type="button" onclick="window.location.href='/account/address'"
+                                        class="flex items-center gap-2 text-primary hover:text-orange-700 font-medium transition-colors text-sm">
+                                        <span class="material-symbols-outlined text-[18px]">add</span>
+                                        Thêm địa chỉ mới
+                                    </button>
                                 </div>
                             </div>
                             <div class="col-span-1 md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Sản
                                     phẩm</label>
                                 <div class="space-y-4">
-                                    <div class="grid grid-cols-[80px_1fr_120px_40px] gap-4 items-center">
+                                    <div th:each="item : ${cartItems}"
+                                        class="grid grid-cols-[80px_1fr_120px] gap-4 items-center">
                                         <div class="relative w-20 h-20 flex-shrink-0">
-                                            <img alt="Keychron K8 Pro"
-                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700"
-                                                src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=200" />
+                                            <img th:if="${not #lists.isEmpty(item.variant.variantImages)}"
+                                                th:src="@{'/images/variants/' + ${item.variant.variantImages[0].pathImage}}"
+                                                th:alt="${item.variant.product.name}"
+                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700" />
+                                            <img th:unless="${not #lists.isEmpty(item.variant.variantImages)}"
+                                                src="https://via.placeholder.com/80"
+                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700" />
                                         </div>
                                         <div class="flex flex-col gap-1">
-                                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Bàn phím cơ
-                                                Keychron
-                                                K8 Pro</h3>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">Switch: Red | LED: RGB
+                                            <h3 class="text-sm font-medium text-gray-900 dark:text-white"
+                                                th:text="${item.variant.product.name}">Tên sản phẩm</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                                <span th:each="vav, iterStat : ${item.variant.variantAttributeValues}"
+                                                    th:text="${vav.attributeValue.value} + (!${iterStat.last} ? ' | ' : '')">
+                                                    Thuộc Tính
+                                                </span>
                                             </p>
                                             <div class="flex items-center gap-2 mt-1">
-                                                <span class="text-base font-bold text-primary">2.190.000đ</span>
-                                                <span class="text-xs text-gray-400 line-through">2.500.000đ</span>
+                                                <span class="text-base font-bold text-primary"
+                                                    th:text="${#numbers.formatDecimal(item.variant.price - (item.variant.price * item.variant.discount / 100), 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
+                                                <span th:if="${item.variant.discount > 0}"
+                                                    class="text-xs text-gray-400 line-through"
+                                                    th:text="${#numbers.formatDecimal(item.variant.price, 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
                                             </div>
                                         </div>
-                                        <div class="text-sm font-medium text-gray-600 dark:text-gray-300">
-                                            SL : 1
-                                        </div>
-                                        <div class="flex justify-end">
-                                            <button class="text-red-500 hover:text-red-700 transition-colors">
-                                                <span class="material-symbols-outlined text-lg">delete</span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-[80px_1fr_120px_40px] gap-4 items-center">
-                                        <div class="relative w-20 h-20 flex-shrink-0">
-                                            <img alt="Logitech MX Master 3S"
-                                                class="w-full h-full object-cover rounded-md border border-gray-200 dark:border-gray-700"
-                                                src="https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&q=80&w=200" />
-                                        </div>
-                                        <div class="flex flex-col gap-1">
-                                            <h3 class="text-sm font-medium text-gray-900 dark:text-white">Chuột Logitech
-                                                MX
-                                                Master 3S</h3>
-                                            <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Xám | Kết nối:
-                                                Wireless</p>
-                                            <div class="flex items-center gap-2 mt-1">
-                                                <span class="text-base font-bold text-primary">2.490.000đ</span>
-                                                <span class="text-xs text-gray-400 line-through">2.990.000đ</span>
-                                            </div>
-                                        </div>
-                                        <div class="text-sm font-medium text-gray-600 dark:text-gray-300">
-                                            SL : 16
-                                        </div>
-                                        <div class="flex justify-end">
-                                            <button class="text-red-500 hover:text-red-700 transition-colors">
-                                                <span class="material-symbols-outlined text-lg">delete</span>
-                                            </button>
+                                        <div
+                                            class="text-sm font-medium text-gray-600 dark:text-gray-300 text-right pr-4">
+                                            SL : <span th:text="${item.quantity}">1</span>
                                         </div>
                                     </div>
                                 </div>
@@ -424,53 +435,40 @@
 
                 <!-- Body (Address List) -->
                 <div class="p-4 max-h-[60vh] overflow-y-auto space-y-3 custom-scrollbar">
-                    <!-- Address Item 1 (Active) -->
-                    <label
-                        class="flex items-start gap-3 p-3 border border-primary bg-orange-50 dark:bg-orange-900/10 rounded-lg cursor-pointer transition-colors relative">
-                        <input type="radio" name="shipping_address"
-                            class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary" checked>
+                    <label th:each="address : ${addresses}"
+                        th:classappend="${defaultAddress != null and address.id == defaultAddress.id ? 'border-primary bg-orange-50 dark:bg-orange-900/10' : 'border-gray-200 dark:border-gray-700 hover:border-primary/50'}"
+                        class="flex items-start gap-3 p-3 border rounded-lg cursor-pointer transition-colors relative">
+                        <input type="radio" name="shipping_address" th:value="${address.id}"
+                            class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary address-radio"
+                            th:checked="${defaultAddress != null and address.id == defaultAddress.id}"
+                            th:data-district-id="${address.ward.district.id}" th:data-ward-code="${address.ward.code}"
+                            th:data-name="${address.name}" th:data-phone="${address.phone}"
+                            th:data-full-address="${address.fullAddress}" th:data-ward-name="${address.ward.name}"
+                            th:data-district-name="${address.ward.district.name}"
+                            th:data-province-name="${address.ward.district.province.name}"
+                            th:data-is-default="${address.status}">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A</span>
+                                <span class="font-bold text-gray-900 dark:text-white" th:text="${address.name}">Nguyễn
+                                    Văn A</span>
                                 <span class="text-gray-500 dark:text-gray-400">|</span>
-                                <span class="text-gray-600 dark:text-gray-300">0912345678</span>
-                                <span
+                                <span class="text-gray-600 dark:text-gray-300"
+                                    th:text="${address.phone}">0912345678</span>
+                                <span th:if="${address.status}"
                                     class="ml-auto inline-block px-2 py-0.5 text-[10px] font-bold text-primary border border-primary rounded">Mặc
                                     định</span>
                             </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed"
+                                th:text="${address.fullAddress} + ', ' + ${address.ward.name} + ', ' + ${address.ward.district.name} + ', ' + ${address.ward.district.province.name}">
                                 Số 123, Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh
                             </p>
                             <div class="flex justify-between items-center mt-2">
-                                <span
-                                    class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Nhà
-                                    riêng</span>
-                                <button type="button"
-                                    class="text-xs text-primary hover:text-orange-600 font-medium">Sửa</button>
-                            </div>
-                        </div>
-                    </label>
-
-                    <!-- Address Item 2 -->
-                    <label
-                        class="flex items-start gap-3 p-3 border border-gray-200 dark:border-gray-700 hover:border-primary/50 rounded-lg cursor-pointer transition-colors">
-                        <input type="radio" name="shipping_address"
-                            class="mt-1 w-4 h-4 text-primary border-gray-300 focus:ring-primary">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="font-bold text-gray-900 dark:text-white">Nguyễn Văn A (Công ty)</span>
-                                <span class="text-gray-500 dark:text-gray-400">|</span>
-                                <span class="text-gray-600 dark:text-gray-300">0987654321</span>
-                            </div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                                Tòa nhà TechOne, 456 Võ Văn Kiệt, Quận 1, TP. Hồ Chí Minh
-                            </p>
-                            <div class="flex justify-between items-center mt-2">
-                                <span
-                                    class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Văn
-                                    phòng</span>
-                                <button type="button"
-                                    class="text-xs text-primary hover:text-orange-600 font-medium">Sửa</button>
+                                <span th:if="${address.status}"
+                                    class="inline-block px-2 py-0.5 text-[10px] font-bold text-gray-500 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-transparent">Mặc
+                                    định</span>
+                                <span th:unless="${address.status}"></span>
+                                <a th:href="@{/account/address}"
+                                    class="text-xs text-primary hover:text-orange-600 font-medium">Sửa</a>
                             </div>
                         </div>
                     </label>
@@ -479,7 +477,7 @@
                 <!-- Footer (Add Button) -->
                 <div
                     class="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-b-xl flex justify-between items-center">
-                    <button
+                    <button type="button" onclick="window.location.href='/account/address'"
                         class="flex items-center gap-2 text-primary hover:text-orange-700 font-medium transition-colors">
                         <span class="material-symbols-outlined">add</span>
                         Thêm địa chỉ mới
@@ -487,7 +485,7 @@
                     <div class="flex gap-3">
                         <button onclick="toggleAddressModal()"
                             class="px-4 py-2 text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white font-medium transition-colors">Hủy</button>
-                        <button onclick="toggleAddressModal()"
+                        <button onclick="confirmAddressSelection()"
                             class="px-4 py-2 bg-primary hover:bg-orange-600 text-white rounded-lg font-medium shadow-sm transition-colors">Xác
                             nhận</button>
                     </div>
@@ -849,8 +847,105 @@
                     // Success
                 }).catch(err => console.error('Lỗi copy:', err));
             }
-        </script>
 
+            // --- Shipping Fee Calculation Logic ---
+            function formatCurrency(number) {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+            }
+
+            function updateTotals() {
+                const subtotal = parseFloat(document.getElementById('subtotal-amount').getAttribute('data-value')) || 0;
+                const shippingFee = parseFloat(document.getElementById('shipping-fee-amount').getAttribute('data-value')) || 0;
+                const discount = parseFloat(document.getElementById('discount-amount').getAttribute('data-value')) || 0;
+
+                const total = subtotal + shippingFee - discount;
+
+                const totalEl = document.getElementById('total-amount');
+                totalEl.setAttribute('data-base-value', total);
+                totalEl.innerText = formatCurrency(total).replace(/\s/g, ''); // Customize format based on app design
+            }
+
+            async function calculateShippingFee(districtId, wardCode) {
+                const feeEl = document.getElementById('shipping-fee-amount');
+                feeEl.innerText = 'Đang tính...';
+                feeEl.setAttribute('data-value', '0');
+
+                if (!districtId || !wardCode) {
+                    feeEl.innerText = 'Chưa chọn địa chỉ';
+                    updateTotals();
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/shipping-fee?districtId=${districtId}&wardCode=${wardCode}`);
+                    if (!response.ok) throw new Error('Failed to fetch fee');
+
+                    const fee = await response.json();
+                    feeEl.setAttribute('data-value', fee);
+                    feeEl.innerText = formatCurrency(fee).replace(/\s/g, '');
+                    updateTotals();
+                } catch (error) {
+                    console.error('Error fetching shipping fee:', error);
+                    feeEl.innerText = 'Miễn phí'; // Fallback
+                    feeEl.setAttribute('data-value', '0');
+                    updateTotals();
+                }
+            }
+
+            function confirmAddressSelection() {
+                const selectedRadio = document.querySelector('input[name="shipping_address"]:checked');
+                if (!selectedRadio) {
+                    toggleAddressModal();
+                    return;
+                }
+
+                // Get details from selected radio
+                const name = selectedRadio.getAttribute('data-name');
+                const phone = selectedRadio.getAttribute('data-phone');
+                const fullAddress = selectedRadio.getAttribute('data-full-address');
+                const wardName = selectedRadio.getAttribute('data-ward-name');
+                const districtName = selectedRadio.getAttribute('data-district-name');
+                const provinceName = selectedRadio.getAttribute('data-province-name');
+                const isDefault = selectedRadio.getAttribute('data-is-default') === 'true';
+
+                const districtId = selectedRadio.getAttribute('data-district-id');
+                const wardCode = selectedRadio.getAttribute('data-ward-code');
+
+                // Update UI variables
+                document.getElementById('display-address-name').innerText = name;
+                document.getElementById('display-address-phone').innerText = phone;
+                document.getElementById('display-address-full').innerText = `${fullAddress}, ${wardName}, ${districtName}, ${provinceName}`;
+
+                const defaultBadge = document.getElementById('display-address-default');
+                if (defaultBadge) {
+                    defaultBadge.style.display = isDefault ? 'inline-block' : 'none';
+                }
+
+                // Update hidden container attributes for checkout
+                const container = document.getElementById('selected-address-container');
+                if (container) {
+                    container.setAttribute('data-district-id', districtId);
+                    container.setAttribute('data-ward-code', wardCode);
+                }
+
+                // Recalculate shipping
+                calculateShippingFee(districtId, wardCode);
+
+                toggleAddressModal();
+            }
+
+            // On load, if there's a default address, calculate fee
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('selected-address-container');
+                if (container) {
+                    const districtId = container.getAttribute('data-district-id');
+                    const wardCode = container.getAttribute('data-ward-code');
+                    if (districtId && wardCode) {
+                        calculateShippingFee(districtId, wardCode);
+                    }
+                }
+            });
+        </script>
 
     </div>
 </body>

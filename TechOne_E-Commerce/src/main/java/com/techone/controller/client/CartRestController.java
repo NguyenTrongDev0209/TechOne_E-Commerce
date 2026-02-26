@@ -87,6 +87,7 @@ public class CartRestController {
         response.put("success", true);
         response.put("message", "Đã thêm sản phẩm vào giỏ hàng");
         response.put("cartCount", cartCount);
+        response.put("cartItemId", cartItem.getId());
 
         return ResponseEntity.ok(response);
     }

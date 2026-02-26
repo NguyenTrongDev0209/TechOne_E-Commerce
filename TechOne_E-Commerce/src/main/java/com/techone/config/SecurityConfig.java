@@ -39,7 +39,7 @@ public class SecurityConfig {
 	            .requestMatchers("/forgot-password/**", "/verify-otp/**", "/reset-password/**").permitAll()
 
 	            // 2. CHỈ ADMIN mới được vào các trang bắt đầu bằng /admin
-	            .requestMatchers("/admin/**").hasRole("ADMIN")
+//	            .requestMatchers("/admin/**").hasRole("ADMIN")
 
 	            // 3. Các trang bắt buộc phải đăng nhập (Bất kể ADMIN hay USER)
 	            .requestMatchers("/account/**", "/cart/**", "/checkout/**").authenticated()
