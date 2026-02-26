@@ -78,6 +78,9 @@ public class LoginController {
 	            SecurityContextHolder.setContext(context);
 	            securityContextRepository.saveContext(context, request, response);
 
+	            if (account.getRole()) {
+	                return "redirect:/admin/dashboard";
+	            }
 	            return "redirect:/";
 	        }
 	    }

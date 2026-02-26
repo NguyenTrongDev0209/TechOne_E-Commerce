@@ -11,7 +11,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
 @Service
 public class CustomOAuth2UserController extends DefaultOAuth2UserService {
@@ -56,6 +61,10 @@ public class CustomOAuth2UserController extends DefaultOAuth2UserService {
         // Lưu thông tin account vào session để hiển thị trên UI
         SessionUtils.set("user", account);
 
-        return oAuth2User;
+        // Thêm quyền từ database vào OAuth2User
+        Set<GrantedAuthority> authorities = new LinkedHashSet<>(oAuth2User.getAuthorities());
+        authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
+        return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), "email");
+
     }
 }
