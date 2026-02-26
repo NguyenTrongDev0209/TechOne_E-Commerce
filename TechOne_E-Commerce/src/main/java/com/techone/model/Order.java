@@ -10,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -45,4 +47,24 @@ public class Order {
 
 	@OneToMany(mappedBy = "order")
 	public List<Transaction> transaction;
+
+	@ManyToOne
+	@JoinColumn(name = "account_id")
+	public Account account;
+
+	public Double shippingFee = 0.0;
+	public Double totalAmount = 0.0;
+	public Double voucherDiscount = 0.0;
+
+	public Double getTotalPrice() {
+		if (totalAmount != null && totalAmount > 0) {
+			return totalAmount;
+		}
+		if (orderDetail == null)
+			return 0.0;
+		double subtotal = orderDetail.stream()
+				.mapToDouble(d -> d.getUnitPrice() * d.getQuantity())
+				.sum();
+		return subtotal + (shippingFee != null ? shippingFee : 0.0) - (voucherDiscount != null ? voucherDiscount : 0.0);
+	}
 }

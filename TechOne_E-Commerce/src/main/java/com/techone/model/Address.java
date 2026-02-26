@@ -43,7 +43,7 @@ public class Address {
 	@NotBlank(message = "Tên không được để trống")
 	public String name;
 
-	@Column(columnDefinition = "varchar(12)", unique = true)
+	@Column(columnDefinition = "varchar(12)")
 	@NotBlank(message = "Số điện thoại không được để trống")
 	@Pattern(regexp = "^(0|\\+84)(\\s|\\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\\d)(\\s|\\.)?(\\d{3})(\\s|\\.)?(\\d{3})$", message = "Số điện thoại không đúng định dạng")
 	public String phone;

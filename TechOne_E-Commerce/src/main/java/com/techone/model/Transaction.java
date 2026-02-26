@@ -49,6 +49,17 @@ public class Transaction {
 	@Column(columnDefinition = "varchar(255)")
 	public String log;
 
+	// PayOS specific fields
+	private Long orderCode;
+	private String description;
+	private String accountNumber;
+	private String reference;
+	private String transactionDateTime;
+	private String currency;
+	private String paymentLinkId;
+	private String senderAccountNumber;
+	private String senderBankId;
+
 	@ManyToOne
 	@JoinColumn(name = "order_id")
 	Order order;

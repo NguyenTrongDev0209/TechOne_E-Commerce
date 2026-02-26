@@ -39,7 +39,9 @@
                             class="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full">+12.5%</span>
                     </div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">Tổng doanh thu</p>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">1.250.000.000 ₫</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1"
+                        th:text="${#numbers.formatDecimal(totalRevenue, 0, 'POINT', 0, 'POINT')} + ' ₫'">1.250.000.000 ₫
+                    </h3>
                 </div>
                 <div
                     class="bg-white dark:bg-[#1e293b] rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
@@ -51,7 +53,8 @@
                         <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">+5.2%</span>
                     </div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">Giao dịch thành công</p>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">1,245</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1" th:text="${successCount}">1,245
+                    </h3>
                 </div>
                 <div
                     class="bg-white dark:bg-[#1e293b] rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
@@ -64,7 +67,7 @@
                             class="text-xs font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded-full">-2.1%</span>
                     </div>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">Đang chờ xử lý</p>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1">32</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mt-1" th:text="${pendingCount}">32</h3>
                 </div>
             </div>
 
@@ -168,24 +171,30 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700 font-body">
-                            <!-- Item 1 -->
-                            <tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
+                            <tr th:each="transaction : ${transactions}"
+                                class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
                                 <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
                                     <div class="flex flex-col">
                                         <span
-                                            class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">#TRX-2026001</span>
-                                        <span class="text-xs text-gray-500 mt-0.5">#ORD-9921</span>
+                                            class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors"
+                                            th:text="'#TRX-' + ${transaction.id}">#TRX-2026001</span>
+                                        <span class="text-xs text-gray-500 mt-0.5" th:if="${transaction.order != null}"
+                                            th:text="'#ORD-' + ${transaction.order.id}">#ORD-9921</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-bold">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-bold"
+                                            th:text="${transaction.order != null && transaction.order.account != null ? #strings.substring(transaction.order.account.fullname, 0, 1) : 'U'}">
                                             NH
                                         </div>
                                         <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Nguyễn Văn Hùng</div>
-                                            <div class="text-xs text-gray-500">hung.nguyen@example.com</div>
+                                            <div class="font-medium text-gray-900 dark:text-white"
+                                                th:text="${transaction.order != null && transaction.order.account != null ? transaction.order.account.fullname : 'Khách vãng lai'}">
+                                                Nguyễn Văn Hùng</div>
+                                            <div class="text-xs text-gray-500"
+                                                th:text="${transaction.order != null && transaction.order.account != null ? transaction.order.account.email : ''}">
+                                                hung.nguyen@example.com</div>
                                         </div>
                                     </div>
                                 </td>
@@ -193,70 +202,26 @@
                                     <span
                                         class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                                         <span class="material-symbols-outlined text-[14px]">credit_card</span>
-                                        VNPAY
+                                        <span th:text="${transaction.paymentMethod}">VNPAY</span>
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-right font-bold text-gray-900 dark:text-white text-base">
+                                <td class="px-6 py-4 text-right font-bold text-gray-900 dark:text-white text-base"
+                                    th:text="${#numbers.formatDecimal(transaction.amount, 0, 'POINT', 0, 'POINT')} + ' ₫'">
                                     25.500.000 ₫
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span
+                                    <span th:if="${transaction.status == 1}"
                                         class="px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
                                         Thành công
                                     </span>
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-500">
-                                    10/02/2026 14:30
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <div class="flex items-center justify-center gap-1">
-                                        <button
-                                            class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors group/btn">
-                                            <span class="material-symbols-outlined text-[20px]">visibility</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Item 2 -->
-                            <tr class="hover:bg-gray-50 dark:bg-gray-800 transition-colors group">
-                                <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">#TRX-2026002</span>
-                                        <span class="text-xs text-gray-500 mt-0.5">#ORD-9922</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xs font-bold">
-                                            TT
-                                        </div>
-                                        <div>
-                                            <div class="font-medium text-gray-900 dark:text-white">Trần Thị Thu</div>
-                                            <div class="text-xs text-gray-500">thu.tran@example.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
-                                        <span class="material-symbols-outlined text-[14px]">local_shipping</span>
-                                        COD
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right font-bold text-gray-900 dark:text-white text-base">
-                                    1.200.000 ₫
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span
+                                    <span th:if="${transaction.status != 1}"
                                         class="px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
                                         Đang xử lý
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 text-center text-gray-500">
-                                    10/02/2026 13:15
+                                <td class="px-6 py-4 text-center text-gray-500"
+                                    th:text="${#temporals.format(transaction.createAt, 'dd/MM/yyyy HH:mm')}">
+                                    10/02/2026 14:30
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <div class="flex items-center justify-center gap-1">

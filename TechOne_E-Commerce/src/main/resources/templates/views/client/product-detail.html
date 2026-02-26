@@ -408,7 +408,12 @@
                 });
 
                 if (response.ok) {
-                    window.location.href = '/cart';
+                    const data = await response.json();
+                    if (data.cartItemId) {
+                        window.location.href = `/checkout?itemIds=${data.cartItemId}`;
+                    } else {
+                        window.location.href = '/cart'; // fallback
+                    }
                 } else if (response.status === 401) {
                     window.location.href = '/login';
                 } else {
