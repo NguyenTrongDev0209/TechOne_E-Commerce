@@ -71,7 +71,7 @@ public class ResetPasswordController {
             SessionUtils.remove("forgotPasswordEmail");
 
             model.addAttribute("success", "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.");
-            return "redirect:/login"; // This might need adjustment based on how the login view handles parameters
+            return "redirect:/login"; 
         }
 
         return "redirect:/forgot-password";
