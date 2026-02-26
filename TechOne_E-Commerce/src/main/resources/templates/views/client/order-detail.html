@@ -183,9 +183,14 @@
                     </div>
                     <div class="p-6 space-y-6">
                         <div>
-                            <p class="text-sm font-bold text-[#1c100d] dark:text-white mb-1">Nguyễn Văn A</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">(+84) 909 123 456</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <p class="text-sm font-bold text-[#1c100d] dark:text-white mb-1"
+                                th:text="${!order.shipment.isEmpty() && order.shipment[0].address != null ? order.shipment[0].address.name : 'N/A'}">
+                                Nguyễn Văn A</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                                th:text="${!order.shipment.isEmpty() && order.shipment[0].address != null ? order.shipment[0].address.phone : 'N/A'}">
+                                (+84) 909 123 456</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+                                th:text="${!order.shipment.isEmpty() && order.shipment[0].address != null ? order.shipment[0].address.fullAddress + ', ' + order.shipment[0].address.ward.name + ', ' + order.shipment[0].address.ward.district.name + ', ' + order.shipment[0].address.ward.district.province.name : 'Chưa có thông tin nhận hàng'}">
                                 Số 123, Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh
                             </p>
                         </div>
