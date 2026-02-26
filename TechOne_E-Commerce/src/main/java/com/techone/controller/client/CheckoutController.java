@@ -17,6 +17,7 @@ import com.techone.model.CartItem;
 import com.techone.repository.AddressRepository;
 import com.techone.repository.CartItemRepository;
 import com.techone.repository.CartRepository;
+import com.techone.repository.VoucherItemRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +32,9 @@ public class CheckoutController {
 
 	@Autowired
 	private AddressRepository addressRepository;
+
+	@Autowired
+	private VoucherItemRepository voucherItemRepository;
 
 	@GetMapping("/checkout")
 	public String showCheckout(@RequestParam(value = "itemIds", required = false) List<Integer> itemIds,
@@ -68,6 +72,11 @@ public class CheckoutController {
 		}
 
 		model.addAttribute("cartItems", cartItems);
+
+		// Get Voucher Data
+		model.addAttribute("vouchers", voucherItemRepository.findByAccount(user).stream()
+				.filter(v -> v.getStatus() == 0) // 0: Unused
+				.toList());
 
 		return "views/client/checkout";
 	}

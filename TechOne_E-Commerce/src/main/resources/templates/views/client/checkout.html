@@ -514,9 +514,13 @@
 
                 <!-- Body (Voucher List) -->
                 <div class="p-4 max-h-[60vh] overflow-y-auto space-y-4 custom-scrollbar bg-gray-50 dark:bg-gray-800/50">
-                    <!-- Voucher Item 1 -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 transform"
-                        id="voucher-card-1">
+                    <div th:if="${vouchers.isEmpty()}" class="text-center py-8">
+                        <p class="text-gray-500">Bạn không có voucher nào khả dụng.</p>
+                    </div>
+                    <!-- Voucher Item -->
+                    <div th:each="vItem : ${vouchers}"
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 transform"
+                        th:id="'voucher-card-' + ${vItem.id}">
                         <div class="flex">
                             <!-- Left: Image/Icon -->
                             <div
@@ -527,86 +531,46 @@
                                 </div>
                                 <span
                                     class="material-symbols-outlined text-primary text-3xl mb-1">confirmation_number</span>
-                                <span class="text-primary font-bold text-lg">15%</span>
-                                <span class="text-[10px] uppercase font-bold text-primary">Giảm tối đa</span>
+                                <span class="text-primary font-bold text-lg"
+                                    th:text="${#numbers.formatDecimal(vItem.voucherPercent.percentVoucher, 0, 'COMMA', 0, 'POINT') + '%'}">15%</span>
+                                <span class="text-[10px] uppercase font-bold text-primary"
+                                    th:text="${vItem.voucherPercent.voucherType == true ? 'Giảm giá' : 'Vận chuyển'}">Giảm
+                                    giá</span>
                             </div>
                             <!-- Right: Info -->
                             <div class="flex-1 p-3 flex flex-col justify-between h-32">
                                 <div>
-                                    <h4 class="font-bold text-gray-900 dark:text-white text-sm">Giảm 15% đơn từ 500k
-                                    </h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Áp dụng cho
-                                        các
-                                        sản phẩm công nghệ (Laptop, Điện thoại) trong tháng 5.</p>
+                                    <h4 class="font-bold text-gray-900 dark:text-white text-sm"
+                                        th:text="${vItem.voucherPercent.name}">Tên Voucher</h4>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"
+                                        th:text="'Đơn từ ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + '₫'">
+                                        Đơn từ 500k</p>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400"
+                                        th:if="${vItem.voucherPercent.maxPrice != null}"
+                                        th:text="'Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + '₫'">
+                                        Giảm tối đa 100k</p>
                                 </div>
                                 <div class="flex justify-between items-end mt-2">
                                     <div>
-                                        <p class="text-xs text-red-500 mt-1">HSD: 31/05/2026</p>
-                                        <button onclick="toggleVoucherDetails('voucher-details-1', 'voucher-card-1')"
-                                            class="text-xs text-blue-500 hover:underline flex items-center gap-0.5 mt-1">
-                                            Điều kiện
-                                            <span
-                                                class="material-symbols-outlined text-[10px] transition-transform duration-300"
-                                                id="icon-voucher-details-1">expand_more</span>
-                                        </button>
+                                        <p class="text-[10px] text-red-500 mt-1"
+                                            th:text="'HSD: ' + ${#temporals.format(vItem.voucherPercent.endAt, 'dd/MM/yyyy')}">
+                                            HSD: 31/05/2026</p>
                                     </div>
-                                    <button
+                                    <button type="button" th:data-id="${vItem.id}"
+                                        th:data-percent="${vItem.voucherPercent.percentVoucher}"
+                                        th:data-min="${vItem.voucherPercent.minPrice}"
+                                        th:data-max="${vItem.voucherPercent.maxPrice}"
+                                        th:data-type="${vItem.voucherPercent.voucherType}"
+                                        onclick="applyVoucher(this.getAttribute('data-id'), this.getAttribute('data-percent'), this.getAttribute('data-min'), this.getAttribute('data-max'), this.getAttribute('data-type'))"
                                         class="px-3 py-1 bg-primary hover:bg-orange-600 text-white text-xs font-bold rounded shadow-sm transition-colors">
                                         Dùng ngay
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Expanded Details -->
-                        <div id="voucher-details-1"
-                            class="hidden border-t border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-3 text-xs text-gray-600 dark:text-gray-400 transition-all duration-300 ease-in-out origin-top">
-                            <ul class="list-disc list-inside space-y-1 pl-1">
-                                <li>Giảm <strong>15%</strong> tối đa <strong>100k</strong>.</li>
-                                <li>Áp dụng cho đơn hàng từ <strong>500k</strong>.</li>
-                                <li>Sản phẩm: Laptop, Điện thoại, Phụ kiện TechOne.</li>
-                                <li>Không áp dụng chung với các khuyến mãi khác.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Voucher Item 2 -->
-                    <div
-                        class="flex bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden opacity-75 grayscale-[0.5]">
-                        <!-- Left: Image/Icon -->
-                        <div
-                            class="w-24 bg-orange-50 dark:bg-orange-900/10 flex flex-col items-center justify-center border-r border-dashed border-gray-300 dark:border-gray-700 p-2 relative">
-                            <!-- Ticket Holes Simulation -->
-                            <div
-                                class="absolute -left-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-gray-50 dark:bg-gray-900 rounded-full">
-                            </div>
-                            <span class="material-symbols-outlined text-primary text-3xl mb-1">local_shipping</span>
-                            <span class="text-primary font-bold text-lg">Free</span>
-                            <span class="text-[10px] uppercase font-bold text-primary">Vận chuyển</span>
-                        </div>
-                        <!-- Right: Info -->
-                        <div class="flex-1 p-3 flex flex-col justify-between">
-                            <div>
-                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Miễn phí vận chuyển</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">Cho đơn hàng từ 0đ
-                                    (Tối đa 30k).</p>
-                            </div>
-                            <div class="flex justify-between items-end mt-2">
-                                <div>
-                                    <div
-                                        class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700 max-w-[100px]">
-                                        <div class="bg-primary h-1.5 rounded-full" style="width: 80%"></div>
-                                    </div>
-                                    <p class="text-[10px] text-primary">Đã dùng 80%</p>
-                                    <p class="text-xs text-red-500 mt-0.5">HSD: 31/05/2026</p>
-                                </div>
-                                <button
-                                    class="px-3 py-1 border border-primary text-primary hover:bg-primary hover:text-white text-xs font-bold rounded shadow-sm transition-colors">
-                                    Lưu lại
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
+                <input type="hidden" id="selected-voucher-id" value="">
 
                 <!-- Footer -->
                 <div
@@ -831,7 +795,8 @@
                         body: JSON.stringify({
                             paymentMethod: selectedPayment,
                             note: note,
-                            addressId: document.querySelector('input[name="shipping_address"]:checked').value
+                            addressId: document.querySelector('input[name="shipping_address"]:checked').value,
+                            voucherId: document.getElementById('selected-voucher-id').value
                         })
                     });
 
@@ -899,6 +864,41 @@
             // --- Shipping Fee Calculation Logic ---
             function formatCurrency(number) {
                 return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+            }
+
+            function applyVoucher(id, percent, minPrice, maxPrice, type) {
+                percent = parseFloat(percent);
+                minPrice = parseFloat(minPrice);
+                maxPrice = (maxPrice && maxPrice !== 'null') ? parseFloat(maxPrice) : null;
+                const isDiscount = (type === 'true' || type === true);
+
+                const subtotal = parseFloat(document.getElementById('subtotal-amount').getAttribute('data-value')) || 0;
+                const shippingFee = parseFloat(document.getElementById('shipping-fee-amount').getAttribute('data-value')) || 0;
+
+                if (subtotal < minPrice) {
+                    alert(`Đơn hàng tối thiểu ${formatCurrency(minPrice)} để sử dụng voucher này.`);
+                    return;
+                }
+
+                let discount = 0;
+                if (isDiscount) {
+                    discount = subtotal * (percent / 100);
+                } else {
+                    // Free Shipping voucher
+                    discount = shippingFee * (percent / 100);
+                }
+
+                if (maxPrice && discount > maxPrice) {
+                    discount = maxPrice;
+                }
+
+                document.getElementById('selected-voucher-id').value = id;
+                const discountEl = document.getElementById('discount-amount');
+                discountEl.setAttribute('data-value', discount);
+                discountEl.innerText = '- ' + formatCurrency(discount).replace(/\s/g, '');
+
+                updateTotals();
+                toggleVoucherModal();
             }
 
             function updateTotals() {
