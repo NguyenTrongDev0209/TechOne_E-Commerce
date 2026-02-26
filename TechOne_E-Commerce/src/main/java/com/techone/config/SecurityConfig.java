@@ -42,16 +42,17 @@ public class SecurityConfig {
 						.requestMatchers("/payment/payos_transfer_handler").permitAll()
 
 						// 2. CHỈ ADMIN mới được vào các trang bắt đầu bằng /admin
-						// .requestMatchers("/admin/**").hasRole("ADMIN")
+						 .requestMatchers("/admin/**").hasRole("ADMIN")
 
 						// 3. Các trang bắt buộc phải đăng nhập (Bất kể ADMIN hay USER)
 						.requestMatchers("/account/**", "/cart/**", "/checkout/**").authenticated()
 
 						// 4. Các yêu cầu còn lại đều phải xác thực
 						.anyRequest().authenticated())
+				
 				.formLogin(login -> login
 						.loginPage("/login")
-						.loginProcessingUrl("/perform_login") // Change this to not conflict with LoginController
+						.loginProcessingUrl("/perform_login") 
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")
@@ -74,7 +75,7 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
 		return (request, response, authentication) -> {
-			// Kiểm tra xem trong danh sách quyền có ROLE_ADMIN không
+			
 			boolean isAdmin = authentication.getAuthorities().stream()
 					.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 			if (isAdmin) {
