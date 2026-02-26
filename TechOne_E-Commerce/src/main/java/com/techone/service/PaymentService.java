@@ -74,9 +74,8 @@ public class PaymentService {
             String paymentLinkId, String status, String accountNumber,
             String txDateTime, String currency, String senderAccount,
             String senderBankId, String description) {
-        // 1. Find the order
-        Integer orderId = orderCode.intValue();
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        // 1. Find the order using the unique orderCode
+        java.util.Optional<Order> orderOpt = orderRepository.findByOrderCode(orderCode);
 
         if (orderOpt.isPresent()) {
             Order order = orderOpt.get();

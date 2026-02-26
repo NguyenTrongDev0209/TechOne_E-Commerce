@@ -179,9 +179,10 @@ public class OrderRestController {
                 String returnUrl = baseUrl + "/payment/success";
                 String cancelUrl = baseUrl + "/payment/cancel";
 
-                // PayOS orderCode must be a number. We use order.getId()
-                // note: PayOS orderCode should be unique and ideally long.
-                long orderCode = order.getId();
+                // PayOS orderCode must be a number. Use timestamp to ensure uniqueness
+                long orderCode = System.currentTimeMillis();
+                order.setOrderCode(orderCode);
+                orderRepository.save(order);
 
                 CreatePaymentLinkRequest paymentData = CreatePaymentLinkRequest.builder()
                         .orderCode(orderCode)
