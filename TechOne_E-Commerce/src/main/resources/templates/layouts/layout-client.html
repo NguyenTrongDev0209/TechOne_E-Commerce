@@ -77,8 +77,8 @@
             bottom: 80px;
             right: 0;
             z-index: 10000;
-            width: 350px;
-            height: 450px;
+            width: 500px;
+            height: 700px;
             background: white;
             border-radius: 15px;
             flex-direction: column;
@@ -138,6 +138,7 @@
             align-self: flex-start;
             background: #f1f0f0;
             color: #333;
+            white-space: pre-wrap;
         }
 
         /* Hiệu ứng đang gõ */
@@ -309,11 +310,11 @@
     <div id="chatbot-container">
         <div id="chat-window" style="display: none;">
             <div id="chat-header">
-                <span>Tech1 AI Assistant</span>
+                <span>TechOne AI Assistant</span>
                 <span style="cursor:pointer" onclick="toggleChat()">✖</span>
             </div>
             <div id="chat-messages">
-                <div class="msg ai">Chào bạn tôi là T1AA, bạn cần cái del gì?</div>
+                <div class="msg ai">Chào bạn tôi là TechOne, tôi có thể trợ giúp gì cho bạn?</div>
             </div>
             <div id="chat-input-area">
                 <input type="text" id="chat-input" placeholder="Nhập tin nhắn..." onkeypress="checkEnter(event)">
