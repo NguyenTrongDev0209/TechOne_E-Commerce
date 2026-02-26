@@ -38,7 +38,7 @@ public class SecurityConfig {
 						.permitAll()
 						.requestMatchers("/product/product-detail/**", "/categories", "/promotions/**", "/posts/**")
 						.permitAll()
-						.requestMatchers("/forgot-password/**", "/verify-otp/**", "/reset-password/**").permitAll()
+						.requestMatchers("/forgot-password/**", "/confirm-otp/**", "/reset-password/**").permitAll()
 						.requestMatchers("/payment/payos_transfer_handler").permitAll()
 
 						// 2. CHỈ ADMIN mới được vào các trang bắt đầu bằng /admin
