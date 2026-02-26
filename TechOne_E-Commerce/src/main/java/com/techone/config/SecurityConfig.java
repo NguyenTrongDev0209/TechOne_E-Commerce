@@ -34,9 +34,9 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 						// 1. Cho phép truy cập công khai các file tĩnh và các trang chủ, chi tiết
-						.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page")
+						.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page", "/search/**")
 						.permitAll()
-						.requestMatchers("/product/product-detail", "/categories", "/promotions/**", "/posts/**")
+						.requestMatchers("/product/product-detail/**", "/categories", "/promotions/**", "/posts/**")
 						.permitAll()
 						.requestMatchers("/forgot-password/**", "/verify-otp/**", "/reset-password/**").permitAll()
 						.requestMatchers("/payment/payos_transfer_handler").permitAll()

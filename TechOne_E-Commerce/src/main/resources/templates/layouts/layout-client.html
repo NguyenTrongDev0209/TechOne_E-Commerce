@@ -186,7 +186,7 @@
                     <form th:action="@{/search}"
                         class="flex w-full items-center rounded-lg bg-white border border-gray-200 hover:border-primary hover:shadow-sm overflow-hidden h-11 transition-all duration-300">
 
-                        <input
+                        <input name="keywords" th:value="${keywords}"
                             class="flex-1 border-none bg-transparent px-4 text-base text-slate-700 placeholder-slate-400 focus:ring-0 h-full"
                             placeholder="Tìm kiếm iPhone, Macbook, Phụ kiện..." type="text" />
 
