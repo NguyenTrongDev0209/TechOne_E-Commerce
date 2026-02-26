@@ -29,6 +29,7 @@ public class OrderRestController {
     private final AddressRepository addressRepository;
     private final VoucherItemRepository voucherItemRepository;
     private final ShippingFeeService shippingFeeService;
+    private final VariantRepository variantRepository;
     private final PayOS payOS;
 
     @PostMapping("/place-order")
@@ -65,6 +66,17 @@ public class OrderRestController {
         List<CartItem> cartItems = cartItemRepository.findByCart(cartOpt.get());
         if (cartItems.isEmpty()) {
             return ResponseEntity.badRequest().body("Giỏ hàng trống");
+        }
+
+        // 0.5 Check Stock
+        for (CartItem item : cartItems) {
+            Variant variant = item.getVariant();
+            if (variant.getStock() == null || variant.getStock() < item.getQuantity()) {
+                return ResponseEntity.badRequest()
+                        .body("Sản phẩm '" + variant.getProduct().getName() + " [" + variant.getVariantName()
+                                + "]' đã hết hàng hoặc không đủ số lượng (Còn lại: "
+                                + (variant.getStock() != null ? variant.getStock() : 0) + ")");
+            }
         }
 
         // 1. Create Order
@@ -108,6 +120,11 @@ public class OrderRestController {
             double pricePerItem = item.getVariant().getPrice() * (1 - item.getVariant().getDiscount() / 100.0);
             detail.setUnitPrice(pricePerItem);
             orderDetailRepository.save(detail);
+
+            // 3.1 Reduce Stock
+            Variant variant = item.getVariant();
+            variant.setStock(variant.getStock() - item.getQuantity());
+            variantRepository.save(variant);
 
             productTotal += (long) (pricePerItem * item.getQuantity());
 
