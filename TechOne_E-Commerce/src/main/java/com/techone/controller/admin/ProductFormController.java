@@ -78,6 +78,9 @@ public class ProductFormController {
 	com.techone.repository.SpecificationValueRepository specificationValueRepository;
 
 	@Autowired
+	com.techone.repository.OrderDetailRepository orderDetailRepository;
+
+	@Autowired
 	FileUploadUtils fileUploadUtils;
 
 	@Autowired
@@ -373,21 +376,31 @@ public class ProductFormController {
 
 		// Handle Deleting old Variants and Specifications if Edit Mode
 		if (isEdit) {
-			// 1. Delete old Variants
+			// 1. Delete or Deactivate old Variants
 			java.util.List<Variant> oldVariants = variantRepository.findByProduct(savedProduct);
 			if (oldVariants != null) {
 				for (Variant v : oldVariants) {
-					// Delete associated attribute values
-					java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository.findByVariant(v);
-					if (vavs != null)
-						variantAttributeValueRepository.deleteAll(vavs);
+					// Check if variant is referenced in orders
+					boolean hasOrders = !orderDetailRepository.findByVariant(v).isEmpty();
 
-					// Delete associated images
-					java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(v);
-					if (vImages != null)
-						variantImageRepository.deleteAll(vImages);
+					if (hasOrders) {
+						// Deactivate instead of delete to maintain data integrity
+						v.setStatus(false);
+						variantRepository.save(v);
+						// Also keep its attribute values and images as they are historical data
+					} else {
+						// Safe to delete associated attribute values
+						java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository.findByVariant(v);
+						if (vavs != null)
+							variantAttributeValueRepository.deleteAll(vavs);
 
-					variantRepository.delete(v);
+						// Safe to delete associated images
+						java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(v);
+						if (vImages != null)
+							variantImageRepository.deleteAll(vImages);
+
+						variantRepository.delete(v);
+					}
 				}
 			}
 
