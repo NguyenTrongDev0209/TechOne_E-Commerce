@@ -27,7 +27,7 @@ public class ForgotPassword {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
-	@Column(columnDefinition = "varchar(6)", unique = true)
+	@Column(columnDefinition = "varchar(6)")
 	public String otp;
 	
 	@FutureOrPresent(message = "Ngày hết hạn phải ở hiện tại hoặc tương lai")

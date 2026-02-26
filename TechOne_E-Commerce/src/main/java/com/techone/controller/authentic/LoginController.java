@@ -63,7 +63,6 @@ public class LoginController {
 	            // 1. Lưu vào Session tùy chỉnh của bạn (để Thymeleaf hiển thị tên)
 	            com.techone.utils.SessionUtils.set("user", account);
 
-	            // 2. QUAN TRỌNG: Thông báo cho Spring Security rằng người dùng này đã hợp lệ
 	            // Tạo danh sách quyền (Roles)
 	            List<GrantedAuthority> authorities = new ArrayList<>();
 	            authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
