@@ -84,6 +84,12 @@ public class ProductFormController {
 	FileUploadUtils fileUploadUtils;
 
 	@Autowired
+	com.techone.repository.CartItemRepository cartItemRepository;
+
+	@Autowired
+	com.techone.repository.FavouriteRepository favouriteRepository;
+
+	@Autowired
 	Validator validator;
 
 	@org.springframework.transaction.annotation.Transactional(readOnly = true)
@@ -131,6 +137,7 @@ public class ProductFormController {
 				java.util.List<VariantPayloadDto> vList = new java.util.ArrayList<>();
 				for (Variant v : product.getVariant()) {
 					VariantPayloadDto dto = new VariantPayloadDto();
+					dto.setId(v.getId().longValue());
 					dto.setSku(v.getSku());
 					dto.setPrice(v.getPrice());
 					dto.setDiscount(v.getDiscount());
@@ -376,35 +383,7 @@ public class ProductFormController {
 
 		// Handle Deleting old Variants and Specifications if Edit Mode
 		if (isEdit) {
-			// 1. Delete or Deactivate old Variants
-			java.util.List<Variant> oldVariants = variantRepository.findByProduct(savedProduct);
-			if (oldVariants != null) {
-				for (Variant v : oldVariants) {
-					// Check if variant is referenced in orders
-					boolean hasOrders = !orderDetailRepository.findByVariant(v).isEmpty();
-
-					if (hasOrders) {
-						// Deactivate instead of delete to maintain data integrity
-						v.setStatus(false);
-						variantRepository.save(v);
-						// Also keep its attribute values and images as they are historical data
-					} else {
-						// Safe to delete associated attribute values
-						java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository.findByVariant(v);
-						if (vavs != null)
-							variantAttributeValueRepository.deleteAll(vavs);
-
-						// Safe to delete associated images
-						java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(v);
-						if (vImages != null)
-							variantImageRepository.deleteAll(vImages);
-
-						variantRepository.delete(v);
-					}
-				}
-			}
-
-			// 2. Delete old Specifications
+			// 1. Delete old Specifications
 			java.util.List<com.techone.model.Specification> oldSpecs = specificationRepository
 					.findByProduct(savedProduct);
 			if (oldSpecs != null) {
@@ -420,10 +399,10 @@ public class ProductFormController {
 					specificationRepository.delete(spec);
 				}
 			}
-			// Flush to ensure deletions are committed before creating new ones (avoids SKU
-			// conflicts)
-			variantRepository.flush();
 			specificationRepository.flush();
+
+			// 2. Prepare Variant Updates (Logic moved to Variants Dynamic Generation
+			// section below)
 		}
 
 		// Handle Images Saving
@@ -451,20 +430,45 @@ public class ProductFormController {
 						new TypeReference<java.util.List<VariantPayloadDto>>() {
 						});
 
+				java.util.List<Variant> existingVariants = variantRepository.findByProduct(savedProduct);
+				java.util.Set<Integer> keptIds = new java.util.HashSet<>();
+
 				int totalStock = 0;
 
 				for (VariantPayloadDto payload : variantPayloads) {
 					int variantStock = payload.getStock() != null ? payload.getStock() : 0;
 					totalStock += variantStock;
 
-					// 1. Save Variant
-					Variant variant = new Variant();
-					variant.setProduct(savedProduct);
+					Variant variant = null;
+					if (payload.getId() != null) {
+						variant = variantRepository.findById(payload.getId().intValue()).orElse(null);
+						if (variant != null) {
+							keptIds.add(variant.getId());
+							// Clear old attributes and images for this specific variant to refresh them
+							java.util.List<VariantAttributeValue> oldVavs = variantAttributeValueRepository
+									.findByVariant(variant);
+							if (oldVavs != null)
+								variantAttributeValueRepository.deleteAll(oldVavs);
+
+							java.util.List<VariantImage> oldImages = variantImageRepository.findByVariant(variant);
+							if (oldImages != null)
+								variantImageRepository.deleteAll(oldImages);
+						}
+					}
+
+					if (variant == null) {
+						variant = new Variant();
+						variant.setProduct(savedProduct);
+						Account currentUser = SessionUtils.get("user");
+						if (currentUser != null)
+							variant.setAccount(currentUser);
+					}
+
 					variant.setSku(payload.getSku());
 					variant.setPrice(payload.getPrice() != null ? payload.getPrice() : 0.0);
 					variant.setDiscount(payload.getDiscount() != null ? payload.getDiscount() : 0.0);
 					variant.setStock(variantStock);
-					variant.setStatus(true); // Default active
+					variant.setStatus(true); // Active
 					Variant savedVariant = variantRepository.save(variant);
 
 					// 2. Map Attributes & Values
@@ -473,7 +477,6 @@ public class ProductFormController {
 							String attrName = entry.getKey();
 							String attrVal = entry.getValue();
 
-							// Find or create Attribute
 							Attribute attribute = attributeRepository.findAll().stream()
 									.filter(a -> a.getName().equalsIgnoreCase(attrName)).findFirst().orElse(null);
 							if (attribute == null) {
@@ -482,7 +485,6 @@ public class ProductFormController {
 								attribute = attributeRepository.save(attribute);
 							}
 
-							// Find or create AttributeValue
 							final Attribute finalAttr = attribute;
 							AttributeValue valueObj = attributeValueRepository.findAll().stream()
 									.filter(av -> av.getAttribute().getId().equals(finalAttr.getId())
@@ -495,7 +497,6 @@ public class ProductFormController {
 								valueObj = attributeValueRepository.save(valueObj);
 							}
 
-							// Link Variant to AttributeValue
 							VariantAttributeValue vav = new VariantAttributeValue();
 							vav.setVariant(savedVariant);
 							vav.setAttributeValue(valueObj);
@@ -503,7 +504,7 @@ public class ProductFormController {
 						}
 					}
 
-					// 3. Handle Variant Images from dynamic input names
+					// 3. Handle Variant Images
 					if (payload.getImageInputName() != null) {
 						org.springframework.web.multipart.MultipartFile[] variantImagesFiles = req
 								.getFiles(payload.getImageInputName())
@@ -526,7 +527,7 @@ public class ProductFormController {
 						}
 					}
 
-					// 4. Restore Existing Images if any
+					// 4. Restore Existing Images
 					if (payload.getExistingImages() != null && !payload.getExistingImages().isEmpty()) {
 						for (String existingPath : payload.getExistingImages()) {
 							if (existingPath != null && !existingPath.trim().isEmpty()) {
@@ -540,13 +541,37 @@ public class ProductFormController {
 					}
 				}
 
-				// Finalize Product Stock Status
+				// 5. Cleanup removed Variants
+				for (Variant oldV : existingVariants) {
+					if (!keptIds.contains(oldV.getId())) {
+						boolean hasOrders = !orderDetailRepository.findByVariant(oldV).isEmpty();
+						boolean hasCart = cartItemRepository.existsByVariant(oldV);
+						boolean hasFavourite = favouriteRepository.existsByVariant(oldV);
+
+						if (hasOrders || hasCart || hasFavourite) {
+							oldV.setStatus(false);
+							variantRepository.save(oldV);
+						} else {
+							java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository
+									.findByVariant(oldV);
+							if (vavs != null)
+								variantAttributeValueRepository.deleteAll(vavs);
+
+							java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(oldV);
+							if (vImages != null)
+								variantImageRepository.deleteAll(vImages);
+
+							variantRepository.delete(oldV);
+						}
+					}
+				}
+
 				if (totalStock == 0) {
-					savedProduct.setStockStatus(0); // Hết phòng
+					savedProduct.setStockStatus(0);
 				} else if (totalStock <= 10) {
-					savedProduct.setStockStatus(2); // Sắp hết
+					savedProduct.setStockStatus(2);
 				} else {
-					savedProduct.setStockStatus(1); // Còn hàng
+					savedProduct.setStockStatus(1);
 				}
 				productRepository.save(savedProduct);
 
