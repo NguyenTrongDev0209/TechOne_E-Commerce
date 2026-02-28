@@ -55,8 +55,9 @@ public class ShippingFeeService {
     public Integer calculateShippingFee(Integer provinceId, Integer districtId, String wardCode) {
         // 1. Lấy thông tin địa chỉ từ DB
         District district = districtRepository.findById(districtId)
-                .orElseThrow(() -> new RuntimeException("Huyện không tồn tại"));
-        Ward ward = wardRepository.findById(wardCode).orElseThrow(() -> new RuntimeException("Xã không tồn tại"));
+                							  .orElseThrow(() -> new RuntimeException("Huyện không tồn tại"));
+        Ward ward = wardRepository.findById(wardCode)
+        						  .orElseThrow(() -> new RuntimeException("Xã không tồn tại"));
 
         // 2. Lấy Service Info khả dụng cho tuyến đường này
         ServiceInfo info = getAvailableServiceId(district.getId());

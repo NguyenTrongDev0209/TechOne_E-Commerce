@@ -54,19 +54,65 @@ public class PaymentService {
         PaymentLink paymentLink = payOS.paymentRequests().get(orderCode);
 
         // 3. If status is PAID, update order and save transaction
-        if ("PAID".equals(paymentLink.getStatus())) {
+        if ("PAID".equals(paymentLink.getStatus().toString())) {
+
+            // Try to extract transaction details from paymentLink via reflection
+            // PayOS PaymentLink usually contains a list of transactions
+            Long amount = (long) paymentLink.getAmount();
+            String reference = "MANUAL_VERIFY";
+            String accountNumber = null;
+            String senderAccount = null;
+            String senderBankId = null;
+            String description = "Xác minh thủ công từ Redirect/Polling";
+            String txDateTime = LocalDateTime.now().toString();
+
+            try {
+                java.util.List<?> transactions = (java.util.List<?>) paymentLink.getClass().getMethod("getTransactions")
+                        .invoke(paymentLink);
+                if (transactions != null && !transactions.isEmpty()) {
+                    Object lastTx = transactions.get(transactions.size() - 1);
+
+                    try {
+                        reference = (String) lastTx.getClass().getMethod("getReference").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        accountNumber = (String) lastTx.getClass().getMethod("getAccountNumber").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        senderAccount = (String) lastTx.getClass().getMethod("getCounterAccountNumber").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        senderBankId = (String) lastTx.getClass().getMethod("getCounterAccountBankId").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        description = (String) lastTx.getClass().getMethod("getDescription").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                    try {
+                        txDateTime = (String) lastTx.getClass().getMethod("getTransactionDateTime").invoke(lastTx);
+                    } catch (Exception e) {
+                    }
+                }
+            } catch (Exception e_reflect) {
+                // Fallback to basic info if transactions list is not accessible
+            }
+
             updateOrderAndSaveTransaction(
                     orderCode,
-                    (long) paymentLink.getAmount(),
-                    "MANUAL_VERIFY",
+                    amount,
+                    reference,
                     paymentLink.getId(),
                     "PAID",
-                    null, // accountNumber might not be in PaymentLink
-                    LocalDateTime.now().toString(),
+                    accountNumber,
+                    txDateTime,
                     "VND",
-                    null,
-                    null,
-                    "Xác minh thủ công từ Redirect");
+                    senderAccount,
+                    senderBankId,
+                    description);
         }
     }
 
@@ -74,9 +120,8 @@ public class PaymentService {
             String paymentLinkId, String status, String accountNumber,
             String txDateTime, String currency, String senderAccount,
             String senderBankId, String description) {
-        // 1. Find the order
-        Integer orderId = orderCode.intValue();
-        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        // 1. Find the order using the unique orderCode
+        java.util.Optional<Order> orderOpt = orderRepository.findByOrderCode(orderCode);
 
         if (orderOpt.isPresent()) {
             Order order = orderOpt.get();

@@ -36,29 +36,27 @@ public class CustomOAuth2UserController extends DefaultOAuth2UserService {
 
         Account account;
         if (accountOptional.isEmpty()) {
-            // Nếu chưa có tài khoản thì tạo mới
             Account newAccount = new Account();
             newAccount.setEmail(email);
             newAccount.setFullname(name);
             newAccount.setAvatar(picture);
-            newAccount.setProvider("GOOGLE"); // Đánh dấu nguồn từ Google
+            newAccount.setProvider("GOOGLE"); 
             newAccount.setStatus(1);
             newAccount.setRole(false);
             newAccount.setCreateAt(LocalDate.now());
-            // Password để trống hoặc random vì login qua Google không cần pass local
             newAccount.setPassword("OAUTH2_USER_" + System.currentTimeMillis());
             
             account = accountRepository.save(newAccount);
         } else {
             account = accountOptional.get();
-            // Cập nhật thông tin từ Google nếu cần (ví dụ avatar)
+            // Cập nhật thông tin từ Google nếu cần (avatar)
             if (picture != null && !picture.equals(account.getAvatar())) {
                 account.setAvatar(picture);
                 accountRepository.save(account);
             }
         }
 
-        // Lưu thông tin account vào session để hiển thị trên UI
+        // Lưu thông tin account vào session
         SessionUtils.set("user", account);
 
         // Thêm quyền từ database vào OAuth2User

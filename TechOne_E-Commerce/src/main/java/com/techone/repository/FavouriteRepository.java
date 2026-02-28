@@ -8,4 +8,6 @@ import com.techone.model.Variant;
 @Repository
 public interface FavouriteRepository extends JpaRepository<Favourite, Integer> {
     void deleteByVariant(Variant variant);
+
+    boolean existsByVariant(Variant variant);
 }

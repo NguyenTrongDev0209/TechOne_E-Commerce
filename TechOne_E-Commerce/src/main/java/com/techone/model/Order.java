@@ -55,6 +55,7 @@ public class Order {
 	public Double shippingFee = 0.0;
 	public Double totalAmount = 0.0;
 	public Double voucherDiscount = 0.0;
+	public Long orderCode;
 
 	public Double getTotalPrice() {
 		if (totalAmount != null && totalAmount > 0) {
