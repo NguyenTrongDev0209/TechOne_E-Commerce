@@ -215,11 +215,11 @@
                         th:href="@{/account}">
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all overflow-hidden">
-                            <img th:if="${session.user.avatar != null}"
-                                th:src="${session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar}"
-                                class="w-full h-full object-cover">
-                            <span th:unless="${session.user.avatar != null}"
-                                class="material-symbols-outlined !text-[26px]">person</span>
+                            <img th:src="${session.user.avatar != null ? (session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar) : ''}"
+                                th:classappend="${session.user.avatar == null ? 'hidden' : ''}"
+                                class="w-full h-full object-cover js-user-avatar">
+                            <span th:classappend="${session.user.avatar != null ? 'hidden' : ''}"
+                                class="material-symbols-outlined !text-[26px] js-user-avatar-placeholder">person</span>
                         </div>
                         <span
                             class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide"
