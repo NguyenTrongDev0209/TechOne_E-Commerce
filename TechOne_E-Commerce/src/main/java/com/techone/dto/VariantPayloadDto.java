@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantPayloadDto {
-    private Long id; // Temp ID from frontend tracking
+    private Long id; // Database ID (Long for temp ID compatibility)
 
     @NotBlank(message = "Mã SKU không được trống")
     private String sku;

@@ -29,7 +29,7 @@ public class Specification {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "specification")
+    @OneToMany(mappedBy = "specification", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<SpecificationTitle> specificationTitles;
 }

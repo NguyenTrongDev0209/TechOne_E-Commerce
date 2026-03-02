@@ -59,11 +59,11 @@ public class Variant {
 
 	@OneToMany(mappedBy = "variant")
 	public List<OrderDetail> orderDetail;
-	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER)
+	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER, cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	@lombok.ToString.Exclude
 	public List<VariantImage> variantImages;
 
-	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER)
+	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER, cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	@lombok.ToString.Exclude
 	public List<VariantAttributeValue> variantAttributeValues;
 }

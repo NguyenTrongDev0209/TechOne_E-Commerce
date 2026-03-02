@@ -5,9 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 @Configuration
 public class FileStorageConfig implements WebMvcConfigurer {
 
@@ -20,16 +17,23 @@ public class FileStorageConfig implements WebMvcConfigurer {
     }
 
     private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
-        Path uploadPath = Paths.get(uploadDir, dirName);
-        String fullPath = uploadPath.toFile().getAbsolutePath();
+        String projectPath = System.getProperty("user.dir");
+        java.nio.file.Path uploadPath = java.nio.file.Paths.get(projectPath, uploadDir, dirName);
 
-        if (fullPath.startsWith("/")) {
-            fullPath = "file:" + fullPath;
-        } else {
-            fullPath = "file:/" + fullPath;
+        // Robust check for nested project folder
+        // (TechOne_E-Commerce/TechOne_E-Commerce/...)
+        java.nio.file.Path nestedFolder = java.nio.file.Paths.get(projectPath, "TechOne_E-Commerce");
+        if (java.nio.file.Files.exists(nestedFolder) && java.nio.file.Files.isDirectory(nestedFolder)) {
+            uploadPath = java.nio.file.Paths.get(projectPath, "TechOne_E-Commerce", uploadDir, dirName);
+        }
+
+        String fullPath = uploadPath.toFile().getAbsolutePath().replace("\\", "/");
+
+        if (!fullPath.startsWith("/")) {
+            fullPath = "/" + fullPath;
         }
 
         registry.addResourceHandler("/" + dirName + "/**")
-                .addResourceLocations(fullPath + "/");
+                .addResourceLocations("file:" + fullPath + "/");
     }
 }

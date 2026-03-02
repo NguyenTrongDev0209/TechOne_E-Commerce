@@ -119,12 +119,15 @@
 								<div th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
 									class="hidden group-hover/catitem:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
 									<ul class="py-1">
-										<li th:each="cCat : ${pCat.children}">
-											<button type="button" th:data-id="${cCat.id}" th:data-name="${cCat.name}"
-												onclick="selectCatFilter(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-												class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
-												th:text="${cCat.name}">Tên con</button>
-										</li>
+										<th:block th:each="cCat : ${pCat.children}">
+											<li th:if="${cCat.status}">
+												<button type="button" th:data-id="${cCat.id}"
+													th:data-name="${cCat.name}"
+													onclick="selectCatFilter(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
+													th:text="${cCat.name}">Tên con</button>
+											</li>
+										</th:block>
 									</ul>
 								</div>
 							</li>
@@ -356,167 +359,167 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<script>
-		function toggleCatFilterDropdown(event) {
-			if (event) event.stopPropagation();
-			const menu = document.getElementById('catFilterMenu');
-			if (menu) menu.classList.toggle('hidden');
-		}
 
-		function selectCatFilter(id, name) {
-			const idInput = document.getElementById('catFilterId');
-			const label = document.getElementById('catFilterLabel');
-			const menu = document.getElementById('catFilterMenu');
-			if (idInput) idInput.value = id;
-			if (label) label.innerText = name;
-			if (menu) menu.classList.add('hidden');
-		}
-
-		function togglePaginationDropdown() {
-			const dropdown = document.getElementById('paginationDropdown');
-			const icon = document.getElementById('paginationDropdownIcon');
-			if (dropdown && icon) {
-				dropdown.classList.toggle('hidden');
-				icon.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+		<script>
+			function toggleCatFilterDropdown(event) {
+				if (event) event.stopPropagation();
+				const menu = document.getElementById('catFilterMenu');
+				if (menu) menu.classList.toggle('hidden');
 			}
-		}
 
-		function selectItemsPerPage(value) {
-			const label = document.getElementById('itemsPerPageLabel');
-			if (label) label.textContent = value;
-			const dropdown = document.getElementById('paginationDropdown');
-			if (dropdown) dropdown.classList.add('hidden');
-			const icon = document.getElementById('paginationDropdownIcon');
-			if (icon) icon.style.transform = 'rotate(0deg)';
-			// Actual pagination logic is handled by <a> tags
-		}
+			function selectCatFilter(id, name) {
+				const idInput = document.getElementById('catFilterId');
+				const label = document.getElementById('catFilterLabel');
+				const menu = document.getElementById('catFilterMenu');
+				if (idInput) idInput.value = id;
+				if (label) label.innerText = name;
+				if (menu) menu.classList.add('hidden');
+			}
 
-		function toggleSort(header) {
-			const icon = header.querySelector('.material-symbols-outlined');
-			if (icon) {
-				if (icon.textContent === 'unfold_more') {
-					icon.textContent = 'expand_less';
-					icon.classList.add('text-primary');
-					icon.classList.remove('text-gray-400');
-				} else if (icon.textContent === 'expand_less') {
-					icon.textContent = 'expand_more';
-				} else {
-					icon.textContent = 'unfold_more';
-					icon.classList.remove('text-primary');
-					icon.classList.add('text-gray-400');
+			function togglePaginationDropdown() {
+				const dropdown = document.getElementById('paginationDropdown');
+				const icon = document.getElementById('paginationDropdownIcon');
+				if (dropdown && icon) {
+					dropdown.classList.toggle('hidden');
+					icon.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
 				}
 			}
-		}
 
-		// Close dropdowns when clicking outside
-		document.addEventListener('click', function (event) {
-			const catMenu = document.getElementById('catFilterMenu');
-			const catBtn = document.getElementById('catFilterDropdownContainer');
-			if (catMenu && catBtn && !catBtn.contains(event.target)) {
-				catMenu.classList.add('hidden');
-			}
-
-			const paginationDropdown = document.getElementById('paginationDropdown');
-			const paginationButton = document.getElementById('paginationDropdownBtn');
-			if (paginationDropdown && paginationButton && !paginationButton.contains(event.target) && !paginationDropdown.contains(event.target)) {
-				paginationDropdown.classList.add('hidden');
+			function selectItemsPerPage(value) {
+				const label = document.getElementById('itemsPerPageLabel');
+				if (label) label.textContent = value;
+				const dropdown = document.getElementById('paginationDropdown');
+				if (dropdown) dropdown.classList.add('hidden');
 				const icon = document.getElementById('paginationDropdownIcon');
 				if (icon) icon.style.transform = 'rotate(0deg)';
+				// Actual pagination logic is handled by <a> tags
 			}
-		});
-	</script>
 
-	<!-- Flatpickr setup removed -->
-	<style>
-		.flatpickr-calendar {
-			font-family: 'Inter', sans-serif !important;
-			border-radius: 12px !important;
-			margin-top: 8px !important;
-			/* Gap requested by user */
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-		}
+			function toggleSort(header) {
+				const icon = header.querySelector('.material-symbols-outlined');
+				if (icon) {
+					if (icon.textContent === 'unfold_more') {
+						icon.textContent = 'expand_less';
+						icon.classList.add('text-primary');
+						icon.classList.remove('text-gray-400');
+					} else if (icon.textContent === 'expand_less') {
+						icon.textContent = 'expand_more';
+					} else {
+						icon.textContent = 'unfold_more';
+						icon.classList.remove('text-primary');
+						icon.classList.add('text-gray-400');
+					}
+				}
+			}
 
-		.dark .flatpickr-calendar {
-			background: #1e293b !important;
-			border: 1px solid #334155 !important;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
-		}
+			// Close dropdowns when clicking outside
+			document.addEventListener('click', function (event) {
+				const catMenu = document.getElementById('catFilterMenu');
+				const catBtn = document.getElementById('catFilterDropdownContainer');
+				if (catMenu && catBtn && !catBtn.contains(event.target)) {
+					catMenu.classList.add('hidden');
+				}
 
-		.flatpickr-day.selected,
-		.flatpickr-day.startRange,
-		.flatpickr-day.endRange,
-		.flatpickr-day.selected.inRange,
-		.flatpickr-day.startRange.inRange,
-		.flatpickr-day.endRange.inRange,
-		.flatpickr-day.selected:focus,
-		.flatpickr-day.startRange:focus,
-		.flatpickr-day.endRange:focus,
-		.flatpickr-day.selected:hover,
-		.flatpickr-day.startRange:hover,
-		.flatpickr-day.endRange:hover,
-		.flatpickr-day.selected.prevMonthDay,
-		.flatpickr-day.startRange.prevMonthDay,
-		.flatpickr-day.endRange.prevMonthDay,
-		.flatpickr-day.selected.nextMonthDay,
-		.flatpickr-day.startRange.nextMonthDay,
-		.flatpickr-day.endRange.nextMonthDay {
-			background: #ea580c !important;
-			border-color: #ea580c !important;
-		}
+				const paginationDropdown = document.getElementById('paginationDropdown');
+				const paginationButton = document.getElementById('paginationDropdownBtn');
+				if (paginationDropdown && paginationButton && !paginationButton.contains(event.target) && !paginationDropdown.contains(event.target)) {
+					paginationDropdown.classList.add('hidden');
+					const icon = document.getElementById('paginationDropdownIcon');
+					if (icon) icon.style.transform = 'rotate(0deg)';
+				}
+			});
+		</script>
 
-		.flatpickr-day.todays-date {
-			color: #ea580c !important;
-			border-color: #ea580c !important;
-		}
+		<!-- Flatpickr setup removed -->
+		<style>
+			.flatpickr-calendar {
+				font-family: 'Inter', sans-serif !important;
+				border-radius: 12px !important;
+				margin-top: 8px !important;
+				/* Gap requested by user */
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+			}
 
-		/* Custom Header Styling */
-		.flatpickr-current-month {
-			display: flex !important;
-			justify-content: space-between !important;
-			align-items: center !important;
-			width: 75% !important;
-			/* Ensure it fits between arrows */
-			left: 12.5% !important;
-			padding: 0 !important;
-		}
+			.dark .flatpickr-calendar {
+				background: #1e293b !important;
+				border: 1px solid #334155 !important;
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+			}
 
-		.flatpickr-monthDropdown-months {
-			text-align: left !important;
-			width: auto !important;
-			font-size: 14px !important;
-			/* Make it smaller */
-			margin-left: 0 !important;
-		}
+			.flatpickr-day.selected,
+			.flatpickr-day.startRange,
+			.flatpickr-day.endRange,
+			.flatpickr-day.selected.inRange,
+			.flatpickr-day.startRange.inRange,
+			.flatpickr-day.endRange.inRange,
+			.flatpickr-day.selected:focus,
+			.flatpickr-day.startRange:focus,
+			.flatpickr-day.endRange:focus,
+			.flatpickr-day.selected:hover,
+			.flatpickr-day.startRange:hover,
+			.flatpickr-day.endRange:hover,
+			.flatpickr-day.selected.prevMonthDay,
+			.flatpickr-day.startRange.prevMonthDay,
+			.flatpickr-day.endRange.prevMonthDay,
+			.flatpickr-day.selected.nextMonthDay,
+			.flatpickr-day.startRange.nextMonthDay,
+			.flatpickr-day.endRange.nextMonthDay {
+				background: #ea580c !important;
+				border-color: #ea580c !important;
+			}
 
-		.numInputWrapper {
-			width: auto !important;
-			margin-right: 0 !important;
-		}
+			.flatpickr-day.todays-date {
+				color: #ea580c !important;
+				border-color: #ea580c !important;
+			}
 
-		.flatpickr-current-month input.cur-year {
-			font-size: 14px !important;
-			/* Make year smaller */
-			text-align: right !important;
-			padding: 0 !important;
-		}
+			/* Custom Header Styling */
+			.flatpickr-current-month {
+				display: flex !important;
+				justify-content: space-between !important;
+				align-items: center !important;
+				width: 75% !important;
+				/* Ensure it fits between arrows */
+				left: 12.5% !important;
+				padding: 0 !important;
+			}
 
-		.flatpickr-current-month .numInputWrapper span.arrowUp {
-			display: none;
-			/* Optional: cleaner look */
-		}
+			.flatpickr-monthDropdown-months {
+				text-align: left !important;
+				width: auto !important;
+				font-size: 14px !important;
+				/* Make it smaller */
+				margin-left: 0 !important;
+			}
 
-		.flatpickr-current-month .numInputWrapper span.arrowDown {
-			display: none;
-			/* Optional: cleaner look */
-		}
-	</style>
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			// Date filters removed
-		});
-	</script>
+			.numInputWrapper {
+				width: auto !important;
+				margin-right: 0 !important;
+			}
+
+			.flatpickr-current-month input.cur-year {
+				font-size: 14px !important;
+				/* Make year smaller */
+				text-align: right !important;
+				padding: 0 !important;
+			}
+
+			.flatpickr-current-month .numInputWrapper span.arrowUp {
+				display: none;
+				/* Optional: cleaner look */
+			}
+
+			.flatpickr-current-month .numInputWrapper span.arrowDown {
+				display: none;
+				/* Optional: cleaner look */
+			}
+		</style>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Date filters removed
+			});
+		</script>
 	</div>
 	</div>
 </body>

@@ -127,13 +127,15 @@
 													<div th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
 														class="hidden group-hover/item:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
 														<ul class="py-1">
-															<li th:each="cCat : ${pCat.children}">
-																<button type="button" th:data-id="${cCat.id}"
-																	th:data-name="${cCat.name}"
-																	onclick="selectCategory(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-																	class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
-																	th:text="${cCat.name}">Tên con</button>
-															</li>
+															<th:block th:each="cCat : ${pCat.children}">
+																<li th:if="${cCat.status}">
+																	<button type="button" th:data-id="${cCat.id}"
+																		th:data-name="${cCat.name}"
+																		onclick="selectCategory(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+																		class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
+																		th:text="${cCat.name}">Tên con</button>
+																</li>
+															</th:block>
 														</ul>
 													</div>
 												</li>
@@ -193,32 +195,7 @@
 												<span
 													class="material-symbols-outlined text-[18px]">format_underlined</span>
 											</button>
-											<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
-											<button type="button" onclick="formatDoc('insertUnorderedList')"
-												title="Danh sách chấm"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span
-													class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
-											</button>
-											<button type="button" onclick="formatDoc('insertOrderedList')"
-												title="Danh sách số"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span
-													class="material-symbols-outlined text-[18px]">format_list_numbered</span>
-											</button>
-											<div class="w-px h-4 bg-gray-300 dark:bg-gray-600 mx-1"></div>
-											<button type="button" onclick="addLink()" title="Chèn liên kết"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">link</span>
-											</button>
-											<button type="button"
-												onclick="document.getElementById('editorImageUpload').click()"
-												title="Chèn hình ảnh"
-												class="p-1.5 rounded hover:bg-slate-200 text-gray-600 dark:text-gray-400">
-												<span class="material-symbols-outlined text-[18px]">image</span>
-											</button>
-											<input type="file" id="editorImageUpload" accept="image/*" class="hidden"
-												onchange="addLocalImage(this)">
+
 										</div>
 										<textarea th:field="*{content}" id="descriptionContent"
 											style="display: none;"></textarea>
@@ -401,6 +378,22 @@
 							margin-top: 0.5rem;
 						}
 
+						/* Variant image fixed dimensions */
+						.variant-image-preview {
+							aspect-ratio: 1/1;
+							width: 100%;
+							object-fit: cover;
+							border-radius: 0.375rem;
+						}
+
+						.variant-image-slot {
+							aspect-ratio: 1/1;
+							width: 100%;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+						}
+
 						#editor [placeholder]:empty:before {
 							content: attr(placeholder);
 							color: #9ca3af;
@@ -501,57 +494,119 @@
 							const errorDiv = container.querySelector('.image-error-msg');
 							const grid = container.querySelector('.grid');
 
-							// Clear previous state
+							// Find variant index
+							const variantCard = container.closest('.border.border-gray-200');
+							const allCards = Array.from(document.querySelectorAll('#variantsContainer > div'));
+							const vIndex = allCards.indexOf(variantCard);
+
 							if (errorDiv) {
 								errorDiv.textContent = '';
 								errorDiv.classList.add('hidden');
 							}
-							displayDiv.textContent = '';
-							displayDiv.removeAttribute('title');
 
-							// Reset grid slots
-							const slots = grid.querySelectorAll('.group\\/img');
-							slots.forEach(slot => {
-								slot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
-							});
-
-							if (!input.files || input.files.length === 0) return;
-
-							const maxSize = 20 * 1024 * 1024; // 20MB
-							const validFiles = [];
-
-							for (let i = 0; i < input.files.length; i++) {
-								const file = input.files[i];
-								if (file.size > maxSize) {
-									if (errorDiv) {
-										errorDiv.textContent = `Lỗi: Tệp "${file.name}" vượt quá dung lượng cho phép (20MB).`;
-										errorDiv.classList.remove('hidden');
-									}
-									input.value = ''; // Reset input
-									displayDiv.textContent = '';
-									slots.forEach(slot => {
-										slot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
-									});
-									return; // Stop processing
-								}
-								validFiles.push(file);
+							if (!input.files || input.files.length === 0) {
+								displayDiv.textContent = '';
+								return;
 							}
 
-							// Display file names
-							const fileNames = validFiles.map(f => f.name).join(', ');
+							const maxSize = 20 * 1024 * 1024; // 20MB
+							for (let i = 0; i < input.files.length; i++) {
+								if (input.files[i].size > maxSize) {
+									if (errorDiv) {
+										errorDiv.textContent = `Lỗi: Tệp "${input.files[i].name}" vượt quá 20MB.`;
+										errorDiv.classList.remove('hidden');
+									}
+									input.value = '';
+									return;
+								}
+							}
+
+							// Update file names display
+							const fileNames = Array.from(input.files).map(f => f.name).join(', ');
 							displayDiv.textContent = fileNames;
 							displayDiv.title = fileNames;
 
-							// Display image previews in slots
-							validFiles.forEach((file, i) => {
-								if (i >= slots.length) return; // Max 5 slots shown
+							// We don't manually clear placeholderSlots anymore here because renderVariants will handle it
+							// But we need to store these files somewhere if we want to delete them individually.
+							// For simplicity, we just trigger a re-render or manual preview update.
+							// Let's implement a more robust Preview system.
+							renderNewPreviews(input, grid, vIndex);
+						}
 
+						function renderNewPreviews(input, grid, vIndex) {
+							const placeholderSlots = grid.querySelectorAll('.variant-image-slot');
+							placeholderSlots.forEach(slot => {
+								slot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
+							});
+
+							Array.from(input.files).forEach((file, i) => {
+								if (i >= placeholderSlots.length) return;
 								const reader = new FileReader();
 								reader.onload = function (e) {
-									slots[i].innerHTML = `<img src="${e.target.result}" class="w-full h-full object-cover" />`;
+									placeholderSlots[i].innerHTML = `
+										<div class="relative w-full h-full">
+											<img src="${e.target.result}" class="variant-image-preview" />
+											<button type="button" onclick="removeNewImage(this, ${vIndex}, ${i})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 shadow-sm hover:bg-red-600 transition-colors">
+												<span class="material-symbols-outlined text-[14px]">close</span>
+											</button>
+										</div>`;
 								};
 								reader.readAsDataURL(file);
 							});
+						}
+
+						function removeNewImage(btn, vIndex, fileIndex) {
+							const container = btn.closest('.space-y-1\\.5');
+							const fileInput = container.querySelector('input[type="file"]');
+							const displayDiv = container.querySelector('.variant-file-names');
+							const grid = container.querySelector('.grid');
+
+							const dt = new DataTransfer();
+							const { files } = fileInput;
+
+							for (let i = 0; i < files.length; i++) {
+								if (i !== fileIndex) dt.items.add(files[i]);
+							}
+
+							fileInput.files = dt.files;
+
+							// Update text
+							const fileNames = Array.from(fileInput.files).map(f => f.name).join(', ');
+							displayDiv.textContent = fileNames;
+							displayDiv.title = fileNames;
+
+							// Re-render previews
+							renderNewPreviews(fileInput, grid, vIndex);
+						}
+
+						// Price Formatting Helpers
+						function formatVND(value) {
+							if (value === null || value === undefined || value === '') return '';
+							return value.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+						}
+
+						function unformatVND(value) {
+							if (!value) return 0;
+							return parseFloat(value.toString().replace(/\./g, '')) || 0;
+						}
+
+						function handlePriceInput(input, index) {
+							const rawValue = input.value.replace(/\./g, '');
+							if (!/^\d*$/.test(rawValue)) {
+								input.value = formatVND(rawValue.replace(/\D/g, ''));
+								return;
+							}
+							const numericValue = rawValue === '' ? null : parseFloat(rawValue);
+
+							// Update underlying data
+							variantManager.updateVariantProp(index, 'price', numericValue);
+
+							// Format the input visually
+							input.value = formatVND(rawValue);
+
+							// Update final price display
+							const finalPriceStr = calculateFinalPriceSync(numericValue, variantManager.variants[index].discount);
+							document.getElementById(`finalPriceDisplay-${index}`).textContent = finalPriceStr;
 						}
 
 						function calculateFinalPrice(id) {
@@ -584,16 +639,6 @@
 							}
 						}
 
-						function addLocalImage(input) {
-							if (input.files && input.files[0]) {
-								const reader = new FileReader();
-								reader.onload = function (e) {
-									formatDoc('insertImage', e.target.result);
-									input.value = ''; // Reset input so same file can be selected again
-								}
-								reader.readAsDataURL(input.files[0]);
-							}
-						}
 
 						function updateTextarea() {
 							const content = document.getElementById('editor').innerHTML;
@@ -722,7 +767,13 @@
 
 								// Merge existing variants to keep user inputs across re-generations
 								const newVariants = combos.map((combo, index) => {
-									const existing = this.variants.find(v => JSON.stringify(v.attributes) === JSON.stringify(combo));
+									const existing = this.variants.find(v => {
+										const vAttrs = v.attributes || {};
+										const vKeys = Object.keys(vAttrs);
+										const cKeys = Object.keys(combo);
+										if (vKeys.length !== cKeys.length) return false;
+										return cKeys.every(k => vAttrs[k] === combo[k]);
+									});
 									if (existing) return existing;
 
 									// Auto-generate a basic SKU from values
@@ -758,11 +809,21 @@
 								}
 							},
 
-							removeExistingImage(index, imgUrl) {
+							removeExistingImage(btn, index, imgUrl) {
 								if (this.variants[index] && this.variants[index].existingImages) {
 									this.variants[index].existingImages = this.variants[index].existingImages.filter(url => url !== imgUrl);
 									this.syncVariantsToInput();
-									this.renderVariants();
+
+									// Manually update UI to avoid re-rendering entire variants (which clears file inputs)
+									const imgDiv = btn.closest('.relative.group\\/img');
+									const grid = imgDiv.parentElement;
+									imgDiv.remove();
+
+									// Add a new placeholder slot
+									const newSlot = document.createElement('div');
+									newSlot.className = "variant-image-slot bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden";
+									newSlot.innerHTML = '<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>';
+									grid.appendChild(newSlot);
 								}
 							},
 
@@ -842,9 +903,9 @@
 									if (v.existingImages && v.existingImages.length > 0) {
 										v.existingImages.forEach(imgUrl => {
 											existingImagesHtml += `
-												<div class="aspect-square sm:aspect-video relative group/img overflow-hidden rounded border border-gray-100 dark:border-gray-700">
-													<img src="/images/variants/${imgUrl}" class="w-full h-full object-cover" />
-													<button type="button" onclick="variantManager.removeExistingImage(${index}, '${imgUrl}')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">
+												<div class="relative group/img overflow-hidden rounded border border-gray-100 dark:border-gray-700">
+													<img src="/images/variants/${imgUrl}" class="variant-image-preview" />
+													<button type="button" onclick="variantManager.removeExistingImage(this, ${index}, '${imgUrl}')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover/img:opacity-100 transition-opacity">
 														<span class="material-symbols-outlined text-[14px]">close</span>
 													</button>
 												</div>`;
@@ -877,7 +938,7 @@
 													<div class="flex-grow space-y-1.5">
 														<label class="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Giá gốc (VND)</label>
 														<div class="relative">
-															<input type="number" value="${v.price !== null ? v.price : ''}" oninput="updatePriceDOM(this, ${index}, 'price')" class="w-full bg-white dark:bg-gray-800 ${errors['price'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" />
+															<input type="text" value="${formatVND(v.price)}" oninput="handlePriceInput(this, ${index})" class="w-full bg-white dark:bg-gray-800 ${errors['price'] ? 'border-red-500 focus:ring-red-500/20' : 'border-gray-300 dark:border-gray-700 focus:ring-primary/20'} rounded py-2 px-3 text-sm font-medium focus:ring-2 focus:border-primary transition-all placeholder:text-gray-400 dark:text-gray-500" placeholder="0" />
 															<span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">đ</span>
 														</div>
 														${errHtml('price')}
@@ -910,7 +971,7 @@
 												${existingImagesHtml}
 												<!-- Placeholder Slots (up to 5 total) -->
 												${Array(Math.max(0, 5 - (v.existingImages ? v.existingImages.length : 0))).fill(0).map(() => `
-												<div class="aspect-square sm:aspect-video bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 flex items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
+												<div class="variant-image-slot bg-gray-50 dark:bg-gray-800 rounded border border-dashed border-gray-300 dark:border-gray-700 hover:border-primary/50 hover:bg-primary/5 transition-colors group/img overflow-hidden">
 													<span class="material-symbols-outlined text-gray-400 group-hover/img:text-primary transition-colors text-[20px]">add_photo_alternate</span>
 												</div>`).join('')}
 											</div>
@@ -926,6 +987,7 @@
 						function updatePriceDOM(inputElem, index, field) {
 							let val = inputElem.value === '' ? null : parseFloat(inputElem.value);
 							variantManager.updateVariantProp(index, field, val);
+							// For discount, we still use simple numeric input, but update prices
 							const finalPriceStr = calculateFinalPriceSync(variantManager.variants[index].price, variantManager.variants[index].discount);
 							document.getElementById(`finalPriceDisplay-${index}`).textContent = finalPriceStr;
 						}
@@ -1176,50 +1238,50 @@
 				specificationManager.init();
 			});
 		</script>
+
+		<!-- View Mode JS -->
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			const isViewMode = /*[[${viewMode != null ? viewMode : false}]]*/ false;
+			if (isViewMode) {
+				document.addEventListener('DOMContentLoaded', () => {
+					const form = document.getElementById('productForm');
+					if (form) {
+						// Disable all form controls
+						const elements = form.querySelectorAll('input, select, textarea, button');
+						elements.forEach(el => {
+							el.disabled = true;
+							el.classList.add('cursor-not-allowed', 'opacity-70');
+						});
+
+						// Hide specific action buttons container (like the bottom save panel)
+						const actionButtons = form.querySelectorAll('button[type="submit"], button[type="button"]:not(#sortFilterBtn)');
+						actionButtons.forEach(btn => {
+							btn.style.display = 'none';
+						});
+
+						// Re-enable back button manually if it was selected above
+						const backBtn = document.querySelector('a[href="/admin/product-list"] button');
+						if (backBtn) {
+							backBtn.disabled = false;
+							backBtn.classList.remove('cursor-not-allowed', 'opacity-70');
+							backBtn.style.display = 'flex';
+						}
+
+						// Hide the Rich Text Editor commands if present
+						const formatControls = document.querySelectorAll('.format-btn');
+						formatControls.forEach(c => c.style.display = 'none');
+						const editorNode = document.getElementById('editor');
+						if (editorNode) {
+							editorNode.contentEditable = "false";
+							editorNode.classList.add('bg-gray-100', 'cursor-not-allowed');
+						}
+					}
+				});
+			}
+			/*]]>*/
+		</script>
 	</div>
-
-	<!-- View Mode JS -->
-	<script th:inline="javascript">
-		/*<![CDATA[*/
-		const isViewMode = /*[[${viewMode != null ? viewMode : false}]]*/ false;
-		if (isViewMode) {
-			document.addEventListener('DOMContentLoaded', () => {
-				const form = document.getElementById('productForm');
-				if (form) {
-					// Disable all form controls
-					const elements = form.querySelectorAll('input, select, textarea, button');
-					elements.forEach(el => {
-						el.disabled = true;
-						el.classList.add('cursor-not-allowed', 'opacity-70');
-					});
-
-					// Hide specific action buttons container (like the bottom save panel)
-					const actionButtons = form.querySelectorAll('button[type="submit"], button[type="button"]:not(#sortFilterBtn)');
-					actionButtons.forEach(btn => {
-						btn.style.display = 'none';
-					});
-
-					// Re-enable back button manually if it was selected above
-					const backBtn = document.querySelector('a[href="/admin/product-list"] button');
-					if (backBtn) {
-						backBtn.disabled = false;
-						backBtn.classList.remove('cursor-not-allowed', 'opacity-70');
-						backBtn.style.display = 'flex';
-					}
-
-					// Hide the Rich Text Editor commands if present
-					const formatControls = document.querySelectorAll('.format-btn');
-					formatControls.forEach(c => c.style.display = 'none');
-					const editorNode = document.getElementById('editor');
-					if (editorNode) {
-						editorNode.contentEditable = "false";
-						editorNode.classList.add('bg-gray-100', 'cursor-not-allowed');
-					}
-				}
-			});
-		}
-		/*]]>*/
-	</script>
 </body>
 
 </html>

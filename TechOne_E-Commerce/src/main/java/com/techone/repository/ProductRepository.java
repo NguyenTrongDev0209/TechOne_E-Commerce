@@ -9,20 +9,29 @@ import com.techone.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-        @Query("SELECT p FROM Product p WHERE " +
+        @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.variant v WHERE " +
                         "(:keyword IS NULL OR p.name LIKE %:keyword%) AND " +
-                        "(:categoryId IS NULL OR p.category.id = :categoryId) AND " +
+                        "(:categoryId IS NULL OR p.category.id = :categoryId OR p.category.parent.id = :categoryId) AND "
+                        +
                         "(:brandId IS NULL OR p.brand.id = :brandId) AND " +
                         "(:status IS NULL OR p.status = :status) AND " +
+                        "(:minPrice IS NULL OR v.price >= :minPrice) AND " +
+                        "(:maxPrice IS NULL OR v.price <= :maxPrice) AND " +
                         "(:fromDate IS NULL OR p.createAt >= :fromDate) AND " +
                         "(:toDate IS NULL OR p.createAt <= :toDate)")
         Page<Product> search(@Param("keyword") String keyword,
                         @Param("categoryId") Integer categoryId,
                         @Param("brandId") Integer brandId,
                         @Param("status") Boolean status,
+                        @Param("minPrice") Double minPrice,
+                        @Param("maxPrice") Double maxPrice,
                         @Param("fromDate") java.time.LocalDateTime fromDate,
                         @Param("toDate") java.time.LocalDateTime toDate,
                         Pageable pageable);
+
+        Page<Product> findByStatusAndCategory(Boolean status, com.techone.model.Category category, Pageable pageable);
+
+        Page<Product> findByStatus(Boolean status, Pageable pageable);
 
         java.util.List<Product> findByStatus(Boolean status);
 
