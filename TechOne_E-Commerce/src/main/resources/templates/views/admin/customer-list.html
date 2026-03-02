@@ -27,52 +27,49 @@
 				</div>
 			</div>
 			<!-- Filter Section -->
-			<div
+			<form th:action="@{/admin/customer-list}" method="GET" id="searchForm"
 				class="bg-white rounded-md p-4 shadow-sm border border-slate-100 flex flex-col md:flex-row gap-4 items-end mb-6 relative z-20 overflow-visible">
 				<!-- Search -->
 				<div class="flex-1 relative">
 					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 						<span class="material-symbols-outlined text-gray-400">search</span>
 					</div>
-					<input
+					<input name="search" th:value="${paramSearch}"
 						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded bg-gray-50 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
-						placeholder="Tìm kiếm khách hàng..." type="text" />
+						placeholder="Tìm kiếm khách hàng..." type="text"
+						onkeypress="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('searchForm').submit(); }" />
 				</div>
 
-				<!-- Group Dropdown -->
+				<!-- Status Dropdown -->
 				<div class="w-full md:w-48 relative z-30">
-					<input type="hidden" name="group" id="groupInput" value="all">
-					<button id="groupFilterBtn"
+					<input type="hidden" name="status" id="statusInput" th:value="${paramStatus}">
+					<button type="button" id="statusFilterBtn"
 						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 rounded bg-white text-gray-700 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-						<span id="groupFilterLabel">Tất cả nhóm</span>
-						<span id="groupDropdownIcon"
+						<span id="statusFilterLabel"
+							th:text="${paramStatus == 'active' ? 'Hoạt động' : (paramStatus == 'locked' ? 'Bị khóa' : 'Tất cả trạng thái')}">Tất
+							cả trạng thái</span>
+						<span id="statusDropdownIcon"
 							class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
 					</button>
 
-					<div id="groupDropdown"
+					<div id="statusDropdown"
 						class="hidden absolute right-0 top-full mt-2 w-full bg-white border border-gray-100 rounded-lg shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
 						<div class="p-1.5 space-y-0.5">
-							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="all" data-label="Tất cả">
-								<span>Tất cả</span>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="all" data-label="Tất cả trạng thái">
+								<span>Tất cả trạng thái</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
-							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="vip_platinum" data-label="VIP Platinum">
-								<span>VIP Platinum</span>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="active" data-label="Hoạt động">
+								<span>Hoạt động</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
-							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="vip_gold" data-label="VIP Gold">
-								<span>VIP Gold</span>
-								<span
-									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-							</div>
-							<div class="select-group-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="new" data-label="Khách mới">
-								<span>Khách mới</span>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="locked" data-label="Bị khóa">
+								<span>Bị khóa</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
@@ -83,7 +80,7 @@
 				<!-- Date Filters -->
 				<div class="relative w-full md:w-48">
 					<div class="relative">
-						<input id="dateFrom"
+						<input id="dateFrom" name="dateFrom" th:value="${paramDateFrom}"
 							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
 							placeholder="Từ ngày" type="text" readonly="readonly" />
 						<div
@@ -97,7 +94,7 @@
 				</div>
 				<div class="relative w-full md:w-48">
 					<div class="relative">
-						<input id="dateTo"
+						<input id="dateTo" name="dateTo" th:value="${paramDateTo}"
 							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 rounded bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
 							placeholder="Đến ngày" type="text" readonly="readonly" />
 						<div
@@ -106,7 +103,18 @@
 						</div>
 					</div>
 				</div>
-			</div>
+				<div class="w-full md:w-auto flex items-center gap-2">
+					<button type="button" onclick="refreshPage()"
+						class="flex w-full md:w-auto items-center justify-center gap-2 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+						<span class="material-symbols-outlined text-[18px]">refresh</span>
+						Làm mới
+					</button>
+					<button type="submit"
+						class="flex w-full md:w-auto items-center justify-center bg-primary hover:bg-orange-700 text-white px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+						Lọc kết quả
+					</button>
+				</div>
+			</form>
 
 			<div
 				class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden">
@@ -168,220 +176,70 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
-							<tr class="hover:bg-orange-50/30 transition-colors group">
+							<tr th:each="customer : ${customers}" class="hover:bg-orange-50/30 transition-colors group">
 								<td class="px-6 py-4">
 									<div class="flex items-center gap-3">
-										<div class="w-10 h-10 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700"
-											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8FHt1FUWoRj9MGyLY3D3ro2we4i860ngy0vNcGvoDjbpJbMj3hf031XjqaUzkR4krsLWvHwMSXUGCH5So5brGJZx5zGT7m0Np6VelWcTk3R8bxVgoZeotvdUv09gXebqXq7IO2oUILh1PKfbP8h2BGyVdkn-JVFUrdU1_laVWpk9d__bYhBeQVcp8mVLHYlN-gmGsoAUGT_jtLZ-BScEEOQeEpW8p4WI5WIvVALfTwxupUrYpW6l7RdyIU3CD9eq6mHjyKMA4hv0')">
+										<div th:if="${customer.avatar != null}"
+											class="w-10 h-10 rounded-full bg-cover bg-center border border-gray-200"
+											th:style="'background-image: url(' + ${customer.avatar} + ')'">
 										</div>
+										<div th:unless="${customer.avatar != null}"
+											class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold border border-amber-200"
+											th:text="${#strings.substring(customer.fullname, 0, 1)}">
+										</div>
+
 										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Nguyễn
-												Văn A</span> <span
-												class="text-xs text-gray-500 dark:text-gray-400">nguyenvana@gmail.com</span>
+											<a th:href="@{/account}"
+												class="font-bold text-gray-900 dark:text-white hover:text-primary transition-colors cursor-pointer"
+												th:text="${customer.fullname}">Nguyễn Văn A</a>
+											<span class="text-xs text-gray-500 dark:text-gray-400"
+												th:text="${customer.email}">nguyenvana@gmail.com</span>
 										</div>
 									</div>
 								</td>
-								<td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-300">0987 654
-									321</td>
-								<td class="px-6 py-4"><span
-										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
-										<span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-										VIP Platinum
-									</span></td>
-								<td class="px-6 py-4 font-bold text-primary text-base">45.200.000đ</td>
-								<td class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200">12</td>
-								<td class="px-6 py-4 text-gray-500 dark:text-gray-400">12/05/2024</td>
-								<td class="px-6 py-4 text-right">
-									<div class="flex items-center justify-end gap-2">
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-											title="Xem hồ sơ">
-											<span class="material-symbols-outlined text-[20px]">person</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-											title="Chỉnh sửa">
-											<span class="material-symbols-outlined text-[20px]">edit</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-											title="Khóa tài khoản">
-											<span class="material-symbols-outlined text-[20px]">lock</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr class="hover:bg-orange-50/30 transition-colors group">
+								<td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-300"
+									th:text="${customer.phone}">0987 654 321</td>
 								<td class="px-6 py-4">
-									<div class="flex items-center gap-3">
-										<div class="w-10 h-10 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700"
-											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdkfN4nVccJmULTdGrg5fbuq11izECHlxlbluxLfI4akg1jyLAXjn8DK5Gwcned5q0PtaYyqMEiqLPOnJw-8ANbrilKfGp1pSsKQU3Ddx7uJP7EndMgToiuRRQ2qTze_2E6KIntlADK5CnHYTHVOBfUXB727yBe8bQndhLzEHNqF0a28CLuFLi57ht7LAaobf1DbxgGt4Tpat48zeg7S-SPMHr0SycYXJSmCpD9vGUt7wY7RqX06c8GLLQyPLI0FLcQAZTUi4gZJM')">
-										</div>
-										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Trần
-												Thị B</span> <span
-												class="text-xs text-gray-500 dark:text-gray-400">tranthib@outlook.com</span>
-										</div>
-									</div>
-								</td>
-								<td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-300">0912 345
-									678</td>
-								<td class="px-6 py-4"><span
+									<span th:if="${customer.status == 1}"
 										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
 										<span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-										Tiềm năng
-									</span></td>
-								<td class="px-6 py-4 font-bold text-primary text-base">8.500.000đ</td>
-								<td class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200">3</td>
-								<td class="px-6 py-4 text-gray-500 dark:text-gray-400">20/08/2024</td>
-								<td class="px-6 py-4 text-right">
-									<div class="flex items-center justify-end gap-2">
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-											title="Xem hồ sơ">
-											<span class="material-symbols-outlined text-[20px]">person</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-											title="Chỉnh sửa">
-											<span class="material-symbols-outlined text-[20px]">edit</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-											title="Khóa tài khoản">
-											<span class="material-symbols-outlined text-[20px]">lock</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr class="hover:bg-orange-50/30 transition-colors group">
-								<td class="px-6 py-4">
-									<div class="flex items-center gap-3">
-										<div
-											class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-bold border border-amber-200">
-											LC</div>
-										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Lê
-												Cường</span> <span
-												class="text-xs text-gray-500 dark:text-gray-400">lecuong.it@gmail.com</span>
-										</div>
-									</div>
-								</td>
-								<td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-300">0909 888
-									777</td>
-								<td class="px-6 py-4"><span
-										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
-										<span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-										Khách mới
-									</span></td>
-								<td class="px-6 py-4 font-bold text-primary text-base">1.200.000đ</td>
-								<td class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200">1</td>
-								<td class="px-6 py-4 text-gray-500 dark:text-gray-400">15/12/2024</td>
-								<td class="px-6 py-4 text-right">
-									<div class="flex items-center justify-end gap-2">
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-											title="Xem hồ sơ">
-											<span class="material-symbols-outlined text-[20px]">person</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-											title="Chỉnh sửa">
-											<span class="material-symbols-outlined text-[20px]">edit</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-											title="Khóa tài khoản">
-											<span class="material-symbols-outlined text-[20px]">lock</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr class="hover:bg-orange-50/30 transition-colors group">
-								<td class="px-6 py-4">
-									<div class="flex items-center gap-3">
-										<div class="w-10 h-10 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700"
-											style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBh3pGKJoZPWC5h7RvFkd4T2GyTkegeXjgV5FSEBPahMt67_JjWOV6HbP55G_Wk3mlOpd0H6AdU_m7sdbI4m9avHn7bh6KuP_s_m5MszyjNOmr8YxWUe3yO62P2YJksSp4rngbc2A4Qk_A-lh8PLjmwd3xAoTfOxd2_SkL8-v8I__O2FdRcZbMZHhVfdwpazaEy5VUcFvKjGQW-TVCpyrR-10vE-XFXNWEXD9php65m6n9hVIsYQ6C9ywEs81uyU4VhAg-VoRYgPHA')">
-										</div>
-										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">Phạm
-												Hùng</span> <span
-												class="text-xs text-gray-500 dark:text-gray-400">hungpham88@yahoo.com</span>
-										</div>
-									</div>
-								</td>
-								<td class="px-6 py-4 font-medium text-gray-600 dark:text-gray-300">0933 222
-									111</td>
-								<td class="px-6 py-4"><span
-										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
-										<span class="w-1.5 h-1.5 rounded-full bg-indigo-600"></span>
-										VIP Gold
-									</span></td>
-								<td class="px-6 py-4 font-bold text-primary text-base">28.900.000đ</td>
-								<td class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200">8</td>
-								<td class="px-6 py-4 text-gray-500 dark:text-gray-400">10/01/2024</td>
-								<td class="px-6 py-4 text-right">
-									<div class="flex items-center justify-end gap-2">
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-											title="Xem hồ sơ">
-											<span class="material-symbols-outlined text-[20px]">person</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-											title="Chỉnh sửa">
-											<span class="material-symbols-outlined text-[20px]">edit</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-											title="Khóa tài khoản">
-											<span class="material-symbols-outlined text-[20px]">lock</span>
-										</button>
-									</div>
-								</td>
-							</tr>
-							<tr class="hover:bg-orange-50/30 transition-colors bg-gray-50 dark:bg-gray-800/50 group">
-								<td class="px-6 py-4">
-									<div class="flex items-center gap-3">
-										<div
-											class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold border border-slate-300">
-											KV</div>
-										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-500 dark:text-gray-400 group-hover:text-primary transition-colors">Kevin
-												Vu</span> <span class="text-xs text-slate-400">kevin.vu@gmail.com</span>
-										</div>
-									</div>
-								</td>
-								<td class="px-6 py-4 font-medium text-slate-400">0999 000
-									111</td>
-								<td class="px-6 py-4"><span
-										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">
+										Hoạt động
+									</span>
+									<span th:if="${customer.status == 0}"
+										class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-gray-500 border border-gray-200">
 										<span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
 										Bị khóa
-									</span></td>
-								<td class="px-6 py-4 font-bold text-slate-400 text-base">0đ</td>
-								<td class="px-6 py-4 text-center font-semibold text-slate-400">0</td>
-								<td class="px-6 py-4 text-slate-400">01/01/2025</td>
+									</span>
+								</td>
+								<td class="px-6 py-4 font-bold text-primary text-base">
+									0đ
+								</td>
+								<td class="px-6 py-4 text-center font-semibold text-gray-700 dark:text-gray-200"
+									th:text="${customer.order != null ? customer.order.size() : 0}">0</td>
+								<td class="px-6 py-4 text-gray-500 dark:text-gray-400"
+									th:text="${#temporals.format(customer.createAt, 'dd/MM/yyyy')}">12/05/2024</td>
 								<td class="px-6 py-4 text-right">
 									<div class="flex items-center justify-end gap-2">
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-											title="Xem hồ sơ">
-											<span class="material-symbols-outlined text-[20px]">person</span>
-										</button>
-										<button
-											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-colors"
-											title="Chỉnh sửa">
+										<button type="button" th:data-id="${customer.id}"
+											th:data-fullname="${customer.fullname}" th:data-email="${customer.email}"
+											th:data-phone="${customer.phone}"
+											th:data-birthday="${customer.birthday != null ? customer.birthday : ''}"
+											th:data-gender="${customer.gender}" th:data-status="${customer.status}"
+											onclick="openEditCustomerModal(this)"
+											class="p-2 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-50 inline-block"
+											title="Chỉnh sửa tài khoản">
 											<span class="material-symbols-outlined text-[20px]">edit</span>
 										</button>
-										<button
+										<button type="button" th:if="${customer.status == 1}"
+											class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+											title="Khóa tài khoản"
+											th:onclick="'showToggleStatusModal(' + ${customer.id} + ', 1)'">
+											<span class="material-symbols-outlined text-[20px]">lock</span>
+										</button>
+										<button type="button" th:if="${customer.status == 0}"
 											class="p-2 rounded-lg text-slate-400 hover:text-green-600 hover:bg-green-50 transition-colors"
-											title="Mở khóa tài khoản">
+											title="Mở khóa tài khoản"
+											th:onclick="'showToggleStatusModal(' + ${customer.id} + ', 0)'">
 											<span class="material-symbols-outlined text-[20px]">lock_open</span>
 										</button>
 									</div>
@@ -523,7 +381,7 @@
 					// Global Click to Close
 					document.addEventListener('click', function (event) {
 						const dropdowns = [
-							{ id: 'groupDropdown', btn: 'groupFilterBtn', icon: 'groupDropdownIcon' },
+							{ id: 'statusDropdown', btn: 'statusFilterBtn', icon: 'statusDropdownIcon' },
 							{ id: 'paginationDropdown', btn: 'paginationDropdownBtn', icon: 'paginationDropdownIcon' }
 						];
 
@@ -558,11 +416,12 @@
 
 					// Initialize
 					document.addEventListener('DOMContentLoaded', function () {
-						setupDropdown('groupFilterBtn', 'groupDropdown', 'groupDropdownIcon');
+						setupDropdown('statusFilterBtn', 'statusDropdown', 'statusDropdownIcon');
 
-						setupSelection('groupDropdown', 'select-group-item', function (value, label) {
-							document.getElementById('groupInput').value = value;
-							document.getElementById('groupFilterLabel').textContent = label;
+						setupSelection('statusDropdown', 'select-status-item', function (value, label) {
+							document.getElementById('statusInput').value = value;
+							document.getElementById('statusFilterLabel').textContent = label;
+							document.getElementById('searchForm').submit();
 						});
 					});
 				</script>
@@ -665,14 +524,253 @@
 						dateFormat: "d/m/Y",
 						maxDate: "today",
 						disableMobile: "true",
+						onChange: function (selectedDates, dateStr, instance) {
+							document.getElementById('searchForm').submit();
+						}
 					});
 					flatpickr("#dateTo", {
 						locale: "vn",
 						dateFormat: "d/m/Y",
 						maxDate: "today",
 						disableMobile: "true",
+						onChange: function (selectedDates, dateStr, instance) {
+							document.getElementById('searchForm').submit();
+						}
 					});
 				});
+
+				function refreshPage() {
+					window.location.href = '/admin/customer-list';
+				}
+			</script>
+
+			<!-- Custom Toggle Status Confirmation Modal -->
+			<div id="toggleStatusModal" class="fixed inset-0 z-[150] hidden flex items-center justify-center">
+				<!-- Backdrop -->
+				<div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+					onclick="hideToggleStatusModal()"></div>
+
+				<!-- Modal Content -->
+				<div class="relative w-full max-w-md p-6">
+					<div class="bg-white dark:bg-gray-800 rounded shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden transform transition-all scale-95 opacity-0 duration-300 pointer-events-none"
+						id="toggleStatusModalContent">
+						<form th:action="@{/admin/customer/toggle-status}" method="post">
+							<input type="hidden" name="id" id="toggleStatusCustomerId" />
+							<div class="p-6 text-center">
+								<div id="toggleStatusIconContainer"
+									class="mx-auto w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
+									<span id="toggleStatusIcon"
+										class="material-symbols-outlined text-red-500 text-[32px]">lock</span>
+								</div>
+								<h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2" id="toggleStatusTitle">
+									Xác nhận</h3>
+								<p class="text-sm text-gray-500 dark:text-gray-400 mb-6" id="toggleStatusMessage">Bạn có
+									chắc chắn muốn thực hiện hành động này?</p>
+
+								<div class="flex gap-3 mt-6">
+									<button type="button" onclick="hideToggleStatusModal()"
+										class="flex-1 px-4 py-2.5 rounded border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+										Hủy bỏ
+									</button>
+									<button type="submit" id="toggleStatusConfirmBtn"
+										class="flex-1 px-4 py-2.5 rounded bg-red-500 hover:bg-red-600 text-white font-bold text-sm shadow-lg shadow-red-200 dark:shadow-none transition-all">
+										Xác nhận
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal Sửa Khách Hàng -->
+			<div id="editCustomerModal"
+				class="fixed inset-0 z-50 hidden bg-black/50 items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+				<div
+					class="bg-white dark:bg-[#1e293b] rounded-xl shadow-xl w-full max-w-lg mx-4 transform scale-95 transition-all duration-300 pointer-events-auto max-h-[90vh] flex flex-col">
+
+					<div
+						class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center shrink-0">
+						<h3 class="text-xl font-bold text-gray-900 dark:text-white">Chỉnh sửa khách hàng</h3>
+						<button type="button" onclick="closeEditCustomerModal()"
+							class="text-gray-400 hover:text-gray-500 focus:outline-none">
+							<span class="material-symbols-outlined">close</span>
+						</button>
+					</div>
+
+					<div class="p-6 overflow-y-auto">
+						<form id="editCustomerForm" th:action="@{/admin/customer/update}" method="post">
+							<input type="hidden" id="edit-id" name="id" />
+
+							<div class="space-y-4">
+								<div>
+									<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Họ và
+										tên</label>
+									<input type="text" id="edit-fullname" name="fullname" required
+										class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary text-sm p-2.5 border" />
+								</div>
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<label
+											class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+										<input type="email" id="edit-email" name="email" disabled
+											class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed text-sm p-2.5 border" />
+									</div>
+									<div>
+										<label
+											class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Số
+											điện thoại</label>
+										<input type="tel" id="edit-phone" name="phone" disabled
+											class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed text-sm p-2.5 border" />
+									</div>
+								</div>
+								<div class="grid grid-cols-2 gap-4">
+									<div>
+										<label
+											class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ngày
+											sinh</label>
+										<input type="date" id="edit-birthday" name="birthday" disabled
+											class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed text-sm p-2.5 border" />
+									</div>
+									<div>
+										<label
+											class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Giới
+											tính</label>
+										<select id="edit-gender" name="gender" disabled
+											class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed text-sm p-2.5 border">
+											<option value="true">Nam</option>
+											<option value="false">Nữ</option>
+										</select>
+									</div>
+								</div>
+								<div>
+									<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Trạng
+										thái</label>
+									<select id="edit-status" name="status"
+										class="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:border-primary focus:ring-primary text-sm p-2.5 border">
+										<option value="1">Hoạt động</option>
+										<option value="0">Bị khóa</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="mt-6 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-end gap-3">
+								<button type="button" onclick="closeEditCustomerModal()"
+									class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+									Hủy
+								</button>
+								<button type="submit"
+									class="px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm">
+									Lưu thay đổi
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				function openEditCustomerModal(btn) {
+					const id = btn.getAttribute('data-id');
+					const fullname = btn.getAttribute('data-fullname');
+					const email = btn.getAttribute('data-email');
+					const phone = btn.getAttribute('data-phone');
+					const birthday = btn.getAttribute('data-birthday');
+					const gender = btn.getAttribute('data-gender');
+					const status = btn.getAttribute('data-status');
+
+					document.getElementById('edit-id').value = id;
+					document.getElementById('edit-fullname').value = fullname;
+					document.getElementById('edit-email').value = email;
+					document.getElementById('edit-phone').value = phone;
+					document.getElementById('edit-birthday').value = birthday;
+
+					// Set gender select
+					const genderSelect = document.getElementById('edit-gender');
+					if (gender === 'true') genderSelect.value = 'true';
+					else if (gender === 'false') genderSelect.value = 'false';
+
+					// Set status select
+					const statusSelect = document.getElementById('edit-status');
+					statusSelect.value = status;
+
+					const modal = document.getElementById('editCustomerModal');
+					const modalContent = modal.querySelector('div');
+
+					modal.classList.remove('hidden');
+					// Small delay to allow display:block to apply before animating opacity
+					setTimeout(() => {
+						modal.classList.remove('opacity-0', 'pointer-events-none');
+						modalContent.classList.remove('scale-95');
+						modalContent.classList.add('scale-100');
+					}, 10);
+				}
+
+				function closeEditCustomerModal() {
+					const modal = document.getElementById('editCustomerModal');
+					const modalContent = modal.querySelector('div');
+
+					modal.classList.add('opacity-0', 'pointer-events-none');
+					modalContent.classList.remove('scale-100');
+					modalContent.classList.add('scale-95');
+
+					setTimeout(() => {
+						modal.classList.add('hidden');
+					}, 300); // Wait for transition to finish
+				}
+
+				function showToggleStatusModal(id, currentStatus) {
+					document.getElementById('toggleStatusCustomerId').value = id;
+
+					const title = document.getElementById('toggleStatusTitle');
+					const message = document.getElementById('toggleStatusMessage');
+					const icon = document.getElementById('toggleStatusIcon');
+					const iconContainer = document.getElementById('toggleStatusIconContainer');
+					const confirmBtn = document.getElementById('toggleStatusConfirmBtn');
+
+					if (currentStatus == 1) { // Current is active, action is to lock
+						title.textContent = 'Xác nhận khóa tài khoản';
+						message.textContent = 'Bạn có chắc chắn muốn khóa tài khoản này? Người dùng sẽ không thể đăng nhập.';
+						icon.textContent = 'lock';
+
+						iconContainer.className = 'mx-auto w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4';
+						icon.className = 'material-symbols-outlined text-red-500 text-[32px]';
+
+						confirmBtn.className = 'flex-1 px-4 py-2.5 rounded bg-red-500 hover:bg-red-600 text-white font-bold text-sm shadow-lg shadow-red-200 dark:shadow-none transition-all';
+						confirmBtn.textContent = 'Khóa ngay';
+					} else { // Current is locked, action is to unlock
+						title.textContent = 'Xác nhận mở khóa tài khoản';
+						message.textContent = 'Bạn có chắc chắn muốn mở khóa tài khoản này? Người dùng sẽ có thể đăng nhập bình thường.';
+						icon.textContent = 'lock_open';
+
+						iconContainer.className = 'mx-auto w-16 h-16 bg-green-50 dark:bg-green-900/20 rounded-full flex items-center justify-center mb-4';
+						icon.className = 'material-symbols-outlined text-green-500 text-[32px]';
+
+						confirmBtn.className = 'flex-1 px-4 py-2.5 rounded bg-green-500 hover:bg-green-600 text-white font-bold text-sm shadow-lg shadow-green-200 dark:shadow-none transition-all';
+						confirmBtn.textContent = 'Mở khóa';
+					}
+
+					const modal = document.getElementById('toggleStatusModal');
+					const content = document.getElementById('toggleStatusModalContent');
+
+					modal.classList.remove('hidden');
+					modal.offsetWidth; // Force reflow
+
+					content.classList.remove('scale-95', 'opacity-0', 'pointer-events-none');
+					content.classList.add('scale-100', 'opacity-100', 'pointer-events-auto');
+				}
+
+				function hideToggleStatusModal() {
+					const modal = document.getElementById('toggleStatusModal');
+					const content = document.getElementById('toggleStatusModalContent');
+
+					content.classList.remove('scale-100', 'opacity-100', 'pointer-events-auto');
+					content.classList.add('scale-95', 'opacity-0', 'pointer-events-none');
+
+					setTimeout(() => {
+						modal.classList.add('hidden');
+					}, 300);
+				}
 			</script>
 		</div>
 	</div>

@@ -7,6 +7,7 @@
         <form id="postForm" th:action="@{/admin/post-list/post-form/save}" th:object="${post}" method="post"
             enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{thumbnail}">
             <div class="max-w-7xl mx-auto space-y-6">
                 <!-- Header Actions -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -101,6 +102,8 @@
                                         onchange="previewThumbnail(this)">
                                 </label>
                             </div>
+                            <p th:if="${#fields.hasErrors('thumbnail')}" th:errors="*{thumbnail}"
+                                class="text-red-500 text-[13px] mt-1 font-medium"></p>
                         </div>
                     </div>
 

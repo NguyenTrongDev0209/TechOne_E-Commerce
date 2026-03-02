@@ -37,7 +37,7 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+    private SecurityContextRepository securityContextRepository1 = new HttpSessionSecurityContextRepository();
 	
     @Autowired
     private SecurityContextRepository securityContextRepository;
@@ -77,7 +77,7 @@ public class LoginController {
 	            SecurityContext context = SecurityContextHolder.createEmptyContext();
 	            context.setAuthentication(auth);
 	            SecurityContextHolder.setContext(context);
-	            securityContextRepository.saveContext(context, request, response);
+	            securityContextRepository1.saveContext(context, request, response);
 
 	            if (account.getRole()) {
 	                return "redirect:/admin/dashboard";

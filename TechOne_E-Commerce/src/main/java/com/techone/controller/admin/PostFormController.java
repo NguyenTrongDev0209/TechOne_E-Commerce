@@ -22,6 +22,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.File;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.validation.BindingResult;
 
 @Controller
 public class PostFormController {
@@ -69,12 +71,31 @@ public class PostFormController {
 
     @PostMapping("/admin/post-list/post-form/save")
     public String savePost(Model model,
-            @ModelAttribute("post") Post post,
+            @Valid @ModelAttribute("post") Post post,
+            BindingResult result,
             @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] images) {
 
-        // Handle author (Optional: pick first admin if exists for now, or null)
-        if (post.getId() == null && post.getAccount() == null) {
+        // Manual validation for Thumbnail if it's a new post or if the existing thumbnail is missing
+        if ((post.getId() == null || post.getThumbnail() == null || post.getThumbnail().isEmpty()) 
+            && (thumbnailFile == null || thumbnailFile.isEmpty())) {
+            result.rejectValue("thumbnail", "NotBlank", "Vui lòng tải lên ảnh thumbnail");
+        }
+
+        if (result.hasErrors()) {
+            loadFormAttributes(model);
+            model.addAttribute("editMode", post.getId() != null);
+            return "views/admin/post-form";
+        }
+
+        // Handle author from session
+        jakarta.servlet.http.HttpSession session = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
+        com.techone.model.Account sessionUser = (com.techone.model.Account) session.getAttribute("user");
+        
+        if (post.getId() == null && sessionUser != null) {
+            post.setAccount(sessionUser);
+        } else if (post.getId() == null) {
+            // Fallback if no session user (should ideally be protected by security)
             accountRepository.findAll().stream()
                     .filter(a -> a.getRole())
                     .findFirst()

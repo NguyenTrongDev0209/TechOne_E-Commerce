@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto space-y-6">
+        <div class="max-w-7xl mx-auto space-y-6"> 	
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
                 <div>
@@ -89,11 +89,6 @@
                         thống</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="refreshPage()"
-                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded text-sm font-bold transition-all shadow-sm">
-                        <span class="material-symbols-outlined text-[18px]">refresh</span>
-                        Làm mới
-                    </button>
                     <a th:href="@{/admin/post-list/post-form}"
                         class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0">
                         <span class="material-symbols-outlined text-[20px]">add</span>
@@ -155,24 +150,26 @@
             </div>
 
             <!-- Filter Section -->
-            <div
+            <form th:action="@{/admin/post-list}" method="GET" id="searchForm"
                 class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6 relative z-20 overflow-visible items-end">
                 <!-- Search -->
                 <div class="flex-1 relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="material-symbols-outlined text-gray-400">search</span>
                     </div>
-                    <input
+                    <input name="title" th:value="${paramTitle}"
                         class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
                         placeholder="Tìm kiếm bài viết..." type="text" />
                 </div>
 
                 <!-- Status Dropdown -->
                 <div class="w-full md:w-48 relative z-30">
-                    <input type="hidden" name="status" id="statusInput" value="all">
-                    <button id="statusFilterBtn"
+                    <input type="hidden" name="status" id="statusInput" th:value="${paramStatus}">
+                    <button type="button" id="statusFilterBtn"
                         class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                        <span id="statusFilterLabel">Tất cả trạng thái</span>
+                        <span id="statusFilterLabel"
+                            th:text="${paramStatus == 'published' ? 'Đã xuất bản' : (paramStatus == 'pending' ? 'Tạm ẩn' : 'Tất cả trạng thái')}">Tất
+                            cả trạng thái</span>
                         <span id="statusDropdownIcon"
                             class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
                     </button>
@@ -205,7 +202,7 @@
                 <!-- Date Filters -->
                 <div class="relative w-full md:w-48">
                     <div class="relative">
-                        <input id="dateFrom"
+                        <input id="dateFrom" name="dateFrom" th:value="${paramDateFrom}"
                             class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
                             placeholder="Từ ngày" type="text" readonly="readonly" />
                         <div
@@ -219,7 +216,7 @@
                 </div>
                 <div class="relative w-full md:w-48">
                     <div class="relative">
-                        <input id="dateTo"
+                        <input id="dateTo" name="dateTo" th:value="${paramDateTo}"
                             class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
                             placeholder="Đến ngày" type="text" readonly="readonly" />
                         <div
@@ -228,7 +225,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="w-full md:w-auto flex items-center gap-2">
+                    <button type="button" onclick="refreshPage()"
+                        class="flex w-full md:w-auto items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Làm mới
+                    </button>
+                    <button type="submit"
+                        class="flex w-full md:w-auto items-center justify-center bg-primary hover:bg-orange-700 text-white px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+                        Lọc kết quả
+                    </button>
+                </div>
+            </form>
 
             <!-- Content Card -->
             <div
@@ -318,7 +326,6 @@
                                     <div class="flex flex-col text-xs" th:if="${post.createAt != null}">
                                         <span
                                             th:text="${#temporals.format(post.createAt, 'dd/MM/yyyy')}">20/12/2025</span>
-                                        <span th:text="${#temporals.format(post.createAt, 'HH:mm')}">14:30</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -605,7 +612,7 @@
         </style>
         <script>
             function refreshPage() {
-                window.location.reload();
+                window.location.href = '/admin/post-list';
             }
 
             // Toast Notification Logic
