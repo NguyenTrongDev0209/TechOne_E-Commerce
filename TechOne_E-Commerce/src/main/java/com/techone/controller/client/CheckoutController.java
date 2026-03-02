@@ -19,19 +19,12 @@ import com.techone.model.Cart;
 import com.techone.model.CartItem;
 import com.techone.model.Order;
 import com.techone.model.OrderDetail;
-import com.techone.model.Shipment;
-import com.techone.model.Variant;
 import com.techone.model.VoucherItem;
-import com.techone.model.VoucherPercent;
 import com.techone.repository.AddressRepository;
 import com.techone.repository.CartItemRepository;
 import com.techone.repository.CartRepository;
-import com.techone.repository.OrderDetailRepository;
 import com.techone.repository.OrderRepository;
-import com.techone.repository.ShipmentRepository;
-import com.techone.repository.VariantRepository;
 import com.techone.repository.VoucherItemRepository;
-import com.techone.service.ShippingFeeService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -59,19 +52,10 @@ public class CheckoutController {
 	private OrderRepository orderRepository;
 
 	@Autowired
-	private OrderDetailRepository orderDetailRepository;
-
-	@Autowired
-	private ShipmentRepository shipmentRepository;
-
-	@Autowired
-	private ShippingFeeService shippingFeeService;
-
-	@Autowired
-	private VariantRepository variantRepository;
-
-	@Autowired
 	private PayOS payOS;
+
+	@Autowired
+	private com.techone.service.OrderService orderService;
 
 	@GetMapping("/checkout")
 	public String showCheckout(@RequestParam(value = "itemIds", required = false) List<Integer> itemIds,
@@ -138,179 +122,80 @@ public class CheckoutController {
 			HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
 
-		System.out.println("DEBUG: placeOrder - paymentMethod=" + paymentMethod);
-		System.out.println("DEBUG: placeOrder - note=" + note);
-		System.out.println("DEBUG: placeOrder - addressId=" + addressId);
-		System.out.println("DEBUG: placeOrder - voucherId=" + voucherId);
-
 		Account user = (Account) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:/login";
 		}
 
-		if (addressId == null) {
-			redirectAttributes.addFlashAttribute("error", "Vui lòng chọn địa chỉ giao hàng");
-			return "redirect:/checkout";
-		}
-
-		Optional<Address> addressOpt = addressRepository.findById(addressId);
-		if (addressOpt.isEmpty()) {
-			redirectAttributes.addFlashAttribute("error", "Địa chỉ không tồn tại");
-			return "redirect:/checkout";
-		}
-
-		Optional<Cart> cartOpt = cartRepository.findByAccountId(user.getId());
-		if (cartOpt.isEmpty()) {
-			redirectAttributes.addFlashAttribute("error", "Giỏ hàng trống");
-			return "redirect:/cart";
-		}
-
-		List<CartItem> cartItems = cartItemRepository.findByCart(cartOpt.get());
-		if (cartItems.isEmpty()) {
-			redirectAttributes.addFlashAttribute("error", "Giỏ hàng trống");
-			return "redirect:/cart";
-		}
-
-		// Check Stock
-		for (CartItem item : cartItems) {
-			Variant variant = item.getVariant();
-			if (variant.getStock() == null || variant.getStock() < item.getQuantity()) {
-				redirectAttributes.addFlashAttribute("error",
-						"Sản phẩm '" + variant.getProduct().getName() + " [" + variant.getVariantName()
-								+ "]' đã hết hàng hoặc không đủ số lượng");
-				return "redirect:/checkout";
-			}
-		}
-
-		// 1. Create Order
-		Order order = new Order();
-		order.setCreateAt(LocalDateTime.now());
-		order.setStatus(0); // 0: Pending/Processing
-		order.setNote(note);
-		order.setAccount(user);
-		order = orderRepository.save(order);
-
-		// 1.5 Create Shipment
-		Shipment shipment = new Shipment();
-		shipment.setOrder(order);
-		shipment.setAddress(addressOpt.get());
-		shipment.setStatus(0); // 0: Pending/Processing
-		shipment.setCreateAt(LocalDateTime.now());
-		shipmentRepository.save(shipment);
-
-		// 2. Calculate Shipping Fee
-		Integer shippingFee = 0;
 		try {
-			shippingFee = shippingFeeService.calculateShippingFee(null,
-					addressOpt.get().getWard().getDistrict().getId(),
-					addressOpt.get().getWard().getCode());
+			// Call OrderService to handle logic (Validation, Order/Shipment creation,
+			// Stock, Voucher)
+			Order order = orderService.createOrder(user, addressId, paymentMethod, voucherId, note, session);
+
+			System.out.println("DEBUG: CheckoutController - Order status after createOrder: " + order.getStatus());
+
+			// Handle Online Payment (QR)
+			if ("QR".equals(paymentMethod)) {
+				try {
+					String baseUrl = getBaseUrl(request);
+					String returnUrl = baseUrl + "/payment/success";
+					String cancelUrl = baseUrl + "/payment/cancel";
+
+					long orderCode = Long.parseLong(String.valueOf(System.currentTimeMillis()).substring(3));
+					order.setOrderCode(orderCode);
+					orderRepository.save(order);
+
+					System.out.println("DEBUG: CheckoutController - Order status after save(order) with orderCode: "
+							+ order.getStatus());
+
+					List<PaymentLinkItem> payOSItems = new ArrayList<>();
+					if (order.getOrderDetail() != null) {
+						for (OrderDetail detail : order.getOrderDetail()) {
+							payOSItems.add(PaymentLinkItem.builder()
+									.name(detail.getVariant().getProduct().getName())
+									.quantity(detail.getQuantity())
+									.price(detail.getUnitPrice().longValue())
+									.build());
+						}
+					}
+
+					CreatePaymentLinkRequest paymentData = CreatePaymentLinkRequest.builder()
+							.orderCode(orderCode)
+							.amount(order.getTotalAmount().longValue())
+							.description("Thanh toan don hang #" + order.getId())
+							.returnUrl(returnUrl)
+							.cancelUrl(cancelUrl)
+							.items(payOSItems)
+							.build();
+
+					CreatePaymentLinkResponse data = payOS.paymentRequests().create(paymentData);
+
+					redirectAttributes.addFlashAttribute("qrCode", data.getQrCode());
+					redirectAttributes.addFlashAttribute("accountName", data.getAccountName());
+					redirectAttributes.addFlashAttribute("accountNumber", data.getAccountNumber());
+					redirectAttributes.addFlashAttribute("bin", data.getBin());
+					redirectAttributes.addFlashAttribute("checkoutUrl", data.getCheckoutUrl());
+					redirectAttributes.addFlashAttribute("amount", data.getAmount());
+					redirectAttributes.addFlashAttribute("description", data.getDescription());
+
+					return "redirect:/checkout/payos?orderId=" + order.getId();
+				} catch (Exception e) {
+					e.printStackTrace();
+					redirectAttributes.addFlashAttribute("error",
+							"Lỗi tạo liên kết thanh toán PayOS: " + e.getMessage());
+					return "redirect:/checkout";
+				}
+			} else {
+				// COD Success
+				return "redirect:/checkout/order-success";
+			}
+		} catch (IllegalArgumentException e) {
+			redirectAttributes.addFlashAttribute("error", e.getMessage());
+			return "redirect:/checkout";
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		order.setShippingFee(shippingFee.doubleValue());
-
-		// 3. Create OrderDetails & Calculate Total
-		long productTotal = 0;
-		List<PaymentLinkItem> payOSItems = new ArrayList<>();
-
-		for (CartItem item : cartItems) {
-			OrderDetail detail = new OrderDetail();
-			detail.setOrder(order);
-			detail.setVariant(item.getVariant());
-			detail.setQuantity(item.getQuantity());
-
-			double pricePerItem = item.getVariant().getPrice() * (1 - item.getVariant().getDiscount() / 100.0);
-			detail.setUnitPrice(pricePerItem);
-			orderDetailRepository.save(detail);
-
-			// Reduce Stock
-			Variant variant = item.getVariant();
-			variant.setStock(variant.getStock() - item.getQuantity());
-			variantRepository.save(variant);
-
-			productTotal += (long) (pricePerItem * item.getQuantity());
-
-			payOSItems.add(PaymentLinkItem.builder()
-					.name(item.getVariant().getProduct().getName())
-					.quantity(item.getQuantity())
-					.price((long) pricePerItem)
-					.build());
-		}
-
-		long finalTotalAmount = productTotal + shippingFee;
-
-		// 3.5 Apply Voucher
-		double voucherDiscount = 0;
-		if (voucherId != null) {
-			Optional<VoucherItem> vItemOpt = voucherItemRepository.findById(voucherId);
-			if (vItemOpt.isPresent()) {
-				VoucherItem vItem = vItemOpt.get();
-				if (vItem.getAccount().getId().equals(user.getId()) && vItem.getStatus() == 0) {
-					VoucherPercent vPercent = vItem.getVoucherPercent();
-					if (productTotal >= vPercent.getMinPrice()) {
-						if (vPercent.getVoucherType() != null && vPercent.getVoucherType() == true) {
-							voucherDiscount = productTotal * (vPercent.getPercentVoucher() / 100.0);
-						} else {
-							voucherDiscount = shippingFee * (vPercent.getPercentVoucher() / 100.0);
-						}
-
-						if (vPercent.getMaxPrice() != null && voucherDiscount > vPercent.getMaxPrice()) {
-							voucherDiscount = vPercent.getMaxPrice();
-						}
-						vItem.setStatus(1); // Mark as used
-						voucherItemRepository.save(vItem);
-					}
-				}
-			}
-		}
-		order.setVoucherDiscount(voucherDiscount);
-		finalTotalAmount -= (long) voucherDiscount;
-
-		order.setTotalAmount((double) finalTotalAmount);
-		orderRepository.save(order);
-
-		// 4. Handle Payment
-		if ("QR".equals(paymentMethod)) {
-			try {
-				String baseUrl = getBaseUrl(request);
-				String returnUrl = baseUrl + "/payment/success";
-				String cancelUrl = baseUrl + "/payment/cancel";
-
-				long orderCode = Long.parseLong(String.valueOf(System.currentTimeMillis()).substring(3));
-				order.setOrderCode(orderCode);
-				orderRepository.save(order);
-
-				CreatePaymentLinkRequest paymentData = CreatePaymentLinkRequest.builder()
-						.orderCode(orderCode)
-						.amount(finalTotalAmount)
-						.description("Thanh toan don hang #" + order.getId())
-						.returnUrl(returnUrl)
-						.cancelUrl(cancelUrl)
-						.items(payOSItems)
-						.build();
-
-				CreatePaymentLinkResponse data = payOS.paymentRequests().create(paymentData);
-
-				// Pass PayOS data to the next request via FlashAttributes
-				redirectAttributes.addFlashAttribute("qrCode", data.getQrCode());
-				redirectAttributes.addFlashAttribute("accountName", data.getAccountName());
-				redirectAttributes.addFlashAttribute("accountNumber", data.getAccountNumber());
-				redirectAttributes.addFlashAttribute("bin", data.getBin());
-				redirectAttributes.addFlashAttribute("checkoutUrl", data.getCheckoutUrl());
-				redirectAttributes.addFlashAttribute("amount", data.getAmount());
-				redirectAttributes.addFlashAttribute("description", data.getDescription());
-
-				return "redirect:/checkout/payos?orderId=" + order.getId();
-			} catch (Exception e) {
-				e.printStackTrace();
-				redirectAttributes.addFlashAttribute("error", "Lỗi tạo liên kết thanh toán PayOS: " + e.getMessage());
-				return "redirect:/checkout";
-			}
-		} else {
-			// COD
-			cartItemRepository.deleteAll(cartItems);
-			session.setAttribute("cartCount", 0);
-			return "redirect:/checkout/order-success";
+			redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi trong quá trình đặt hàng");
+			return "redirect:/checkout";
 		}
 	}
 

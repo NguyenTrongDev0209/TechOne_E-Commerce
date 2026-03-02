@@ -39,13 +39,13 @@ public class Order {
 	@Column(columnDefinition = "nvarchar(max)")
 	public String note;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<OrderDetail> orderDetail;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<Shipment> shipment;
 
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<Transaction> transaction;
 
 	@ManyToOne
@@ -56,6 +56,10 @@ public class Order {
 	public Double totalAmount = 0.0;
 	public Double voucherDiscount = 0.0;
 	public Long orderCode;
+
+	@ManyToOne
+	@JoinColumn(name = "voucher_item_id")
+	public VoucherItem appliedVoucher;
 
 	public Double getTotalPrice() {
 		if (totalAmount != null && totalAmount > 0) {

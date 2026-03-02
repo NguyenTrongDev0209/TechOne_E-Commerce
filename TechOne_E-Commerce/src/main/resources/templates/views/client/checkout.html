@@ -738,7 +738,7 @@
         </div>
 
 
-        <script>
+        <script th:inline="javascript">
             // --- Address Modal Logic ---
             function toggleAddressModal() {
                 const modal = document.getElementById('address-modal');
@@ -1210,8 +1210,8 @@
                 }
 
                 // Kiểm tra thông báo từ Server (Thymeleaf)
-                const error = /*[[${error}]]*/ null;
-                const message = /*[[${message}]]*/ null;
+                const error = [[${ error }]];
+                const message = [[${ message }]];
                 if (error) showStatusModal('error', 'Lỗi', error);
                 if (message) showStatusModal('success', 'Thông báo', message);
             });

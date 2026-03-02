@@ -127,8 +127,8 @@ public class PaymentService {
             Order order = orderOpt.get();
 
             // Update order status if not already paid
-            if (order.getStatus() != 1) {
-                order.setStatus(1); // 1: Paid/Success
+            if (order.getStatus() != 2) {
+                order.setStatus(2); // 2: Paid/Success
                 orderRepository.save(order);
             }
 
