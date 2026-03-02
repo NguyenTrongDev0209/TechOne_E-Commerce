@@ -166,6 +166,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    public void cancelOrder(Integer orderId) {
+        Optional<Order> orderOpt = orderRepository.findById(orderId);
+        if (orderOpt.isPresent()) {
+            Order order = orderOpt.get();
+            // Only cancel if it's still in "Waiting for Payment" state
+            if (order.getStatus() != null && order.getStatus() == 1) {
+                System.out.println("DEBUG: Manual cancel for Order #" + orderId);
+                performCancel(order);
+            }
+        }
+    }
+
+    @Override
+    @Transactional
     @Scheduled(fixedRate = 60000) // Run every minute
     public void cancelExpiredOrders() {
         LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(3);
@@ -177,31 +191,30 @@ public class OrderServiceImpl implements OrderService {
 
         for (Order order : expiredOrders) {
             System.out.println("Hủy đơn hàng quá hạn thanh toán: #" + order.getId());
+            performCancel(order);
+        }
+    }
 
-            // 1. Restore Stock
-            if (order.getOrderDetail() != null) {
-                for (OrderDetail detail : order.getOrderDetail()) {
-                    Variant variant = detail.getVariant();
-                    if (variant != null) {
-                        variant.setStock(variant.getStock() + detail.getQuantity());
-                        variantRepository.save(variant);
-                    }
+    private void performCancel(Order order) {
+        // 1. Restore Stock
+        if (order.getOrderDetail() != null) {
+            for (OrderDetail detail : order.getOrderDetail()) {
+                Variant variant = detail.getVariant();
+                if (variant != null) {
+                    variant.setStock(variant.getStock() + detail.getQuantity());
+                    variantRepository.save(variant);
                 }
             }
-
-            // 2. Restore Voucher if any
-            if (order.getAppliedVoucher() != null) {
-                VoucherItem voucher = order.getAppliedVoucher();
-                voucher.setStatus(0); // Mark as unused (Available)
-                voucherItemRepository.save(voucher);
-            }
-
-            // 3. Delete Order
-            // Note: Cascade deletes should ideally be handled by JPA or manual cleanup
-            // Since Order has @OneToMany with shipment and transaction, we should ensure
-            // they are cleaned up.
-            // But if the user asked to "XÓA order đó", we should delete it.
-            orderRepository.delete(order);
         }
+
+        // 2. Restore Voucher if any
+        if (order.getAppliedVoucher() != null) {
+            VoucherItem voucher = order.getAppliedVoucher();
+            voucher.setStatus(0); // Mark as unused (Available)
+            voucherItemRepository.save(voucher);
+        }
+
+        // 3. Delete Order
+        orderRepository.delete(order);
     }
 }

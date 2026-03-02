@@ -8,5 +8,7 @@ public interface OrderService {
     Order createOrder(Account user, Integer addressId, String paymentMethod, Integer voucherId, String note,
             HttpSession session) throws Exception;
 
+    void cancelOrder(Integer orderId);
+
     void cancelExpiredOrders();
 }

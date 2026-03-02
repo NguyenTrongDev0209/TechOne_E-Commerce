@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -63,6 +64,12 @@ public class CheckoutController {
 		Account user = (Account) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:/login";
+		}
+
+		// Check for pending order (Status = 1)
+		Optional<Order> pendingOrder = orderRepository.findFirstByAccountIdAndStatus(user.getId(), 1);
+		if (pendingOrder.isPresent()) {
+			return "redirect:/checkout/payos?orderId=" + pendingOrder.get().getId();
 		}
 
 		// Get Address Data
@@ -290,6 +297,12 @@ public class CheckoutController {
 		}
 
 		return "views/client/payos";
+	}
+
+	@GetMapping("/checkout/cancel/{orderId}")
+	public String cancelOrder(@PathVariable("orderId") Integer orderId) {
+		orderService.cancelOrder(orderId);
+		return "redirect:/checkout";
 	}
 
 	private String getBaseUrl(HttpServletRequest request) {
