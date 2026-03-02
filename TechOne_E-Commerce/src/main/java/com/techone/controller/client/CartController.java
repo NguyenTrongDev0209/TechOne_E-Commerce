@@ -14,7 +14,8 @@ import com.techone.model.Cart;
 import com.techone.model.CartItem;
 import com.techone.repository.CartItemRepository;
 import com.techone.repository.CartRepository;
-
+import com.techone.repository.OrderRepository;
+import com.techone.model.Order;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -26,11 +27,21 @@ public class CartController {
 	@Autowired
 	private CartItemRepository cartItemRepository;
 
+	@Autowired
+	private OrderRepository orderRepository;
+
 	@GetMapping("/cart")
 	public String showCart(HttpSession session, Model model) {
 		Account user = (Account) session.getAttribute("user");
 		List<CartItem> cartItems = new ArrayList<>();
+
 		if (user != null) {
+			// Check for pending order (Status = 1)
+			Optional<Order> pendingOrder = orderRepository.findFirstByAccountIdAndStatus(user.getId(), 1);
+			if (pendingOrder.isPresent()) {
+				return "redirect:/checkout/payos?orderId=" + pendingOrder.get().getId();
+			}
+
 			Optional<Cart> cartOpt = cartRepository.findByAccountId(user.getId());
 			if (cartOpt.isPresent()) {
 				cartItems = cartItemRepository.findActiveItemsByCart(cartOpt.get());

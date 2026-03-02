@@ -36,7 +36,7 @@ public class PaymentController {
             Order order = orderOpt.get();
 
             // 1. If already marked as PAID in our DB, return success immediately
-            if (order.getStatus() != null && order.getStatus() == 1) {
+            if (order.getStatus() != null && order.getStatus() == 2) {
                 return java.util.Map.of("status", "PAID");
             }
 

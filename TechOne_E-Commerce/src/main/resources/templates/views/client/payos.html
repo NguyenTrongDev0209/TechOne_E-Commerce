@@ -103,27 +103,22 @@
                                 </p>
                             </div>
 
-                            <div
-                                class="mt-4 p-4 bg-primary/5 rounded-xl border border-primary/10 flex items-center justify-center gap-3">
-                                <div class="relative flex items-center justify-center h-5 w-5">
-                                    <span
-                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                            <div class="mt-6 flex flex-col sm:flex-row items-center gap-4">
+                                <a th:href="@{/checkout/cancel/{id}(id=${order.id})}"
+                                    class="w-full sm:w-auto px-8 py-3.5 text-center rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-all shadow-lg shadow-red-500/20">
+                                    Hủy thanh toán
+                                </a>
+                                <div
+                                    class="flex-1 w-full p-3.5 bg-primary/5 rounded-xl border border-primary/10 flex items-center justify-center gap-3">
+                                    <div class="relative flex items-center justify-center h-5 w-5">
+                                        <span
+                                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-600 dark:text-gray-300">Đang chờ thanh
+                                        toán</span>
                                 </div>
-                                <span class="text-sm font-medium text-slate-600 dark:text-gray-300">Đang chờ bạn thanh
-                                    toán...</span>
                             </div>
-                        </div>
-
-                        <div class="mt-8 flex gap-4">
-                            <a th:href="@{/checkout}"
-                                class="flex-1 py-3 text-center rounded-xl border border-slate-200 dark:border-gray-700 text-slate-500 dark:text-gray-400 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
-                                Hủy
-                            </a>
-                            <button onclick="checkPaymentStatus()"
-                                class="flex-1 py-3 bg-primary text-white rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
-                                Tôi đã thanh toán
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -163,7 +158,15 @@
             }
 
             // Timer Logic
-            let timeLeft = 15 * 60; // 15 minutes
+            const createAtStr = /*[[${#temporals.format(order.createAt, "yyyy-MM-dd'T'HH:mm:ss")}]]*/ ''; // ISO string from Java
+            const serverNow = new Date().getTime();
+            const orderTime = new Date(createAtStr).getTime();
+
+            // 3 minutes limit = 3 * 60 * 1000 ms
+            const timeLimitMs = 3 * 60 * 1000;
+            const elapsedMs = serverNow - orderTime;
+            let timeLeft = Math.max(0, Math.floor((timeLimitMs - elapsedMs) / 1000));
+
             function updateTimer() {
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
@@ -175,6 +178,10 @@
                 if (timeLeft > 0) {
                     timeLeft--;
                     setTimeout(updateTimer, 1000);
+                } else {
+                    // When timer ends, notify user or redirect
+                    alert("Thời gian thanh toán đã hết. Đơn hàng sẽ bị hủy.");
+                    window.location.href = "/checkout";
                 }
             }
             updateTimer();
@@ -196,8 +203,8 @@
             // Automatic polling every 3 seconds
             const pollInterval = setInterval(checkPaymentStatus, 3000);
 
-            // Stop polling after 15 minutes
-            setTimeout(() => clearInterval(pollInterval), 15 * 60 * 1000);
+            // Stop polling after 3 minutes
+            setTimeout(() => clearInterval(pollInterval), 3 * 60 * 1000);
             /*]]>*/
         </script>
 </body>

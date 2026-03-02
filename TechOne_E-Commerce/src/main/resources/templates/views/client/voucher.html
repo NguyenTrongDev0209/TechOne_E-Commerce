@@ -14,6 +14,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Dynamic Voucher Items -->
             <div th:each="item : ${voucherItems}"
+                th:classappend="${item.status == 1 || item.voucherPercent.endAt.isBefore(now) || item.voucherPercent.activeDay.isAfter(now) || item.voucherPercent.status != 1} ? 'opacity-70 grayscale pointer-events-none' : ''"
                 class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-4 shadow-sm flex gap-4 relative overflow-hidden group">
                 <!-- Left Side (Icon/Amount) -->
                 <div th:classappend="${item.voucherPercent.voucherType == true ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-800/30' : 'bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800/30'}"
@@ -49,15 +50,35 @@
 
                     <div class="flex justify-between items-center mt-3">
                         <div class="text-xs text-gray-500">
-                            HSD: <span class="text-red-500 font-medium"
+                            HSD: <span
+                                th:classappend="${item.voucherPercent.endAt.isBefore(now)} ? 'text-gray-400' : 'text-red-500 font-medium'"
                                 th:text="${#temporals.format(item.voucherPercent.endAt, 'dd/MM/yyyy')}">31/05/2024</span>
                         </div>
-                        <button th:if="${item.status == 0}"
-                            class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
-                            ngay</button>
-                        <span th:if="${item.status == 1}"
-                            class="px-3 py-1.5 bg-gray-100 text-gray-400 text-xs font-bold rounded-lg cursor-not-allowed">Đã
-                            dùng</span>
+
+                        <!-- Status Buttons/Labels -->
+                        <div class="flex gap-2">
+                            <button
+                                th:if="${item.status == 0 and !item.voucherPercent.endAt.isBefore(now) and !item.voucherPercent.activeDay.isAfter(now) and item.voucherPercent.status == 1}"
+                                class="px-3 py-1.5 bg-primary text-white text-xs font-bold rounded-lg shadow-sm hover:bg-orange-700 transition-colors">Dùng
+                                ngay</button>
+
+                            <span th:if="${item.status == 1}"
+                                class="px-3 py-1.5 bg-gray-100 text-gray-400 text-xs font-bold rounded-lg cursor-not-allowed border border-gray-200">Đã
+                                dùng</span>
+
+                            <span th:if="${item.status == 0 and item.voucherPercent.endAt.isBefore(now)}"
+                                class="px-3 py-1.5 bg-red-50 text-red-400 text-xs font-bold rounded-lg cursor-not-allowed border border-red-100">Hết
+                                hạn</span>
+
+                            <span th:if="${item.status == 0 and item.voucherPercent.activeDay.isAfter(now)}"
+                                class="px-3 py-1.5 bg-blue-50 text-blue-400 text-xs font-bold rounded-lg cursor-not-allowed border border-blue-100">Sắp
+                                có</span>
+
+                            <span
+                                th:if="${item.status == 0 and item.voucherPercent.status != 1 and !item.voucherPercent.endAt.isBefore(now)}"
+                                class="px-3 py-1.5 bg-gray-100 text-gray-500 text-xs font-bold rounded-lg cursor-not-allowed border border-gray-200">Tạm
+                                khóa</span>
+                        </div>
                     </div>
                 </div>
 
