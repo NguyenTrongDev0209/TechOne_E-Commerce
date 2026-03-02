@@ -114,9 +114,17 @@ public class CheckoutController {
 		model.addAttribute("cartItems", cartItems);
 
 		// Get Voucher Data
-		model.addAttribute("vouchers", voucherItemRepository.findByAccount(user).stream()
-				.filter(v -> v.getStatus() == 0) // 0: Unused
-				.toList());
+		LocalDateTime now = LocalDateTime.now();
+		List<VoucherItem> validVouchers = voucherItemRepository.findByAccount(user).stream()
+				.filter(v -> v.getStatus() != null && v.getStatus() == 0) // 0: Unused
+				.filter(v -> v.getVoucherPercent().getStatus() != null && v.getVoucherPercent().getStatus() == 1) // 1:
+																													// Active
+																													// in
+																													// system
+				.filter(v -> !now.isBefore(v.getVoucherPercent().getActiveDay()))
+				.filter(v -> !now.isAfter(v.getVoucherPercent().getEndAt()))
+				.toList();
+		model.addAttribute("vouchers", validVouchers);
 
 		return "views/client/checkout";
 	}
