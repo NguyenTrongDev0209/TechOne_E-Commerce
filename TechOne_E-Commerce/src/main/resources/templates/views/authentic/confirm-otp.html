@@ -7,9 +7,11 @@
             Nhập mã xác nhận
         </h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Chúng tôi đã gửi mã xác nhận đến <span class="font-medium text-[#1c100d] dark:text-gray-200"
-                th:text="${session.forgotPasswordEmail}">email@example.com</span>.
+            Chúng tôi đã gửi mã xác nhận đến
+            <span class="font-medium text-[#1c100d] dark:text-gray-200"
+                th:text="${session.forgotPasswordTarget}">...</span>.
         </p>
+
     </div>
 
     <div th:if="${error}" class="p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
@@ -66,12 +68,24 @@
         </div>
     </form>
 
-    <script>
+    <!-- Firebase SDK (Cần thiết cho xác thực Phone) -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
             const inputs = document.querySelectorAll('.otp-input');
             const fullOtpInput = document.getElementById('fullOtp');
             const resendLink = document.getElementById('resend-link');
             const countdownElement = document.getElementById('countdown');
+            const confirmOtpForm = document.getElementById('confirmOtpForm');
+            const confirmButton = document.getElementById('confirmButton');
+            const confirmSpinner = document.getElementById('confirmSpinner');
+            const confirmButtonText = document.getElementById('confirmButtonText');
+            const confirmButtonIcon = document.getElementById('confirmButtonIcon');
+
+            // Lấy phương thức xác thực từ Session
+            const method = /*[[${session.forgotPasswordMethod ?: 'EMAIL'}]]*/ 'EMAIL';
             let timeLeft = 299; // 5 minutes
 
             // Handle Input Sequence
@@ -94,6 +108,7 @@
                 let otp = "";
                 inputs.forEach(input => otp += input.value);
                 fullOtpInput.value = otp;
+                return otp;
             }
 
             // Countdown Timer
@@ -111,25 +126,59 @@
                 }
             }, 1000);
 
-            // Form Submit Loading
-            const confirmOtpForm = document.getElementById('confirmOtpForm');
-            const confirmButton = document.getElementById('confirmButton');
-            const confirmSpinner = document.getElementById('confirmSpinner');
-            const confirmButtonText = document.getElementById('confirmButtonText');
-            const confirmButtonIcon = document.getElementById('confirmButtonIcon');
-
+            // Form Submit Logic
             confirmOtpForm.addEventListener('submit', function (e) {
-                updateFullOtp();
-                if (fullOtpInput.value.length < 6) {
-                    e.preventDefault();
-                    alert("Vui lòng nhập đầy đủ mã OTP.");
+                e.preventDefault();
+                const otp = updateFullOtp();
+
+                if (otp.length < 6) {
+                    alert("Vui lòng nhập đầy đủ mã OTP 6 số.");
                     return;
                 }
-                confirmButton.disabled = true;
-                confirmSpinner.classList.remove('hidden');
-                confirmButtonIcon.classList.add('hidden');
-                confirmButtonText.textContent = 'Đang xác thực...';
+
+                // Hiệu ứng Loading
+                setLoading(true);
+
+                if (method === "PHONE") {
+                    // XỬ LÝ CHO SỐ ĐIỆN THOẠI (FIREBASE)
+                    // Lưu ý: confirmationResult phải được khởi tạo từ trang forgot-password
+                    if (window.opener && window.opener.confirmationResult) {
+                        window.opener.confirmationResult.confirm(otp).then((result) => {
+                            window.location.href = "/reset-password";
+                        }).catch((error) => {
+                            alert("Mã OTP điện thoại không chính xác hoặc đã hết hạn!");
+                            setLoading(false);
+                        });
+                    } else if (window.confirmationResult) { // Trường hợp chung trang
+                        window.confirmationResult.confirm(otp).then((result) => {
+                            window.location.href = "/reset-password";
+                        }).catch((error) => {
+                            alert("Mã OTP điện thoại không chính xác!");
+                            setLoading(false);
+                        });
+                    } else {
+                        alert("Lỗi: Không tìm thấy phiên xác thực. Vui lòng quay lại bước trước.");
+                        setLoading(false);
+                    }
+                } else {
+                    // XỬ LÝ CHO EMAIL (Gửi lên Server Java)
+                    this.submit();
+                }
             });
+
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    confirmButton.disabled = true;
+                    confirmSpinner.classList.remove('hidden');
+                    confirmButtonIcon.classList.add('hidden');
+                    confirmButtonText.textContent = 'Đang xác thực...';
+                } else {
+                    confirmButton.disabled = false;
+                    confirmSpinner.classList.add('hidden');
+                    confirmButtonIcon.classList.remove('hidden');
+                    confirmButtonText.textContent = 'Xác nhận';
+                }
+            }
         });
     </script>
 </div>
