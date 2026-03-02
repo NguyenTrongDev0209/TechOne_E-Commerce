@@ -42,7 +42,7 @@ public class ResetPasswordController {
                                @RequestParam("confirmPassword") String confirmPassword, 
                                Model model) {
         Boolean verified = SessionUtils.get("otpVerified");
-        String email = SessionUtils.get("forgotPasswordEmail");
+        String email = SessionUtils.get("forgotPasswordTarget");
 
         if (verified == null || !verified || email == null) {
             return "redirect:/forgot-password";
@@ -68,7 +68,7 @@ public class ResetPasswordController {
             Optional<ForgotPassword> fpOpt = forgotPasswordRepository.findByAccount(account);
             fpOpt.ifPresent(fp -> forgotPasswordRepository.delete(fp));
             SessionUtils.remove("otpVerified");
-            SessionUtils.remove("forgotPasswordEmail");
+            SessionUtils.remove("forgotPasswordTarget");
 
             model.addAttribute("success", "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.");
             return "redirect:/login"; 
