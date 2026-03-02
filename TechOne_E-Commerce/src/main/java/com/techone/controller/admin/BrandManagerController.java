@@ -74,6 +74,13 @@ public class BrandManagerController {
             @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("keyword") Optional<String> keyword) {
 
+        // Kiểm tra tên thương hiệu đã tồn tại hay chưa
+        if (brand.getName() != null && !brand.getName().trim().isEmpty()) {
+            if (brandRepository.existsByName(brand.getName())) {
+                errors.rejectValue("name", "error.brand", "Tên thương hiệu đã tồn tại");
+            }
+        }
+
         if (image != null && !image.isEmpty()) {
             try {
                 brand.setLogo(fileUploadUtils.saveImage(image, "brands"));

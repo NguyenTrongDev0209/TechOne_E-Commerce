@@ -106,14 +106,17 @@ public class ProductListController {
 				searchCategoryId,
 				searchBrandId,
 				searchStatus,
+				null, // minPrice
+				null, // maxPrice
 				startDateTime,
 				endDateTime,
 				pageable);
 
 		model.addAttribute("list", page.getContent());
 		model.addAttribute("page", page);
-		model.addAttribute("categories", categoryRepository.findByTypeAndStatus(true, true)); // Active Product
-																								// Categories
+		model.addAttribute("categories", categoryRepository.findByTypeAndStatusAndParentActive(true, true)); // Active
+																												// Product
+		// Categories
 		model.addAttribute("parentCategories", categoryRepository.findByTypeAndParentIsNullAndStatus(true, true)); // Active
 																													// Parent
 																													// Categories
@@ -148,8 +151,13 @@ public class ProductListController {
 			boolean nextStatus = !currentStatus;
 
 			if (nextStatus) { // Trying to activate
-				if (product.getCategory() != null && Boolean.FALSE.equals(product.getCategory().getStatus())) {
-					return "redirect:/admin/product-list?error=CategoryIsHidden";
+				if (product.getCategory() != null) {
+					Category cat = product.getCategory();
+					boolean isCategoryHidden = Boolean.FALSE.equals(cat.getStatus())
+							|| (cat.getParent() != null && Boolean.FALSE.equals(cat.getParent().getStatus()));
+					if (isCategoryHidden) {
+						return "redirect:/admin/product-list?error=CategoryIsHidden";
+					}
 				}
 				if (product.getBrand() != null && Boolean.FALSE.equals(product.getBrand().getStatus())) {
 					return "redirect:/admin/product-list?error=BrandIsHidden";

@@ -33,7 +33,7 @@ public class CartController {
 		if (user != null) {
 			Optional<Cart> cartOpt = cartRepository.findByAccountId(user.getId());
 			if (cartOpt.isPresent()) {
-				cartItems = cartItemRepository.findByCart(cartOpt.get());
+				cartItems = cartItemRepository.findActiveItemsByCart(cartOpt.get());
 			}
 			session.setAttribute("cartCount", cartItems.size());
 		}

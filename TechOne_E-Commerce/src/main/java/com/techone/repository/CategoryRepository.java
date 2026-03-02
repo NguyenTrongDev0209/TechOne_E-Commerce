@@ -52,6 +52,9 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 	@Query("SELECT COUNT(p) FROM Post p WHERE p.category.id = :categoryId")
 	int countPosts(@Param("categoryId") Integer categoryId);
 
+	@Query("SELECT c FROM Category c WHERE c.type = :type AND c.status = :status AND (c.parent IS NULL OR c.parent.status = true)")
+	List<Category> findByTypeAndStatusAndParentActive(@Param("type") Boolean type, @Param("status") Boolean status);
+
 	@Query("SELECT c FROM Category c WHERE c.type = :type AND c.parent IS NULL "
 			+ "AND (:keyword IS NULL OR c.name LIKE %:keyword%)")
 	org.springframework.data.domain.Page<Category> search(@Param("keyword") String keyword,

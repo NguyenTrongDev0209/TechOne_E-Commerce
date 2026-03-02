@@ -14,6 +14,11 @@ import com.techone.model.Variant;
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
     List<CartItem> findByCart(Cart cart);
 
+    @org.springframework.data.jpa.repository.Query("SELECT ci FROM CartItem ci WHERE ci.cart = :cart " +
+            "AND ci.variant.status = true AND ci.variant.product.status = true " +
+            "ORDER BY ci.createAt DESC")
+    List<CartItem> findActiveItemsByCart(@org.springframework.data.repository.query.Param("cart") Cart cart);
+
     Optional<CartItem> findByCartAndVariant(Cart cart, Variant variant);
 
     Optional<CartItem> findByCartIdAndVariantId(Integer cartId, Integer variantId);

@@ -41,8 +41,11 @@ public class CartRestController {
             return ResponseEntity.status(401).body("Vui lòng đăng nhập để thêm vào giỏ hàng");
         }
 
-        Integer variantId = (Integer) payload.get("variantId");
-        Integer quantity = (Integer) payload.get("quantity");
+        Object variantIdObj = payload.get("variantId");
+        Object quantityObj = payload.get("quantity");
+
+        Integer variantId = variantIdObj != null ? ((Number) variantIdObj).intValue() : null;
+        Integer quantity = quantityObj != null ? ((Number) quantityObj).intValue() : null;
 
         if (variantId == null || quantity == null || quantity <= 0) {
             return ResponseEntity.badRequest().body("Dữ liệu không hợp lệ");
@@ -54,8 +57,9 @@ public class CartRestController {
         }
 
         Variant variant = variantOpt.get();
-        if (variant.getStock() < quantity) {
-            return ResponseEntity.badRequest().body("Số lượng tồn kho không đủ");
+        if (variant.getStatus() == null || !variant.getStatus() ||
+                variant.getProduct().getStatus() == null || !variant.getProduct().getStatus()) {
+            return ResponseEntity.badRequest().body("Sản phẩm hiện không khả dụng");
         }
 
         // Get or Create Cart
@@ -65,22 +69,33 @@ public class CartRestController {
             return cartRepository.save(newCart);
         });
 
+        int quantityToAdd = quantity;
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCartIdAndVariantId(cart.getId(), variant.getId());
         CartItem cartItem;
+
         if (existingItemOpt.isPresent()) {
             cartItem = existingItemOpt.get();
-            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            int currentInCart = cartItem.getQuantity();
+            if (variant.getStock() < (currentInCart + quantityToAdd)) {
+                return ResponseEntity.badRequest().body(
+                        "Số lượng tồn kho không đủ (Bạn hiện đã có " + currentInCart + " sản phẩm này trong giỏ hàng)");
+            }
+            cartItem.setQuantity(currentInCart + quantityToAdd);
         } else {
+            if (variant.getStock() < quantityToAdd) {
+                return ResponseEntity.badRequest().body(
+                        "Số lượng tồn kho không đủ (Sản phẩm này hiện chỉ còn " + variant.getStock() + " sản phẩm)");
+            }
             cartItem = new CartItem();
             cartItem.setCart(cart);
             cartItem.setVariant(variant);
-            cartItem.setQuantity(quantity);
+            cartItem.setQuantity(quantityToAdd);
             cartItem.setStatus(1); // Active
         }
 
         cartItemRepository.save(cartItem);
 
-        int cartCount = cartItemRepository.findByCart(cart).size();
+        int cartCount = cartItemRepository.findActiveItemsByCart(cart).size();
         session.setAttribute("cartCount", cartCount);
 
         Map<String, Object> response = new HashMap<>();
@@ -109,7 +124,7 @@ public class CartRestController {
             Cart cart = itemOpt.get().getCart();
             cartItemRepository.delete(itemOpt.get());
 
-            int cartCount = cartItemRepository.findByCart(cart).size();
+            int cartCount = cartItemRepository.findActiveItemsByCart(cart).size();
             session.setAttribute("cartCount", cartCount);
 
             Map<String, Object> response = new HashMap<>();

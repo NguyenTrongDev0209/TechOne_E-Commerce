@@ -78,11 +78,15 @@ public class Product {
 	@lombok.ToString.Exclude
 	public List<Review> review;
 
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
+	@lombok.ToString.Exclude
+	public List<Specification> specificationList;
+
+	@OneToMany(mappedBy = "product", cascade = jakarta.persistence.CascadeType.ALL)
 	@lombok.ToString.Exclude
 	public List<Variant> variant;
 
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	@lombok.ToString.Exclude
 	public List<ImageProduct> imageProduct;
 }

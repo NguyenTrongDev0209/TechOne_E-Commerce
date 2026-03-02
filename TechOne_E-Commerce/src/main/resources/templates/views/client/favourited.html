@@ -9,407 +9,154 @@
         <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-[#1c100d] dark:text-white">Danh sách yêu thích</h1>
-                <p class="text-sm text-gray-500 mt-1">Bạn đang có <span class="font-bold text-primary">5</span> sản phẩm
-                    trong danh sách yêu thích</p>
+                <p class="text-sm text-gray-500 mt-1">Đang hiển thị các sản phẩm bạn đã yêu thích</p>
             </div>
         </div>
 
-        <div
-            class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 mb-6">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1 relative">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <span class="material-symbols-outlined text-gray-400">search</span>
-                    </div>
-                    <input
-                        class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm"
-                        placeholder="Tìm kiếm sản phẩm yêu thích..." type="text" />
-                </div>
-                <div class="w-full md:w-48">
-                    <div class="relative">
-                        <!-- Custom Sort Dropdown -->
-                        <div class="relative">
-                            <input type="hidden" name="sort" id="sortInput" value="newest">
-
-                            <button id="sortFilterBtn" onclick="toggleSortDropdown()"
-                                class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                                <span id="sortFilterLabel">Mới nhất</span>
-                                <span id="sortDropdownIcon"
-                                    class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
-                            </button>
-
-                            <div id="sortDropdown"
-                                class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
-                                <div class="p-1.5 space-y-0.5">
-                                    <div onclick="selectSort('newest', 'Mới nhất')"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Mới nhất</span>
-                                        <span
-                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-                                    </div>
-                                    <div onclick="selectSort('price_asc', 'Giá tăng dần')"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Giá tăng dần</span>
-                                        <span
-                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-                                    </div>
-                                    <div onclick="selectSort('price_desc', 'Giá giảm dần')"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Giá giảm dần</span>
-                                        <span
-                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-                                    </div>
-                                    <div onclick="selectSort('name_asc', 'Tên A-Z')"
-                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Tên A-Z</span>
-                                        <span
-                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="w-full md:w-48">
-                    <div class="relative">
-                        <div class="relative">
-                            <input id="dateFilter"
-                                class="block w-full pl-3 pr-2 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer text-gray-700 dark:text-gray-200 shadow-sm"
-                                placeholder="Chọn ngày" type="text" readonly="readonly" />
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                                <span class="material-symbols-outlined text-[20px]">calendar_today</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-
-            <!-- Card 1 -->
-            <a href="#"
-                class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-transparent dark:border-gray-700 hover:border-primary hover:shadow-md transition-all duration-300 group/card cursor-pointer">
-                <div class="relative w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-t-xl overflow-hidden">
-                    <span
-                        class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
-                    <button onclick="event.preventDefault()"
-                        class="absolute top-2 right-2 z-10 size-8 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:bg-white dark:hover:bg-gray-800 transition-all group/fav"
-                        title="Xóa khỏi yêu thích">
-                        <span class="material-symbols-outlined text-[20px] text-red-500"
-                            style="font-variation-settings: 'FILL' 1">favorite</span>
-                    </button>
-                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=400"
-                        class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
-                        alt="Product Image" />
-                </div>
-                <div class="p-4 flex flex-col gap-2">
-                    <span
-                        class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Apple</span>
-                    <h4
-                        class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
-                        MacBook Pro 14 inch M3 Max 2024
-                    </h4>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star_half</span>
-                        <span class="text-gray-400 ml-1">(128)</span>
-                    </div>
-                    <div class="flex items-end justify-between mt-1">
-                        <div class="flex flex-col">
-                            <span
-                                class="text-gray-400 dark:text-gray-500 text-xs line-through font-medium">58.990.000đ</span>
-                            <span class="text-primary font-bold">49.990.000đ</span>
-                        </div>
-                        <button
-                            class="size-9 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                            <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Card 2 -->
-            <a href="#"
-                class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-transparent dark:border-gray-700 hover:border-primary hover:shadow-md transition-all duration-300 group/card cursor-pointer">
-                <div class="relative w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-t-xl overflow-hidden">
-                    <button onclick="event.preventDefault()"
-                        class="absolute top-2 right-2 z-10 size-8 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:bg-white dark:hover:bg-gray-800 transition-all group/fav"
-                        title="Xóa khỏi yêu thích">
-                        <span class="material-symbols-outlined text-[20px] text-red-500"
-                            style="font-variation-settings: 'FILL' 1">favorite</span>
-                    </button>
-                    <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"
-                        class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
-                        alt="Product Image" />
-                </div>
-                <div class="p-4 flex flex-col gap-2">
-                    <span
-                        class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Sony</span>
-                    <h4
-                        class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
-                        Tai nghe chụp tai chống ồn Sony WH-1000XM5
-                    </h4>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="text-gray-400 ml-1">(85)</span>
-                    </div>
-                    <div class="flex items-end justify-between mt-1">
-                        <div class="flex flex-col">
-                            <span
-                                class="text-gray-400 dark:text-gray-500 text-xs line-through font-medium">8.490.000đ</span>
-                            <span class="text-primary font-bold">6.190.000đ</span>
-                        </div>
-                        <button
-                            class="size-9 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                            <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-
-            <!-- Card 3 -->
-            <a href="#"
-                class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-transparent dark:border-gray-700 hover:border-primary hover:shadow-md transition-all duration-300 group/card cursor-pointer">
-                <div class="relative w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-t-xl overflow-hidden">
-                    <span
-                        class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-10%</span>
-                    <button onclick="event.preventDefault()"
-                        class="absolute top-2 right-2 z-10 size-8 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:bg-white dark:hover:bg-gray-800 transition-all group/fav"
-                        title="Xóa khỏi yêu thích">
-                        <span class="material-symbols-outlined text-[20px] text-red-500"
-                            style="font-variation-settings: 'FILL' 1">favorite</span>
-                    </button>
-                    <img src="https://images.unsplash.com/photo-1588872657578-018bf870e431?auto=format&fit=crop&q=80&w=400"
-                        class="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-500"
-                        alt="Product Image" />
-                </div>
-                <div class="p-4 flex flex-col gap-2">
-                    <span
-                        class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Dell</span>
-                    <h4
-                        class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
-                        Laptop Dell XPS 13 Plus 9320 (i7-1260P)
-                    </h4>
-                    <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 1">star</span>
-                        <span class="material-symbols-outlined text-[14px] fill-current"
-                            style="font-variation-settings: 'FILL' 0">star</span>
-                        <span class="text-gray-400 ml-1">(42)</span>
-                    </div>
-                    <div class="flex items-end justify-between mt-1">
-                        <div class="flex flex-col">
-                            <span
-                                class="text-gray-400 dark:text-gray-500 text-xs line-through font-medium">45.000.000đ</span>
-                            <span class="text-primary font-bold">35.990.000đ</span>
-                        </div>
-                        <button
-                            class="size-9 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                            <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                        </button>
-                    </div>
-                </div>
-            </a>
-
-        </div>
-
-
-
-        <div
-            class="hidden flex flex-col items-center justify-center py-16 bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+        <!-- Empty State -->
+        <div th:if="${favouritePage != null and favouritePage.content.isEmpty()}"
+            class="flex flex-col items-center justify-center py-16 bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
             <div class="size-32 bg-gray-50 dark:bg-[#2a1a15] rounded-full flex items-center justify-center mb-6">
                 <span class="material-symbols-outlined text-gray-300 text-6xl">favorite_border</span>
             </div>
             <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Danh sách yêu thích trống</h3>
             <p class="text-gray-500 dark:text-gray-400 text-center max-w-md mb-8">
-                Bạn chưa thêm sản phẩm nào vào danh sách yêu thích. Hãy khám phá thêm các sản phẩm công nghệ tuyệt vời
-                tại TechOne nhé!
+                Bạn chưa thêm sản phẩm nào vào danh sách yêu thích hoặc sản phẩm đã hết hàng. Hãy khám phá thêm nhé!
             </p>
-            <button
+            <a href="/categories"
                 class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-orange-500/30">
                 Khám phá sản phẩm
-            </button>
+            </a>
         </div>
 
-        <!-- Pagination from orders.html style -->
-        <div class="mt-8 flex justify-center">
+        <!-- Favourite List -->
+        <div th:if="${favouritePage != null and !favouritePage.content.isEmpty()}"
+            class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+
+            <div th:each="favourite : ${favouritePage.content}"
+                class="bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-transparent dark:border-gray-700 hover:border-primary hover:shadow-md transition-all duration-300 group/card">
+                <div class="relative w-full aspect-square bg-gray-100 dark:bg-gray-800 rounded-t-xl overflow-hidden">
+                    <span th:if="${favourite.variant.discount > 0}"
+                        class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10"
+                        th:text="'-' + ${#numbers.formatDecimal(favourite.variant.discount, 0, 0)} + '%'">-15%</span>
+
+                    <button th:onclick="'toggleFavorite(' + ${favourite.variant.id} + ', this)'"
+                        class="absolute top-2 right-2 z-10 size-8 rounded-full bg-white/80 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:bg-white dark:hover:bg-gray-800 transition-all group/fav"
+                        title="Xóa khỏi yêu thích">
+                        <span class="material-symbols-outlined text-[20px] text-red-500"
+                            style="font-variation-settings: 'FILL' 1">favorite</span>
+                    </button>
+
+                    <a th:href="@{'/product/product-detail/' + ${favourite.variant.product.slug}}">
+                        <img th:if="${!favourite.variant.variantImages.isEmpty()}"
+                            th:src="@{'/images/variants/' + ${favourite.variant.variantImages[0].pathImage}}"
+                            class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                            alt="Product Image" />
+                        <img th:unless="${!favourite.variant.variantImages.isEmpty()}"
+                            src="https://via.placeholder.com/400"
+                            class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                            alt="Placeholder" />
+                    </a>
+                </div>
+                <div class="p-4 flex flex-col gap-2">
+                    <span th:if="${favourite.variant.product.brand != null}"
+                        class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase"
+                        th:text="${favourite.variant.product.brand.name}">Brand</span>
+
+                    <a th:href="@{'/product/product-detail/' + ${favourite.variant.product.slug}}">
+                        <h4 class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm"
+                            th:text="${favourite.variant.product.name}">
+                            Product Name
+                        </h4>
+                    </a>
+
+                    <p class="text-[11px] text-gray-400" th:text="${favourite.variant.sku}">SKU</p>
+
+                    <div class="flex items-end justify-between mt-1">
+                        <div class="flex flex-col">
+                            <span th:if="${favourite.variant.discount > 0}"
+                                class="text-gray-400 dark:text-gray-500 text-xs line-through font-medium"
+                                th:text="${#numbers.formatDecimal(favourite.variant.price, 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
+                            <span class="text-primary font-bold"
+                                th:text="${#numbers.formatDecimal(favourite.variant.price * (100 - favourite.variant.discount) / 100, 0, 'COMMA', 0, 'POINT')} + '₫'">0₫</span>
+                        </div>
+                        <button th:onclick="'addToCartDirectly(' + ${favourite.variant.id} + ')'"
+                            class="size-9 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg"
+                            title="Thêm vào giỏ hàng">
+                            <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${favouritePage != null and favouritePage.totalPages > 1}" class="mt-8 flex justify-center">
             <nav class="flex items-center gap-2">
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50">
+                <a th:href="@{/account/favourited(page=${currentPage - 1})}"
+                    th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800">
                     <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">2</button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">3</button>
-                <button
+                </a>
+
+                <th:block th:each="i : ${#numbers.sequence(0, favouritePage.totalPages - 1)}">
+                    <a th:href="@{/account/favourited(page=${i})}" th:text="${i + 1}"
+                        th:classappend="${currentPage == i} ? 'bg-primary text-white font-bold' : 'border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium'"
+                        class="size-10 flex items-center justify-center rounded-lg border">1</a>
+                </th:block>
+
+                <a th:href="@{/account/favourited(page=${currentPage + 1})}"
+                    th:classappend="${currentPage + 1 >= favouritePage.totalPages} ? 'pointer-events-none opacity-50' : ''"
                     class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800">
                     <span class="material-symbols-outlined">chevron_right</span>
-                </button>
+                </a>
             </nav>
         </div>
 
         <script>
-            function toggleSortDropdown() {
-                const dropdown = document.getElementById('sortDropdown');
-                const icon = document.getElementById('sortDropdownIcon');
-                dropdown.classList.toggle('hidden');
-                if (dropdown.classList.contains('hidden')) {
-                    icon.style.transform = 'rotate(0deg)';
-                } else {
-                    icon.style.transform = 'rotate(180deg)';
-                }
-            }
+            // Need addToCartDirectly here if not in layout-client.html
+            async function addToCartDirectly(variantId) {
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(variantId), quantity: 1 })
+                    });
 
-            function selectSort(value, label) {
-                document.getElementById('sortInput').value = value;
-                document.getElementById('sortFilterLabel').textContent = label;
-                document.getElementById('sortDropdown').classList.add('hidden');
-                document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
-                console.log('Selected sort:', value);
-            }
+                    if (response.ok) {
+                        const data = await response.json();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm vào giỏ',
+                            text: 'Sản phẩm đã có trong giỏ hàng của bạn',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (event) {
-                const dropdown = document.getElementById('sortDropdown');
-                const button = document.getElementById('sortFilterBtn');
-                const icon = document.getElementById('sortDropdownIcon');
-
-                if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                    if (!dropdown.classList.contains('hidden')) {
-                        dropdown.classList.add('hidden');
-                        icon.style.transform = 'rotate(0deg)';
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cartCount;
+                            cartBadge.classList.remove('hidden');
+                        }
+                    } else if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+                            confirmButtonText: 'Đăng nhập',
+                            showCancelButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.href = '/login';
+                        });
+                    } else {
+                        const text = await response.text();
+                        Swal.fire({ icon: 'error', title: 'Thất bại', text: text || 'Có lỗi xảy ra' });
                     }
+                } catch (e) {
+                    console.error(e);
                 }
-            });
-        </script>
-
-        <!-- Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
-        <!-- Flatpickr CSS with custom overrides -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-        <style>
-            .flatpickr-calendar {
-                font-family: 'Inter', sans-serif !important;
-                border-radius: 12px !important;
-                margin-top: 8px !important;
-                /* Gap requested by user */
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
             }
-
-            .dark .flatpickr-calendar {
-                background: #1e293b !important;
-                border: 1px solid #334155 !important;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
-            }
-
-            .flatpickr-day.selected,
-            .flatpickr-day.startRange,
-            .flatpickr-day.endRange,
-            .flatpickr-day.selected.inRange,
-            .flatpickr-day.startRange.inRange,
-            .flatpickr-day.endRange.inRange,
-            .flatpickr-day.selected:focus,
-            .flatpickr-day.startRange:focus,
-            .flatpickr-day.endRange:focus,
-            .flatpickr-day.selected:hover,
-            .flatpickr-day.startRange:hover,
-            .flatpickr-day.endRange:hover,
-            .flatpickr-day.selected.prevMonthDay,
-            .flatpickr-day.startRange.prevMonthDay,
-            .flatpickr-day.endRange.prevMonthDay,
-            .flatpickr-day.selected.nextMonthDay,
-            .flatpickr-day.startRange.nextMonthDay,
-            .flatpickr-day.endRange.nextMonthDay {
-                background: #ea580c !important;
-                border-color: #ea580c !important;
-            }
-
-            .flatpickr-day.todays-date {
-                color: #ea580c !important;
-                border-color: #ea580c !important;
-            }
-
-            /* Custom Header Styling */
-            .flatpickr-current-month {
-                display: flex !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                width: 75% !important;
-                /* Ensure it fits between arrows */
-                left: 12.5% !important;
-                padding: 0 !important;
-            }
-
-            .flatpickr-monthDropdown-months {
-                text-align: left !important;
-                width: auto !important;
-                font-size: 14px !important;
-                /* Make it smaller */
-                margin-left: 0 !important;
-            }
-
-            .numInputWrapper {
-                width: auto !important;
-                margin-right: 0 !important;
-            }
-
-            .flatpickr-current-month input.cur-year {
-                font-size: 14px !important;
-                /* Make year smaller */
-                text-align: right !important;
-                padding: 0 !important;
-            }
-
-            .flatpickr-current-month .numInputWrapper span.arrowUp {
-                display: none;
-                /* Optional: cleaner look */
-            }
-
-            .flatpickr-current-month .numInputWrapper span.arrowDown {
-                display: none;
-                /* Optional: cleaner look */
-            }
-        </style>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                flatpickr("#dateFilter", {
-                    locale: "vn",
-                    dateFormat: "d/m/Y",
-                    maxDate: "today",
-                    disableMobile: "true",
-                });
-            });
         </script>
     </div>
 </body>

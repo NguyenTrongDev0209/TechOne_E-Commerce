@@ -48,7 +48,7 @@ public class ProductDetailController {
 				attributesMap.computeIfAbsent(attrName, k -> new LinkedHashSet<>()).add(attrValue);
 				attrValues.add(attrValue);
 			}
-			Collections.sort(attrValues);
+			attrValues.sort(String.CASE_INSENSITIVE_ORDER);
 			variantAttributesMap.put(v.getId(), String.join("-", attrValues));
 		}
 
