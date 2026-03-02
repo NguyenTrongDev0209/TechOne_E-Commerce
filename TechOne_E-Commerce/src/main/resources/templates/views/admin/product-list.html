@@ -44,7 +44,15 @@
 					showToast('Đã xóa sản phẩm thành công!');
 				} else if (urlParams.has('error')) {
 					const errorType = urlParams.get('error');
-					showToast('Có lỗi xảy ra: ' + errorType, 'error');
+					let msg = 'Có lỗi xảy ra: ' + errorType;
+					if (errorType === 'CategoryIsHidden') {
+						msg = 'Không thể kích hoạt: Danh mục của sản phẩm này đang bị ẩn';
+					} else if (errorType === 'BrandIsHidden') {
+						msg = 'Không thể kích hoạt: Thương hiệu của sản phẩm này đang bị ẩn';
+					} else if (errorType === 'ProductInOrder') {
+						msg = 'Không thể xóa: Sản phẩm này đã tồn tại trong đơn hàng của khách';
+					}
+					showToast(msg, 'error');
 				}
 			});
 		</script>
@@ -70,87 +78,77 @@
 				</a>
 			</div>
 			<!-- Filter Section -->
-			<div
-				class="bg-white dark:bg-[#1e293b] rounded p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6">
+			<form th:action="@{/admin/product-list}" method="get"
+				class="bg-white dark:bg-[#1e293b] rounded p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6 items-center">
 				<!-- Search -->
-				<div class="flex-1 relative">
+				<div class="flex-1 relative w-full">
 					<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
 						<span class="material-symbols-outlined text-gray-400">search</span>
 					</div>
-					<input
+					<input name="keyword" th:value="${keyword}"
 						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
 						placeholder="Tìm kiếm sản phẩm..." type="text" />
 				</div>
 
-				<!-- Sort Dropdown -->
-				<!-- Sort Dropdown -->
-				<div class="w-full md:w-48 relative z-30">
-					<input type="hidden" name="sort" id="sortInput" value="newest">
-					<button id="sortFilterBtn" onclick="toggleSortDropdown()"
-						class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-						<span id="sortFilterLabel">Mới nhất</span>
-						<span id="sortDropdownIcon"
-							class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
+				<!-- Category Filter -->
+				<div class="w-full md:w-64 relative" id="catFilterDropdownContainer">
+					<input type="hidden" name="categoryId" id="catFilterId" th:value="${categoryId}">
+					<button type="button" onclick="toggleCatFilterDropdown(event)"
+						class="w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded py-2.5 px-3 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-gray-400 flex justify-between items-center text-left shadow-sm">
+						<span id="catFilterLabel" th:text="${categoryName}">Tất cả danh mục</span>
+						<span class="material-symbols-outlined text-[20px]">expand_more</span>
 					</button>
 
-					<div id="sortDropdown"
-						class="hidden absolute right-0 top-full mt-2 w-full bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 rounded shadow-xl overflow-hidden z-50 transform origin-top transition-all duration-200">
-						<div class="p-1.5 space-y-0.5">
-							<div onclick="selectSort('newest', 'Mới nhất')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Mới nhất</span>
-								<span
-									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-							</div>
-							<div onclick="selectSort('oldest', 'Cũ nhất')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Cũ nhất</span>
-								<span
-									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-							</div>
-							<div onclick="selectSort('price_asc', 'Giá tăng dần')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Giá tăng dần</span>
-								<span
-									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-							</div>
-							<div onclick="selectSort('price_desc', 'Giá giảm dần')"
-								class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-								<span>Giá giảm dần</span>
-								<span
-									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
-							</div>
-						</div>
+					<div id="catFilterMenu"
+						class="hidden absolute top-full left-0 w-full mt-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
+						<ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+							<li>
+								<button type="button" onclick="selectCatFilter('', 'Tất cả danh mục')"
+									class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">Tất
+									cả danh mục</button>
+							</li>
+							<li class="relative group/catitem" th:each="pCat : ${parentCategories}">
+								<button type="button" th:data-id="${pCat.id}" th:data-name="${pCat.name}"
+									onclick="selectCatFilter(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+									class="w-full text-left px-4 py-2 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary transition-colors">
+									<span th:text="${pCat.name}">Tên cha</span>
+									<span th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
+										class="material-symbols-outlined text-[16px]">chevron_right</span>
+								</button>
+								<!-- Submenu -->
+								<div th:if="${pCat.children != null and not #lists.isEmpty(pCat.children)}"
+									class="hidden group-hover/catitem:block absolute left-full top-0 w-48 ml-1 bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 rounded shadow-lg">
+									<ul class="py-1">
+										<th:block th:each="cCat : ${pCat.children}">
+											<li th:if="${cCat.status}">
+												<button type="button" th:data-id="${cCat.id}"
+													th:data-name="${cCat.name}"
+													onclick="selectCatFilter(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+													class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-primary"
+													th:text="${cCat.name}">Tên con</button>
+											</li>
+										</th:block>
+									</ul>
+								</div>
+							</li>
+						</ul>
 					</div>
 				</div>
 
-				<!-- Date Filters -->
-				<div class="relative w-full md:w-48">
-					<div class="relative">
-						<input id="dateFrom"
-							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
-							placeholder="Từ ngày" type="text" readonly="readonly" />
-						<div
-							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
-						</div>
-					</div>
+				<!-- Submit Button -->
+				<div class="flex items-center gap-2 w-full md:w-auto">
+					<button type="submit"
+						class="flex-1 md:flex-none px-4 py-2.5 bg-primary hover:bg-orange-700 text-white font-bold text-sm rounded shadow-sm transition-colors flex items-center justify-center gap-2">
+						<span class="material-symbols-outlined text-[18px]">filter_list</span>
+						Lọc
+					</button>
+					<a href="/admin/product-list"
+						class="flex-1 md:flex-none px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 font-bold text-sm rounded shadow-sm transition-colors flex items-center justify-center gap-2">
+						<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+						Reset
+					</a>
 				</div>
-				<div class="hidden md:flex items-center justify-center pb-2 text-gray-400">
-					<span>-</span>
-				</div>
-				<div class="relative w-full md:w-48">
-					<div class="relative">
-						<input id="dateTo"
-							class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
-							placeholder="Đến ngày" type="text" readonly="readonly" />
-						<div
-							class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
-							<span class="material-symbols-outlined text-[20px]">calendar_today</span>
-						</div>
-					</div>
-				</div>
-			</div>
+			</form>
 
 			<div
 				class="bg-white dark:bg-[#1e293b] rounded shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col">
@@ -196,6 +194,14 @@
 								<th class="px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors group text-center"
 									onclick="toggleSort(this)">
 									<div class="flex items-center justify-center gap-2">
+										<span>Trạng thái</span>
+										<span
+											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
+									</div>
+								</th>
+								<th class="px-6 py-4 cursor-pointer hover:bg-gray-50 transition-colors group text-center"
+									onclick="toggleSort(this)">
+									<div class="flex items-center justify-center gap-2">
 										<span>Ngày tạo</span>
 										<span
 											class="material-symbols-outlined text-[16px] text-gray-400 group-hover:text-primary transition-colors">unfold_more</span>
@@ -210,22 +216,16 @@
 								<td class="px-6 py-4 font-medium text-slate-500 text-center"
 									th:text="${page.number * page.size + status.index + 1}">1</td>
 								<td class="px-6 py-4">
-									<div class="flex items-center gap-4">
+									<div class="flex items-center gap-4 whitespace-normal">
+
 										<div
-											class="w-12 h-12 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 shrink-0 overflow-hidden">
-											<img th:if="${product.imageProduct != null && !product.imageProduct.empty}"
-												th:src="@{'/images/products/' + ${product.imageProduct[0].url}}"
-												class="w-full h-full object-cover">
+											class="flex flex-col min-w-0 max-w-[200px] sm:max-w-[250px] lg:max-w-[350px]">
 											<span
-												th:unless="${product.imageProduct != null && !product.imageProduct.empty}"
-												class="material-symbols-outlined">inventory_2</span>
-										</div>
-										<div class="flex flex-col">
-											<span
-												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base"
-												th:text="${product.name}">Tên sản phẩm</span>
-											<span class="text-xs text-gray-500 dark:text-gray-400"
-												th:text="'SKU: ' + ${product.slug}">SKU: SKU-123</span>
+												class="font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors text-base leading-tight line-clamp-2"
+												th:title="${product.name}" th:text="${product.name}">Tên sản phẩm</span>
+											<span class="text-xs text-gray-500 dark:text-gray-400 truncate mt-1"
+												th:title="${product.slug}" th:text="'SKU: ' + ${product.slug}">SKU:
+												SKU-123</span>
 										</div>
 									</div>
 								</td>
@@ -257,26 +257,33 @@
 										</span>
 									</div>
 								</td>
+								<td class="px-6 py-4 text-center">
+									<a th:href="@{/admin/product/toggle-status/{id}(id=${product.id})}">
+										<span th:if="${product.status != null && product.status}"
+											class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-green-100 text-green-700 hover:bg-green-200 transition-colors cursor-pointer">
+											Đang hoạt động
+										</span>
+										<span th:unless="${product.status != null && product.status}"
+											class="inline-flex items-center px-2.5 py-1 rounded text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
+											Đã ẩn
+										</span>
+									</a>
+								</td>
 								<td class="px-6 py-4 text-gray-500 dark:text-gray-400 font-medium text-center"
 									th:text="${#temporals.format(product.createAt, 'dd/MM/yyyy')}">
 									01/01/2024
 								</td>
 								<td class="px-6 py-4 text-center">
 									<div class="flex items-center justify-center gap-1">
-										<a th:href="@{/admin/product/toggle-status/{id}(id=${product.id})}"
-											class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors group/btn"
-											th:title="${product.status == 1 ? 'Ẩn sản phẩm' : 'Hiện sản phẩm'}">
-											<span class="material-symbols-outlined text-[20px]"
-												th:text="${product.status == 1 ? 'visibility' : 'visibility_off'}"
-												th:classappend="${product.status == 1 ? 'text-blue-500' : 'text-gray-400'}">visibility</span>
-										</a>
-										<a th:href="@{/admin/product-list/product-form/{id}(id=${product.id})}"
-											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded transition-colors group/btn">
+										<a th:href="@{/admin/product-list/product-form/{slug}(slug=${product.slug != null && !product.slug.isEmpty() ? product.slug : product.id})}"
+											class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded transition-colors group/btn"
+											title="Chỉnh sửa">
 											<span class="material-symbols-outlined text-[20px]">edit</span>
 										</a>
 										<a th:href="@{/admin/product/delete/{id}(id=${product.id})}"
 											onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
-											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors group/btn">
+											class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors group/btn"
+											title="Xóa">
 											<span class="material-symbols-outlined text-[20px]">delete</span>
 										</a>
 									</div>
@@ -352,199 +359,167 @@
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<script>
-		function toggleSortDropdown() {
-			const dropdown = document.getElementById('sortDropdown');
-			const icon = document.getElementById('sortDropdownIcon');
-			dropdown.classList.toggle('hidden');
-			if (dropdown.classList.contains('hidden')) {
-				icon.style.transform = 'rotate(0deg)';
-			} else {
-				icon.style.transform = 'rotate(180deg)';
+
+		<script>
+			function toggleCatFilterDropdown(event) {
+				if (event) event.stopPropagation();
+				const menu = document.getElementById('catFilterMenu');
+				if (menu) menu.classList.toggle('hidden');
 			}
-		}
 
-		function selectSort(value, label) {
-			document.getElementById('sortInput').value = value;
-			document.getElementById('sortFilterLabel').textContent = label;
-			document.getElementById('sortDropdown').classList.add('hidden');
-			document.getElementById('sortDropdownIcon').style.transform = 'rotate(0deg)';
-		}
+			function selectCatFilter(id, name) {
+				const idInput = document.getElementById('catFilterId');
+				const label = document.getElementById('catFilterLabel');
+				const menu = document.getElementById('catFilterMenu');
+				if (idInput) idInput.value = id;
+				if (label) label.innerText = name;
+				if (menu) menu.classList.add('hidden');
+			}
 
-		// Close dropdown when clicking outside
-		document.addEventListener('click', function (event) {
-			const dropdown = document.getElementById('sortDropdown');
-			const button = document.getElementById('sortFilterBtn');
-			const icon = document.getElementById('sortDropdownIcon');
-
-			if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-				if (!dropdown.classList.contains('hidden')) {
-					dropdown.classList.add('hidden');
-					icon.style.transform = 'rotate(0deg)';
+			function togglePaginationDropdown() {
+				const dropdown = document.getElementById('paginationDropdown');
+				const icon = document.getElementById('paginationDropdownIcon');
+				if (dropdown && icon) {
+					dropdown.classList.toggle('hidden');
+					icon.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
 				}
 			}
 
-			const paginationDropdown = document.getElementById('paginationDropdown');
-			const paginationButton = document.getElementById('paginationDropdownBtn');
-			if (paginationDropdown && paginationButton) { // Ensure elements exist (safe check)
-				if (!paginationButton.contains(event.target) && !paginationDropdown.contains(event.target)) {
-					if (!paginationDropdown.classList.contains('hidden')) {
-						paginationDropdown.classList.add('hidden');
-						document.getElementById('paginationDropdownIcon').style.transform = 'rotate(0deg)';
+			function selectItemsPerPage(value) {
+				const label = document.getElementById('itemsPerPageLabel');
+				if (label) label.textContent = value;
+				const dropdown = document.getElementById('paginationDropdown');
+				if (dropdown) dropdown.classList.add('hidden');
+				const icon = document.getElementById('paginationDropdownIcon');
+				if (icon) icon.style.transform = 'rotate(0deg)';
+				// Actual pagination logic is handled by <a> tags
+			}
+
+			function toggleSort(header) {
+				const icon = header.querySelector('.material-symbols-outlined');
+				if (icon) {
+					if (icon.textContent === 'unfold_more') {
+						icon.textContent = 'expand_less';
+						icon.classList.add('text-primary');
+						icon.classList.remove('text-gray-400');
+					} else if (icon.textContent === 'expand_less') {
+						icon.textContent = 'expand_more';
+					} else {
+						icon.textContent = 'unfold_more';
+						icon.classList.remove('text-primary');
+						icon.classList.add('text-gray-400');
 					}
 				}
 			}
-		});
 
-		function togglePaginationDropdown() {
-			const dropdown = document.getElementById('paginationDropdown');
-			const icon = document.getElementById('paginationDropdownIcon');
-
-			if (dropdown.classList.contains('hidden')) {
-				dropdown.classList.remove('hidden');
-				icon.style.transform = 'rotate(180deg)';
-			} else {
-				dropdown.classList.add('hidden');
-				icon.style.transform = 'rotate(0deg)';
-			}
-		}
-
-		function selectItemsPerPage(value) {
-			document.getElementById('itemsPerPageLabel').textContent = value;
-			const dropdown = document.getElementById('paginationDropdown');
-			const icon = document.getElementById('paginationDropdownIcon');
-			dropdown.classList.add('hidden');
-			icon.style.transform = 'rotate(0deg)';
-			// Add logic here to reload page or update query param
-			console.log('Selected items per page:', value);
-		}
-
-		// Simple sort toggle function for headers
-		function toggleSort(header) {
-			const icon = header.querySelector('.material-symbols-outlined');
-			if (icon) {
-				if (icon.textContent === 'unfold_more') {
-					icon.textContent = 'expand_less'; // Ascending
-					icon.classList.add('text-primary');
-					icon.classList.remove('text-gray-400');
-				} else if (icon.textContent === 'expand_less') {
-					icon.textContent = 'expand_more'; // Descending
-				} else {
-					icon.textContent = 'unfold_more'; // Reset
-					icon.classList.remove('text-primary');
-					icon.classList.add('text-gray-400');
+			// Close dropdowns when clicking outside
+			document.addEventListener('click', function (event) {
+				const catMenu = document.getElementById('catFilterMenu');
+				const catBtn = document.getElementById('catFilterDropdownContainer');
+				if (catMenu && catBtn && !catBtn.contains(event.target)) {
+					catMenu.classList.add('hidden');
 				}
+
+				const paginationDropdown = document.getElementById('paginationDropdown');
+				const paginationButton = document.getElementById('paginationDropdownBtn');
+				if (paginationDropdown && paginationButton && !paginationButton.contains(event.target) && !paginationDropdown.contains(event.target)) {
+					paginationDropdown.classList.add('hidden');
+					const icon = document.getElementById('paginationDropdownIcon');
+					if (icon) icon.style.transform = 'rotate(0deg)';
+				}
+			});
+		</script>
+
+		<!-- Flatpickr setup removed -->
+		<style>
+			.flatpickr-calendar {
+				font-family: 'Inter', sans-serif !important;
+				border-radius: 12px !important;
+				margin-top: 8px !important;
+				/* Gap requested by user */
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 			}
-		}
-	</script>
 
-	<!-- Flatpickr JS -->
-	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-	<script src="https://npmcdn.com/flatpickr/dist/l10n/vn.js"></script>
-	<!-- Flatpickr CSS with custom overrides -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-	<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
-	<style>
-		.flatpickr-calendar {
-			font-family: 'Inter', sans-serif !important;
-			border-radius: 12px !important;
-			margin-top: 8px !important;
-			/* Gap requested by user */
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-		}
+			.dark .flatpickr-calendar {
+				background: #1e293b !important;
+				border: 1px solid #334155 !important;
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
+			}
 
-		.dark .flatpickr-calendar {
-			background: #1e293b !important;
-			border: 1px solid #334155 !important;
-			box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5) !important;
-		}
+			.flatpickr-day.selected,
+			.flatpickr-day.startRange,
+			.flatpickr-day.endRange,
+			.flatpickr-day.selected.inRange,
+			.flatpickr-day.startRange.inRange,
+			.flatpickr-day.endRange.inRange,
+			.flatpickr-day.selected:focus,
+			.flatpickr-day.startRange:focus,
+			.flatpickr-day.endRange:focus,
+			.flatpickr-day.selected:hover,
+			.flatpickr-day.startRange:hover,
+			.flatpickr-day.endRange:hover,
+			.flatpickr-day.selected.prevMonthDay,
+			.flatpickr-day.startRange.prevMonthDay,
+			.flatpickr-day.endRange.prevMonthDay,
+			.flatpickr-day.selected.nextMonthDay,
+			.flatpickr-day.startRange.nextMonthDay,
+			.flatpickr-day.endRange.nextMonthDay {
+				background: #ea580c !important;
+				border-color: #ea580c !important;
+			}
 
-		.flatpickr-day.selected,
-		.flatpickr-day.startRange,
-		.flatpickr-day.endRange,
-		.flatpickr-day.selected.inRange,
-		.flatpickr-day.startRange.inRange,
-		.flatpickr-day.endRange.inRange,
-		.flatpickr-day.selected:focus,
-		.flatpickr-day.startRange:focus,
-		.flatpickr-day.endRange:focus,
-		.flatpickr-day.selected:hover,
-		.flatpickr-day.startRange:hover,
-		.flatpickr-day.endRange:hover,
-		.flatpickr-day.selected.prevMonthDay,
-		.flatpickr-day.startRange.prevMonthDay,
-		.flatpickr-day.endRange.prevMonthDay,
-		.flatpickr-day.selected.nextMonthDay,
-		.flatpickr-day.startRange.nextMonthDay,
-		.flatpickr-day.endRange.nextMonthDay {
-			background: #ea580c !important;
-			border-color: #ea580c !important;
-		}
+			.flatpickr-day.todays-date {
+				color: #ea580c !important;
+				border-color: #ea580c !important;
+			}
 
-		.flatpickr-day.todays-date {
-			color: #ea580c !important;
-			border-color: #ea580c !important;
-		}
+			/* Custom Header Styling */
+			.flatpickr-current-month {
+				display: flex !important;
+				justify-content: space-between !important;
+				align-items: center !important;
+				width: 75% !important;
+				/* Ensure it fits between arrows */
+				left: 12.5% !important;
+				padding: 0 !important;
+			}
 
-		/* Custom Header Styling */
-		.flatpickr-current-month {
-			display: flex !important;
-			justify-content: space-between !important;
-			align-items: center !important;
-			width: 75% !important;
-			/* Ensure it fits between arrows */
-			left: 12.5% !important;
-			padding: 0 !important;
-		}
+			.flatpickr-monthDropdown-months {
+				text-align: left !important;
+				width: auto !important;
+				font-size: 14px !important;
+				/* Make it smaller */
+				margin-left: 0 !important;
+			}
 
-		.flatpickr-monthDropdown-months {
-			text-align: left !important;
-			width: auto !important;
-			font-size: 14px !important;
-			/* Make it smaller */
-			margin-left: 0 !important;
-		}
+			.numInputWrapper {
+				width: auto !important;
+				margin-right: 0 !important;
+			}
 
-		.numInputWrapper {
-			width: auto !important;
-			margin-right: 0 !important;
-		}
+			.flatpickr-current-month input.cur-year {
+				font-size: 14px !important;
+				/* Make year smaller */
+				text-align: right !important;
+				padding: 0 !important;
+			}
 
-		.flatpickr-current-month input.cur-year {
-			font-size: 14px !important;
-			/* Make year smaller */
-			text-align: right !important;
-			padding: 0 !important;
-		}
+			.flatpickr-current-month .numInputWrapper span.arrowUp {
+				display: none;
+				/* Optional: cleaner look */
+			}
 
-		.flatpickr-current-month .numInputWrapper span.arrowUp {
-			display: none;
-			/* Optional: cleaner look */
-		}
-
-		.flatpickr-current-month .numInputWrapper span.arrowDown {
-			display: none;
-			/* Optional: cleaner look */
-		}
-	</style>
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			flatpickr("#dateFrom", {
-				locale: "vn",
-				dateFormat: "d/m/Y",
-				maxDate: "today",
-				disableMobile: "true",
+			.flatpickr-current-month .numInputWrapper span.arrowDown {
+				display: none;
+				/* Optional: cleaner look */
+			}
+		</style>
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				// Date filters removed
 			});
-			flatpickr("#dateTo", {
-				locale: "vn",
-				dateFormat: "d/m/Y",
-				maxDate: "today",
-				disableMobile: "true",
-			});
-		});
-	</script>
+		</script>
 	</div>
 	</div>
 </body>

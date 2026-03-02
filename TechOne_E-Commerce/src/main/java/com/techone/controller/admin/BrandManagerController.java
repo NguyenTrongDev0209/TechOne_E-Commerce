@@ -1,6 +1,5 @@
 package com.techone.controller.admin;
 
-import java.io.File;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.techone.model.Brand;
 import com.techone.repository.BrandRepository;
 
-import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
+import com.techone.utils.FileUploadUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -34,7 +33,7 @@ public class BrandManagerController {
     BrandRepository brandRepository;
 
     @Autowired
-    ServletContext servletContext;
+    FileUploadUtils fileUploadUtils;
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(MaxUploadSizeExceededException exc, RedirectAttributes redirectAttributes) {
@@ -75,8 +74,19 @@ public class BrandManagerController {
             @RequestParam("pageSize") Optional<Integer> pageSize,
             @RequestParam("keyword") Optional<String> keyword) {
 
+        // Kiểm tra tên thương hiệu đã tồn tại hay chưa
+        if (brand.getName() != null && !brand.getName().trim().isEmpty()) {
+            if (brandRepository.existsByName(brand.getName())) {
+                errors.rejectValue("name", "error.brand", "Tên thương hiệu đã tồn tại");
+            }
+        }
+
         if (image != null && !image.isEmpty()) {
-            brand.setLogo(saveImage(image));
+            try {
+                brand.setLogo(fileUploadUtils.saveImage(image, "brands"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         boolean hasOnlyLogoError = errors.getErrorCount() == 1 && errors.hasFieldErrors("logo");
@@ -140,8 +150,15 @@ public class BrandManagerController {
             }
         }
 
+        // Handle logo update logic once
+        String logoToSave = null;
         if (image != null && !image.isEmpty()) {
-            brand.setLogo(saveImage(image));
+            try {
+                logoToSave = fileUploadUtils.saveImage(image, "brands");
+                brand.setLogo(logoToSave);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (existing != null) {
             brand.setLogo(existing.getLogo());
         }
@@ -150,7 +167,6 @@ public class BrandManagerController {
         // If edit mode and we have a logo (either new or existing), ignore logo missing
         // error
         if (errors.hasFieldErrors("logo") && brand.getLogo() != null) {
-            // Check if there are OTHER errors
             if (errors.getErrorCount() == 1) {
                 hasActualErrors = false;
             }
@@ -168,51 +184,50 @@ public class BrandManagerController {
         }
 
         if (existing != null) {
-            if (image != null && !image.isEmpty()) {
-                existing.setLogo(saveImage(image));
+            boolean oldStatus = existing.getStatus();
+            if (logoToSave != null) {
+                existing.setLogo(logoToSave);
             }
             existing.setName(brand.getName());
             existing.setStatus(brand.getStatus());
             brandRepository.save(existing);
+
+            // Nếu trạng thái thay đổi, cập nhật luôn các sản phẩm
+            if (oldStatus != existing.getStatus()) {
+                productRepository.updateStatusByBrandId(existing.getId(), existing.getStatus());
+            }
         }
 
         return "redirect:/admin/brand-manager?updated=true";
     }
 
     @GetMapping("/admin/brand/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id, RedirectAttributes ra) {
         int productCount = brandRepository.countProducts(id);
         if (productCount > 0) {
-            return "redirect:/admin/brand-manager?message=Không thể xóa: Thương hiệu này đang có " + productCount
-                    + " sản phẩm. Bạn nên chuyển sang trạng thái Ẩn thay vì xóa!";
+            ra.addFlashAttribute("errorMessage", "Không thể xóa: Thương hiệu này đang có " + productCount
+                    + " sản phẩm. Bạn nên chuyển sang trạng thái Ẩn thay vì xóa!");
+            return "redirect:/admin/brand-manager";
         }
         brandRepository.deleteById(id);
         return "redirect:/admin/brand-manager?deleted=true";
     }
 
+    @Autowired
+    com.techone.repository.ProductRepository productRepository;
+
     @GetMapping("/admin/brand/toggle-status/{id}")
     public String toggleStatus(@PathVariable("id") Integer id) {
         Brand brand = brandRepository.findById(id).orElse(null);
         if (brand != null) {
-            brand.setStatus(!brand.getStatus());
+            boolean newStatus = !brand.getStatus();
+            brand.setStatus(newStatus);
             brandRepository.save(brand);
+
+            // Ẩn tất cả sản phẩm thuộc thương hiệu này
+            productRepository.updateStatusByBrandId(id, newStatus);
         }
         return "redirect:/admin/brand-manager?updated=true";
     }
 
-    private String saveImage(MultipartFile image) {
-        try {
-            String filename = image.getOriginalFilename();
-            String path = servletContext.getRealPath("/images/brands/");
-            File dir = new File(path);
-            if (!dir.exists())
-                dir.mkdirs();
-            File file = new File(path + File.separator + filename);
-            image.transferTo(file);
-            return filename;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

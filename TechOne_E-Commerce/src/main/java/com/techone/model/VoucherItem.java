@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "voucher_list")
-public class VoucherList {
+@Table(name = "voucher_items")
+public class VoucherItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
@@ -25,6 +25,9 @@ public class VoucherList {
 	@ManyToOne
 	@JoinColumn(name = "voucher_percent_id")
 	VoucherPercent voucherPercent;
+	
+	// 0: Chưa sử dụng, 1: Đã sử dụng
+	public Integer status;
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id")

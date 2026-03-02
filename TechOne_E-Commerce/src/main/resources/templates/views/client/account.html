@@ -16,8 +16,8 @@
             <div class="relative z-10">
                 <h2 class="text-2xl font-bold mb-2" th:text="'Xin chào, ' + ${session.user.fullname} + '!'">Xin chào,
                     Nguyen Van A!</h2>
-                <p class="text-white/80 max-w-lg">Chào mừng trở lại TechOne. Bạn đang có 3 đơn hàng đang được xử lý và 5
-                    sản phẩm trong giỏ hàng.</p>
+                <p class="text-white/80 max-w-lg">Chào mừng trở lại TechOne. Khám phá các ưu đãi mới nhất và quản lý đơn
+                    hàng của bạn một cách dễ dàng.</p>
             </div>
             <div class="absolute -right-10 -top-10 size-40 rounded-full bg-primary/20 blur-2xl"></div>
             <div class="absolute right-20 -bottom-10 size-32 rounded-full bg-orange-500/20 blur-2xl"></div>
@@ -341,8 +341,11 @@
                                 <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded">Mặc
                                     định</span>
                             </div>
-                            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1">Nguyen Van A</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">(+84) 912 345 678</p>
+                            <p class="font-medium text-gray-800 dark:text-gray-200 mb-1"
+                                th:text="${session.user.fullname}">Nguyen Van A</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1"
+                                th:text="${session.user.phone != null ? session.user.phone : session.user.email}">(+84)
+                                912 345 678</p>
                             <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                                 Số 123, Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam
                             </p>

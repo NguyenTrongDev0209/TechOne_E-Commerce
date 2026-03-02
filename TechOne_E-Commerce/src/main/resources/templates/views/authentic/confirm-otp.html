@@ -7,35 +7,31 @@
             Nhập mã xác nhận
         </h1>
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Chúng tôi đã gửi mã xác nhận đến <span class="font-medium text-[#1c100d] dark:text-gray-200">09**
-                *** 789</span> hoặc <span class="font-medium text-[#1c100d] dark:text-gray-200">u***@example.com</span>.
+            Chúng tôi đã gửi mã xác nhận đến <span class="font-medium text-[#1c100d] dark:text-gray-200"
+                th:text="${session.forgotPasswordEmail}">email@example.com</span>.
         </p>
     </div>
-    <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4"
+
+    <div th:if="${error}" class="p-3 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
         role="alert">
-        <span class="block sm:inline" th:text="${error}"></span>
+        <span th:text="${error}">Error message</span>
     </div>
-    <form th:action="@{/verify-otp}" method="POST" class="flex flex-col gap-6" id="confirmOtpForm">
+
+    <form th:action="@{/confirm-otp}" class="flex flex-col gap-6" method="POST" id="confirmOtpForm">
         <input type="hidden" name="otp" id="fullOtp">
         <div class="flex justify-between gap-2 sm:gap-3">
-            <input autofocus
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
-            <input
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
-            <input
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
-            <input
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
-            <input
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
-            <input
-                class="otp-digit w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white"
-                maxlength="1" type="text" inputmode="numeric" />
+            <input autofocus maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
+            <input maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
+            <input maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
+            <input maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
+            <input maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
+            <input maxlength="1" type="text" pattern="\d*" inputmode="numeric"
+                class="otp-input w-full aspect-square text-center text-2xl font-bold bg-gray-50 dark:bg-[#1a0f0d] border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all caret-primary text-[#1c100d] dark:text-white" />
         </div>
         <div class="flex flex-col items-center gap-2">
             <div class="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -44,15 +40,14 @@
             <div class="text-center text-sm">
                 <span class="text-gray-500 dark:text-gray-400">Không nhận được mã?</span>
                 <a class="font-semibold text-gray-500 hover:text-primary transition-colors ml-1 cursor-pointer pointer-events-none opacity-50"
-                    href="#" id="resend-link">Gửi lại mã</a>
+                    th:href="@{/forgot-password}" id="resend-link">Gửi lại mã</a>
             </div>
         </div>
         <button id="confirmButton" type="submit"
             class="w-full flex items-center justify-center h-12 bg-primary hover:bg-[#ff6b42] text-white font-bold rounded-lg shadow-lg shadow-primary/30 transition-all active:scale-[0.98] gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
             <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white hidden" id="confirmSpinner"
                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                </circle>
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                 </path>
@@ -73,14 +68,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const countdownElement = document.getElementById('countdown');
-            const resendLink = document.getElementById('resend-link');
-            const otpInputs = document.querySelectorAll('.otp-digit');
+            const inputs = document.querySelectorAll('.otp-input');
             const fullOtpInput = document.getElementById('fullOtp');
-            const confirmOtpForm = document.getElementById('confirmOtpForm');
+            const resendLink = document.getElementById('resend-link');
+            const countdownElement = document.getElementById('countdown');
+            let timeLeft = 299; // 5 minutes
 
-            // Countdown Logic (Synchronized with 5 minutes from server)
-            let timeLeft = 299;
+            // Handle Input Sequence
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                    updateFullOtp();
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+
+            function updateFullOtp() {
+                let otp = "";
+                inputs.forEach(input => otp += input.value);
+                fullOtpInput.value = otp;
+            }
+
+            // Countdown Timer
             const timer = setInterval(() => {
                 if (timeLeft <= 0) {
                     clearInterval(timer);
@@ -95,39 +111,20 @@
                 }
             }, 1000);
 
-            // OTP Input Auto-tabbing and backspace logic
-            otpInputs.forEach((input, index) => {
-                input.addEventListener('input', (e) => {
-                    if (e.target.value.length === 1 && index < otpInputs.length - 1) {
-                        otpInputs[index + 1].focus();
-                    }
-                });
+            // Form Submit Loading
+            const confirmOtpForm = document.getElementById('confirmOtpForm');
+            const confirmButton = document.getElementById('confirmButton');
+            const confirmSpinner = document.getElementById('confirmSpinner');
+            const confirmButtonText = document.getElementById('confirmButtonText');
+            const confirmButtonIcon = document.getElementById('confirmButtonIcon');
 
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
-                        otpInputs[index - 1].focus();
-                    }
-                });
-            });
-
-            // Form submission logic
             confirmOtpForm.addEventListener('submit', function (e) {
-                let otp = '';
-                otpInputs.forEach(input => otp += input.value);
-
-                if (otp.length !== 6) {
+                updateFullOtp();
+                if (fullOtpInput.value.length < 6) {
                     e.preventDefault();
-                    alert('Vui lòng nhập đủ 6 chữ số mã OTP!');
+                    alert("Vui lòng nhập đầy đủ mã OTP.");
                     return;
                 }
-
-                fullOtpInput.value = otp;
-
-                const confirmButton = document.getElementById('confirmButton');
-                const confirmSpinner = document.getElementById('confirmSpinner');
-                const confirmButtonText = document.getElementById('confirmButtonText');
-                const confirmButtonIcon = document.getElementById('confirmButtonIcon');
-
                 confirmButton.disabled = true;
                 confirmSpinner.classList.remove('hidden');
                 confirmButtonIcon.classList.add('hidden');

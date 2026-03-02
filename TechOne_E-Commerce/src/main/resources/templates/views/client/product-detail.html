@@ -11,11 +11,20 @@
                     <a class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors" href="/">Trang
                         chủ</a>
                     <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
-                    <a class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors" href="#">Laptop</a>
-                    <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
-                    <a class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors" href="#">Gaming</a>
-                    <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
-                    <span class="text-slate-900 dark:text-white font-medium">TechBook Pro X1</span>
+                    <th:block th:if="${product.category != null}">
+                        <a class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+                            th:href="@{/categories/{slug}(slug=${product.category.slug})}"
+                            th:text="${product.category.name}">Category</a>
+                        <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+                    </th:block>
+                    <th:block th:if="${product.brand != null}">
+                        <a class="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors"
+                            th:href="@{/categories(brandId=${product.brand.id})}"
+                            th:text="${product.brand.name}">Brand</a>
+                        <span class="material-symbols-outlined text-gray-400 text-[16px]">chevron_right</span>
+                    </th:block>
+                    <span class="text-slate-900 dark:text-white font-medium" th:text="${product.name}">Product
+                        Name</span>
                 </div>
             </div>
         </div>
@@ -27,58 +36,33 @@
                 <div class="lg:col-span-7 flex flex-col gap-4">
                     <div
                         class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-white dark:bg-[#1e293b] group border border-gray-100 dark:border-gray-700">
-                        <div class="w-full h-full bg-center bg-contain bg-no-repeat transition-transform duration-500 group-hover:scale-105"
-                            style='background-image: url("https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=1000");'>
+                        <div id="main-product-image"
+                            class="w-full h-full bg-center bg-contain bg-no-repeat transition-transform duration-500 group-hover:scale-105"
+                            th:if="${not #lists.isEmpty(variants) and not #lists.isEmpty(variants[0].variantImages)}"
+                            th:style="'background-image: url(' + @{'/images/variants/' + ${variants[0].variantImages[0].pathImage}} + ');'">
                         </div>
-                        <div class="absolute top-4 left-4">
-                            <span
-                                class="bg-accent text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Bán
-                                chạy</span>
-                        </div>
-                        <button
-                            class="absolute bottom-4 right-4 size-10 bg-white/90 dark:bg-black/50 backdrop-blur rounded-full flex items-center justify-center text-gray-700 dark:text-white shadow hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined">zoom_in</span>
-                        </button>
+
                     </div>
-                    <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-                        <button
-                            class="relative flex-none w-20 h-20 rounded-xl border-2 border-primary overflow-hidden p-1 bg-white dark:bg-[#1e293b]">
-                            <div class="w-full h-full bg-center bg-cover rounded-lg"
-                                style='background-image: url("https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=200");'>
-                            </div>
-                        </button>
-                        <button
-                            class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-[#1e293b] transition-colors">
-                            <div class="w-full h-full bg-center bg-cover rounded-lg"
-                                style='background-image: url("https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=200");'>
-                            </div>
-                        </button>
-                        <button
-                            class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-[#1e293b] transition-colors">
-                            <div class="w-full h-full bg-center bg-cover rounded-lg"
-                                style='background-image: url("https://images.unsplash.com/photo-1618424181497-157f25b6ddd5?auto=format&fit=crop&q=80&w=200");'>
-                            </div>
-                        </button>
-                        <button
-                            class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden p-1 bg-white dark:bg-[#1e293b] transition-colors">
-                            <div class="w-full h-full bg-center bg-cover rounded-lg"
-                                style='background-image: url("https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=200");'>
-                            </div>
-                        </button>
-                        <button
-                            class="relative flex-none w-20 h-20 rounded-xl border border-transparent hover:border-gray-300 dark:hover:border-gray-600 overflow-hidden bg-gray-100 dark:bg-[#1e293b] flex items-center justify-center group">
-                            <span
-                                class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors text-3xl">play_circle</span>
-                        </button>
+                    <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar" id="thumbnail-container">
+                        <th:block th:each="var, vIter : ${variants}">
+                            <button th:each="img, iIter : ${var.variantImages}"
+                                class="thumbnail-btn relative flex-none w-20 h-20 rounded-xl border-2 overflow-hidden p-1 bg-white dark:bg-[#1e293b] transition-all"
+                                th:data-variant-id="${var.id}" th:style="${vIter.index == 0 ? '' : 'display: none;'}"
+                                th:classappend="${vIter.index == 0 and iIter.index == 0} ? 'border-primary' : 'border-transparent hover:border-gray-300'"
+                                th:onclick="'updateMainImage(this, \'' + @{'/images/variants/' + ${img.pathImage}} + '\')'">
+                                <div class="w-full h-full bg-center bg-cover rounded-lg"
+                                    th:style="'background-image: url(' + @{'/images/variants/' + ${img.pathImage}} + ');'">
+                                </div>
+                            </button>
+                        </th:block>
                     </div>
                 </div>
 
                 <div class="lg:col-span-5 flex flex-col">
                     <div class="sticky top-24 space-y-6">
                         <div>
-                            <h1
-                                class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white leading-tight font-display mb-3">
-                                TechBook Pro X1 - M2 Chip Ultimate Edition</h1>
+                            <h1 class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white leading-tight font-display mb-3"
+                                th:text="${product.name}">Product Name</h1>
                             <div class="flex items-center gap-4 flex-wrap">
                                 <div class="flex items-center gap-1 text-yellow-400">
                                     <span class="material-symbols-outlined text-[20px] fill-current">star</span>
@@ -89,20 +73,29 @@
                                     <span class="ml-1 text-sm font-semibold text-slate-900 dark:text-white">4.8</span>
                                 </div>
                                 <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                                <a class="text-sm text-primary hover:underline font-medium" href="#reviews">124 Đánh
-                                    giá</a>
+                                <a class="text-sm text-primary hover:underline font-medium" href="#reviews"
+                                    th:text="${(product.review != null ? #lists.size(product.review) : 0)} + ' Đánh giá'">124
+                                    Đánh giá</a>
                                 <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">Đã bán 1.2k</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">SKU: <span id="display-sku"
+                                        th:text="${not #lists.isEmpty(variants) ? variants[0].sku : 'N/A'}">SKU-001</span></span>
                             </div>
                         </div>
 
                         <div
                             class="p-4 rounded-xl bg-white dark:bg-[#1e293b] border border-gray-100 dark:border-gray-700 shadow-sm">
-                            <div class="flex items-end gap-3 flex-wrap">
-                                <span class="text-accent">29.990.000₫</span>
-                                <span class="text-lg text-gray-400 line-through mb-1">34.990.000₫</span>
-                                <span
-                                    class="mb-2 px-2 py-0.5 text-xs font-bold text-white rounded bg-accent">-15%</span>
+                            <div class="flex items-end gap-3 flex-wrap" th:if="${not #lists.isEmpty(variants)}">
+                                <span class="text-accent text-2xl font-bold" id="display-price"
+                                    th:text="${#numbers.formatDecimal(variants[0].price - (variants[0].price * variants[0].discount / 100), 0, 'COMMA', 0, 'POINT')} + '₫'">29.990.000₫</span>
+                                <span class="text-lg text-gray-400 line-through mb-1" id="display-old-price"
+                                    th:classappend="${variants[0].discount > 0 ? '' : 'hidden'}"
+                                    th:text="${#numbers.formatDecimal(variants[0].price, 0, 'COMMA', 0, 'POINT')} + '₫'">34.990.000₫</span>
+                                <span class="mb-2 px-2 py-0.5 text-xs font-bold text-white rounded bg-accent"
+                                    id="display-discount" th:classappend="${variants[0].discount > 0 ? '' : 'hidden'}"
+                                    th:text="'-' + ${#numbers.formatDecimal(variants[0].discount, 0, 'POINT', 0, 'POINT')} + '%'">-15%</span>
+                            </div>
+                            <div class="flex items-end gap-3 flex-wrap" th:unless="${not #lists.isEmpty(variants)}">
+                                <span class="text-accent text-2xl font-bold">Liên hệ</span>
                             </div>
                             <p class="text-xs text-gray-500 mt-2 flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[16px]">info</span>
@@ -110,47 +103,18 @@
                             </p>
                         </div>
 
-                        <div class="space-y-4">
-                            <div>
-                                <span class="block text-sm font-semibold text-slate-900 dark:text-white mb-3">Màu sắc:
-                                    <span class="font-normal text-gray-500">Bạc Silver</span></span>
-                                <div class="flex gap-3">
-                                    <label class="cursor-pointer group relative">
-                                        <input checked="" class="peer sr-only" name="color" type="radio" />
-                                        <div
-                                            class="size-10 rounded-full bg-[#e3e3e3] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#1e293b] peer-checked:ring-primary transition-all">
-                                        </div>
-                                    </label>
-                                    <label class="cursor-pointer group relative">
-                                        <input class="peer sr-only" name="color" type="radio" />
-                                        <div
-                                            class="size-10 rounded-full bg-[#5d5d5d] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#1e293b] peer-checked:ring-primary transition-all">
-                                        </div>
-                                    </label>
-                                    <label class="cursor-pointer group relative">
-                                        <input class="peer sr-only" name="color" type="radio" />
-                                        <div
-                                            class="size-10 rounded-full bg-[#2a2a2a] border-2 border-transparent peer-checked:border-primary peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-offset-white dark:peer-checked:ring-offset-[#1e293b] peer-checked:ring-primary transition-all">
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="block text-sm font-semibold text-slate-900 dark:text-white mb-3">Cấu
-                                    hình:</span>
+                        <div class="space-y-6">
+                            <div th:each="entry : ${attributesMap}">
+                                <span class="block text-sm font-semibold text-slate-900 dark:text-white mb-3"
+                                    th:text="${entry.key} + ':'">Attribute:</span>
                                 <div class="flex flex-wrap gap-3">
-                                    <label class="cursor-pointer">
-                                        <input checked="" class="peer sr-only" name="config" type="radio" />
-                                        <div
-                                            class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1e293b] text-sm font-medium peer-checked:border-primary peer-checked:bg-accent/5 peer-checked:text-primary transition-all dark:text-white">
-                                            16GB / 512GB SSD
-                                        </div>
-                                    </label>
-                                    <label class="cursor-pointer">
-                                        <input class="peer sr-only" name="config" type="radio" />
-                                        <div
-                                            class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1e293b] text-sm font-medium peer-checked:border-primary peer-checked:bg-accent/5 peer-checked:text-primary transition-all dark:text-white">
-                                            32GB / 1TB SSD
+                                    <label class="cursor-pointer group relative" th:each="val, iter : ${entry.value}">
+                                        <input type="radio" th:name="'attr_' + ${entry.key}" th:value="${val}"
+                                            class="peer sr-only variant-selector" th:checked="${iter.index == 0}"
+                                            onchange="onAttributeChange()">
+                                        <div class="px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#1e293b] text-sm font-medium peer-checked:border-primary peer-checked:bg-accent/5 peer-checked:text-primary transition-all dark:text-white"
+                                            th:text="${val}">
+                                            Value
                                         </div>
                                     </label>
                                 </div>
@@ -161,31 +125,31 @@
                             <div class="flex items-center gap-4">
                                 <div
                                     class="flex items-center border border-gray-300 dark:border-gray-600 rounded-xl h-12 w-32 bg-white dark:bg-[#1e293b]">
-                                    <button
+                                    <button type="button" onclick="decreaseQuantity()"
                                         class="size-10 flex items-center justify-center text-gray-500 hover:text-primary transition-colors">
                                         <span class="material-symbols-outlined text-sm">remove</span>
                                     </button>
-                                    <input
-                                        class="flex-1 w-full text-center border-none focus:ring-0 bg-transparent p-0 text-slate-900 dark:text-white font-medium"
-                                        type="number" value="1" />
-                                    <button
+                                    <input id="quantity-input"
+                                        class="flex-1 w-full text-center border-none focus:ring-0 bg-transparent p-0 text-slate-900 dark:text-white font-medium [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        type="number" value="1" onchange="validateQuantity()" />
+                                    <button type="button" onclick="increaseQuantity()"
                                         class="size-10 flex items-center justify-center text-gray-500 hover:text-primary transition-colors">
                                         <span class="material-symbols-outlined text-sm">add</span>
                                     </button>
                                 </div>
-                                <div
+                                <div id="display-stock-status"
                                     class="text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-1">
                                     <span class="material-symbols-outlined text-[18px]">check_circle</span>
                                     Còn hàng
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
-                                <button
+                                <button type="button" onclick="addToCart()"
                                     class="flex items-center justify-center gap-2 h-14 rounded-xl bg-white dark:bg-transparent border-2 border-primary text-primary font-bold hover:bg-primary/5 transition-colors">
                                     <span class="material-symbols-outlined">add_shopping_cart</span>
                                     Thêm vào giỏ
                                 </button>
-                                <button
+                                <button type="button" onclick="buyNow()"
                                     class="flex items-center justify-center gap-2 h-14 rounded-xl bg-primary text-white font-bold hover:bg-primary-hover shadow-lg shadow-primary/30 transition-all transform active:scale-95">
                                     Mua ngay
                                 </button>
@@ -217,78 +181,86 @@
             </div>
 
             <div class="mt-16">
+                <!-- Nút yêu thích -->
+                <div class="flex justify-start mb-6">
+                    <button type="button" th:onclick="'toggleFavorite(currentVariantId, this)'" id="favorite-btn"
+                        class="group flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all shadow-sm">
+                        <span
+                            class="material-symbols-outlined text-gray-400 group-hover:text-red-500 transition-colors text-[22px]"
+                            id="favorite-icon" style="font-variation-settings: 'FILL' 0;">favorite</span>
+                        <span
+                            class="text-sm font-bold text-gray-600 dark:text-gray-300 group-hover:text-red-500 transition-colors"
+                            id="favorite-text">Yêu thích sản phẩm</span>
+                    </button>
+                </div>
+
                 <div class="border-b border-gray-200 dark:border-gray-700 mb-8 overflow-x-auto no-scrollbar">
                     <nav class="flex space-x-8 min-w-max">
-                        <a class="border-b-2 border-primary py-4 px-1 text-sm font-bold text-primary" href="#">
+                        <button onclick="switchTab(this, 'tab-description')"
+                            class="tab-btn border-b-2 border-primary py-4 px-1 text-sm font-bold text-primary">
                             Mô tả chi tiết
-                        </a>
-                        <a class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all"
-                            href="#">
+                        </button>
+                        <button onclick="switchTab(this, 'tab-specs')"
+                            class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all">
                             Thông số kỹ thuật
-                        </a>
-                        <a class="border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 transition-all"
-                            href="#">
-                            Đánh giá & Hỏi đáp (124)
-                        </a>
+                        </button>
                     </nav>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
                     <div class="lg:col-span-2 space-y-6 text-gray-600 dark:text-gray-300 leading-relaxed">
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Sức mạnh vượt trội, thiết kế đỉnh
-                            cao</h2>
-                        <p>
-                            TechBook Pro X1 mang đến hiệu năng chưa từng có với chip M2 thế hệ mới. Xử lý mọi tác vụ từ
-                            chỉnh sửa video 8K, lập trình phức tạp đến chơi game đồ họa cao một cách mượt mà. Tất cả
-                            được gói gọn trong thiết kế nhôm nguyên khối siêu mỏng nhẹ.
-                        </p>
-                        <div class="w-full aspect-video rounded-xl bg-gray-100 dark:bg-[#1e293b] bg-center bg-cover my-6"
-                            style='background-image: url("https://images.unsplash.com/photo-1531297420494-85689e8e5305?auto=format&fit=crop&q=80&w=1000");'>
+                        <div id="tab-description" class="tab-content">
+                            <article class="prose prose-slate dark:prose-invert max-w-none prose-img:rounded-2xl"
+                                th:utext="${product.content}">
+                                Description content
+                            </article>
                         </div>
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-4">Màn hình Liquid Retina XDR
-                        </h3>
-                        <p>
-                            Trải nghiệm hình ảnh sống động hơn bao giờ hết với dải động cực cao, độ sáng lên đến 1600
-                            nits. Mọi chi tiết đều trở nên sắc nét và chân thực.
-                        </p>
+                        <div id="tab-specs" class="tab-content hidden">
+                            <div class="space-y-8">
+                                <th:block th:if="${not #lists.isEmpty(specifications)}">
+                                    <div th:each="spec : ${specifications}">
+                                        <table class="w-full border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2"
+                                                        class="text-left py-3 px-4 bg-gray-50 dark:bg-white/5 rounded-t-xl font-bold text-slate-900 dark:text-white border-b border-gray-100 dark:border-gray-700"
+                                                        th:text="'Thông số kỹ thuật'">
+                                                        Group Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                                                <tr th:each="title : ${spec.specificationTitles}">
+                                                    <td class="py-4 px-4 text-sm font-medium text-gray-500 dark:text-gray-400 w-1/3"
+                                                        th:text="${title.name}">Title</td>
+                                                    <td
+                                                        class="py-4 px-4 text-sm text-slate-900 dark:text-white font-semibold">
+                                                        <span th:each="val, iter : ${title.specificationValues}"
+                                                            th:text="${val.name} + ${iter.last ? '' : ', '}">Value</span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${#lists.isEmpty(specifications) and product.specifications != null}">
+                                    <div
+                                        class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-6">
+                                        <div class="prose prose-slate dark:prose-invert max-w-none"
+                                            th:utext="${product.specifications}">
+                                            General specifications
+                                        </div>
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${#lists.isEmpty(specifications) and product.specifications == null}">
+                                    <div class="text-center py-12 text-gray-500">
+                                        Đang cập nhật thông số kỹ thuật...
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="lg:col-span-1">
-                        <div
-                            class="bg-gray-50 dark:bg-[#1e293b] rounded-2xl p-6 border border-gray-100 dark:border-gray-700">
-                            <h3 class="font-bold text-lg mb-4 text-slate-900 dark:text-white">Thông số nổi bật</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-gray-400 mt-1">memory</span>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Vi xử
-                                            lý</span>
-                                        <span class="text-sm font-semibold dark:text-gray-200">Apple M2 Pro</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-gray-400 mt-1">grid_view</span>
-                                    <div>
-                                        <span
-                                            class="block text-xs text-gray-500 dark:text-gray-400 font-medium">RAM</span>
-                                        <span class="text-sm font-semibold dark:text-gray-200">16GB Unified</span>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-gray-400 mt-1">hard_drive</span>
-                                    <div>
-                                        <span class="block text-xs text-gray-500 dark:text-gray-400 font-medium">Lưu
-                                            trữ</span>
-                                        <span class="text-sm font-semibold dark:text-gray-200">512GB SSD</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <button
-                                class="w-full mt-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-white/10 transition-colors">
-                                Xem cấu hình chi tiết
-                            </button>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
@@ -306,60 +278,383 @@
                         </button>
                     </div>
                 </div>
+                <!-- This section can be populated later with real similar products -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="group flex flex-col gap-3">
-                        <div
-                            class="relative aspect-square rounded-2xl bg-white dark:bg-[#1e293b] overflow-hidden border border-gray-100 dark:border-gray-700">
-                            <div
-                                class="absolute top-3 left-3 bg-accent text-white text-[10px] font-bold px-2 py-1 rounded">
-                                -10%</div>
-                            <div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300"
-                                style='background-image: url("https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400");'>
+                    <div th:each="sim : ${similarProducts}"
+                        class="group relative bg-white dark:bg-[#1e293b] rounded-2xl border border-gray-100 dark:border-gray-700 p-4 transition-all hover:shadow-xl hover:-translate-y-1">
+                        <a th:href="@{/product/product-detail/{slug}(slug=${sim.slug})}" class="block">
+                            <div class="aspect-square rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-800 mb-4">
+                                <img th:if="${not #lists.isEmpty(sim.variant) and not #lists.isEmpty(sim.variant[0].variantImages)}"
+                                    th:src="@{'/images/variants/' + ${sim.variant[0].variantImages[0].pathImage}}"
+                                    class="w-full h-full object-contain transition-transform group-hover:scale-110" />
                             </div>
-                            <button
-                                class="absolute bottom-3 right-3 size-9 bg-accent text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-                                <span class="material-symbols-outlined text-lg">add_shopping_cart</span>
-                            </button>
-                        </div>
-                        <div>
-                            <h3
-                                class="font-semibold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">
-                                Dell XPS 15</h3>
-                            <div class="flex items-center gap-1 mt-1">
-                                <span class="text-yellow-500 text-xs flex"><span
-                                        class="material-symbols-outlined text-[14px] fill-current">star</span></span>
-                                <span class="text-xs text-gray-500">(45)</span>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white line-clamp-2 mb-2 group-hover:text-primary transition-colors"
+                                th:text="${sim.name}">Product Name</h3>
+                            <div class="flex items-end justify-between mt-1">
+                                <div class="flex flex-col">
+                                    <span class="text-primary font-bold"
+                                        th:text="${#numbers.formatDecimal(sim.variant[0].price - (sim.variant[0].price * sim.variant[0].discount / 100), 0, 'COMMA', 0, 'POINT')} + '₫'">Price</span>
+                                    <span th:if="${sim.variant[0].discount > 0}"
+                                        class="text-xs text-gray-400 line-through"
+                                        th:text="${#numbers.formatDecimal(sim.variant[0].price, 0, 'COMMA', 0, 'POINT')} + '₫'">Old
+                                        Price</span>
+                                </div>
+                               
                             </div>
-                            <div class="flex items-center gap-2 mt-2">
-                                <span class="font-bold text-primary">45.990k</span>
-                                <span class="text-xs text-gray-400 line-through">49.990k</span>
-                            </div>
-                        </div>
+                        </a>
                     </div>
-                    <div class="group flex flex-col gap-3">
-                        <div
-                            class="relative aspect-square rounded-2xl bg-white dark:bg-[#1e293b] overflow-hidden border border-gray-100 dark:border-gray-700">
-                            <div class="w-full h-full bg-center bg-contain bg-no-repeat p-4 group-hover:scale-105 transition-transform duration-300"
-                                style='background-image: url("https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=400");'>
-                            </div>
-                            <button
-                                class="absolute bottom-3 right-3 size-9 bg-accent text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300 shadow-lg">
-                                <span class="material-symbols-outlined text-lg">add_shopping_cart</span>
-                            </button>
-                        </div>
-                        <div>
-                            <h3
-                                class="font-semibold text-slate-900 dark:text-white line-clamp-1 group-hover:text-primary transition-colors cursor-pointer">
-                                MacBook Air M2</h3>
-                            <div class="flex items-center gap-2 mt-2">
-                                <span class="font-bold text-primary">27.490k</span>
-                            </div>
-                        </div>
+                    <div th:if="${#lists.isEmpty(similarProducts)}"
+                        class="col-span-full text-center py-8 text-gray-500">
+                        Không có sản phẩm tương tự nào.
                     </div>
                 </div>
             </div>
 
         </main>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            // Data from server
+            const variantAttributesMap = /*[[${variantAttributesMap}]]*/ {};
+            const variantsMap = {};
+            const favoritedVariantIds = /*[[${favoritedVariantIds}]]*/[];
+
+            // Populate variantsMap safely using proper JS inlining
+            /*[# th:each="v : ${variants}"]*/
+            variantsMap["[[${v.id}]]"] = {
+                "price": [[${ v.price }]],
+                "discount": [[${ v.discount }]],
+                "stock": [[${ v.stock }]],
+                "sku": [[${ v.sku }]],
+                "image": [[${ not #lists.isEmpty(v.variantImages) ? '/images/variants/' + v.variantImages[0].pathImage : '' }]]
+            };
+            /*[/]*/
+
+            // Initialize UI functions
+            let currentMaxStock = 0;
+            let currentVariantId = null;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+
+            async function addToCart() {
+                if (!currentVariantId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn phiên bản',
+                        text: 'Vui lòng chọn đầy đủ các tùy chọn sản phẩm',
+                        confirmButtonColor: '#ea580c'
+                    });
+                    return;
+                }
+
+                const quantityInput = document.getElementById('quantity-input');
+                const quantity = parseInt(quantityInput.value) || 1;
+
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(currentVariantId), quantity: quantity })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm vào giỏ',
+                            text: 'Sản phẩm đã có trong giỏ hàng của bạn',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cartCount;
+                            cartBadge.classList.remove('hidden');
+                        }
+                    } else if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Vui lòng đăng nhập để thêm vào giỏ hàng',
+                            confirmButtonText: 'Đăng nhập',
+                            confirmButtonColor: '#ea580c',
+                            showCancelButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.href = '/login';
+                        });
+                    } else {
+                        const text = await response.text();
+                        Toast.fire({ icon: 'error', title: text || "Có lỗi xảy ra" });
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            async function addToCartDirectly(vId) {
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(vId), quantity: 1 })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm vào giỏ',
+                            text: 'Sản phẩm đã có trong giỏ hàng của bạn',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cartCount;
+                            cartBadge.classList.remove('hidden');
+                        }
+                    } else if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Vui lòng đăng nhập để thêm vào giỏ hàng',
+                            confirmButtonText: 'Đăng nhập',
+                            confirmButtonColor: '#ea580c',
+                            showCancelButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.href = '/login';
+                        });
+                    } else {
+                        Toast.fire({ icon: 'error', title: "Có lỗi xảy ra" });
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            async function buyNow() {
+                if (!currentVariantId) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Chưa chọn phiên bản',
+                        text: 'Vui lòng chọn đầy đủ các tùy chọn sản phẩm',
+                        confirmButtonColor: '#ea580c'
+                    });
+                    return;
+                }
+
+                const quantityInput = document.getElementById('quantity-input');
+                const quantity = parseInt(quantityInput.value) || 1;
+
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(currentVariantId), quantity: quantity })
+                    });
+
+                    if (response.ok) {
+                        window.location.href = '/cart';
+                    } else if (response.status === 401) {
+                        window.location.href = '/login';
+                    } else {
+                        const text = await response.text();
+                        Toast.fire({ icon: 'error', title: text || "Có lỗi xảy ra" });
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+
+            function increaseQuantity() {
+                const input = document.getElementById('quantity-input');
+                if (!input) return;
+                let currentVal = parseInt(input.value) || 1;
+                if (currentVal < currentMaxStock) {
+                    input.value = currentVal + 1;
+                }
+            }
+
+            function decreaseQuantity() {
+                const input = document.getElementById('quantity-input');
+                if (!input) return;
+                let currentVal = parseInt(input.value) || 1;
+                if (currentVal > 1) {
+                    input.value = currentVal - 1;
+                }
+            }
+
+            function validateQuantity() {
+                const input = document.getElementById('quantity-input');
+                if (!input) return;
+                let currentVal = parseInt(input.value);
+                if (isNaN(currentVal) || currentVal < 1) {
+                    input.value = 1;
+                } else if (currentVal > currentMaxStock) {
+                    input.value = currentMaxStock > 0 ? currentMaxStock : 1;
+                }
+            }
+
+            function updateMainImage(element, imageUrl) {
+                const mainImg = document.getElementById('main-product-image');
+                if (mainImg) mainImg.style.backgroundImage = `url('${imageUrl}')`;
+
+                if (element && element.parentElement) {
+                    const thumbnails = element.parentElement.querySelectorAll('button');
+                    thumbnails.forEach(btn => {
+                        btn.classList.remove('border-primary');
+                        btn.classList.add('border-transparent');
+                    });
+                    element.classList.add('border-primary');
+                    element.classList.remove('border-transparent');
+                }
+            }
+
+            function onAttributeChange() {
+                const selectors = document.querySelectorAll('.variant-selector:checked');
+                const selectedValues = Array.from(selectors).map(s => s.value.trim()).sort();
+                const key = selectedValues.join('-');
+                console.log("Selected Key:", key);
+
+                let matchedVariantId = null;
+                for (const [id, attrKey] of Object.entries(variantAttributesMap)) {
+                    const normalizedAttrKey = attrKey.split('-').sort().join('-');
+                    if (normalizedAttrKey === key) {
+                        matchedVariantId = id;
+                        break;
+                    }
+                }
+
+                if (matchedVariantId) {
+                    currentVariantId = matchedVariantId;
+                    const variant = variantsMap[matchedVariantId];
+                    if (variant) updateVariantUI(variant);
+                } else {
+                    currentVariantId = null;
+                }
+            }
+
+            function updateVariantUI(variant) {
+                const priceEl = document.getElementById('display-price');
+                const oldPriceEl = document.getElementById('display-old-price');
+                const discountEl = document.getElementById('display-discount');
+                const skuEl = document.getElementById('display-sku');
+
+                if (priceEl) {
+                    const finalPrice = variant.price - (variant.price * variant.discount / 100);
+                    priceEl.innerText = new Intl.NumberFormat('vi-VN').format(finalPrice) + '₫';
+                }
+
+                if (variant.discount > 0) {
+                    if (oldPriceEl) {
+                        oldPriceEl.innerText = new Intl.NumberFormat('vi-VN').format(variant.price) + '₫';
+                        oldPriceEl.classList.remove('hidden');
+                    }
+                    if (discountEl) {
+                        discountEl.innerText = '-' + Math.round(variant.discount) + '%';
+                        discountEl.classList.remove('hidden');
+                    }
+                } else {
+                    if (oldPriceEl) oldPriceEl.classList.add('hidden');
+                    if (discountEl) discountEl.classList.add('hidden');
+                }
+
+                if (skuEl) skuEl.innerText = variant.sku;
+                currentMaxStock = variant.stock || 0;
+                validateQuantity();
+
+                // Filter and Highlight Thumbnails for Selected Variant
+                const thumbnails = document.querySelectorAll('.thumbnail-btn');
+                let firstVisibleThumb = null;
+                thumbnails.forEach(btn => {
+                    if (btn.getAttribute('data-variant-id') == currentVariantId) {
+                        btn.style.display = 'block';
+                        btn.classList.remove('border-primary');
+                        btn.classList.add('border-transparent');
+                        if (!firstVisibleThumb) firstVisibleThumb = btn;
+                    } else {
+                        btn.style.display = 'none';
+                    }
+                });
+
+                if (firstVisibleThumb) {
+                    firstVisibleThumb.classList.add('border-primary');
+                    firstVisibleThumb.classList.remove('border-transparent');
+
+                    // Update main image to the first image of the selected variant
+                    const imgPathMatch = firstVisibleThumb.getAttribute('onclick').match(/'([^']+)'/);
+                    const firstImgPath = imgPathMatch ? imgPathMatch[1] : '';
+                    const mainImg = document.getElementById('main-product-image');
+                    if (mainImg && firstImgPath) {
+                        mainImg.style.backgroundImage = `url('${firstImgPath}')`;
+                    }
+                }
+
+                const stockMsg = document.getElementById('display-stock-status');
+                if (stockMsg) {
+                    if (variant.stock <= 0) {
+                        stockMsg.innerHTML = '<span class="material-symbols-outlined text-[18px]">cancel</span> Hết hàng';
+                        stockMsg.className = 'text-sm text-red-600 dark:text-red-400 font-medium flex items-center gap-1';
+                    } else if (variant.stock <= 5) {
+                        stockMsg.innerHTML = '<span class="material-symbols-outlined text-[18px]">warning</span> Sắp hết hàng (còn ' + variant.stock + ')';
+                        stockMsg.className = 'text-sm text-yellow-600 dark:text-yellow-500 font-medium flex items-center gap-1';
+                    } else {
+                        stockMsg.innerHTML = '<span class="material-symbols-outlined text-[18px]">check_circle</span> Còn hàng';
+                        stockMsg.className = 'text-sm text-green-600 dark:text-green-400 font-medium flex items-center gap-1';
+                    }
+                }
+
+                // Update Favorite state UI
+                const detailBtn = document.getElementById('favorite-btn');
+                const detailIcon = document.getElementById('favorite-icon');
+                const detailText = document.getElementById('favorite-text');
+                if (detailBtn && detailIcon) {
+                    const isFavorited = favoritedVariantIds && favoritedVariantIds.includes(parseInt(currentVariantId));
+                    if (isFavorited) {
+                        detailBtn.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-500/10');
+                        detailIcon.style.fontVariationSettings = "'FILL' 1";
+                        detailIcon.classList.add('text-red-500');
+                        detailIcon.classList.remove('text-gray-400');
+                        if (detailText) {
+                            detailText.classList.add('text-red-500');
+                            detailText.innerText = "Đã yêu thích";
+                        }
+                    } else {
+                        detailBtn.classList.remove('border-red-500', 'bg-red-50', 'dark:bg-red-500/10');
+                        detailIcon.style.fontVariationSettings = "'FILL' 0";
+                        detailIcon.classList.remove('text-red-500');
+                        detailIcon.classList.add('text-gray-400');
+                        if (detailText) {
+                            detailText.classList.remove('text-red-500');
+                            detailText.innerText = "Yêu thích sản phẩm";
+                        }
+                    }
+                }
+            }
+
+            function switchTab(btn, tabId) {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    b.classList.remove('border-primary', 'text-primary', 'font-bold');
+                    b.classList.add('border-transparent', 'text-gray-500', 'font-medium');
+                });
+                btn.classList.add('border-primary', 'text-primary', 'font-bold');
+                btn.classList.remove('border-transparent', 'text-gray-500', 'font-medium');
+
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                const target = document.getElementById(tabId);
+                if (target) target.classList.remove('hidden');
+            }
+
+
+            document.addEventListener('DOMContentLoaded', onAttributeChange);
+            /*]]>*/
+        </script>
     </div>
 </body>
 

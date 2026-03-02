@@ -131,13 +131,12 @@ public class RegisterController {
 	        newAccount.setCreateAt(LocalDate.now());
 	        newAccount.setProvider("LOCAL");
 
-	        // QUAN TRỌNG: Gán null cho trường không sử dụng
 	        if ("email".equals(method)) {
 	            newAccount.setEmail(contact);
-	            newAccount.setPhone(null); // Để null, không tạo ảo nữa
+	            newAccount.setPhone(null); 
 	        } else {
 	            newAccount.setPhone(contact);
-	            newAccount.setEmail(null); // Để null, không tạo ảo nữa
+	            newAccount.setEmail(null); 
 	        }
 
 	        accountRepository.save(newAccount);

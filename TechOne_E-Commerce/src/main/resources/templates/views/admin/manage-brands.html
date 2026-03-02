@@ -39,6 +39,10 @@
                 role="alert">
                 <span th:text="${param.message}"></span>
             </div>
+            <div th:if="${errorMessage}"
+                class="p-4 mb-4 text-sm text-red-800 rounded bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                <span th:text="${errorMessage}"></span>
+            </div>
 
             <div class="grid grid-cols-12 gap-6">
                 <!-- Left Column: Add/Edit Brand Form -->
@@ -63,6 +67,7 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Logo</label>
                                     <div onclick="document.getElementById('logoInput').click()"
+                                        th:classappend="${#fields.hasErrors('logo') ? 'border-red-500 bg-red-50' : ''}"
                                         class="w-full h-[120px] rounded border-2 border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center gap-1 text-gray-400 bg-gray-50 dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors cursor-pointer group relative overflow-hidden">
 
                                         <div th:if="*{logo}" class="absolute inset-0">
@@ -79,7 +84,7 @@
                                             onchange="previewFile(this)" />
                                     </div>
                                     <p th:if="${#fields.hasErrors('logo')}" th:errors="*{logo}"
-                                        class="text-red-500 text-xs mt-1"></p>
+                                        class="text-red-500 text-xs mt-1 font-medium"></p>
                                 </div>
 
                                 <!-- Name -->
@@ -87,10 +92,11 @@
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tên
                                         thương hiệu <span class="text-red-500">*</span></label>
                                     <input type="text" th:field="*{name}"
+                                        th:errorclass="'border-red-500 focus:ring-red-500 focus:border-red-500'"
                                         class="block w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all"
                                         placeholder="Nhập tên thương hiệu...">
                                     <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
-                                        class="text-red-500 text-xs mt-1"></p>
+                                        class="text-red-500 text-xs mt-1 font-medium"></p>
                                 </div>
 
                                 <!-- Status (Only in Edit Mode) -->

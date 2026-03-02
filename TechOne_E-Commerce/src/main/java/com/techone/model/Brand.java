@@ -23,17 +23,18 @@ public class Brand {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
-	
+
 	@NotBlank(message = "Tên không được để trống")
 	@Column(columnDefinition = "nvarchar(255)")
 	public String name;
-	
+
 	@NotBlank(message = "Logo không được để trống")
 	@Column(columnDefinition = "varchar(255)")
 	public String logo;
 
 	public Boolean status = true;
-	
+
 	@OneToMany(mappedBy = "brand")
+	@lombok.ToString.Exclude
 	public List<Product> product;
 }

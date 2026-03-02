@@ -33,7 +33,7 @@ public class SpecificationTitle {
     @Column(columnDefinition = "nvarchar(255)")
     private String name;
 
-    @OneToMany(mappedBy = "specificationTitle")
+    @OneToMany(mappedBy = "specificationTitle", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<SpecificationValue> specificationValues;
 }

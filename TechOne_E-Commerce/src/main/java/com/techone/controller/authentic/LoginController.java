@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -37,6 +39,9 @@ public class LoginController {
     
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 	
+    @Autowired
+    private SecurityContextRepository securityContextRepository;
+
 	@GetMapping("/login")
 	public String loginForm() {
 		return "views/authentic/login";
@@ -45,9 +50,14 @@ public class LoginController {
 	@PostMapping("/login")
 	public String login(@RequestParam("username") String username, 
 	                    @RequestParam("password") String password, 
-	                    HttpServletRequest request, // Thêm tham số này
-	                    HttpServletResponse response, // Thêm tham số này
+	                    HttpServletRequest request, 
+	                    HttpServletResponse response, 
 	                    Model model) {
+	    
+	    if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+	        model.addAttribute("error", "Vui lòng nhập đầy đủ email/số điện thoại và mật khẩu");
+	        return "views/authentic/login";
+	    }
 	    
 	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
 	    if (userOpt.isPresent()) {
@@ -56,21 +66,23 @@ public class LoginController {
 	            
 	            // 1. Lưu session cho UI
 	            com.techone.utils.SessionUtils.set("user", account);
-	            // 2. Tạo gói xác thực cho Spring Security
+
+	            // Tạo danh sách quyền (Roles)
 	            List<GrantedAuthority> authorities = new ArrayList<>();
 	            authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
 	            UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(username, null, authorities);
+
 	            // 3. QUAN TRỌNG: Lưu vào SecurityContext và PERSIST (lưu bền vững) vào Session
 	            SecurityContext context = SecurityContextHolder.createEmptyContext();
 	            context.setAuthentication(auth);
 	            SecurityContextHolder.setContext(context);
 	            securityContextRepository.saveContext(context, request, response);
-	            if (account.getRole()) { 
+
+	            if (account.getRole()) {
 	                return "redirect:/admin/dashboard";
-	            } else {
-	                return "redirect:/"; 
 	            }
+	            return "redirect:/";
 	        }
 	    }
 
@@ -78,16 +90,4 @@ public class LoginController {
 	    return "views/authentic/login";
 	}
     
-	@GetMapping("/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-	    // 1. Xóa session UI của bạn
-	    SessionUtils.invalidate(); 
-	    
-	    // 2. Xóa sạch Security Context của Spring
-	    SecurityContextHolder.clearContext();
-	    
-	    return "redirect:/login";
-	}
-
-	
 }
