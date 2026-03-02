@@ -30,6 +30,9 @@ public class ProfileController {
 
 	@Autowired
 	private ServletContext servletContext;
+
+	@org.springframework.beans.factory.annotation.Value("${app.upload.dir}")
+	private String uploadDir;
 	
 	@GetMapping("/account/profile")
 	public String showProfile() {
@@ -64,14 +67,14 @@ public class ProfileController {
 			if (avatarFile != null && !avatarFile.isEmpty()) {
 				try {
 					String fileName = System.currentTimeMillis() + "_" + avatarFile.getOriginalFilename();
-					String uploadDir = servletContext.getRealPath("/images/avatars/");
+					String avatarsDir = uploadDir + "/images/avatars/";
 					
-					File dir = new File(uploadDir);
+					File dir = new File(avatarsDir);
 					if (!dir.exists()) {
 						dir.mkdirs();
 					}
 					
-					Path path = Paths.get(uploadDir + File.separator + fileName);
+					Path path = Paths.get(avatarsDir + fileName);
 					Files.copy(avatarFile.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
 					
 					account.setAvatar(fileName);

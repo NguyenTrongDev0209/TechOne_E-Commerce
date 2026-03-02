@@ -66,4 +66,23 @@ public class Variant {
 	@OneToMany(mappedBy = "variant", fetch = jakarta.persistence.FetchType.EAGER, cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	@lombok.ToString.Exclude
 	public List<VariantAttributeValue> variantAttributeValues;
+
+	public String getVariantName() {
+		if (variantAttributeValues == null || variantAttributeValues.isEmpty()) {
+			return "";
+		}
+		StringBuilder name = new StringBuilder();
+		for (int i = 0; i < variantAttributeValues.size(); i++) {
+			VariantAttributeValue vav = variantAttributeValues.get(i);
+			if (vav.getAttributeValue() != null && vav.getAttributeValue().getAttribute() != null) {
+				name.append(vav.getAttributeValue().getAttribute().getName())
+						.append(": ")
+						.append(vav.getAttributeValue().getValue());
+				if (i < variantAttributeValues.size() - 1) {
+					name.append(" | ");
+				}
+			}
+		}
+		return name.toString();
+	}
 }

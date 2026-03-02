@@ -78,7 +78,16 @@ public class ProductFormController {
 	com.techone.repository.SpecificationValueRepository specificationValueRepository;
 
 	@Autowired
+	com.techone.repository.OrderDetailRepository orderDetailRepository;
+
+	@Autowired
 	FileUploadUtils fileUploadUtils;
+
+	@Autowired
+	com.techone.repository.CartItemRepository cartItemRepository;
+
+	@Autowired
+	com.techone.repository.FavouriteRepository favouriteRepository;
 
 	@Autowired
 	Validator validator;
@@ -545,7 +554,31 @@ public class ProductFormController {
 					}
 				}
 
-				// Finalize Product Stock Status
+				// 5. Cleanup removed Variants
+				for (Variant oldV : existingVariants) {
+					if (!keptIds.contains(oldV.getId())) {
+						boolean hasOrders = !orderDetailRepository.findByVariant(oldV).isEmpty();
+						boolean hasCart = cartItemRepository.existsByVariant(oldV);
+						boolean hasFavourite = favouriteRepository.existsByVariant(oldV);
+
+						if (hasOrders || hasCart || hasFavourite) {
+							oldV.setStatus(false);
+							variantRepository.save(oldV);
+						} else {
+							java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository
+									.findByVariant(oldV);
+							if (vavs != null)
+								variantAttributeValueRepository.deleteAll(vavs);
+
+							java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(oldV);
+							if (vImages != null)
+								variantImageRepository.deleteAll(vImages);
+
+							variantRepository.delete(oldV);
+						}
+					}
+				}
+
 				if (totalStock == 0) {
 					savedProduct.setStockStatus(0);
 				} else if (totalStock <= 10) {

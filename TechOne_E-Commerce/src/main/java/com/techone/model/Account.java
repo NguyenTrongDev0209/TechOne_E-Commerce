@@ -63,7 +63,7 @@ public class Account {
 	public LocalDate birthday;
 
 	public Boolean gender;
-	
+
 	public Integer status;
 
 	public Boolean role = false;
@@ -91,7 +91,7 @@ public class Account {
 
 	@OneToMany(mappedBy = "account")
 	public List<VoucherItem> voucherList;
-	
+
 	@OneToMany(mappedBy = "account")
 	public List<Variant> variant;
 
@@ -100,4 +100,7 @@ public class Account {
 
 	@OneToMany(mappedBy = "account")
 	public List<Address> address;
+
+	@OneToMany(mappedBy = "account")
+	public List<Order> order;
 }
