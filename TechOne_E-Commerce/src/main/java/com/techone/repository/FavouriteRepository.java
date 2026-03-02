@@ -7,20 +7,23 @@ import com.techone.model.Variant;
 
 @Repository
 public interface FavouriteRepository extends JpaRepository<Favourite, Integer> {
-    void deleteByVariant(com.techone.model.Variant variant);
+        void deleteByVariant(com.techone.model.Variant variant);
 
-    java.util.Optional<Favourite> findByAccountAndVariant(com.techone.model.Account account,
-            com.techone.model.Variant variant);
+        java.util.Optional<Favourite> findByAccountAndVariant(com.techone.model.Account account,
+                        com.techone.model.Variant variant);
 
-    java.util.Optional<Favourite> findByAccountAndPost(com.techone.model.Account account, com.techone.model.Post post);
+        boolean existsByVariant(com.techone.model.Variant variant);
 
-    java.util.List<Favourite> findByAccount(com.techone.model.Account account);
+        java.util.Optional<Favourite> findByAccountAndPost(com.techone.model.Account account,
+                        com.techone.model.Post post);
 
-    @org.springframework.data.jpa.repository.Query("SELECT f FROM Favourite f WHERE f.account = :account " +
-            "AND f.variant.status = true " +
-            "AND f.variant.product.status = true " +
-            "AND f.variant.stock > 0")
-    org.springframework.data.domain.Page<Favourite> findActiveFavouritesByAccount(
-            @org.springframework.data.repository.query.Param("account") com.techone.model.Account account,
-            org.springframework.data.domain.Pageable pageable);
+        java.util.List<Favourite> findByAccount(com.techone.model.Account account);
+
+        @org.springframework.data.jpa.repository.Query("SELECT f FROM Favourite f WHERE f.account = :account " +
+                        "AND f.variant.status = true " +
+                        "AND f.variant.product.status = true " +
+                        "AND f.variant.stock > 0")
+        org.springframework.data.domain.Page<Favourite> findActiveFavouritesByAccount(
+                        @org.springframework.data.repository.query.Param("account") com.techone.model.Account account,
+                        org.springframework.data.domain.Pageable pageable);
 }

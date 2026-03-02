@@ -525,59 +525,38 @@ public class ProductFormController {
 					}
 				}
 
-				// Deleting old variants that are not in the payload
-				if (savedProduct.getVariant() != null) {
-					java.util.Iterator<Variant> it = savedProduct.getVariant().iterator();
-					while (it.hasNext()) {
-						Variant cv = it.next();
-						if (!incomingIds.contains(cv.getId())) {
-							try {
-								// Physically delete variant images before deleting the variant
-								if (cv.getVariantImages() != null) {
-									for (VariantImage vImg : cv.getVariantImages()) {
+				// 5. Cleanup removed Variants (Proactive check for references)
+				if (currentVariants != null) {
+					for (Variant oldV : currentVariants) {
+						if (oldV.getId() != null && !incomingIds.contains(oldV.getId())) {
+							boolean hasOrders = !orderDetailRepository.findByVariant(oldV).isEmpty();
+							boolean hasCart = cartItemRepository.existsByVariant(oldV);
+							boolean hasFavourite = favouriteRepository.existsByVariant(oldV);
+
+							if (hasOrders || hasCart || hasFavourite) {
+								// Soft delete if referenced elsewhere
+								oldV.setStatus(false);
+								variantRepository.save(oldV);
+							} else {
+								// Physically delete variant images first
+								if (oldV.getVariantImages() != null) {
+									for (VariantImage vImg : oldV.getVariantImages()) {
 										fileUploadUtils.deleteFile(vImg.getPathImage(), "variants");
 									}
 								}
-								// Remove from parent collection first to avoid re-insertion on flush
-								it.remove();
-								// Then perform hard delete
-								variantRepository.delete(cv);
-								variantRepository.flush();
-							} catch (org.springframework.dao.DataIntegrityViolationException e) {
-								// If hard delete fails, re-add to collection (since it's not orphanRemoval
-								// anymore)
-								// but it's still in the DB, so we just Soft Delete it.
-								cv.setStatus(false);
-								variantRepository.save(cv);
+
+								// Remove from product's collection to avoid re-insertion
+								if (savedProduct.getVariant() != null) {
+									savedProduct.getVariant().remove(oldV);
+								}
+
+								// Hard delete variant
+								variantRepository.delete(oldV);
 							}
 						}
 					}
 				}
-
-				// 5. Cleanup removed Variants
-				for (Variant oldV : existingVariants) {
-					if (!keptIds.contains(oldV.getId())) {
-						boolean hasOrders = !orderDetailRepository.findByVariant(oldV).isEmpty();
-						boolean hasCart = cartItemRepository.existsByVariant(oldV);
-						boolean hasFavourite = favouriteRepository.existsByVariant(oldV);
-
-						if (hasOrders || hasCart || hasFavourite) {
-							oldV.setStatus(false);
-							variantRepository.save(oldV);
-						} else {
-							java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository
-									.findByVariant(oldV);
-							if (vavs != null)
-								variantAttributeValueRepository.deleteAll(vavs);
-
-							java.util.List<VariantImage> vImages = variantImageRepository.findByVariant(oldV);
-							if (vImages != null)
-								variantImageRepository.deleteAll(vImages);
-
-							variantRepository.delete(oldV);
-						}
-					}
-				}
+				variantRepository.flush();
 
 				if (totalStock == 0) {
 					savedProduct.setStockStatus(0);

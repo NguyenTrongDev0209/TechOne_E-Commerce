@@ -21,17 +21,18 @@ public class SearchController {
 	public String showSearch(@RequestParam(value = "keywords", required = false) String keywords,
 			@RequestParam(value = "page", defaultValue = "0") int page,
 			Model model) {
-		
-		Page<Product> productPage;
-		if (keywords != null && !keywords.trim().isEmpty()) {
-			productPage = productRepository.search(keywords, null, null, true, null, null, PageRequest.of(page, 12));
-		} else {
-			productPage = productRepository.search(null, null, null, true, null, null, PageRequest.of(page, 12));
-		}
+
+		org.springframework.data.domain.Pageable pageable = PageRequest.of(page, 12,
+				org.springframework.data.domain.Sort.by("id").descending());
+		Page<Product> productPage = productRepository.search(keywords, null, null, true, null, null, null, null,
+				pageable);
 
 		model.addAttribute("productPage", productPage);
+		model.addAttribute("products", productPage.getContent());
 		model.addAttribute("keywords", keywords);
 		model.addAttribute("totalItems", productPage.getTotalElements());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", productPage.getTotalPages());
 
 		return "views/client/search";
 	}
