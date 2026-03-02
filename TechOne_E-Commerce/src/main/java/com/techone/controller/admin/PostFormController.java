@@ -15,10 +15,13 @@ import com.techone.model.Post;
 import com.techone.model.ImagePost;
 import com.techone.repository.PostRepository;
 import com.techone.repository.ImagePostRepository;
-import com.techone.repository.CategoryRepository;
 import com.techone.repository.AccountRepository;
-import jakarta.servlet.ServletContext;
+import com.techone.repository.CategoryRepository;
 import jakarta.validation.Valid;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.File;
 
 @Controller
 public class PostFormController {
@@ -35,8 +38,7 @@ public class PostFormController {
     @Autowired
     AccountRepository accountRepository;
 
-    @Autowired
-    ServletContext servletContext;
+    private final String UPLOAD_DIR = "src/main/resources/static/images/posts/";
 
     @GetMapping("/admin/post-list/post-form")
     public String showForm(Model model) {
@@ -67,20 +69,9 @@ public class PostFormController {
 
     @PostMapping("/admin/post-list/post-form/save")
     public String savePost(Model model,
-            @ModelAttribute("post") @Valid Post post,
-            Errors errors,
+            @ModelAttribute("post") Post post,
+            @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] images) {
-
-        if (post.getCategory() == null || post.getCategory().getId() == null) {
-            errors.rejectValue("category", "error.post", "Chưa chọn danh mục");
-        }
-
-        if (errors.hasErrors()) {
-            loadFormAttributes(model);
-            model.addAttribute("editMode", post.getId() != null);
-            model.addAttribute("menuItem", "posts");
-            return "views/admin/post-form";
-        }
 
         // Handle author (Optional: pick first admin if exists for now, or null)
         if (post.getId() == null && post.getAccount() == null) {
@@ -90,39 +81,57 @@ public class PostFormController {
                     .ifPresent(post::setAccount);
         }
 
-        // Set CreateAt if new
+        // Set CreateAt and ViewCount if new
         if (post.getId() == null) {
             post.setCreateAt(LocalDate.now());
+            post.setViewCount(0);
+        }
+        
+        // Handle Thumbnail
+        if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
+            try {
+                String filename = System.currentTimeMillis() + "_" + thumbnailFile.getOriginalFilename();
+                String projectPath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(projectPath, UPLOAD_DIR);
+                
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                
+                File file = new File(uploadPath.toFile(), filename);
+                thumbnailFile.transferTo(file);
+                post.setThumbnail(filename);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         Post savedPost = postRepository.save(post);
 
-        // Handle Images
+        // Handle Editor Images
         if (images != null && images.length > 0) {
-            for (MultipartFile image : images) {
-                if (image != null && !image.isEmpty()) {
-                    try {
+            try {
+                String projectPath = System.getProperty("user.dir");
+                Path uploadPath = Paths.get(projectPath, UPLOAD_DIR);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                for (MultipartFile image : images) {
+                    if (image != null && !image.isEmpty()) {
                         String filename = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-                        String path = servletContext.getRealPath("/images/posts/");
+                        File file = new File(uploadPath.toFile(), filename);
+                        image.transferTo(file);
 
-                        if (path != null) {
-                            java.io.File dir = new java.io.File(path);
-                            if (!dir.exists())
-                                dir.mkdirs();
-
-                            java.io.File file = new java.io.File(path + java.io.File.separator + filename);
-                            image.transferTo(file);
-
-                            ImagePost imagePost = new ImagePost();
-                            imagePost.setPathImage(filename);
-                            imagePost.setPost(savedPost);
-                            imagePost.setCreateAt(LocalDate.now());
-                            imagePostRepository.save(imagePost);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        ImagePost imagePost = new ImagePost();
+                        imagePost.setPathImage(filename);
+                        imagePost.setPost(savedPost);
+                        imagePost.setCreateAt(LocalDate.now());
+                        imagePostRepository.save(imagePost);
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

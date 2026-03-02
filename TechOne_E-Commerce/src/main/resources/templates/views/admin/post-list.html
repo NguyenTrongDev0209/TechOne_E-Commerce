@@ -4,6 +4,76 @@
 
 <body>
     <div id="main-content">
+        <!-- Toast Notification Container -->
+        <div class="fixed top-8 right-8 z-[100] flex flex-col gap-3 pointer-events-none">
+            <!-- Success Message -->
+            <div th:if="${message != null}" id="toast-success"
+                class="bg-white dark:bg-gray-800 border-l-4 border-green-500 shadow-xl rounded p-4 flex items-center gap-4 transition-all duration-500 transform translate-x-full opacity-0 pointer-events-auto min-w-[320px]">
+                <div
+                    class="flex-shrink-0 w-10 h-10 bg-green-50 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-green-600">check_circle</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-gray-900 dark:text-white">Thành công</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" th:text="${message}">Thao tác thành công!</p>
+                </div>
+                <button onclick="hideToast('toast-success')"
+                    class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${error != null}" id="toast-error"
+                class="bg-white dark:bg-gray-800 border-l-4 border-red-500 shadow-xl rounded p-4 flex items-center gap-4 transition-all duration-500 transform translate-x-full opacity-0 pointer-events-auto min-w-[320px]">
+                <div
+                    class="flex-shrink-0 w-10 h-10 bg-red-50 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-red-600">error</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-gray-900 dark:text-white">Lỗi</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400" th:text="${error}">Đã có lỗi xảy ra!</p>
+                </div>
+                <button onclick="hideToast('toast-error')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Delete Confirmation Modal -->
+        <div id="deleteModal" class="fixed inset-0 z-[150] hidden">
+            <!-- Backdrop -->
+            <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+                onclick="hideDeleteModal()"></div>
+
+            <!-- Modal Content -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md p-6">
+                <div class="bg-white dark:bg-gray-800 rounded shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden transform transition-all scale-95 opacity-0 duration-300"
+                    id="deleteModalContent">
+                    <div class="p-6 text-center">
+                        <div
+                            class="mx-auto w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-red-500 text-[32px]">delete_forever</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Xác nhận xóa</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Bạn có chắc chắn muốn xóa bài viết này?
+                            Hành động này không thể hoàn tác và tất cả dữ liệu liên quan sẽ bị xóa.</p>
+
+                        <div class="flex gap-3 mt-6">
+                            <button onclick="hideDeleteModal()"
+                                class="flex-1 px-4 py-2.5 rounded border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                Hủy bỏ
+                            </button>
+                            <button id="confirmDeleteBtn"
+                                class="flex-1 px-4 py-2.5 rounded bg-red-500 hover:bg-red-600 text-white font-bold text-sm shadow-lg shadow-red-200 dark:shadow-none transition-all">
+                                Xóa ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="max-w-7xl mx-auto space-y-6">
             <!-- Header -->
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-2">
@@ -20,12 +90,12 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <button onclick="refreshPage()"
-                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm">
+                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded text-sm font-bold transition-all shadow-sm">
                         <span class="material-symbols-outlined text-[18px]">refresh</span>
                         Làm mới
                     </button>
                     <a th:href="@{/admin/post-list/post-form}"
-                        class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0">
+                        class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0">
                         <span class="material-symbols-outlined text-[20px]">add</span>
                         Viết bài mới
                     </a>
@@ -42,7 +112,8 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng bài
                             viết</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">142</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" th:text="${#lists.size(posts)}">142
+                        </h3>
                     </div>
                 </div>
                 <div
@@ -53,7 +124,8 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tạm ẩn
                         </p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">5</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white"
+                            th:text="${#lists.size(posts.?[!status])}">5</h3>
                     </div>
                 </div>
                 <div
@@ -62,9 +134,11 @@
                         <span class="material-symbols-outlined">visibility</span>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Lượt xem
-                            tuần</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">12.5k</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng lượt
+                            xem
+                        </p>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white"
+                            th:text="${#aggregates.sum(posts.![viewCount]) ?: 0}">12.5k</h3>
                     </div>
                 </div>
                 <div
@@ -75,7 +149,7 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Báo cáo
                         </p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">2</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">0</h3>
                     </div>
                 </div>
             </div>
@@ -202,81 +276,22 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                            <!-- Post 1 -->
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                                <td class="px-6 py-4 font-medium text-slate-500 text-center">1</td>
+                            <tr th:each="post, stat : ${posts}"
+                                class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
+                                <td class="px-6 py-4 font-medium text-slate-500 text-center" th:text="${stat.count}">1
+                                </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-4">
                                         <div class="w-16 h-12 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0 border border-gray-100 shadow-sm"
-                                            style="background-image: url('https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
+                                            th:style="'background-image: url(' + @{'/images/posts/' + ${post.thumbnail != null and not #strings.isEmpty(post.thumbnail) ? post.thumbnail : 'default.jpg'}} + ')'">
                                         </div>
                                         <div class="flex-1 min-w-0 max-w-xs">
-                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors"
-                                                title="Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng">
-                                                Đánh giá chi tiết MacBook Pro M3 Max: Quái vật hiệu năng
-                                            </h4>
-                                            <div class="flex items-center gap-3 mt-1">
-                                                <div class="flex items-center gap-1">
-                                                    <span
-                                                        class="material-symbols-outlined text-[14px] text-gray-400">chat_bubble</span>
-                                                    <span class="text-xs text-gray-500">45</span>
-                                                </div>
-                                                <div class="flex items-center gap-1">
-                                                    <span
-                                                        class="material-symbols-outlined text-[14px] text-gray-400">visibility</span>
-                                                    <span class="text-xs text-gray-500">1.2k views</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span
-                                        class="text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded font-bold">Review
-                                        sản phẩm</span>
-                                </td>
-                                <td class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 font-medium">
-                                    <div class="flex flex-col text-xs">
-                                        <span>20/12/2025</span>
-                                        <span>14:30</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <span
-                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                        Đã xuất bản
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <a th:href="@{/admin/post-list/post-form/1}"
-                                            class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded-lg transition-colors"
-                                            title="Chỉnh sửa">
-                                            <span class="material-symbols-outlined text-[20px]">edit</span>
-                                        </a>
-                                        <button
-                                            class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                                            title="Xoá">
-                                            <span class="material-symbols-outlined text-[20px]">delete</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <!-- Post 2 -->
-                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                                <td class="px-6 py-4 font-medium text-slate-500 text-center">2</td>
-                                <td class="px-6 py-4">
-                                    <div class="flex gap-4">
-                                        <div class="w-16 h-12 rounded-lg bg-gray-200 bg-cover bg-center flex-shrink-0 border border-gray-100 shadow-sm"
-                                            style="background-image: url('https://images.unsplash.com/photo-1550745165-90c231f428a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80')">
-                                        </div>
-                                        <div class="flex-1 min-w-0 max-w-xs">
-                                            <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors"
-                                                title="Top 10 phụ kiện không thể thiếu cho Gamer">
-                                                Top 10 phụ kiện không thể thiếu cho Gamer
-                                            </h4>
+                                            <a th:href="@{'/posts/' + ${post.id}}" target="_blank">
+                                                <h4 class="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-primary transition-colors"
+                                                    th:title="${post.title}" th:text="${post.title}">
+                                                    Tiêu đề
+                                                </h4>
+                                            </a>
                                             <div class="flex items-center gap-3 mt-1">
                                                 <div class="flex items-center gap-1">
                                                     <span
@@ -286,7 +301,8 @@
                                                 <div class="flex items-center gap-1">
                                                     <span
                                                         class="material-symbols-outlined text-[14px] text-gray-400">visibility</span>
-                                                    <span class="text-xs text-gray-500">0 views</span>
+                                                    <span class="text-xs text-gray-500"
+                                                        th:text="${post.viewCount + ' views'}">0 views</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -294,17 +310,24 @@
                                 </td>
                                 <td class="px-6 py-4 text-center">
                                     <span
-                                        class="text-xs text-purple-600 bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded font-bold">Thủ
-                                        thuật</span>
+                                        class="text-xs text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded font-bold"
+                                        th:text="${post.category != null ? post.category.name : 'Chưa phân loại'}">Danh
+                                        mục</span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-gray-500 dark:text-gray-400 font-medium">
-                                    <div class="flex flex-col text-xs">
-                                        <span>25/12/2025</span>
-                                        <span>09:15</span>
+                                    <div class="flex flex-col text-xs" th:if="${post.createAt != null}">
+                                        <span
+                                            th:text="${#temporals.format(post.createAt, 'dd/MM/yyyy')}">20/12/2025</span>
+                                        <span th:text="${#temporals.format(post.createAt, 'HH:mm')}">14:30</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
-                                    <span
+                                    <span th:if="${post.status}"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-50 text-green-700 border border-green-100">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                                        Đã xuất bản
+                                    </span>
+                                    <span th:unless="${post.status}"
                                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-100">
                                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                                         Tạm ẩn
@@ -312,12 +335,12 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-1">
-                                        <a th:href="@{/admin/post-list/post-form/2}"
+                                        <a th:href="@{'/admin/post-list/post-form/' + ${post.id}}"
                                             class="p-2 text-slate-400 hover:text-primary hover:bg-orange-50 rounded-lg transition-colors"
                                             title="Chỉnh sửa">
                                             <span class="material-symbols-outlined text-[20px]">edit</span>
                                         </a>
-                                        <button
+                                        <button th:onclick="'showDeleteModal(' + ${post.id} + ')'"
                                             class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                             title="Xoá">
                                             <span class="material-symbols-outlined text-[20px]">delete</span>
@@ -333,9 +356,11 @@
                 <div
                     class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
                     <div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
-                        Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến <span
-                            class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số <span
-                            class="font-medium text-gray-900 dark:text-white">142</span> bài viết
+                        Đang xem <span class="font-medium text-gray-900 dark:text-white"
+                            th:text="${#lists.size(posts) > 0 ? 1 : 0}">1</span> đến <span
+                            class="font-medium text-gray-900 dark:text-white" th:text="${#lists.size(posts)}">10</span>
+                        trong tổng số <span class="font-medium text-gray-900 dark:text-white"
+                            th:text="${#lists.size(posts)}">142</span> bài viết
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -375,7 +400,7 @@
 
                         <nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
                             <button
-                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-gray-100 border border-e-0 border-gray-300 rounded-s dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors cursor-not-allowed">
                                 <span class="material-symbols-outlined text-[16px]">chevron_left</span>
                             </button>
                             <button aria-current="page"
@@ -383,17 +408,7 @@
                                 1
                             </button>
                             <button
-                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
-                                2
-                            </button>
-                            <button
-                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
-                                3
-                            </button>
-                            <span
-                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400">...</span>
-                            <button
-                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-gray-100 border border-gray-300 rounded-e dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors cursor-not-allowed">
                                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                             </button>
                         </nav>
@@ -592,6 +607,75 @@
             function refreshPage() {
                 window.location.reload();
             }
+
+            // Toast Notification Logic
+            function hideToast(id) {
+                const toast = document.getElementById(id);
+                if (toast) {
+                    toast.classList.remove('translate-x-0', 'opacity-100');
+                    toast.classList.add('translate-x-full', 'opacity-0');
+                    // Remove from DOM after transition
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 500);
+                }
+            }
+
+            function showToast(id) {
+                const toast = document.getElementById(id);
+                if (toast) {
+                    // Force reflow
+                    toast.offsetHeight;
+                    toast.classList.remove('translate-x-full', 'opacity-0');
+                    toast.classList.add('translate-x-0', 'opacity-100');
+
+                    // Auto hide after 3 seconds
+                    setTimeout(() => {
+                        hideToast(id);
+                    }, 3000);
+                }
+            }
+
+            // Custom Delete Modal Logic
+            let postToDelete = null;
+
+            function showDeleteModal(id) {
+                postToDelete = id;
+                const modal = document.getElementById('deleteModal');
+                const content = document.getElementById('deleteModalContent');
+
+                modal.classList.remove('hidden');
+                // Force a reflow for animation
+                modal.offsetWidth;
+
+                content.classList.remove('scale-95', 'opacity-0');
+                content.classList.add('scale-100', 'opacity-100');
+            }
+
+            function hideDeleteModal() {
+                const modal = document.getElementById('deleteModal');
+                const content = document.getElementById('deleteModalContent');
+
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    postToDelete = null;
+                }, 300);
+            }
+
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+                if (postToDelete) {
+                    window.location.href = '/admin/post-list/delete/' + postToDelete;
+                }
+            });
+
+            // Check for toasts on load
+            window.addEventListener('load', () => {
+                if (document.getElementById('toast-success')) showToast('toast-success');
+                if (document.getElementById('toast-error')) showToast('toast-error');
+            });
         </script>
     </div>
 </body>

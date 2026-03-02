@@ -12,6 +12,9 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +36,8 @@ public class LoginController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 	
     @Autowired
     private SecurityContextRepository securityContextRepository;
@@ -55,19 +60,16 @@ public class LoginController {
 	    }
 	    
 	    Optional<Account> userOpt = accountRepository.findByEmailOrPhone(username, username);
-
 	    if (userOpt.isPresent()) {
 	        Account account = userOpt.get();
 	        if (passwordEncoder.matches(password, account.getPassword())) {
 	            
-	            // 1. Lưu vào Session tùy chỉnh của bạn (để Thymeleaf hiển thị tên)
+	            // 1. Lưu session cho UI
 	            com.techone.utils.SessionUtils.set("user", account);
 
 	            // Tạo danh sách quyền (Roles)
 	            List<GrantedAuthority> authorities = new ArrayList<>();
 	            authorities.add(new SimpleGrantedAuthority(account.getRole() ? "ROLE_ADMIN" : "ROLE_USER"));
-
-	            // Tạo đối tượng Authentication
 	            UsernamePasswordAuthenticationToken auth = 
 	                new UsernamePasswordAuthenticationToken(username, null, authorities);
 

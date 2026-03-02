@@ -6,10 +6,9 @@
     <title th:text="${title}">Admin TechShop</title>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
-        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
         rel="stylesheet" />
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -313,6 +312,34 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto bg-background-light p-4 md:p-8 scroll-smooth" th:insert="${content}"></main>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userBtn = document.getElementById('user-menu-button');
+            const userDropdown = document.getElementById('user-dropdown');
+            const chevron = userBtn?.querySelector('.material-symbols-outlined:last-child');
+
+            if (userBtn && userDropdown) {
+                userBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const isHidden = userDropdown.classList.contains('hidden');
+                    if (isHidden) {
+                        userDropdown.classList.remove('hidden');
+                        chevron?.classList.add('rotate-180');
+                    } else {
+                        userDropdown.classList.add('hidden');
+                        chevron?.classList.remove('rotate-180');
+                    }
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!userBtn.contains(e.target) && !userDropdown.contains(e.target)) {
+                        userDropdown.classList.add('hidden');
+                        chevron?.classList.remove('rotate-180');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>
