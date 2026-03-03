@@ -25,7 +25,10 @@ public class PostDetailController {
         
         post.setViewCount(post.getViewCount() + 1);
         postRepository.save(post);
-
+        
+        java.util.List<Post> relatedPosts = postRepository.findTop3ByCategoryAndIdNotAndStatusOrderByViewCountDesc(post.getCategory(), post.getId(), true);
+        model.addAttribute("relatedPosts", relatedPosts);
+        
         model.addAttribute("post", post);
 		return "views/client/post-detail";
 	}

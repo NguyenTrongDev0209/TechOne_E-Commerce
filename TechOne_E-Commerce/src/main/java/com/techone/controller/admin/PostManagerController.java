@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.techone.model.Post;
 import com.techone.repository.PostRepository;
 
@@ -20,14 +25,53 @@ public class PostManagerController {
     private PostRepository postRepository;
 
     @GetMapping("/admin/post-list")
-    public String postList(Model model) {
-        List<Post> posts = postRepository.findAll();
-        // Lấy danh sách post hiển thị gần nhất
-        posts.sort((p1, p2) -> {
-            if (p1.getCreateAt() == null || p2.getCreateAt() == null) return 0;
-            return p2.getCreateAt().compareTo(p1.getCreateAt());
-        });
-        model.addAttribute("posts", posts);
+    public String postList(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "status", required = false) String statusStr,
+            @RequestParam(value = "dateFrom", required = false) String dateFromStr,
+            @RequestParam(value = "dateTo", required = false) String dateToStr,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            Model model) {
+        
+        Boolean status = null;
+        if ("published".equals(statusStr)) status = true;
+        else if ("pending".equals(statusStr)) status = false;
+
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        java.time.LocalDate dateFrom = null;
+        if (dateFromStr != null && !dateFromStr.trim().isEmpty()) {
+            try { dateFrom = java.time.LocalDate.parse(dateFromStr.trim(), formatter); } catch(Exception e) {}
+        }
+        
+        java.time.LocalDate dateTo = null;
+        if (dateToStr != null && !dateToStr.trim().isEmpty()) {
+            try { dateTo = java.time.LocalDate.parse(dateToStr.trim(), formatter); } catch(Exception e) {}
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findByFilters(
+            (title != null && !title.trim().isEmpty()) ? title.trim() : null,
+            status,
+            null, // categoryId
+            dateFrom,
+            dateTo,
+            pageable
+        );
+
+        model.addAttribute("posts", postsPage);
+        model.addAttribute("paramTitle", title);
+        model.addAttribute("paramStatus", statusStr == null ? "all" : statusStr);
+        model.addAttribute("paramDateFrom", dateFromStr);
+        model.addAttribute("paramDateTo", dateToStr);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
+        // Stats for the header card
+        model.addAttribute("totalPosts", postRepository.count());
+        model.addAttribute("hiddenPosts", postRepository.countByStatus(false));
+        model.addAttribute("totalViews", postRepository.sumViewCount());
+        
         return "views/admin/post-list";
     }
 

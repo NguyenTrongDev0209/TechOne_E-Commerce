@@ -59,4 +59,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 			+ "AND (:keyword IS NULL OR c.name LIKE %:keyword%)")
 	org.springframework.data.domain.Page<Category> search(@Param("keyword") String keyword,
 			@Param("type") Boolean type, org.springframework.data.domain.Pageable pageable);
+
+	@Query("SELECT c FROM Category c JOIN c.post p WHERE c.type = false AND c.status = true GROUP BY c ORDER BY COUNT(p) DESC")
+	List<Category> findTop4ByPostCount();
 }
