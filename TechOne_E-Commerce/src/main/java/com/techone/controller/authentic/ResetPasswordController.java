@@ -16,6 +16,9 @@ import com.techone.repository.AccountRepository;
 import com.techone.repository.ForgotPasswordRepository;
 import com.techone.utils.SessionUtils;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 @Controller
 public class ResetPasswordController {
 
@@ -38,9 +41,11 @@ public class ResetPasswordController {
     }
 
     @PostMapping("/reset-password")
+    @Transactional
     public String resetPassword(@RequestParam("password") String password, 
                                @RequestParam("confirmPassword") String confirmPassword, 
-                               Model model) {
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
         Boolean verified = SessionUtils.get("otpVerified");
         String email = SessionUtils.get("forgotPasswordTarget");
 
@@ -58,7 +63,7 @@ public class ResetPasswordController {
             return "views/authentic/reset-password";
         }
 
-        Optional<Account> userOpt = accountRepository.findByEmail(email);
+        Optional<Account> userOpt = accountRepository.findByEmailOrPhone(email, email);
         if (userOpt.isPresent()) {
             Account account = userOpt.get();
             account.setPassword(passwordEncoder.encode(password));
@@ -70,10 +75,11 @@ public class ResetPasswordController {
             SessionUtils.remove("otpVerified");
             SessionUtils.remove("forgotPasswordTarget");
 
-            model.addAttribute("success", "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.");
+            redirectAttributes.addFlashAttribute("success", "Đặt lại mật khẩu thành công. Vui lòng đăng nhập lại.");
             return "redirect:/login"; 
         }
 
-        return "redirect:/forgot-password";
+        model.addAttribute("error", "Không tìm thấy tài khoản để đặt lại mật khẩu");
+        return "views/authentic/reset-password";
     }
 }
