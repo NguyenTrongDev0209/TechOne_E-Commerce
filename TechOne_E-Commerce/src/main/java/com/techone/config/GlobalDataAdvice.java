@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.techone.model.Category;
-import com.techone.model.Brand;
+import com.techone.model.Favourite;
+import com.techone.model.Account;
+import com.techone.dto.BrandCountDto;
 import com.techone.repository.CategoryRepository;
 import com.techone.repository.BrandRepository;
 import com.techone.repository.CartRepository;
 import com.techone.repository.CartItemRepository;
 import com.techone.repository.FavouriteRepository;
-import com.techone.model.Favourite;
-import com.techone.model.Account;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
@@ -45,8 +45,8 @@ public class GlobalDataAdvice {
     }
 
     @ModelAttribute("activeBrands")
-    public List<Brand> getActiveBrands() {
-        return brandRepository.findByStatus(true);
+    public List<BrandCountDto> getActiveBrands() {
+        return brandRepository.findActiveBrandsWithProductCount();
     }
 
     @ModelAttribute
