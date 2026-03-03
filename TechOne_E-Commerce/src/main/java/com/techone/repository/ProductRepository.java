@@ -54,4 +54,14 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
         @Query("SELECT p FROM Product p WHERE p.status = true AND p.id != :excludeId AND p.category.id = :categoryId")
         java.util.List<Product> findSimilarByCategory(@Param("categoryId") Integer categoryId,
                         @Param("excludeId") Integer excludeId, org.springframework.data.domain.Pageable pageable);
+
+        @Query("SELECT p FROM Product p WHERE p.id IN :ids AND p.status = true")
+        Page<Product> findByIdInAndStatus(@Param("ids") java.util.List<Integer> ids, Pageable pageable);
+
+        @Query("SELECT p FROM Product p LEFT JOIN p.variant v LEFT JOIN OrderDetail od ON od.variant = v " +
+                        "WHERE p.status = true " +
+                        "GROUP BY p.id, p.name, p.slug, p.createAt, p.status, p.stockStatus, p.content, p.category, p.brand, p.specifications, p.account "
+                        +
+                        "ORDER BY COALESCE(SUM(od.quantity), 0) DESC")
+        Page<Product> findBestSellers(Pageable pageable);
 }

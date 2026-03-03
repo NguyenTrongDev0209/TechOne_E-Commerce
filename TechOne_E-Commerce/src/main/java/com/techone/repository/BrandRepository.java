@@ -19,4 +19,7 @@ public interface BrandRepository extends JpaRepository<Brand, Integer> {
 
     @Query("SELECT COUNT(p) FROM Product p WHERE p.brand.id = :brandId")
     int countProducts(@Param("brandId") Integer brandId);
+
+    @Query("SELECT new com.techone.dto.BrandCountDto(b, COUNT(p)) FROM Brand b JOIN b.product p WHERE b.status = true AND p.status = true GROUP BY b.id, b.name, b.logo, b.status")
+    java.util.List<com.techone.dto.BrandCountDto> findActiveBrandsWithProductCount();
 }

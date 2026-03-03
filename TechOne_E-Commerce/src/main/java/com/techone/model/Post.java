@@ -37,6 +37,9 @@ public class Post {
 	@Column(columnDefinition = "nvarchar(max)")
 	@NotBlank(message = "Nội dung không được để trống")
 	public String content;
+
+	@Column(columnDefinition = "nvarchar(255)")
+	public String thumbnail;
 	
 	public Boolean status = true;
 	//True = active; False = nonActive
@@ -46,7 +49,7 @@ public class Post {
 	public LocalDate createAt = LocalDate.now();
 	//Lấy ngày tạo tài khoản là ngày hôm đó luôn
 	
-	public Integer viewCount;
+	public Integer viewCount = 0;
 	
 	@ManyToOne
 	@JoinColumn(name = "account_id")
@@ -56,12 +59,12 @@ public class Post {
 	@JoinColumn(name = "category_id")
 	Category category;
 	
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<Comment> comment;
 	
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<ImagePost> imagePost;
 	
-	@OneToMany(mappedBy = "post")
+	@OneToMany(mappedBy = "post", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
 	public List<Favourite> favourite;
 }

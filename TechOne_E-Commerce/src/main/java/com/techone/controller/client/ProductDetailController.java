@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.data.domain.PageRequest;
 import com.techone.repository.*;
 import com.techone.model.*;
+import com.techone.service.CookieService;
 import java.util.*;
 
 @Controller
@@ -25,11 +26,32 @@ public class ProductDetailController {
 	@Autowired
 	private VariantAttributeValueRepository variantAttributeValueRepository;
 
+	@Autowired
+	private CookieService cookieService;
+
 	@GetMapping("/product/product-detail/{slug}")
 	public String showProductDetail(@PathVariable("slug") String slug, Model model) {
 		Product product = productRepository.findBySlug(slug).orElse(null);
 		if (product == null) {
 			return "redirect:/";
+		}
+
+		// Save to cookie: viewed_products (e.g., "3,1,2")
+		if (Boolean.TRUE.equals(product.getStatus())) {
+			String viewedIds = cookieService.getValue("viewed_products");
+			List<String> idList = new ArrayList<>();
+			if (!viewedIds.isEmpty()) {
+				idList = new ArrayList<>(Arrays.asList(viewedIds.split("-")));
+			}
+			String currentId = String.valueOf(product.getId());
+			// Remove if already exists to move it to the front
+			idList.remove(currentId);
+			idList.add(0, currentId);
+			// Limit to 50
+			if (idList.size() > 50) {
+				idList = idList.subList(0, 50);
+			}
+			cookieService.add("viewed_products", String.join("-", idList), 30);
 		}
 
 		List<Variant> variants = variantRepository.findByProduct(product);

@@ -282,8 +282,92 @@
 
                     <div id="mixed-slider-container"
                         class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
-                        <!-- Product Card 1 -->
+                        <!-- Product Card Loop -->
+                        <div th:each="product : ${bestSellers}"
+                            class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(50%-11px)] lg:w-[calc(33.33%-11px)] bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card h-full">
 
+                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                                <a th:href="@{'/product/product-detail/' + ${product.slug}}"
+                                    class="absolute inset-0 z-10"></a>
+                                <span
+                                    th:if="${product.variant != null && !product.variant.empty && product.variant[0].discount > 0}"
+                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-20"
+                                    th:text="${'-' + #numbers.formatDecimal(product.variant[0].discount, 0, 0) + '%'}">-25%</span>
+
+                                <button th:onclick="'toggleFavorite(' + ${product.variant[0].id} + ', this)'"
+                                    th:with="isFav=${favoritedVariantIds != null and favoritedVariantIds.contains(product.variant[0].id)}"
+                                    class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm transition-all group/fav"
+                                    th:classappend="${isFav} ? 'text-red-500' : 'text-gray-400 hover:text-red-500'">
+                                    <span
+                                        class="material-symbols-outlined text-[20px] group-hover/fav:fill-1 transition-all"
+                                        th:style="${isFav} ? 'font-variation-settings: \'FILL\' 1;' : ''">favorite</span>
+                                </button>
+
+                                <img th:if="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                    th:src="@{'/images/variants/' + ${product.variant[0].variantImages[0].pathImage}}"
+                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                                <img th:unless="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                    src="https://via.placeholder.com/300"
+                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                            </div>
+
+                            <div class="p-4 flex flex-col gap-2">
+                                <span th:if="${product.brand != null}"
+                                    class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit"
+                                    th:text="${product.brand.name}">BRAND</span>
+                                <a th:href="@{'/product/product-detail/' + ${product.slug}}">
+                                    <h4 class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm"
+                                        th:text="${product.name}">
+                                        Product Name
+                                    </h4>
+                                </a>
+
+
+                                <div class="flex items-end justify-between mt-1">
+                                    <div class="flex flex-col">
+                                        <span th:if="${product.variant != null && !product.variant.empty}"
+                                            class="text-gray-400 text-xs line-through font-medium"
+                                            th:text="${#numbers.formatDecimal(product.variant[0].price, 0, 'COMMA', 0, 'POINT') + '₫'}">28.990k</span>
+                                        <span th:if="${product.variant != null && !product.variant.empty}"
+                                            class="text-accent font-bold"
+                                            th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">21.490k</span>
+                                    </div>
+                                    <button th:if="${product.variant != null && !product.variant.empty}"
+                                        th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                        class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                        title="Thêm vào giỏ hàng">
+                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination for Best Sellers -->
+                    <div class="mt-4 flex justify-center gap-2" th:if="${bestSellerTotalPages > 1}">
+                        <a th:href="@{/(page=${currentPage}, viewedPage=${viewedCurrentPage}, bestSellerPage=${bestSellerCurrentPage - 1})}"
+                            th:if="${bestSellerCurrentPage > 0}"
+                            class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
+                            <span class="material-symbols-outlined text-sm">chevron_left</span>
+                        </a>
+
+                        <th:block th:each="i : ${#numbers.sequence(0, bestSellerTotalPages - 1)}">
+                            <a th:href="@{/(page=${currentPage}, viewedPage=${viewedCurrentPage}, bestSellerPage=${i})}"
+                                th:text="${i + 1}"
+                                th:classappend="${i == bestSellerCurrentPage} ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary'"
+                                class="w-8 h-8 flex items-center justify-center rounded-lg border font-bold text-xs transition-all">
+                                1
+                            </a>
+                        </th:block>
+
+                        <a th:href="@{/(page=${currentPage}, viewedPage=${viewedCurrentPage}, bestSellerPage=${bestSellerCurrentPage + 1})}"
+                            th:if="${bestSellerCurrentPage < bestSellerTotalPages - 1}"
+                            class="w-8 h-8 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
+                            <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative rounded-3xl mb-8"
@@ -344,19 +428,6 @@
                                 </h4>
                             </a>
 
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star_half</span>
-                                <span class="text-gray-400 ml-1">(120)</span>
-                            </div>
 
                             <div class="flex items-end justify-between mt-1">
                                 <div class="flex flex-col">
@@ -367,7 +438,12 @@
                                         class="text-accent font-bold"
                                         th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">21.490k</span>
                                 </div>
-
+                                <button th:if="${product.variant != null && !product.variant.empty}"
+                                    th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                    class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                    title="Thêm vào giỏ hàng">
+                                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                </button>
                             </div>
                         </div>
                         </a>
@@ -382,14 +458,16 @@
                 <!-- Phân trang -->
                 <div class="mt-8 flex justify-center gap-2" th:if="${totalPages > 1}">
                     <!-- Nút Trước -->
-                    <a th:href="@{/(page=${currentPage - 1})}" th:if="${currentPage > 0}"
+                    <a th:href="@{/(page=${currentPage - 1}, viewedPage=${viewedCurrentPage}, bestSellerPage=${bestSellerCurrentPage})}"
+                        th:if="${currentPage > 0}"
                         class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
                         <span class="material-symbols-outlined">chevron_left</span>
                     </a>
 
                     <!-- Số trang -->
                     <th:block th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/(page=${i})}" th:text="${i + 1}"
+                        <a th:href="@{/(page=${i}, viewedPage=${viewedCurrentPage}, bestSellerPage=${bestSellerCurrentPage})}"
+                            th:text="${i + 1}"
                             th:classappend="${i == currentPage} ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary'"
                             class="w-10 h-10 flex items-center justify-center rounded-xl border font-bold transition-all">
                             1
@@ -397,7 +475,8 @@
                     </th:block>
 
                     <!-- Nút Sau -->
-                    <a th:href="@{/(page=${currentPage + 1})}" th:if="${currentPage < totalPages - 1}"
+                    <a th:href="@{/(page=${currentPage + 1}, viewedPage=${viewedCurrentPage}, bestSellerPage=${bestSellerCurrentPage})}"
+                        th:if="${currentPage < totalPages - 1}"
                         class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
                         <span class="material-symbols-outlined">chevron_right</span>
                     </a>
@@ -477,7 +556,8 @@
         </section>
 
         <!-- SẢN PHẨM ĐÃ XEM -->
-        <section class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative rounded-3xl mb-8"
+        <section th:if="${viewedProducts != null and !viewedProducts.empty}"
+            class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8 relative rounded-3xl mb-8"
             style="background-color: rgb(229, 231, 235);">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-2xl font-bold text-text-main relative">
@@ -496,69 +576,93 @@
                 <div id="viewed-slider-container"
                     class="flex gap-4 overflow-x-auto scroll-smooth scrollbar-hide pb-4 -mx-2 px-2 snap-x snap-mandatory">
 
-                    <div th:each="i : ${#numbers.sequence(1, 6)}"
+                    <div th:each="product : ${viewedProducts}"
                         class="snap-start flex-shrink-0 w-[calc(50%-8px)] md:w-[calc(33.33%-11px)] lg:w-[calc(20%-13px)] bg-white rounded-xl shadow-sm border border-transparent hover:border-primary group/card h-full">
 
                         <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                            <a href="#" class="absolute inset-0 z-10"></a>
+                            <a th:href="@{'/product/product-detail/' + ${product.slug}}"
+                                class="absolute inset-0 z-10"></a>
                             <span
-                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-20">-15%</span>
+                                th:if="${product.variant != null && !product.variant.empty && product.variant[0].discount > 0}"
+                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-20"
+                                th:text="${'-' + #numbers.formatDecimal(product.variant[0].discount, 0, 0) + '%'}">-25%</span>
 
-                            <button onclick="event.preventDefault()"
-                                class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-gray-400 hover:text-red-500 hover:bg-white transition-all group/fav">
+                            <button th:onclick="'toggleFavorite(' + ${product.variant[0].id} + ', this)'"
+                                th:with="isFav=${favoritedVariantIds != null and favoritedVariantIds.contains(product.variant[0].id)}"
+                                class="absolute top-2 right-2 z-20 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm transition-all group/fav"
+                                th:classappend="${isFav} ? 'text-red-500' : 'text-gray-400 hover:text-red-500'">
                                 <span
-                                    class="material-symbols-outlined text-[20px] group-hover/fav:hidden">favorite_border</span>
-                                <span
-                                    class="material-symbols-outlined text-[20px] hidden group-hover/fav:block">favorite</span>
+                                    class="material-symbols-outlined text-[20px] group-hover/fav:fill-1 transition-all"
+                                    th:style="${isFav} ? 'font-variation-settings: \'FILL\' 1;' : ''">favorite</span>
                             </button>
 
-                            <img src="https://images.unsplash.com/photo-1593121925328-369cc8459c08?auto=format&fit=crop&q=80&w=800"
+                            <img th:if="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                th:src="@{'/images/variants/' + ${product.variant[0].variantImages[0].pathImage}}"
+                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
+                            <img th:unless="${product.variant != null && !product.variant.empty && product.variant[0].variantImages != null && !product.variant[0].variantImages.empty}"
+                                src="https://via.placeholder.com/300"
                                 class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" />
                         </div>
 
                         <div class="p-4 flex flex-col gap-2">
-                            <span
-                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">Xiaomi</span>
-                            <a href="#">
-                                <h4
-                                    class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm">
-                                    Xiaomi 13T Pro 5G 12GB/512GB (Sản phẩm demo)
+                            <span th:if="${product.brand != null}"
+                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase"
+                                th:text="${product.brand.name}">Brand</span>
+                            <a th:href="@{'/product/product-detail/' + ${product.slug}}">
+                                <h4 class="text-text-main font-semibold line-clamp-2 min-h-[3rem] group-hover/card:text-primary transition-colors text-sm"
+                                    th:text="${product.name}">
+                                    Product Name
                                 </h4>
                             </a>
 
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="text-gray-400 ml-1">(56)</span>
-                            </div>
 
                             <div class="flex items-end justify-between mt-1">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-400 text-xs line-through font-medium">15.990.000₫</span>
-                                    <span class="text-accent font-bold">13.990.000₫</span>
+                                    <span th:if="${product.variant != null && !product.variant.empty}"
+                                        class="text-gray-400 text-xs line-through font-medium"
+                                        th:text="${#numbers.formatDecimal(product.variant[0].price, 0, 'COMMA', 0, 'POINT') + '₫'}">15.990.000₫</span>
+                                    <span th:if="${product.variant != null && !product.variant.empty}"
+                                        class="text-accent font-bold"
+                                        th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">13.990.000₫</span>
                                 </div>
-                                <a th:href="@{/cart}"
-                                    class="w-9 h-9 rounded-lg bg-primary text-white flex items-center justify-center hover:bg-primary-hover shadow-md shadow-primary/20 transition-all">
+                                <button th:if="${product.variant != null && !product.variant.empty}"
+                                    th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                    class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                    title="Thêm vào giỏ hàng">
                                     <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
-                                </a>
+                                </button>
                             </div>
                         </div>
-                        </a>
                     </div>
-
-                    <button id="viewed-btn-next"
-                        class="absolute right-0 top-1/2 -translate-y-1/2 -mr-4 z-20 w-10 h-10 bg-white text-gray-600 hover:text-primary rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:scale-110 cursor-pointer border border-gray-100">
-                        <span class="material-symbols-outlined">chevron_right</span>
-                    </button>
                 </div>
+            </div>
+
+            <!-- Phân trang cho Sản phẩm đã xem -->
+            <div class="mt-8 flex justify-center gap-2" th:if="${viewedTotalPages > 1}">
+                <!-- Nút Trước -->
+                <a th:href="@{/(page=${currentPage}, viewedPage=${viewedCurrentPage - 1}, bestSellerPage=${bestSellerCurrentPage})}"
+                    th:if="${viewedCurrentPage > 0}"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </a>
+
+                <!-- Số trang -->
+                <th:block th:each="i : ${#numbers.sequence(0, viewedTotalPages - 1)}">
+                    <a th:href="@{/(page=${currentPage}, viewedPage=${i}, bestSellerPage=${bestSellerCurrentPage})}"
+                        th:text="${i + 1}"
+                        th:classappend="${i == viewedCurrentPage} ? 'bg-primary text-white border-primary' : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-primary'"
+                        class="w-10 h-10 flex items-center justify-center rounded-xl border font-bold transition-all">
+                        1
+                    </a>
+                </th:block>
+
+                <!-- Nút Sau -->
+                <a th:href="@{/(page=${currentPage}, viewedPage=${viewedCurrentPage + 1}, bestSellerPage=${bestSellerCurrentPage})}"
+                    th:if="${viewedCurrentPage < viewedTotalPages - 1}"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-primary hover:text-white transition-all">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </a>
+            </div>
         </section>
 
         <section class="w-full py-12 overflow-hidden bg-white border-t border-gray-100">
@@ -570,9 +674,9 @@
             <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-8 items-center justify-items-center">
 
-                    <a th:each="brand : ${brands}" th:href="@{/categories(brandId=${brand.id})}"
+                    <a th:each="dto : ${brands}" th:href="@{/categories(brandId=${dto.brand.id})}"
                         class="group flex flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1">
-                        <span th:text="${brand.name}"
+                        <span th:text="${dto.brand.name}"
                             class="text-3xl font-black text-gray-300 group-hover:text-primary transition-colors uppercase">BRAND</span>
                     </a>
 
@@ -817,6 +921,50 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            async function addToCartDirectly(variantId) {
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(variantId), quantity: 1 })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm vào giỏ',
+                            text: 'Sản phẩm đã có trong giỏ hàng của bạn',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cartCount;
+                            cartBadge.classList.remove('hidden');
+                        }
+                    } else if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+                            confirmButtonText: 'Đăng nhập',
+                            showCancelButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.href = '/login';
+                        });
+                    } else {
+                        const text = await response.text();
+                        Swal.fire({ icon: 'error', title: 'Thất bại', text: text || 'Có lỗi xảy ra' });
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        </script>
     </main>
 </body>
 

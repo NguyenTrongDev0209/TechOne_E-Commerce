@@ -22,7 +22,7 @@
                     </div>
                     <div class="flex items-center gap-3">
                         <button type="submit"
-                            class="px-5 py-2.5 rounded-xl bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+                            class="px-5 py-2.5 rounded bg-primary hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
                             <span class="material-symbols-outlined text-[20px]">check</span>
                             <span th:text="${editMode ? 'Cập nhật bài viết' : 'Đăng bài viết'}">Đăng bài viết</span>
                         </button>
@@ -34,7 +34,7 @@
                     <div class="lg:col-span-8 space-y-6">
                         <!-- Content Card -->
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            class="bg-white dark:bg-gray-800 rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
                             <h2
                                 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
                                 <span class="material-symbols-outlined text-primary">edit_note</span>
@@ -47,7 +47,7 @@
                                         Tiêu đề bài viết <span class="text-red-500">*</span>
                                     </label>
                                     <input th:field="*{title}"
-                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-white"
+                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-gray-400 dark:text-white"
                                         placeholder="Nhập tiêu đề hấp dẫn cho bài viết..." type="text" />
                                     <p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"
                                         class="text-red-500 text-[13px] mt-1 font-medium"></p>
@@ -57,43 +57,9 @@
                                     <label class="block text-sm font-bold text-gray-700 dark:text-gray-300">Nội dung chi
                                         tiết</label>
                                     <div
-                                        class="border border-gray-200 dark:border-gray-600 rounded-2xl overflow-hidden bg-white dark:bg-gray-700 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
-                                        <div
-                                            class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 px-3 py-2 flex items-center gap-1 flex-wrap">
-                                            <button type="button" onclick="formatDoc('bold')" title="In đậm"
-                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
-                                                <span class="material-symbols-outlined text-[18px]">format_bold</span>
-                                            </button>
-                                            <button type="button" onclick="formatDoc('italic')" title="In nghiêng"
-                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
-                                                <span class="material-symbols-outlined text-[18px]">format_italic</span>
-                                            </button>
-                                            <div class="w-px h-4 bg-gray-200 dark:bg-gray-600 mx-1"></div>
-                                            <button type="button" onclick="formatDoc('insertUnorderedList')"
-                                                title="Danh sách"
-                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
-                                                <span
-                                                    class="material-symbols-outlined text-[18px]">format_list_bulleted</span>
-                                            </button>
-                                            <button type="button" onclick="addLink()" title="Chèn link"
-                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
-                                                <span class="material-symbols-outlined text-[18px]">link</span>
-                                            </button>
-                                            <button type="button"
-                                                onclick="document.getElementById('editorImageUpload').click()"
-                                                title="Chèn ảnh"
-                                                class="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 text-gray-600 dark:text-gray-400 transition-colors">
-                                                <span class="material-symbols-outlined text-[18px]">image</span>
-                                            </button>
-                                            <input type="file" id="editorImageUpload" accept="image/*" class="hidden"
-                                                onchange="addLocalImage(this)">
-                                        </div>
-                                        <textarea th:field="*{content}" id="descriptionContent"
-                                            style="display: none;"></textarea>
-                                        <div id="editor" contenteditable="true"
-                                            class="w-full border-none p-4 text-sm min-h-[20rem] focus:outline-none focus:ring-0 font-body bg-white dark:bg-gray-700 dark:text-white"
-                                            placeholder="Bắt đầu viết nội dung tại đây..." oninput="updateTextarea()">
-                                        </div>
+                                        class="border border-gray-200 dark:border-gray-600 rounded overflow-hidden bg-white dark:bg-gray-700 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all text-gray-900">
+                                        <!-- Thay the editor tu che bang textarea chuc nang cho CKEditor -->
+                                        <textarea th:field="*{content}" id="editor"></textarea>
                                     </div>
                                     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
                                         class="text-red-500 text-[13px] mt-1 font-medium"></p>
@@ -103,17 +69,17 @@
 
                         <!-- Images Card -->
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-4">
+                            class="bg-white dark:bg-gray-800 rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-4">
                             <h2
                                 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
                                 <span class="material-symbols-outlined text-primary">image</span>
-                                Hình ảnh minh họa
+                                Hình ảnh minh họa (Thumbnail)
                             </h2>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="imagePreviewContainer">
-                                <!-- Existing images if any -->
-                                <div th:each="img : ${post.imagePost}"
-                                    class="relative group aspect-square rounded-xl overflow-hidden border border-gray-200">
-                                    <img th:src="@{'/images/posts/' + ${img.pathImage}}"
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="thumbnailPreviewContainer">
+                                <!-- Existing thumbnail if any -->
+                                <div th:if="${post.thumbnail != null and not #strings.isEmpty(post.thumbnail)}"
+                                    class="relative group aspect-square rounded overflow-hidden border border-gray-200">
+                                    <img th:src="@{'/images/posts/' + ${post.thumbnail}}"
                                         class="w-full h-full object-cover">
                                     <div
                                         class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
@@ -125,13 +91,14 @@
                                 </div>
                                 <!-- Upload Button Slot -->
                                 <label
-                                    class="aspect-square rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center cursor-pointer group">
+                                    class="aspect-square rounded border-2 border-dashed border-gray-200 dark:border-gray-700 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center cursor-pointer group"
+                                    th:unless="${post.thumbnail != null and not #strings.isEmpty(post.thumbnail)}">
                                     <span
                                         class="material-symbols-outlined text-gray-400 group-hover:text-primary mb-2">add_photo_alternate</span>
                                     <span class="text-xs font-bold text-gray-500 group-hover:text-primary">Tải ảnh
                                         lên</span>
-                                    <input type="file" name="imageFiles" multiple accept="image/*" class="hidden"
-                                        onchange="previewImages(this)">
+                                    <input type="file" name="thumbnailFile" accept="image/*" class="hidden"
+                                        onchange="previewThumbnail(this)">
                                 </label>
                             </div>
                         </div>
@@ -141,7 +108,7 @@
                     <div class="lg:col-span-4 space-y-6">
                         <!-- Categorization -->
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            class="bg-white dark:bg-gray-800 rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
                             <h2
                                 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
                                 <span class="material-symbols-outlined text-primary">category</span>
@@ -154,7 +121,7 @@
                                         mục bài viết</label>
                                     <input type="hidden" th:field="*{category.id}" id="categoryId">
                                     <button type="button" onclick="toggleCategoryDropdown()"
-                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-white flex justify-between items-center text-left">
+                                        class="w-full bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded py-3 px-4 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-gray-600 dark:text-white flex justify-between items-center text-left">
                                         <span id="categoryLabel"
                                             th:text="${post.category != null and post.category.name != null ? post.category.name : 'Chọn danh mục...'}">Chọn
                                             danh mục...</span>
@@ -162,7 +129,7 @@
                                             id="categoryChevron">expand_more</span>
                                     </button>
                                     <div id="categoryMenu"
-                                        class="hidden absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                                        class="hidden absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded shadow-xl z-50 overflow-hidden">
                                         <ul class="py-1">
                                             <li th:each="cat : ${postCategories}">
                                                 <button type="button" th:data-id="${cat.id}" th:data-name="${cat.name}"
@@ -183,7 +150,7 @@
 
                         <!-- Status & Schedule -->
                         <div
-                            class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
+                            class="bg-white dark:bg-gray-800 rounded shadow-sm border border-gray-100 dark:border-gray-700 p-6 space-y-6">
                             <h2
                                 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 border-b border-gray-50 dark:border-gray-700 pb-4">
                                 <span class="material-symbols-outlined text-primary">visibility</span>
@@ -191,7 +158,7 @@
                             </h2>
                             <div class="space-y-4">
                                 <div
-                                    class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                    class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-900/50 rounded border border-gray-100 dark:border-gray-700">
                                     <div class="flex flex-col">
                                         <span class="text-sm font-bold text-gray-900 dark:text-white">Xuất bản bài
                                             viết</span>
@@ -209,7 +176,7 @@
                                     <div class="flex items-center justify-between text-xs">
                                         <span class="text-gray-500 font-medium">Trạng thái hiện tại:</span>
                                         <span id="statusBadge"
-                                            class="font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg transition-all"
+                                            class="font-bold flex items-center gap-1.5 px-2 py-1 rounded transition-all"
                                             th:classappend="${post.status} ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'">
                                             <span class="w-1.5 h-1.5 rounded-full"
                                                 th:classappend="${post.status} ? 'bg-green-500' : 'bg-amber-500'"></span>
@@ -219,7 +186,7 @@
                                     <div class="flex items-center justify-between text-xs">
                                         <span class="text-gray-500 font-medium">Tác giả:</span>
                                         <span class="text-gray-900 dark:text-white font-bold"
-                                            th:text="${post.account != null ? post.account.fullname : 'Admin'}">Admin</span>
+                                            th:text="${session.user != null ? session.user.fullname : 'Admin TechShop'}">Admin</span>
                                     </div>
                                     <div class="flex items-center justify-between text-xs">
                                         <span class="text-gray-500 font-medium">Ngày tạo:</span>
@@ -236,64 +203,123 @@
         </form>
 
         <style>
-            #editor [placeholder]:empty:before {
-                content: attr(placeholder);
-                color: #9ca3af;
-                pointer-events: none;
-                display: block;
+            .ck-editor__editable_inline {
+                min-height: 400px;
+                color: #111827;
             }
 
-            #editor ul {
-                list-style-type: disc;
-                padding-left: 1.5rem;
-                margin: 0.5rem 0;
+            .dark .ck-editor__editable_inline {
+                background-color: #374151 !important;
+                color: #f9fafb;
             }
 
-            #editor ol {
-                list-style-type: decimal;
-                padding-left: 1.5rem;
-                margin: 0.5rem 0;
+            .dark .ck-toolbar {
+                background-color: #1f2937 !important;
+                border-color: #4b5563 !important;
             }
 
-            #editor a {
-                color: #ea580c;
-                text-decoration: underline;
+            .dark .ck-button {
+                color: #d1d5db !important;
             }
 
-            #editor img {
-                max-width: 100%;
-                border-radius: 1rem;
-                margin-top: 0.5rem;
+            .dark .ck-button:hover {
+                background-color: #4b5563 !important;
             }
         </style>
 
+        <!-- Tải Script CDN của CKEditor -->
+        <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+
         <script>
-            // --- Editor Logic ---
-            const editor = document.getElementById('editor');
-            const textarea = document.getElementById('descriptionContent');
+            // --- Khởi tạo CKEditor ---
+            class CustomUploadAdapter {
+                constructor(loader) {
+                    this.loader = loader;
+                }
 
-            function formatDoc(cmd, value = null) {
-                document.execCommand(cmd, false, value);
-                editor.focus();
-                updateTextarea();
-            }
+                upload() {
+                    return this.loader.file
+                        .then(file => new Promise((resolve, reject) => {
+                            this._initRequest();
+                            this._initListeners(resolve, reject, file);
+                            this._sendRequest(file);
+                        }));
+                }
 
-            function addLink() {
-                const url = prompt("Nhập liên kết:");
-                if (url) formatDoc('createLink', url);
-            }
+                abort() {
+                    if (this.xhr) {
+                        this.xhr.abort();
+                    }
+                }
 
-            function addLocalImage(input) {
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => formatDoc('insertImage', e.target.result);
-                    reader.readAsDataURL(input.files[0]);
+                _initRequest() {
+                    const xhr = this.xhr = new XMLHttpRequest();
+                    // Đích gửi ảnh đến Controller mới tạo
+                    xhr.open('POST', '/api/upload/ckeditor', true);
+                    xhr.responseType = 'json';
+                }
+
+                _initListeners(resolve, reject, file) {
+                    const xhr = this.xhr;
+                    const loader = this.loader;
+                    const genericErrorText = `Không thể tải lên tệp: ${file.name}.`;
+
+                    xhr.addEventListener('error', () => reject(genericErrorText));
+                    xhr.addEventListener('abort', () => reject());
+                    xhr.addEventListener('load', () => {
+                        const response = xhr.response;
+                        if (!response || response.error) {
+                            return reject(response && response.error ? response.error.message : genericErrorText);
+                        }
+                        resolve({
+                            default: response.url
+                        });
+                    });
+
+                    if (xhr.upload) {
+                        xhr.upload.addEventListener('progress', evt => {
+                            if (evt.lengthComputable) {
+                                loader.uploadTotal = evt.total;
+                                loader.uploaded = evt.loaded;
+                            }
+                        });
+                    }
+                }
+
+                _sendRequest(file) {
+                    const data = new FormData();
+                    data.append('upload', file);
+                    this.xhr.send(data);
                 }
             }
 
-            function updateTextarea() {
-                textarea.value = editor.innerHTML;
+            function CustomUploadAdapterPlugin(editor) {
+                editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                    return new CustomUploadAdapter(loader);
+                };
             }
+
+            ClassicEditor
+                .create(document.querySelector('#editor'), {
+                    extraPlugins: [CustomUploadAdapterPlugin],
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                            'outdent', 'indent', '|',
+                            'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', 'undo', 'redo'
+                        ]
+                    },
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative', 'toggleImageCaption', 'imageStyle:inline', 'imageStyle:block', 'imageStyle:side'
+                        ]
+                    },
+                    language: 'vi'
+                })
+                .catch(error => {
+                    console.error(error);
+                });
 
             // --- Dropdown Logic ---
             function toggleCategoryDropdown() {
@@ -314,38 +340,55 @@
             function updateStatusLabel(checkbox) {
                 const badge = document.getElementById('statusBadge');
                 if (checkbox.checked) {
-                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg bg-green-50 text-green-700 transition-all';
+                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded bg-green-50 text-green-700 transition-all';
                     badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Đã xuất bản';
                 } else {
-                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded-lg bg-amber-50 text-amber-700 transition-all';
+                    badge.className = 'font-bold flex items-center gap-1.5 px-2 py-1 rounded bg-amber-50 text-amber-700 transition-all';
                     badge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Tạm ẩn';
                 }
             }
 
-            function previewImages(input) {
-                const container = document.getElementById('imagePreviewContainer');
-                // For new uploads, we keep the label at the end
+            function previewThumbnail(input) {
+                const container = document.getElementById('thumbnailPreviewContainer');
                 const label = container.querySelector('label');
 
-                if (input.files) {
-                    Array.from(input.files).forEach(file => {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm';
-                            wrapper.innerHTML = `
-                                <img src="${e.target.result}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                    <button type="button" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-transform active:scale-95">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
-                                    </button>
-                                </div>
-                            `;
-                            container.insertBefore(wrapper, label);
-                        };
-                        reader.readAsDataURL(file);
-                    });
+                if (input.files && input.files[0]) {
+                    const file = input.files[0];
+                    const reader = new FileReader();
+
+                    reader.onload = (e) => {
+                        // Create preview element
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'relative group aspect-square rounded overflow-hidden border border-gray-100 shadow-sm';
+                        wrapper.id = 'thumbnailPreviewElement';
+                        wrapper.innerHTML = `
+            <img src="${e.target.result}" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <button type="button" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-transform active:scale-95" onclick="removeThumbnail()">
+                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
+                </div>
+                        `;
+
+                        // Remove existing preview if any, and hide label
+                        const existingPreview = document.getElementById('thumbnailPreviewElement');
+                        if (existingPreview) existingPreview.remove();
+                        if (label) label.style.display = 'none';
+
+                        container.insertBefore(wrapper, container.firstChild);
+                    };
+                    reader.readAsDataURL(file);
                 }
+            }
+
+            function removeThumbnail() {
+                const preview = document.getElementById('thumbnailPreviewElement');
+                const label = document.getElementById('thumbnailPreviewContainer').querySelector('label');
+                const input = document.querySelector('input[name="thumbnailFile"]');
+
+                if (preview) preview.remove();
+                if (label) label.style.display = 'flex';
+                if (input) input.value = '';
             }
 
             // Outside click to close dropdowns
@@ -357,10 +400,7 @@
                 }
             });
 
-            // Initialize editor content
-            document.addEventListener('DOMContentLoaded', () => {
-                if (textarea.value) editor.innerHTML = textarea.value;
-            });
+            // Khong can link textarea nua vi CKEditor auto-sync
         </script>
     </div>
 </body>

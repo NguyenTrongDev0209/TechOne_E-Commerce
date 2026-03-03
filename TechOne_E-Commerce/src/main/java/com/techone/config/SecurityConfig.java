@@ -1,6 +1,7 @@
 package com.techone.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,25 +35,27 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(auth -> auth
 						// 1. Cho phép truy cập công khai các file tĩnh và các trang chủ, chi tiết
-						.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page", "/search/**")
+						.requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**", "/error-page",
+								"/search/**", "/api/chat/**")
 						.permitAll()
 						.requestMatchers("/product/product-detail/**", "/categories", "/promotions/**", "/posts/**")
 						.permitAll()
 						.requestMatchers("/forgot-password/**", "/confirm-otp/**", "/reset-password/**").permitAll()
 						.requestMatchers("/payment/payos_transfer_handler").permitAll()
+						.requestMatchers("/api/cart/**", "/api/favourite/**", "/api/favorites/**").permitAll()
 
 						// 2. CHỈ ADMIN mới được vào các trang bắt đầu bằng /admin
-						 .requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/admin/**").hasRole("ADMIN")
 
 						// 3. Các trang bắt buộc phải đăng nhập (Bất kể ADMIN hay USER)
 						.requestMatchers("/account/**", "/cart/**", "/checkout/**").authenticated()
 
 						// 4. Các yêu cầu còn lại đều phải xác thực
 						.anyRequest().authenticated())
-				
+
 				.formLogin(login -> login
 						.loginPage("/login")
-						.loginProcessingUrl("/perform_login") 
+						.loginProcessingUrl("/perform_login")
 						.permitAll())
 				.logout(logout -> logout
 						.logoutUrl("/logout")
@@ -75,7 +78,7 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationSuccessHandler successHandler() {
 		return (request, response, authentication) -> {
-			
+
 			boolean isAdmin = authentication.getAuthorities().stream()
 					.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
 			if (isAdmin) {

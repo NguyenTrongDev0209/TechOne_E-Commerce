@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html th:replace="~{layouts/layout-client :: view(title='Review MacBook Pro M3', content=~{:: #blog-detail-content})}">
+<html th:replace="~{layouts/layout-client :: view(title=${post.title}, content=~{:: #blog-detail-content})}">
+
 <body>
 
-    <div id="blog-detail-content" class="w-full bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center py-8 px-4 md:px-8">
-        
+    <div id="blog-detail-content"
+        class="w-full bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center py-8 px-4 md:px-8">
+
         <div class="w-full max-w-[960px] flex flex-col gap-8">
-            
+
             <nav class="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                 <a class="hover:text-primary transition-colors" href="/">Trang chủ</a>
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
@@ -13,149 +15,79 @@
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
                 <a class="hover:text-primary transition-colors" href="#">Reviews</a>
                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                <span class="text-[#1c100d] dark:text-white font-medium">MacBook Pro M3</span>
+                <span class="text-[#1c100d] dark:text-white font-medium" th:text="${post.title}">Tiêu đề bài viết</span>
             </nav>
 
             <div>
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-[#1c100d] dark:text-white leading-[1.15] tracking-tight">
-                    Review Chi Tiết MacBook Pro M3: Quái Vật Hiệu Năng Hay Chỉ Là Bình Mới Rượu Cũ?
+                <h1 th:text="${post.title}"
+                    class="text-3xl md:text-4xl lg:text-5xl font-black text-[#1c100d] dark:text-white leading-[1.15] tracking-tight">
+                    Tiêu đề bài viết
                 </h1>
             </div>
 
             <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-6">
                 <div class="flex items-center gap-4">
-                    <div class="size-12 md:size-14 rounded-full bg-gray-200 overflow-hidden shrink-0 border-2 border-white dark:border-gray-700 shadow-sm">
-                        <img alt="Author" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Minh+Tech&background=random"/>
+                    <div
+                        class="size-12 md:size-14 rounded-full bg-gray-200 overflow-hidden shrink-0 border-2 border-white dark:border-gray-700 shadow-sm">
+                        <img alt="Author" class="w-full h-full object-cover"
+                            src="https://ui-avatars.com/api/?name=Minh+Tech&background=random" />
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-[#1c100d] dark:text-white font-bold text-lg leading-tight">Minh Tech</span>
+                        <span class="text-[#1c100d] dark:text-white font-bold text-lg leading-tight"
+                            th:text="${post.account != null ? post.account.fullname : 'Admin'}">Tác giả</span>
                         <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-                            <span>12 Oct 2023</span>
+                            <span th:text="${#temporals.format(post.createAt, 'dd MMM yyyy')}">12 Oct 2023</span>
                             <span class="size-1 bg-gray-400 rounded-full"></span>
-                            <span>5 min read</span>
+                            <span th:text="${post.viewCount + ' lượt xem'}">0 lượt xem</span>
                         </div>
                     </div>
                 </div>
                 <div class="hidden sm:flex gap-3">
-                    <button class="size-10 rounded-full bg-white dark:bg-[#1e293b] flex items-center justify-center text-gray-500 hover:text-primary hover:bg-primary/5 transition-all shadow-sm">
+                    <button
+                        class="size-10 rounded-full bg-white dark:bg-[#1e293b] flex items-center justify-center text-gray-500 hover:text-primary hover:bg-primary/5 transition-all shadow-sm">
                         <span class="material-symbols-outlined text-xl">bookmark</span>
                     </button>
-                    <button class="size-10 rounded-full bg-white dark:bg-[#1e293b] flex items-center justify-center text-gray-500 hover:text-primary hover:bg-primary/5 transition-all shadow-sm">
+                    <button
+                        class="size-10 rounded-full bg-white dark:bg-[#1e293b] flex items-center justify-center text-gray-500 hover:text-primary hover:bg-primary/5 transition-all shadow-sm">
                         <span class="material-symbols-outlined text-xl">share</span>
                     </button>
                 </div>
             </div>
 
-            <div class="w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg bg-gray-100 dark:bg-gray-800 relative group">
+            <div th:if="${post.thumbnail != null}"
+                class="w-full aspect-video md:aspect-[21/9] rounded-2xl overflow-hidden shadow-lg bg-gray-100 dark:bg-gray-800 relative group">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
-                <div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105" style='background-image: url("https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=1200");'>
+                <div class="w-full h-full bg-center bg-cover transition-transform duration-700 group-hover:scale-105"
+                    th:style="'background-image: url(/images/posts/' + ${post.thumbnail} + ');'">
                 </div>
             </div>
 
-            <article class="prose prose-lg prose-gray dark:prose-invert max-w-none text-[#1c100d] dark:text-gray-300">
-                <p class="lead text-xl text-gray-600 dark:text-gray-300 font-medium">
-                    Apple đã chính thức ra mắt dòng MacBook Pro mới với chip M3, hứa hẹn mang lại hiệu năng vượt trội và thời lượng pin ấn tượng. Nhưng liệu những nâng cấp này có xứng đáng để bạn "lên đời"? Hãy cùng TechOne đi sâu vào chi tiết.
-                </p>
-
-                <h2 class="text-2xl font-bold text-[#1c100d] dark:text-white mt-8 mb-4">1. Thiết kế: Space Black huyền bí</h2>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                    Điểm nhấn lớn nhất về ngoại hình năm nay chính là màu sắc mới: <strong>Space Black</strong> (Đen Không Gian). Apple cho biết họ đã sử dụng công nghệ phủ anodize mới để giảm thiểu tình trạng bám vân tay - một vấn đề nhức nhối trên các dòng màu tối trước đây.
-                </p>
-
-                <blockquote class="border-l-4 border-primary pl-4 italic my-6 text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-[#1e293b] p-4 rounded-r-lg shadow-sm">
-                    "Màu đen thực sự sâu và cuốn hút. Nó tạo cảm giác chuyên nghiệp hơn hẳn so với màu Space Grey truyền thống."
-                </blockquote>
-
-                <h2 class="text-2xl font-bold text-[#1c100d] dark:text-white mt-8 mb-4">2. Hiệu năng M3: Quái vật lộ diện</h2>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                    Chúng tôi đã thử nghiệm phiên bản M3 Max trên các tác vụ nặng như render video 4K, chạy máy ảo và training AI model cơ bản. Kết quả thật sự ấn tượng:
-                </p>
-                <ul class="list-disc pl-6 space-y-2 text-gray-700 dark:text-gray-300 mb-8">
-                    <li>Render Final Cut Pro nhanh hơn 20% so với M2 Max.</li>
-                    <li>Biên dịch code Xcode mượt mà, gần như không có độ trễ.</li>
-                    <li>Chơi game AAA như Resident Evil Village ở mức 60fps ổn định.</li>
-                </ul>
-
-                <div class="my-10 p-6 bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-lg flex flex-col md:flex-row gap-6 items-center transform transition-transform hover:-translate-y-1">
-                    <div class="w-full md:w-1/3 aspect-[4/3] rounded-lg bg-gray-50 dark:bg-gray-800 overflow-hidden relative">
-                        <div class="absolute inset-0 bg-center bg-contain bg-no-repeat" style='background-image: url("https://images.unsplash.com/photo-1517336714731-489689fd1ca4?auto=format&fit=crop&q=80&w=400");'></div>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary mb-2">
-                            Lựa chọn hàng đầu
-                        </div>
-                        <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Apple MacBook Pro 14" M3</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">Chip M3 8-core CPU, 10-core GPU, 8GB Unified Memory, 512GB SSD Storage.</p>
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-4">
-                            <div>
-                                <span class="text-2xl font-bold text-primary">39.990.000₫</span>
-                                <span class="text-sm text-gray-400 line-through ml-2">42.990.000₫</span>
-                            </div>
-                            <button class="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-red-600 text-white font-semibold rounded-lg shadow-md shadow-primary/20 transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-[20px]">shopping_cart</span>
-                                Mua ngay
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <h2 class="text-2xl font-bold text-[#1c100d] dark:text-white mt-8 mb-4">3. Màn hình và Thời lượng pin</h2>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                    Màn hình Liquid Retina XDR giờ đây sáng hơn 20% khi hiển thị nội dung SDR, đạt mức 600 nits. Pin vẫn là điểm mạnh tuyệt đối với hơn 14 tiếng sử dụng hỗn hợp.
-                </p>
-                <div class="w-full rounded-xl overflow-hidden mb-6 shadow-sm">
-                    <div class="bg-center bg-cover h-64 md:h-80 w-full" style='background-image: url("https://images.unsplash.com/photo-1606248897732-2c5ffe637f4d?auto=format&fit=crop&q=80&w=1000");'>
-                    </div>
-                    <p class="text-sm text-center text-gray-500 mt-2 italic">Màn hình XDR trên MacBook Pro M3 thể hiện màu sắc rực rỡ.</p>
-                </div>
-
-                <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mt-6 mb-3">Kết luận</h3>
-                <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-                    Nếu bạn đang dùng M1 hoặc Intel, đây là bản nâng cấp đáng giá. Nếu bạn đang dùng M2, có lẽ nên chờ đợi thêm. Tuy nhiên, màu Space Black thực sự là một điểm cộng lớn về thẩm mỹ.
-                </p>
+            <article th:utext="${post.content}"
+                class="prose prose-lg prose-gray dark:prose-invert max-w-none text-[#1c100d] dark:text-gray-300">
+                <!-- Nội dung HTML sinh ra từ CKEditor sẽ được render ở đây -->
             </article>
 
-            <div class="border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div class="flex flex-wrap gap-2">
-                    <span class="text-sm font-medium text-gray-500 mr-2 self-center">Tags:</span>
-                    <a class="px-3 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 hover:text-primary rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors" href="#">#Apple</a>
-                    <a class="px-3 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 hover:text-primary rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors" href="#">#MacBook</a>
-                    <a class="px-3 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 hover:text-primary rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors" href="#">#Technology</a>
-                    <a class="px-3 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-primary/10 hover:text-primary rounded-full text-sm font-medium text-gray-600 dark:text-gray-300 transition-colors" href="#">#Review</a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm font-medium text-gray-500 mr-2">Chia sẻ:</span>
-                    <button class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-[#1877F2] hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[20px]">share</span>
-                    </button>
-                    <button class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-black hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[20px]">ios_share</span>
-                    </button>
-                    <button class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 hover:bg-primary hover:text-white transition-colors">
-                        <span class="material-symbols-outlined text-[20px]">content_copy</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-[#1e293b] p-6 rounded-2xl flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left border border-gray-200 dark:border-gray-700">
+            <div
+                class="bg-gray-50 dark:bg-[#1e293b] p-6 rounded-2xl flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left border border-gray-200 dark:border-gray-700">
                 <div class="size-20 rounded-full bg-gray-200 overflow-hidden shrink-0">
-                    <img alt="Author" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Minh+Tech&background=random"/>
+                    <img alt="Author" class="w-full h-full object-cover"
+                        src="https://ui-avatars.com/api/?name=Minh+Tech&background=random" />
                 </div>
                 <div class="flex-1">
-                    <h4 class="text-lg font-bold text-[#1c100d] dark:text-white">Minh Tech</h4>
-                    <p class="text-sm text-primary mb-2">Senior Editor @ TechOne</p>
-                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
-                        Đam mê công nghệ từ năm 2010. Chuyên review laptop, PC gaming và các thiết bị smarthome. Phương châm: "Review có tâm, mua sắm an tâm".
+                    <h4 class="text-lg font-bold text-[#1c100d] dark:text-white"
+                        th:text="${post.account != null ? post.account.fullname : 'Admin'}">Tác giả</h4>
+                    <p class="text-sm text-primary mb-2">Editor @ TechOne</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed"
+                        th:text="${post.account != null and post.account.fullname != null ? 'Liên hệ: ' + post.account.fullname : 'Đam mê công nghệ.'}">
+                        Mô tả thông tin tác giả.
                     </p>
                 </div>
-                <button class="px-5 py-2 rounded-full border border-gray-300 dark:border-gray-600 text-sm font-medium hover:border-primary hover:text-primary transition-colors text-gray-600 dark:text-gray-300">
-                    Xem hồ sơ
-                </button>
             </div>
 
         </div>
 
-        <section class="w-full bg-white dark:bg-[#1e293b]/50 py-16 px-4 md:px-8 border-t border-gray-200 dark:border-gray-700 mt-12">
+        <section
+            class="w-full bg-white dark:bg-[#1e293b]/50 py-16 px-4 md:px-8 border-t border-gray-200 dark:border-gray-700 mt-12">
             <div class="max-w-[1200px] mx-auto">
                 <div class="flex items-center justify-between mb-8">
                     <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white">Bài viết liên quan</h3>
@@ -166,12 +98,17 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <a href="#" class="flex flex-col group cursor-pointer">
                         <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" style='background-image: url("https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=600");'></div>
-                            <div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">Tin tức</div>
+                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
+                                style='background-image: url("https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=600");'>
+                            </div>
+                            <div
+                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
+                                Tin tức</div>
                         </div>
                         <div class="flex flex-col flex-1">
                             <div class="text-xs text-gray-500 mb-2">10 Oct 2023 · 3 min read</div>
-                            <h4 class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
+                            <h4
+                                class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
                                 Top 5 Laptop Gaming Đáng Mua Nhất Cuối Năm 2023
                             </h4>
                             <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
@@ -181,12 +118,17 @@
                     </a>
                     <a href="#" class="flex flex-col group cursor-pointer">
                         <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" style='background-image: url("https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=600");'></div>
-                            <div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">Hướng dẫn</div>
+                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
+                                style='background-image: url("https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=600");'>
+                            </div>
+                            <div
+                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
+                                Hướng dẫn</div>
                         </div>
                         <div class="flex flex-col flex-1">
                             <div class="text-xs text-gray-500 mb-2">08 Oct 2023 · 7 min read</div>
-                            <h4 class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
+                            <h4
+                                class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
                                 Hướng Dẫn Chọn Bàn Phím Cơ Cho Người Mới Bắt Đầu
                             </h4>
                             <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
@@ -196,12 +138,17 @@
                     </a>
                     <a href="#" class="flex flex-col group cursor-pointer">
                         <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110" style='background-image: url("https://images.unsplash.com/photo-1558002038-1091a166111c?auto=format&fit=crop&q=80&w=600");'></div>
-                            <div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">Tips</div>
+                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
+                                style='background-image: url("https://images.unsplash.com/photo-1558002038-1091a166111c?auto=format&fit=crop&q=80&w=600");'>
+                            </div>
+                            <div
+                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
+                                Tips</div>
                         </div>
                         <div class="flex flex-col flex-1">
                             <div class="text-xs text-gray-500 mb-2">05 Oct 2023 · 4 min read</div>
-                            <h4 class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
+                            <h4
+                                class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
                                 5 Món Đồ Công Nghệ Giúp Bạn Làm Việc Hiệu Quả Hơn
                             </h4>
                             <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
@@ -216,98 +163,84 @@
         <section class="w-full py-12 px-4 md:px-8">
             <div class="max-w-[800px] mx-auto">
                 <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white mb-8 flex items-center gap-2">
-                    Bình luận <span class="text-base font-normal text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">12</span>
-                </h3>
-                
-                <div class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm mb-10 border border-gray-100 dark:border-gray-700">
-                    <div class="flex gap-4">
-                        <div class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0 flex items-center justify-center text-gray-500">
-                            <span class="material-symbols-outlined text-xl">person</span>
-                        </div>
-                        <div class="flex-1">
-                            <textarea class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm placeholder-gray-400 text-[#1c100d] dark:text-white" placeholder="Chia sẻ suy nghĩ của bạn về bài viết này..." rows="3"></textarea>
-                            <div class="flex justify-end mt-3">
-                                <button class="px-6 py-2 bg-primary hover:bg-red-600 text-white font-medium rounded-lg text-sm transition-colors shadow-lg shadow-primary/20">
-                                    Gửi bình luận
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white mb-8 flex items-center gap-2">
+                        Bình luận <span
+                            class="text-base font-normal text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full"
+                            th:text="${post.comment.size()}">0</span>
+                    </h3>
 
-                <div class="space-y-8">
-                    <div class="flex gap-4">
-                        <div class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0">
-                            <img alt="User" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Hoang+Nguyen&background=random"/>
-                        </div>
-                        <div class="flex-1">
-                            <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h5 class="font-bold text-[#1c100d] dark:text-white text-sm">Hoang Nguyen</h5>
-                                    <span class="text-xs text-gray-500">2 hours ago</span>
-                                </div>
-                                <p class="text-gray-700 dark:text-gray-300 text-sm">
-                                    Bài viết rất chi tiết! Mình đang phân vân giữa M3 và M3 Pro, sau khi đọc xong chắc sẽ chốt em M3 Pro cho công việc edit video.
-                                </p>
-                            </div>
-                            <div class="flex gap-4 mt-2 ml-2">
-                                <button class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[16px]">thumb_up</span> Like
-                                </button>
-                                <button class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[16px]">reply</span> Reply
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-4">
-                        <div class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0">
-                            <img alt="User" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Linh+Dan&background=random"/>
-                        </div>
-                        <div class="flex-1">
-                            <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
-                                <div class="flex justify-between items-center mb-2">
-                                    <h5 class="font-bold text-[#1c100d] dark:text-white text-sm">Linh Dan</h5>
-                                    <span class="text-xs text-gray-500">5 hours ago</span>
-                                </div>
-                                <p class="text-gray-700 dark:text-gray-300 text-sm">
-                                    Màu đen đẹp quá nhưng sợ bám vân tay ghê. Có ai dùng rồi cho xin review thực tế vụ vân tay với ạ?
-                                </p>
-                            </div>
-                            <div class="flex gap-4 mt-2 ml-2">
-                                <button class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[16px] text-primary">thumb_up</span> 4 Likes
-                                </button>
-                                <button class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[16px]">reply</span> Reply
-                                </button>
-                            </div>
-                            <div class="flex gap-4 mt-4">
-                                <div class="size-8 rounded-full bg-gray-200 overflow-hidden shrink-0">
-                                    <img alt="Author" class="w-full h-full object-cover" src="https://ui-avatars.com/api/?name=Minh+Tech&background=random"/>
+                    <div th:if="${session.user != null}"
+                        class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm mb-10 border border-gray-100 dark:border-gray-700">
+                        <form th:action="@{/comments/post}" method="post">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <div class="flex gap-4">
+                                <div
+                                    class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0 flex items-center justify-center text-gray-500">
+                                    <span class="material-symbols-outlined text-xl">person</span>
                                 </div>
                                 <div class="flex-1">
-                                    <div class="bg-primary/5 p-3 rounded-xl rounded-tl-none border border-primary/10">
-                                        <div class="flex justify-between items-center mb-1">
-                                            <div class="flex items-center gap-2">
-                                                <h5 class="font-bold text-primary text-sm">Minh Tech</h5>
-                                                <span class="bg-primary text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">Author</span>
-                                            </div>
-                                            <span class="text-xs text-gray-500">4 hours ago</span>
-                                        </div>
-                                        <p class="text-gray-700 dark:text-gray-300 text-sm">
-                                            Chào Linh, mình dùng được 1 tuần thấy lớp phủ mới hoạt động khá tốt nha, đỡ hơn bản Midnight của MacBook Air M2 rất nhiều!
-                                        </p>
+                                    <textarea name="content"
+                                        class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm placeholder-gray-400 text-[#1c100d] dark:text-white"
+                                        placeholder="Chia sẻ suy nghĩ của bạn về bài viết này..." rows="3"
+                                        required></textarea>
+                                    <div class="flex justify-end mt-3">
+                                        <button type="submit"
+                                            class="px-6 py-2 bg-primary hover:bg-red-600 text-white font-medium rounded-lg text-sm transition-colors shadow-lg shadow-primary/20">
+                                            Gửi bình luận
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+                    </div>
+                    <div th:unless="${session.user != null}"
+                        class="mb-10 p-4 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
+                        <p class="text-gray-600 dark:text-gray-400">Vui lòng <a th:href="@{/login}"
+                                class="text-primary font-bold hover:underline">đăng nhập</a> để để lại bình luận.</p>
+                    </div>
+
+                    <div class="space-y-8">
+                        <!-- Iterating over comments -->
+                        <div th:each="cmt : ${post.comment}" class="flex gap-4">
+                            <div class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0">
+                                <img alt="User" class="w-full h-full object-cover"
+                                    th:src="${cmt.account != null ? 'https://ui-avatars.com/api/?name=' + cmt.account.fullname + '&background=random' : 'https://ui-avatars.com/api/?name=User&background=random'}" />
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h5 class="font-bold text-[#1c100d] dark:text-white text-sm"
+                                            th:text="${cmt.account != null ? cmt.account.fullname : 'Người dùng ẩn danh'}">
+                                            Hoang Nguyen</h5>
+                                        <span class="text-xs text-gray-500"
+                                            th:text="${#temporals.format(cmt.createAt, 'dd-MM-yyyy HH:mm')}">2 hours
+                                            ago</span>
+                                    </div>
+                                    <p class="text-gray-700 dark:text-gray-300 text-sm" th:text="${cmt.content}">
+                                        Nội dung bình luận.
+                                    </p>
+                                </div>
+                                <div class="flex gap-4 mt-2 ml-2">
+                                    <button
+                                        class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]">thumb_up</span> Like
+                                    </button>
+                                    <button
+                                        class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[16px]">reply</span> Reply
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(post.comment)}" class="text-center py-10">
+                            <p class="text-gray-500 italic">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
                         </div>
                     </div>
-                </div>
             </div>
         </section>
 
     </div>
 </body>
+
 </html>
