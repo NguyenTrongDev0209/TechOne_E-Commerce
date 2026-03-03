@@ -64,19 +64,6 @@
                             <h1 class="text-3xl lg:text-4xl font-bold text-slate-900 dark:text-white leading-tight font-display mb-3"
                                 th:text="${product.name}">Product Name</h1>
                             <div class="flex items-center gap-4 flex-wrap">
-                                <div class="flex items-center gap-1 text-yellow-400">
-                                    <span class="material-symbols-outlined text-[20px] fill-current">star</span>
-                                    <span class="material-symbols-outlined text-[20px] fill-current">star</span>
-                                    <span class="material-symbols-outlined text-[20px] fill-current">star</span>
-                                    <span class="material-symbols-outlined text-[20px] fill-current">star</span>
-                                    <span class="material-symbols-outlined text-[20px]">star_half</span>
-                                    <span class="ml-1 text-sm font-semibold text-slate-900 dark:text-white">4.8</span>
-                                </div>
-                                <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
-                                <a class="text-sm text-primary hover:underline font-medium" href="#reviews"
-                                    th:text="${(product.review != null ? #lists.size(product.review) : 0)} + ' Đánh giá'">124
-                                    Đánh giá</a>
-                                <div class="w-px h-4 bg-gray-300 dark:bg-gray-600"></div>
                                 <span class="text-sm text-gray-500 dark:text-gray-400">SKU: <span id="display-sku"
                                         th:text="${not #lists.isEmpty(variants) ? variants[0].sku : 'N/A'}">SKU-001</span></span>
                             </div>
@@ -299,7 +286,7 @@
                                         th:text="${#numbers.formatDecimal(sim.variant[0].price, 0, 'COMMA', 0, 'POINT')} + '₫'">Old
                                         Price</span>
                                 </div>
-                               
+
                             </div>
                         </a>
                     </div>
@@ -321,11 +308,11 @@
             // Populate variantsMap safely using proper JS inlining
             /*[# th:each="v : ${variants}"]*/
             variantsMap["[[${v.id}]]"] = {
-                "price": [[${ v.price }]],
-                "discount": [[${ v.discount }]],
-                "stock": [[${ v.stock }]],
-                "sku": [[${ v.sku }]],
-                "image": [[${ not #lists.isEmpty(v.variantImages) ? '/images/variants/' + v.variantImages[0].pathImage : '' }]]
+                "price": /*[[${v.price}]]*/ 0,
+                "discount": /*[[${v.discount}]]*/ 0,
+                "stock": /*[[${v.stock}]]*/ 0,
+                "sku": /*[[${v.sku}]]*/ "",
+                "image": /*[[${not #lists.isEmpty(v.variantImages) ? '/images/variants/' + v.variantImages[0].pathImage : ''}]]*/ ""
             };
             /*[/]*/
 

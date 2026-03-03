@@ -40,11 +40,13 @@
                             <button type="button" th:data-code="${item.voucherPercent.code}"
                                 th:data-expiry="${#temporals.format(item.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(item.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
                                 th:data-value="${item.voucherPercent.percentVoucher}"
-                                th:data-minprice="${item.voucherPercent.minPrice}" onclick="handleOpenModal(this)"
+                                th:data-minprice="${item.voucherPercent.minPrice}"
+                                th:data-maxprice="${item.voucherPercent.maxPrice}"
+                                th:data-type="${item.voucherPercent.voucherType}" onclick="handleOpenModal(this)"
                                 class="text-primary text-xs font-bold hover:underline">Điều kiện</button>
                         </div>
                         <p class="text-xs text-gray-500 mt-1 line-clamp-2"
-                            th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(item.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(item.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                            th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(item.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' + (${item.voucherPercent.maxPrice != null} ? ' Giảm tối đa ' + ${#numbers.formatDecimal(item.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' : '')">
                             Áp dụng cho các sản phẩm công nghệ (Laptop, Điện thoại) trong tháng 5.</p>
                     </div>
 
@@ -163,15 +165,30 @@
                 const expiry = button.getAttribute('data-expiry');
                 const value = button.getAttribute('data-value');
                 const minPrice = parseFloat(button.getAttribute('data-minprice'));
+                const maxPrice = button.getAttribute('data-maxprice');
+                const type = button.getAttribute('data-type') === 'true';
 
-                openVoucherModal(code, expiry, value, minPrice);
+                openVoucherModal(code, expiry, value, minPrice, maxPrice, type);
             }
 
-            function openVoucherModal(code, expiry, value, minPrice) {
+            function openVoucherModal(code, expiry, value, minPrice, maxPrice, type) {
                 document.getElementById('modalVoucherCode').innerText = code;
                 document.getElementById('modalExpiry').innerText = expiry;
-                document.getElementById('modalDetail').innerText = 'Giảm ' + value + '% cho đơn hàng từ ' +
-                    minPrice.toLocaleString() + 'đ.';
+
+                let detailText = '';
+                if (type) {
+                    detailText = 'Giảm ' + value + '%';
+                } else {
+                    detailText = 'Miễn phí vận chuyển';
+                }
+
+                detailText += ' cho đơn hàng từ ' + minPrice.toLocaleString() + 'đ.';
+
+                if (maxPrice && maxPrice !== 'null' && maxPrice !== '') {
+                    detailText += ' Giảm tối đa ' + parseFloat(maxPrice).toLocaleString() + 'đ.';
+                }
+
+                document.getElementById('modalDetail').innerText = detailText;
                 document.getElementById('voucherTermsModal').classList.remove('hidden');
             }
         </script>

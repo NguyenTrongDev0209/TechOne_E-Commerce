@@ -51,25 +51,55 @@
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
 							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="pending" data-label="Chờ xử lý">
-								<span>Chờ xử lý</span>
+								data-value="0" data-label="Chưa thanh toán (COD)">
+								<span>Chưa thanh toán (COD)</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
 							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="shipping" data-label="Đang giao">
+								data-value="1" data-label="Chờ thanh toán (Online)">
+								<span>Chờ thanh toán (Online)</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="2" data-label="Đã thanh toán">
+								<span>Đã thanh toán</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="3" data-label="Đã xác nhận (Chưa thanh toán)">
+								<span>Đã xác nhận (Chưa thanh toán)</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="4" data-label="Đang giao">
 								<span>Đang giao</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
 							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="completed" data-label="Hoàn thành">
+								data-value="5" data-label="Chờ khách xác nhận">
+								<span>Chờ khách xác nhận</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="6" data-label="Hoàn thành">
 								<span>Hoàn thành</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
 							</div>
 							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
-								data-value="cancelled" data-label="Đã hủy">
+								data-value="7" data-label="Chưa nhận hàng">
+								<span>Chưa nhận hàng</span>
+								<span
+									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+							</div>
+							<div class="select-status-item cursor-pointer px-3 py-2 text-sm font-medium text-gray-700 rounded hover:bg-primary/5 hover:text-primary transition-colors flex items-center justify-between group"
+								data-value="8" data-label="Đã hủy">
 								<span>Đã hủy</span>
 								<span
 									class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
@@ -191,27 +221,47 @@
 								<td class="px-6 py-4 text-center">
 									<!-- Status mapping -->
 									<span th:if="${order.status == 0}"
-										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100">
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100">
 										<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-										Chờ xử lý
+										Chưa thanh toán (COD)
 									</span>
 									<span th:if="${order.status == 1}"
-										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-100">
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 border border-orange-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+										Chờ thanh toán (Online)
+									</span>
+									<span th:if="${order.status == 2}"
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-100">
 										<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
 										Đã thanh toán
 									</span>
-									<span th:if="${order.status == 2}"
-										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
-										<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-										Đang giao
-									</span>
 									<span th:if="${order.status == 3}"
-										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-green-50 text-green-600 border border-green-100">
-										<span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-										Hoàn thành
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+										Đã xác nhận
 									</span>
 									<span th:if="${order.status == 4}"
-										class="inline-flex items-center justify-center w-32 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-600 border border-indigo-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+										Đang giao
+									</span>
+									<span th:if="${order.status == 5}"
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-cyan-50 text-cyan-600 border border-cyan-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+										Chờ khách xác nhận
+									</span>
+									<span th:if="${order.status == 6}"
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+										Hoàn thành
+									</span>
+									<span th:if="${order.status == 7}"
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-600 border border-red-100">
+										<span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+										Chưa nhận hàng
+									</span>
+									<span th:if="${order.status == 8}"
+										class="inline-flex items-center justify-center w-40 gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
 										<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
 										Đã hủy
 									</span>

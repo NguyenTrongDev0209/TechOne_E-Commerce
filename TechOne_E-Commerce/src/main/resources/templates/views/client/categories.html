@@ -54,30 +54,34 @@
                                         class="material-symbols-outlined text-gray-500 group-open:rotate-180 transition-transform text-[20px]">expand_more</span>
                                 </summary>
                                 <div class="p-4 space-y-3 bg-white dark:bg-[#1e293b]">
-                                    <th:block th:each="brand, iter : ${activeBrands}">
+                                    <th:block th:each="dto, iter : ${activeBrands}">
                                         <div th:if="${iter.index < 5}">
                                             <label class="flex items-center gap-3 cursor-pointer group/item">
-                                                <input type="radio" name="brandId" th:value="${brand.id}"
-                                                    th:checked="${selectedBrandId == brand.id}"
+                                                <input type="radio" name="brandId" th:value="${dto.brand.id}"
+                                                    th:checked="${selectedBrandId == dto.brand.id}"
                                                     onchange="this.form.submit()"
                                                     class="size-4 rounded-full border-gray-300 text-primary focus:ring-primary/20 cursor-pointer" />
                                                 <span
                                                     class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors"
-                                                    th:text="${brand.name}">Brand Name</span>
+                                                    th:text="${dto.brand.name}">Brand Name</span>
+                                                <span class="text-[10px] text-gray-400 ml-auto"
+                                                    th:text="${dto.productCount}">0</span>
                                             </label>
                                         </div>
                                         <div th:if="${iter.index == 5}" id="brand-list-more"
                                             class="hidden space-y-3 pt-3">
-                                            <th:block th:each="moreBrand : ${activeBrands}"
-                                                th:if="${moreBrandStat.index >= 5}">
+                                            <th:block th:each="moreDto : ${activeBrands}"
+                                                th:if="${moreDtoStat.index >= 5}">
                                                 <label class="flex items-center gap-3 cursor-pointer group/item">
-                                                    <input type="radio" name="brandId" th:value="${moreBrand.id}"
-                                                        th:checked="${selectedBrandId == moreBrand.id}"
+                                                    <input type="radio" name="brandId" th:value="${moreDto.brand.id}"
+                                                        th:checked="${selectedBrandId == moreDto.brand.id}"
                                                         onchange="this.form.submit()"
                                                         class="size-4 rounded-full border-gray-300 text-primary focus:ring-primary/20 cursor-pointer" />
                                                     <span
                                                         class="text-sm text-gray-700 dark:text-gray-300 group-hover/item:text-primary transition-colors"
-                                                        th:text="${moreBrand.name}">Brand Name</span>
+                                                        th:text="${moreDto.brand.name}">Brand Name</span>
+                                                    <span class="text-[10px] text-gray-400 ml-auto"
+                                                        th:text="${moreDto.productCount}">0</span>
                                                 </label>
                                             </th:block>
                                         </div>
@@ -273,13 +277,6 @@
                                 </a>
 
                                 <div class="flex-1 flex flex-col px-1">
-                                    <div class="flex items-center gap-1.5 mb-2">
-                                        <span
-                                            class="material-symbols-outlined text-yellow-400 text-[16px] fill-[1]">star</span>
-                                        <span class="text-[13px] font-bold text-[#1c100d] dark:text-white">4.7</span>
-                                        <span class="text-[13px] text-gray-400"
-                                            th:text="'(' + ${#lists.size(p.review)} + ')'">(45)</span>
-                                    </div>
 
                                     <a th:href="@{/product/product-detail/{slug}(slug=${p.slug})}"
                                         class="text-sm md:text-[15px] font-bold text-[#1c100d] dark:text-white leading-tight mb-3 line-clamp-2 group-hover:text-primary transition-colors"

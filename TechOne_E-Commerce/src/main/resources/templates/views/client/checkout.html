@@ -164,6 +164,9 @@
                             <input type="hidden" id="selected-address-id" name="addressId"
                                 th:value="${defaultAddress != null ? defaultAddress.id : ''}">
 
+                            <!-- Hidden inputs for selected item IDs -->
+                            <input type="hidden" th:each="id : ${param.itemIds}" name="itemIds" th:value="${id}">
+
                             <div
                                 class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
                                 <div class="relative">
@@ -364,7 +367,7 @@
                                             </div>
                                         </div>
                                     </label>
-                                    <label class="block cursor-pointer group">
+                                    <!-- <label class="block cursor-pointer group">
                                         <input class="peer sr-only" name="paymentMethod" type="radio" value="CARD" />
                                         <div
                                             class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
@@ -403,7 +406,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </label>
+                                    </label> -->
                                     <label class="block cursor-pointer group">
                                         <input class="peer sr-only" name="paymentMethod" type="radio" value="QR" />
                                         <div
@@ -417,7 +420,7 @@
                                             </div>
                                             <div class="flex-1">
                                                 <div class="font-medium text-gray-900 dark:text-white">Thanh toán qua mã
-                                                    QR
+                                                    QR (PayOS)
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">VietQR, Chuyển
                                                     khoản ngân
@@ -426,6 +429,24 @@
                                             </div>
                                         </div>
                                     </label>
+                                    <!-- <label class="block cursor-pointer group">
+                                        <input class="peer sr-only" name="paymentMethod" type="radio" value="VNPAY" />
+                                        <div
+                                            class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                            <div
+                                                class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                            </div>
+                                            <div
+                                                class="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl mr-4">
+                                                <span class="material-symbols-outlined">account_balance</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-gray-900 dark:text-white">VNPAY</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">Thanh toán qua
+                                                    cổng VNPAY (Thẻ ATM, Visa, QR)</div>
+                                            </div>
+                                        </div>
+                                    </label> -->
                                 </div>
                             </div>
 
@@ -586,11 +607,13 @@
                                         th:data-expiry="${#temporals.format(vItem.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(vItem.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
                                         th:data-value="${vItem.voucherPercent.percentVoucher}"
                                         th:data-minprice="${vItem.voucherPercent.minPrice}"
+                                        th:data-maxprice="${vItem.voucherPercent.maxPrice}"
+                                        th:data-type="${vItem.voucherPercent.voucherType}"
                                         onclick="showVoucherTerms(this)"
                                         class="text-primary text-[10px] font-bold hover:underline">Điều kiện</button>
                                 </div>
                                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"
-                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' + (${vItem.voucherPercent.maxPrice != null} ? ' Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' : '')">
                                     Đơn từ 500k</p>
                             </div>
 
@@ -655,11 +678,13 @@
                                         th:data-expiry="${#temporals.format(vItem.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(vItem.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
                                         th:data-value="${vItem.voucherPercent.percentVoucher}"
                                         th:data-minprice="${vItem.voucherPercent.minPrice}"
+                                        th:data-maxprice="${vItem.voucherPercent.maxPrice}"
+                                        th:data-type="${vItem.voucherPercent.voucherType}"
                                         onclick="showVoucherTerms(this)"
                                         class="text-primary text-[10px] font-bold hover:underline">Điều kiện</button>
                                 </div>
                                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"
-                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' + (${vItem.voucherPercent.maxPrice != null} ? ' Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' : '')">
                                     Đơn từ 500k</p>
                             </div>
 
@@ -839,11 +864,19 @@
                 const expiry = button.getAttribute('data-expiry');
                 const value = button.getAttribute('data-value');
                 const minPrice = parseFloat(button.getAttribute('data-minprice'));
+                const maxPrice = button.getAttribute('data-maxprice');
+                const type = button.getAttribute('data-type') === 'true';
 
                 document.getElementById('modalVoucherCode').innerText = code;
                 document.getElementById('modalExpiry').innerText = expiry;
-                document.getElementById('modalDetail').innerText = 'Giảm ' + value + '% cho đơn hàng từ ' +
-                    minPrice.toLocaleString() + 'đ.';
+
+                let detailText = type ? 'Giảm ' + value + '%' : 'Miễn phí vận chuyển';
+                detailText += ' cho đơn hàng từ ' + minPrice.toLocaleString() + 'đ.';
+                if (maxPrice && maxPrice !== 'null' && maxPrice !== '') {
+                    detailText += ' Giảm tối đa ' + parseFloat(maxPrice).toLocaleString() + 'đ.';
+                }
+
+                document.getElementById('modalDetail').innerText = detailText;
 
                 // Tạm ẩn modal danh sách voucher
                 document.getElementById('voucher-modal').classList.add('hidden');
@@ -967,9 +1000,13 @@
                     return;
                 }
 
+                // Lấy giảm giá sản phẩm để tính base amount
+                const productDiscountForCalc = parseFloat(document.getElementById('discount-product-amount')?.getAttribute('data-value')) || 0;
+                const baseAmount = subtotal - productDiscountForCalc; // Giá sau giảm sản phẩm
+
                 let discount = 0;
                 if (isDiscount) {
-                    discount = subtotal * (numPercent / 100);
+                    discount = baseAmount * (numPercent / 100);
                 } else {
                     // Free Shipping voucher
                     discount = shippingFee * (numPercent / 100);
@@ -1041,8 +1078,10 @@
                 let voucherDiscount = 0;
                 if (vId) {
                     const isDiscount = (String(vType) === 'true');
+                    const productDisc = productDiscountEl ? (parseFloat(productDiscountEl.getAttribute('data-value')) || 0) : 0;
+                    const baseAmount = subtotal - productDisc; // Giá sau giảm sản phẩm
                     if (isDiscount) {
-                        voucherDiscount = subtotal * (vPercent / 100);
+                        voucherDiscount = baseAmount * (vPercent / 100);
                     } else {
                         voucherDiscount = shippingFee * (vPercent / 100);
                     }
@@ -1096,8 +1135,10 @@
                     updateTotals();
                 } catch (error) {
                     console.error('Error fetching shipping fee:', error);
-                    feeEl.innerText = 'Miễn phí'; // Fallback
-                    feeEl.setAttribute('data-value', '0');
+                    // Fallback to 50,000₫ instead of Miễn phí
+                    const fallbackFee = 50000;
+                    feeEl.innerText = formatCurrency(fallbackFee).replace(/\s/g, '');
+                    feeEl.setAttribute('data-value', fallbackFee);
                     updateTotals();
                 }
             }
@@ -1210,8 +1251,8 @@
                 }
 
                 // Kiểm tra thông báo từ Server (Thymeleaf)
-                const error = [[${ error }]];
-                const message = [[${ message }]];
+                const error = /*[[${error}]]*/ null;
+                const message = /*[[${message}]]*/ null;
                 if (error) showStatusModal('error', 'Lỗi', error);
                 if (message) showStatusModal('success', 'Thông báo', message);
             });

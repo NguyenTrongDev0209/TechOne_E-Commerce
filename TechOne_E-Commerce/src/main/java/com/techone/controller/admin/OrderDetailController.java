@@ -32,7 +32,28 @@ public class OrderDetailController {
 		if (order != null) {
 			order.setStatus(status);
 			orderRepository.save(order);
+
+			// If status is 4 (Shipping), simulate 10s then update to 5 (Waiting for User
+			// Confirmation)
+			if (status == 4) {
+				simulateShipping(id);
+			}
 		}
 		return "redirect:/admin/order-list/order-detail?id=" + id;
+	}
+
+	@org.springframework.scheduling.annotation.Async
+	public void simulateShipping(Integer orderId) {
+		try {
+			Thread.sleep(10000); // 10 seconds
+			Order order = orderRepository.findById(orderId).orElse(null);
+			if (order != null && order.getStatus() == 4) {
+				order.setStatus(5);
+				orderRepository.save(order);
+				System.out.println("DEBUG: Order #" + orderId + " auto-updated from 4 to 5 after 10s simulation.");
+			}
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		}
 	}
 }

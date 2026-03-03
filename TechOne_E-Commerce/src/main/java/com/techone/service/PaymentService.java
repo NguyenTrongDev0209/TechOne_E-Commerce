@@ -2,8 +2,10 @@ package com.techone.service;
 
 import com.techone.model.Order;
 import com.techone.model.Transaction;
+import com.techone.model.VoucherItem;
 import com.techone.repository.OrderRepository;
 import com.techone.repository.TransactionRepository;
+import com.techone.repository.VoucherItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ public class PaymentService {
     private final PayOS payOS;
     private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
+    private final OrderEmailService orderEmailService;
+    private final VoucherItemRepository voucherItemRepository;
 
     @Transactional
     public void processWebhook(Object body) throws Exception {
@@ -130,6 +134,20 @@ public class PaymentService {
             if (order.getStatus() != 2) {
                 order.setStatus(2); // 2: Paid/Success
                 orderRepository.save(order);
+
+                // Mark voucher là đã sử dụng khi đơn online được xác nhận thanh toán
+                if (order.getAppliedVoucher() != null && order.getAppliedVoucher().getStatus() == 0) {
+                    VoucherItem voucher = order.getAppliedVoucher();
+                    voucher.setStatus(1);
+                    voucherItemRepository.save(voucher);
+                }
+
+                // Send Invoice Email for Online Payment
+                try {
+                    orderEmailService.sendOrderInvoice(order);
+                } catch (Exception e) {
+                    System.err.println("DEBUG: Failed to send Online invoice email: " + e.getMessage());
+                }
             }
 
             // 2. Clear duplicated transaction if any

@@ -56,6 +56,12 @@ public class Order {
 	public Double totalAmount = 0.0;
 	public Double voucherDiscount = 0.0;
 	public Long orderCode;
+	public String checkoutUrl;
+	@Column(columnDefinition = "nvarchar(max)")
+	public String qrCode;
+	public String accountNumber;
+	public String accountName;
+	public String bin;
 
 	@ManyToOne
 	@JoinColumn(name = "voucher_item_id")

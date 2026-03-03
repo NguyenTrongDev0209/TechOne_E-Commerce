@@ -21,7 +21,10 @@ public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
 
     Optional<CartItem> findByCartAndVariant(Cart cart, Variant variant);
 
-    Optional<CartItem> findByCartIdAndVariantId(Integer cartId, Integer variantId);
+    @org.springframework.data.jpa.repository.Query("SELECT ci FROM CartItem ci WHERE ci.cart.id = :cartId AND ci.variant.id = :variantId")
+    Optional<CartItem> findByCartIdAndVariantId(
+            @org.springframework.data.repository.query.Param("cartId") Integer cartId,
+            @org.springframework.data.repository.query.Param("variantId") Integer variantId);
 
     void deleteByVariant(Variant variant);
 
