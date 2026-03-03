@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.techone.model.Account;
 import com.techone.model.ForgotPassword;
@@ -27,7 +31,7 @@ public class ConfirmOtpController {
 
     @GetMapping("/confirm-otp")
     public String showConfirmOtp() {
-        String email = SessionUtils.get("forgotPasswordEmail");
+        String email = SessionUtils.get("forgotPasswordTarget");
         if (email == null) {
             return "redirect:/forgot-password";
         }
@@ -36,12 +40,16 @@ public class ConfirmOtpController {
 
     @PostMapping("/confirm-otp")
     public String verifyOtp(@RequestParam("otp") String otp, Model model) {
-        String email = SessionUtils.get("forgotPasswordEmail");
+        String email = SessionUtils.get("forgotPasswordTarget");
         if (email == null) {
             return "redirect:/forgot-password";
         }
 
-        Optional<Account> userOpt = accountRepository.findByEmail(email);
+        String method = SessionUtils.get("forgotPasswordMethod");
+        Optional<Account> userOpt = "EMAIL".equalsIgnoreCase(method) ? 
+                                    accountRepository.findByEmail(email) : 
+                                    accountRepository.findByPhone(email);
+        
         if (userOpt.isEmpty()) {
             return "redirect:/forgot-password";
         }
@@ -63,5 +71,14 @@ public class ConfirmOtpController {
         // OTP is valid
         SessionUtils.set("otpVerified", true);
         return "redirect:/reset-password";
+    }
+
+    @PostMapping("/confirm-otp/api/verify-success")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> verifyPhoneSuccess() {
+        Map<String, Object> response = new HashMap<>();
+        SessionUtils.set("otpVerified", true);
+        response.put("success", true);
+        return ResponseEntity.ok(response);
     }
 }
