@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -55,6 +56,7 @@ public class Post {
 	@JoinColumn(name = "account_id")
 	Account account;
 	
+	@NotNull(message = "Vui lòng chọn danh mục bài viết")
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	Category category;

@@ -89,11 +89,6 @@
                         thống</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="refreshPage()"
-                        class="flex items-center gap-2 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary/50 text-gray-700 dark:text-gray-200 px-4 py-2.5 rounded text-sm font-bold transition-all shadow-sm">
-                        <span class="material-symbols-outlined text-[18px]">refresh</span>
-                        Làm mới
-                    </button>
                     <a th:href="@{/admin/post-list/post-form}"
                         class="bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-primary/20 shrink-0">
                         <span class="material-symbols-outlined text-[20px]">add</span>
@@ -112,7 +107,7 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng bài
                             viết</p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" th:text="${#lists.size(posts)}">142
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" th:text="${totalPosts}">142
                         </h3>
                     </div>
                 </div>
@@ -124,8 +119,7 @@
                     <div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tạm ẩn
                         </p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white"
-                            th:text="${#lists.size(posts.?[!status])}">5</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" th:text="${hiddenPosts}">5</h3>
                     </div>
                 </div>
                 <div
@@ -137,8 +131,8 @@
                         <p class="text-xs text-gray-500 dark:text-gray-400 font-bold uppercase tracking-wide">Tổng lượt
                             xem
                         </p>
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white"
-                            th:text="${#aggregates.sum(posts.![viewCount]) ?: 0}">12.5k</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white" th:text="${totalViews ?: 0}">12.5k
+                        </h3>
                     </div>
                 </div>
                 <div
@@ -155,24 +149,28 @@
             </div>
 
             <!-- Filter Section -->
-            <div
+            <form th:action="@{/admin/post-list}" method="GET" id="searchForm"
                 class="bg-white dark:bg-[#1e293b] rounded-xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col md:flex-row gap-4 mb-6 relative z-20 overflow-visible items-end">
                 <!-- Search -->
                 <div class="flex-1 relative w-full">
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="material-symbols-outlined text-gray-400">search</span>
                     </div>
-                    <input
+                    <input name="title" th:value="${paramTitle}"
                         class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
                         placeholder="Tìm kiếm bài viết..." type="text" />
+                    <input type="hidden" name="size" th:value="${pageSize}">
+                    <input type="hidden" name="page" value="0">
                 </div>
 
                 <!-- Status Dropdown -->
                 <div class="w-full md:w-48 relative z-30">
-                    <input type="hidden" name="status" id="statusInput" value="all">
-                    <button id="statusFilterBtn"
+                    <input type="hidden" name="status" id="statusInput" th:value="${paramStatus}">
+                    <button type="button" id="statusFilterBtn"
                         class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                        <span id="statusFilterLabel">Tất cả trạng thái</span>
+                        <span id="statusFilterLabel"
+                            th:text="${paramStatus == 'published' ? 'Đã xuất bản' : (paramStatus == 'pending' ? 'Tạm ẩn' : 'Tất cả trạng thái')}">Tất
+                            cả trạng thái</span>
                         <span id="statusDropdownIcon"
                             class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
                     </button>
@@ -205,7 +203,7 @@
                 <!-- Date Filters -->
                 <div class="relative w-full md:w-48">
                     <div class="relative">
-                        <input id="dateFrom"
+                        <input id="dateFrom" name="dateFrom" th:value="${paramDateFrom}"
                             class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
                             placeholder="Từ ngày" type="text" readonly="readonly" />
                         <div
@@ -219,7 +217,7 @@
                 </div>
                 <div class="relative w-full md:w-48">
                     <div class="relative">
-                        <input id="dateTo"
+                        <input id="dateTo" name="dateTo" th:value="${paramDateTo}"
                             class="block w-full pl-3 pr-10 py-2.5 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary cursor-pointer shadow-sm"
                             placeholder="Đến ngày" type="text" readonly="readonly" />
                         <div
@@ -228,7 +226,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="w-full md:w-auto flex items-center gap-2">
+                    <button type="button" onclick="refreshPage()"
+                        class="flex w-full md:w-auto items-center justify-center gap-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">refresh</span>
+                        Làm mới
+                    </button>
+                    <button type="submit"
+                        class="flex w-full md:w-auto items-center justify-center bg-primary hover:bg-orange-700 text-white px-4 py-2.5 rounded text-sm font-medium transition-all shadow-sm">
+                        Lọc kết quả
+                    </button>
+                </div>
+            </form>
 
             <!-- Content Card -->
             <div
@@ -276,9 +285,10 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                            <tr th:each="post, stat : ${posts}"
+                            <tr th:each="post, stat : ${posts.content}"
                                 class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group">
-                                <td class="px-6 py-4 font-medium text-slate-500 text-center" th:text="${stat.count}">1
+                                <td class="px-6 py-4 font-medium text-slate-500 text-center"
+                                    th:text="${posts.number * posts.size + stat.count}">1
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex gap-4">
@@ -318,7 +328,6 @@
                                     <div class="flex flex-col text-xs" th:if="${post.createAt != null}">
                                         <span
                                             th:text="${#temporals.format(post.createAt, 'dd/MM/yyyy')}">20/12/2025</span>
-                                        <span th:text="${#temporals.format(post.createAt, 'HH:mm')}">14:30</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-center">
@@ -357,10 +366,11 @@
                     class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
                     <div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
                         Đang xem <span class="font-medium text-gray-900 dark:text-white"
-                            th:text="${#lists.size(posts) > 0 ? 1 : 0}">1</span> đến <span
-                            class="font-medium text-gray-900 dark:text-white" th:text="${#lists.size(posts)}">10</span>
+                            th:text="${posts.totalElements > 0 ? (posts.number * posts.size + 1) : 0}">1</span> đến
+                        <span class="font-medium text-gray-900 dark:text-white"
+                            th:text="${posts.number * posts.size + posts.numberOfElements}">10</span>
                         trong tổng số <span class="font-medium text-gray-900 dark:text-white"
-                            th:text="${#lists.size(posts)}">142</span> bài viết
+                            th:text="${posts.totalElements}">142</span> bài viết
                     </div>
 
                     <div class="flex items-center gap-2">
@@ -371,7 +381,7 @@
                             <div class="relative">
                                 <button onclick="togglePaginationDropdown()" id="paginationDropdownBtn"
                                     class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
-                                    <span id="itemsPerPageLabel">10</span>
+                                    <span id="itemsPerPageLabel" th:text="${pageSize}">10</span>
                                     <span id="paginationDropdownIcon"
                                         class="material-symbols-outlined text-gray-400 text-[16px] transition-transform duration-200">expand_more</span>
                                 </button>
@@ -399,18 +409,41 @@
                         </div>
 
                         <nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
-                            <button
-                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-gray-100 border border-e-0 border-gray-300 rounded-s dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors cursor-not-allowed">
+                            <a th:if="${posts.hasPrevious()}"
+                                th:href="@{/admin/post-list(title=${paramTitle}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${posts.number - 1}, size=${pageSize})}"
+                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors">
                                 <span class="material-symbols-outlined text-[16px]">chevron_left</span>
-                            </button>
-                            <button aria-current="page"
-                                class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-orange-700 transition-colors">
-                                1
-                            </button>
-                            <button
-                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-gray-100 border border-gray-300 rounded-e dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors cursor-not-allowed">
+                            </a>
+                            <div th:unless="${posts.hasPrevious()}"
+                                class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-400 bg-gray-50 border border-e-0 border-gray-300 rounded-s dark:bg-gray-800/50 dark:border-gray-700 dark:text-gray-600 transition-colors cursor-not-allowed">
+                                <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                            </div>
+
+                            <!-- Simple Page Numbers -->
+                            <th:block th:each="pageNum : ${#numbers.sequence(0, posts.totalPages - 1)}"
+                                th:if="${posts.totalPages > 0}">
+                                <a th:if="${pageNum == posts.number}" aria-current="page"
+                                    class="z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-orange-700 transition-colors"
+                                    th:text="${pageNum + 1}">
+                                    1
+                                </a>
+                                <a th:unless="${pageNum == posts.number}"
+                                    th:href="@{/admin/post-list(title=${paramTitle}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${pageNum}, size=${pageSize})}"
+                                    class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors"
+                                    th:text="${pageNum + 1}">
+                                    2
+                                </a>
+                            </th:block>
+
+                            <a th:if="${posts.hasNext()}"
+                                th:href="@{/admin/post-list(title=${paramTitle}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${posts.number + 1}, size=${pageSize})}"
+                                class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 transition-colors">
                                 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                            </button>
+                            </a>
+                            <div th:unless="${posts.hasNext()}"
+                                class="flex items-center justify-center size-7 leading-tight text-gray-400 bg-gray-50 border border-gray-300 rounded-e dark:bg-gray-800/50 dark:border-gray-700 dark:text-gray-600 transition-colors cursor-not-allowed">
+                                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                            </div>
                         </nav>
                     </div>
                 </div>
@@ -519,12 +552,10 @@
             }
 
             function selectItemsPerPage(value) {
-                document.getElementById('itemsPerPageLabel').textContent = value;
-                const dropdown = document.getElementById('paginationDropdown');
-                dropdown.classList.add('hidden');
-                const icon = document.getElementById('paginationDropdownIcon');
-                if (icon) icon.style.transform = 'rotate(0deg)';
-                // Add logic here to reload page or update query param if needed
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('size', value);
+                urlParams.set('page', '0');
+                window.location.search = urlParams.toString();
             }
 
             // Global Click to Close
@@ -605,7 +636,7 @@
         </style>
         <script>
             function refreshPage() {
-                window.location.reload();
+                window.location.href = '/admin/post-list';
             }
 
             // Toast Notification Logic

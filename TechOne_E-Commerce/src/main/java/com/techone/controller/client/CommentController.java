@@ -27,6 +27,7 @@ public class CommentController {
     @PostMapping("/comments/post")
     public String postComment(@RequestParam("postId") Integer postId,
                               @RequestParam("content") String content,
+                              @RequestParam(value = "parentId", required = false) Integer parentId,
                               RedirectAttributes ra) {
         
         Account user = SessionUtils.get("user");
@@ -52,6 +53,13 @@ public class CommentController {
         comment.setAccount(user);
         comment.setCreateAt(LocalDateTime.now());
         comment.setStatus(true);
+
+        if (parentId != null) {
+            Comment parent = commentRepository.findById(parentId).orElse(null);
+            if (parent != null) {
+                comment.setParent(parent);
+            }
+        }
 
         commentRepository.save(comment);
 
