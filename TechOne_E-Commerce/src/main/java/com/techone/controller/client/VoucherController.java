@@ -37,7 +37,7 @@ public class VoucherController {
         Account user = SessionUtils.get("user");
         List<VoucherItem> voucherItems;
         if (user != null) {
-            voucherItems = voucherItemRepository.findByAccount(user);
+            voucherItems = voucherItemRepository.findByAccountAndStatus(user, 0);
         } else {
             voucherItems = Collections.emptyList();
         }

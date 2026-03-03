@@ -17,19 +17,22 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <span class="material-symbols-outlined text-gray-400">search</span>
                     </div>
-                    <input
+                    <input id="searchInput"
                         class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm"
-                        placeholder="Tìm đơn hàng theo Mã đơn hoặc Tên sản phẩm..." type="text" />
+                        placeholder="Tìm đơn hàng theo Mã đơn hoặc Tên sản phẩm..." type="text" th:value="${search}" />
                 </div>
-                <div class="w-full md:w-48">
+                <div class="w-full md:w-64">
                     <div class="relative">
                         <!-- Custom Status Filter Dropdown -->
                         <div class="relative">
-                            <input type="hidden" name="status" id="statusInput" value="all">
+                            <input type="hidden" name="status" id="statusInput"
+                                th:value="${status != null ? status : 'all'}">
 
                             <button id="statusFilterBtn" onclick="toggleStatusDropdown()"
                                 class="flex items-center justify-between w-full px-4 py-2.5 text-sm font-medium border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
-                                <span id="statusFilterLabel">Tất cả trạng thái</span>
+                                <span id="statusFilterLabel"
+                                    th:text="${statusLabel != null ? statusLabel : 'Tất cả trạng thái'}">Tất cả trạng
+                                    thái</span>
                                 <span id="statusDropdownIcon"
                                     class="material-symbols-outlined text-gray-400 text-[20px] transition-transform duration-200">expand_more</span>
                             </button>
@@ -43,25 +46,55 @@
                                         <span
                                             class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                                     </div>
-                                    <div onclick="selectStatus('processing', 'Đang xử lý')"
+                                    <div onclick="selectStatus('0', 'Chưa thanh toán (COD)')"
                                         class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Đang xử lý</span>
+                                        <span>Chưa thanh toán (COD)</span>
                                         <span
                                             class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                                     </div>
-                                    <div onclick="selectStatus('shipping', 'Đang giao hàng')"
+                                    <div onclick="selectStatus('1', 'Chờ thanh toán (Online)')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Chờ thanh toán (Online)</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectStatus('2', 'Đã thanh toán')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Đã thanh toán</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectStatus('3', 'Đã xác nhận')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Đã xác nhận</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectStatus('4', 'Đang giao hàng')"
                                         class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
                                         <span>Đang giao hàng</span>
                                         <span
                                             class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                                     </div>
-                                    <div onclick="selectStatus('delivered', 'Đã giao hàng')"
+                                    <div onclick="selectStatus('5', 'Chờ xác nhận')"
                                         class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
-                                        <span>Đã giao hàng</span>
+                                        <span>Chờ xác nhận</span>
                                         <span
                                             class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
                                     </div>
-                                    <div onclick="selectStatus('cancelled', 'Đã hủy')"
+                                    <div onclick="selectStatus('6', 'Hoàn tất')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Hoàn tất</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectStatus('7', 'Chưa nhận hàng')"
+                                        class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
+                                        <span>Chưa nhận hàng</span>
+                                        <span
+                                            class="material-symbols-outlined text-[18px] text-primary opacity-0 group-hover:opacity-100 transition-opacity">check</span>
+                                    </div>
+                                    <div onclick="selectStatus('8', 'Đã hủy')"
                                         class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 rounded-lg hover:bg-primary/5 hover:text-primary cursor-pointer transition-colors flex items-center justify-between group">
                                         <span>Đã hủy</span>
                                         <span
@@ -91,184 +124,64 @@
 
         <div class="space-y-4">
 
-            <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div th:each="order : ${orders}"
+                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+                th:classappend="${order.status == 4} ? 'opacity-75' : ''">
                 <div
                     class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
                     <div class="flex items-center gap-4">
                         <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors"
-                            href="#">#ORD-9921</a>
+                            th:href="@{/account/orders/order-detail(id=${order.id})}"
+                            th:text="'#' + ${order.id}">#ORD-9921</a>
                         <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                             <span class="material-symbols-outlined text-sm">schedule</span>
-                            20/05/2024 14:30
+                            <span th:text="${#temporals.format(order.createAt, 'dd/MM/yyyy HH:mm')}">20/05/2024
+                                14:30</span>
                         </span>
                     </div>
-                    <span
-                        class="inline-flex items-center bg-orange-100 text-orange-800 text-xs font-medium px-3 py-1 rounded-full border border-orange-200">
-                        <span class="w-2 h-2 mr-1.5 bg-primary rounded-full"></span>
-                        Đang xử lý
-                    </span>
-                </div>
-                <div class="p-6">
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="flex-1 flex gap-4">
-                            <div
-                                class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
-                                <img alt="Dell XPS" class="w-full h-full object-cover"
-                                    src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=200" />
-                            </div>
-                            <div class="flex flex-col justify-start">
-                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">Dell
-                                    XPS 13
-                                    Plus - Core i7/16GB/512GB</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Phân loại: Bạc kim</p>
-                            </div>
-                        </div>
-                        <div
-                            class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
-                            <div class="text-xl font-bold text-primary mb-4">35.990.000đ</div>
-                            <div class="flex gap-2 w-full md:w-auto">
-                                <button
-                                    class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
-                                    Hủy đơn
-                                </button>
-                                <a th:href="@{/account/orders/order-detail}"
-                                    class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
-                                    Xem chi tiết
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                <div
-                    class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex items-center gap-4">
-                        <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors"
-                            href="#">#ORD-8854</a>
-                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">schedule</span>
-                            15/05/2024 09:12
-                        </span>
-                    </div>
-                    <span
+                    <!-- Status Labels -->
+                    <span th:if="${order.status == 0}"
+                        class="inline-flex items-center bg-orange-100 text-orange-800 text-xs font-medium px-3 py-1 rounded-full border border-orange-200">
+                        <span class="w-2 h-2 mr-1.5 bg-orange-500 rounded-full"></span>
+                        Chưa thanh toán (COD)
+                    </span>
+                    <span th:if="${order.status == 1}"
+                        class="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full border border-blue-200">
+                        <span class="w-2 h-2 mr-1.5 bg-blue-500 rounded-full"></span>
+                        Chờ thanh toán (Online)
+                    </span>
+                    <span th:if="${order.status == 2}"
                         class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-3 py-1 rounded-full border border-green-200">
                         <span class="w-2 h-2 mr-1.5 bg-green-500 rounded-full"></span>
+                        Đã thanh toán
+                    </span>
+                    <span th:if="${order.status == 3}"
+                        class="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full border border-blue-200">
+                        <span class="w-2 h-2 mr-1.5 bg-blue-500 rounded-full"></span>
+                        Đã xác nhận
+                    </span>
+                    <span th:if="${order.status == 4}"
+                        class="inline-flex items-center bg-indigo-100 text-indigo-800 text-xs font-medium px-3 py-1 rounded-full border border-indigo-200">
+                        <span class="w-2 h-2 mr-1.5 bg-indigo-500 rounded-full"></span>
+                        Đang giao hàng
+                    </span>
+                    <span th:if="${order.status == 5}"
+                        class="inline-flex items-center bg-cyan-100 text-cyan-800 text-xs font-medium px-3 py-1 rounded-full border border-cyan-200">
+                        <span class="w-2 h-2 mr-1.5 bg-cyan-500 rounded-full"></span>
+                        Chờ xác nhận
+                    </span>
+                    <span th:if="${order.status == 6}"
+                        class="inline-flex items-center bg-emerald-100 text-emerald-800 text-xs font-medium px-3 py-1 rounded-full border border-emerald-200">
+                        <span class="w-2 h-2 mr-1.5 bg-emerald-500 rounded-full"></span>
                         Giao thành công
                     </span>
-                </div>
-                <div class="p-6">
-                    <div class="flex flex-col md:flex-row gap-6">
-                        <div class="flex-1 flex flex-col gap-3">
-                            <div class="flex gap-4">
-                                <div
-                                    class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
-                                    <img alt="Sony Headphones" class="w-full h-full object-cover"
-                                        src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=200" />
-                                </div>
-                                <div class="flex flex-col justify-start">
-                                    <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">
-                                        Sony
-                                        WH-1000XM5 Wireless Noise Cancelling</h4>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Đen</p>
-                                </div>
-                            </div>
-                            <div class="md:flex gap-4 items-center pl-24">
-                                <button onclick="toggleOrderItems('order-items-8854', this)"
-                                    class="flex items-center gap-1 text-xs font-medium text-primary hover:text-orange-700 transition-colors focus:outline-none select-none">
-                                    <span>Xem thêm 2 sản phẩm</span>
-                                    <span
-                                        class="material-symbols-outlined text-[18px] transition-transform duration-300">expand_more</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div
-                            class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
-                            <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
-                            <div class="text-xl font-bold text-primary mb-4">9.590.000đ</div>
-                            <div class="flex gap-2 w-full md:w-auto">
-                                <button
-                                    class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm shadow-orange-500/20">
-                                    Mua lại
-                                </button>
-                                <a th:href="@{/account/orders/order-detail}"
-                                    class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
-                                    Xem chi tiết
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Hidden Items -->
-                    <div id="order-items-8854"
-                        class="hidden mt-6 pt-6 border-t border-dashed border-gray-200 dark:border-gray-700 flex flex-col gap-4 animate-fade-in">
-
-                        <!-- Extra Item 1 -->
-                        <!-- Extra Item 1 -->
-                        <div class="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-start">
-                            <div
-                                class="relative size-16 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
-                                <img alt="Logitech Mouse" class="w-full h-full object-cover"
-                                    src="https://images.unsplash.com/photo-1615663245857-acda57730a57?auto=format&fit=crop&q=80&w=200" />
-                            </div>
-                            <div class="min-w-0">
-                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-0.5 line-clamp-1">
-                                    Chuột
-                                    Logitech MX Master 3S</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Màu: Xám nhạt</p>
-                            </div>
-                            <div class="text-right mr-12 self-center">
-                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">SL
-                                    : 1</span>
-                            </div>
-                            <div
-                                class="text-base font-bold text-[#1c100d] dark:text-white text-right whitespace-nowrap self-center">
-                                2.690.000đ</div>
-                        </div>
-
-                        <!-- Extra Item 2 -->
-                        <!-- Extra Item 2 -->
-                        <div class="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-start">
-                            <div
-                                class="relative size-16 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0">
-                                <img alt="Mechanical Keyboard" class="w-full h-full object-cover"
-                                    src="https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=200" />
-                            </div>
-                            <div class="min-w-0">
-                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-0.5 line-clamp-1">Bàn
-                                    phím cơ Keychron K2 Pro</h4>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Switch: Brown</p>
-                            </div>
-                            <div class="text-right mr-12 self-center">
-                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">SL
-                                    : 1</span>
-                            </div>
-                            <div
-                                class="text-base font-bold text-[#1c100d] dark:text-white text-right whitespace-nowrap self-center">
-                                2.850.000đ</div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <div
-                class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden hover:shadow-md transition-shadow opacity-75">
-                <div
-                    class="bg-gray-50 dark:bg-gray-800 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex flex-wrap items-center justify-between gap-3">
-                    <div class="flex items-center gap-4">
-                        <a class="font-bold text-lg text-[#1c100d] dark:text-white hover:text-primary transition-colors"
-                            href="#">#ORD-7762</a>
-                        <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-sm">schedule</span>
-                            10/05/2024 18:45
-                        </span>
-                    </div>
-                    <span
+                    <span th:if="${order.status == 7}"
+                        class="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-3 py-1 rounded-full border border-red-200">
+                        <span class="w-2 h-2 mr-1.5 bg-red-500 rounded-full"></span>
+                        Chưa nhận hàng
+                    </span>
+                    <span th:if="${order.status == 8}"
                         class="inline-flex items-center bg-gray-100 text-gray-800 text-xs font-medium px-3 py-1 rounded-full border border-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
                         <span class="w-2 h-2 mr-1.5 bg-gray-500 rounded-full"></span>
                         Đã hủy
@@ -276,57 +189,131 @@
                 </div>
                 <div class="p-6">
                     <div class="flex flex-col md:flex-row gap-6">
-                        <div class="flex-1 flex gap-4">
-                            <div
-                                class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0 grayscale">
-                                <img alt="MacBook Air" class="w-full h-full object-cover"
-                                    src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&q=80&w=200" />
+                        <div class="flex-1 flex flex-col gap-3">
+                            <!-- First Item -->
+                            <div class="flex gap-4" th:if="${!order.orderDetail.isEmpty()}">
+                                <div class="relative size-20 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0"
+                                    th:classappend="${order.status == 4} ? 'grayscale' : ''">
+                                    <img th:alt="${order.orderDetail[0].variant.product.name}"
+                                        class="w-full h-full object-cover"
+                                        th:src="${order.orderDetail[0].variant.variantImages != null && !order.orderDetail[0].variant.variantImages.isEmpty() ? '/images/variants/' + order.orderDetail[0].variant.variantImages[0].pathImage : 'https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=200'}" />
+                                </div>
+                                <div class="flex flex-col justify-start">
+                                    <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1"
+                                        th:text="${order.orderDetail[0].variant.product.name}">Dell XPS 13 Plus</h4>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400"
+                                        th:text="'Phân loại: ' + ${order.orderDetail[0].variant.variantName}">Phân loại:
+                                        Bạc kim</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400"
+                                        th:text="'Số lượng: ' + ${order.orderDetail[0].quantity}">SL: 1</p>
+                                </div>
                             </div>
-                            <div class="flex flex-col justify-center">
-                                <h4 class="font-medium text-[#1c100d] dark:text-white mb-1 line-clamp-1">MacBook Air
-                                    M2
-                                    2022 13.6 inch</h4>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Phân loại: Midnight</p>
+
+                            <!-- Show More Button -->
+                            <div class="md:flex gap-4 items-center pl-24" th:if="${order.orderDetail.size() > 1}">
+                                <button th:onclick="'toggleOrderItems(\'order-items-' + ${order.id} + '\', this)'"
+                                    class="flex items-center gap-1 text-xs font-medium text-primary hover:text-orange-700 transition-colors focus:outline-none select-none">
+                                    <span th:text="'Xem thêm ' + (${order.orderDetail.size() - 1}) + ' sản phẩm'">Xem
+                                        thêm 2 sản phẩm</span>
+                                    <span
+                                        class="material-symbols-outlined text-[18px] transition-transform duration-300">expand_more</span>
+                                </button>
                             </div>
                         </div>
+
                         <div
                             class="flex flex-col md:items-end justify-center min-w-[180px] border-t md:border-t-0 border-gray-100 dark:border-gray-700 pt-4 md:pt-0 mt-4 md:mt-0">
                             <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">Tổng tiền:</div>
-                            <div class="text-xl font-bold text-gray-500 mb-4 line-through decoration-gray-400">
-                                27.490.000đ</div>
+                            <div class="text-xl font-bold text-primary mb-4"
+                                th:classappend="${order.status == 4} ? 'text-gray-500 line-through decoration-gray-400' : 'text-primary'"
+                                th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+                                35.990.000đ</div>
                             <div class="flex gap-2 w-full md:w-auto">
-                                <button
+                                <button th:if="${order.status == 0 || order.status == 1}"
+                                    class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:text-gray-300 dark:border-gray-600 dark:hover:bg-gray-700">
+                                    Hủy đơn
+                                </button>
+                                <button th:if="${order.status == 6 || order.status == 8}"
                                     class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-white bg-primary border border-transparent rounded-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary shadow-sm shadow-orange-500/20">
                                     Mua lại
                                 </button>
-                                <a th:href="@{/account/orders/order-detail}"
+                                <a th:href="@{/account/orders/order-detail(id=${order.id})}"
                                     class="flex-1 md:flex-none px-4 py-2 text-sm font-medium text-primary bg-white border border-primary rounded-lg hover:bg-primary/5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-[#1e293b] dark:hover:bg-primary/10 flex items-center justify-center">
                                     Xem chi tiết
                                 </a>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Hidden Items List -->
+                    <div th:id="'order-items-' + ${order.id}"
+                        class="hidden mt-6 pt-6 border-t border-dashed border-gray-200 dark:border-gray-700 flex flex-col gap-4 animate-fade-in">
+
+                        <div th:each="detail, iterStat : ${order.orderDetail}" th:if="${iterStat.index > 0}"
+                            class="grid grid-cols-[auto_1fr_auto_auto] gap-4 items-start">
+                            <div class="relative size-16 rounded-lg border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 overflow-hidden flex-shrink-0"
+                                th:classappend="${order.status == 4} ? 'grayscale' : ''">
+                                <img th:alt="${detail.variant.product.name}" class="w-full h-full object-cover"
+                                    th:src="${detail.variant.variantImages != null && !detail.variant.variantImages.isEmpty() ? '/images/variants/' + detail.variant.variantImages[0].pathImage : 'https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=150'}" />
+                            </div>
+                            <div class="min-w-0">
+                                <h4 class="text-base font-medium text-[#1c100d] dark:text-white mb-0.5 line-clamp-1"
+                                    th:text="${detail.variant.product.name}">Product Name</h4>
+                                <p class="text-xs text-gray-500 dark:text-gray-400"
+                                    th:text="${detail.variant.variantName}">Color/Spec</p>
+                            </div>
+                            <div class="text-right mr-12 self-center">
+                                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap"
+                                    th:text="'SL: ' + ${detail.quantity}">SL: 1</span>
+                            </div>
+                            <div class="text-base font-bold text-[#1c100d] dark:text-white text-right whitespace-nowrap self-center"
+                                th:text="${#numbers.formatDecimal(detail.unitPrice * detail.quantity, 0, 'COMMA', 0, 'POINT')} + 'đ'">
+                                0đ</div>
+                        </div>
+
+                    </div>
                 </div>
+            </div>
+
+            <div th:if="${orders.isEmpty()}" class="flex flex-col items-center justify-center py-16 text-center">
+                <div class="size-32 bg-gray-50 dark:bg-gray-800 rounded-full flex items-center justify-center mb-6">
+                    <span
+                        class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-600">shopping_bag</span>
+                </div>
+                <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Bạn chưa có đơn hàng nào</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto">Khám phá hàng ngàn sản phẩm công nghệ
+                    hấp dẫn và đặt hàng ngay hôm nay!</p>
+                <a th:href="@{/}"
+                    class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg shadow-orange-500/30 flex items-center gap-2">
+                    <span class="material-symbols-outlined">storefront</span>
+                    Mua sắm ngay
+                </a>
             </div>
 
         </div>
 
-        <div class="mt-8 flex justify-center">
+        <div class="mt-8 flex justify-center" th:if="${totalPages > 1}">
             <nav class="flex items-center gap-2">
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50">
+                <a th:href="@{/account/orders(page=${currentPage - 1}, status=${status}, search=${search}, date=${date})}"
+                    th:classappend="${currentPage == 0} ? 'pointer-events-none opacity-50' : ''"
+                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg bg-primary text-white font-bold">1</button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">2</button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium">3</button>
-                <button
-                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800">
+                </a>
+
+                <div class="flex items-center gap-2">
+                    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:href="@{/account/orders(page=${i}, status=${status}, search=${search}, date=${date})}"
+                        th:text="${i + 1}"
+                        th:classappend="${i == currentPage} ? 'bg-primary text-white font-bold' : 'border border-gray-100 dark:border-gray-700 text-[#1c100d] dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800 font-medium'"
+                        class="size-10 flex items-center justify-center rounded-lg transition-colors">
+                    </a>
+                </div>
+
+                <a th:href="@{/account/orders(page=${currentPage + 1}, status=${status}, search=${search}, date=${date})}"
+                    th:classappend="${currentPage == totalPages - 1} ? 'pointer-events-none opacity-50' : ''"
+                    class="size-10 flex items-center justify-center rounded-lg border border-gray-100 dark:border-gray-700 text-gray-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     <span class="material-symbols-outlined">chevron_right</span>
-                </button>
+                </a>
             </nav>
         </div>
 
@@ -390,8 +377,34 @@
                 document.getElementById('statusDropdown').classList.add('hidden');
                 document.getElementById('statusDropdownIcon').style.transform = 'rotate(0deg)';
 
-                // Note: Add your filtering logic here, e.g., submitting a form or reloading with query param
-                console.log('Selected status:', value);
+                applyFilters();
+            }
+
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', function () {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applyFilters();
+                }, 500);
+            });
+
+            function applyFilters() {
+                const status = document.getElementById('statusInput').value;
+                const search = document.getElementById('searchInput').value;
+                const date = document.getElementById('dateFilter').value;
+
+                let url = new URL(window.location.href);
+                url.searchParams.set('page', 0);
+                if (status && status !== 'all') url.searchParams.set('status', status);
+                else url.searchParams.delete('status');
+
+                if (search) url.searchParams.set('search', search);
+                else url.searchParams.delete('search');
+
+                if (date) url.searchParams.set('date', date);
+                else url.searchParams.delete('date');
+
+                window.location.href = url.toString();
             }
 
             // Close dropdown when clicking outside
@@ -524,6 +537,10 @@
                     dateFormat: "d/m/Y",
                     maxDate: "today",
                     disableMobile: "true",
+                    defaultDate: "[[${date}]]",
+                    onChange: function (selectedDates, dateStr, instance) {
+                        applyFilters();
+                    }
                 });
             });
         </script>
