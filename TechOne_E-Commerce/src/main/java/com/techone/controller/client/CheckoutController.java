@@ -26,6 +26,8 @@ import com.techone.repository.CartItemRepository;
 import com.techone.repository.CartRepository;
 import com.techone.repository.OrderRepository;
 import com.techone.repository.VoucherItemRepository;
+import com.techone.service.OrderService;
+import com.techone.service.VNPayService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -56,7 +58,10 @@ public class CheckoutController {
 	private PayOS payOS;
 
 	@Autowired
-	private com.techone.service.OrderService orderService;
+	private OrderService orderService;
+
+	@Autowired
+	private VNPayService vnPayService;
 
 	@GetMapping("/checkout")
 	public String showCheckout(@RequestParam(value = "itemIds", required = false) List<Integer> itemIds,
@@ -201,6 +206,18 @@ public class CheckoutController {
 					e.printStackTrace();
 					redirectAttributes.addFlashAttribute("error",
 							"Lỗi tạo liên kết thanh toán PayOS: " + e.getMessage());
+					return "redirect:/checkout";
+				}
+			} else if ("VNPAY".equals(paymentMethod)) {
+				try {
+					String baseUrl = getBaseUrl(request);
+					String orderInfo = "Thanh toan don hang #" + order.getId();
+					int totalAmount = order.getTotalAmount().intValue();
+					String vnpayUrl = vnPayService.createOrder(totalAmount, orderInfo, baseUrl, request);
+					return "redirect:" + vnpayUrl;
+				} catch (Exception e) {
+					e.printStackTrace();
+					redirectAttributes.addFlashAttribute("error", "Lỗi tạo liên kết thanh toán VNPAY");
 					return "redirect:/checkout";
 				}
 			} else {

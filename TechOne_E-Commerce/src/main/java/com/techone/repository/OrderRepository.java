@@ -13,6 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findByAccountIdOrderByCreateAtDesc(Integer accountId);
 
+    @org.springframework.data.jpa.repository.EntityGraph(attributePaths = { "orderDetail", "orderDetail.variant",
+            "orderDetail.variant.product" })
     java.util.Optional<Order> findByOrderCode(Long orderCode);
 
     Optional<Order> findFirstByAccountIdAndStatus(Integer accountId, Integer status);

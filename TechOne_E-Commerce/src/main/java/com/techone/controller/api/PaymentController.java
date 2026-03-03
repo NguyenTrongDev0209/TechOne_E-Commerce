@@ -1,12 +1,18 @@
 package com.techone.controller.api;
 
 import com.techone.model.Order;
+import com.techone.model.Transaction;
 import com.techone.repository.OrderRepository;
+import com.techone.repository.TransactionRepository;
 import com.techone.service.PaymentService;
+import com.techone.service.VNPayService;
+import com.techone.service.OrderEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vn.payos.PayOS;
 
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -17,15 +23,18 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final OrderRepository orderRepository;
     private final PayOS payOS;
+    private final VNPayService vnPayService;
+    private final OrderEmailService orderEmailService;
+    private final TransactionRepository transactionRepository;
 
     @PostMapping("/payos_transfer_handler")
     public Object payosTransferHandler(@RequestBody Object body) {
         try {
             paymentService.processWebhook(body);
-            return java.util.Map.of("success", true, "message", "Webhook delivered");
+            return Map.of("success", true, "message", "Webhook delivered");
         } catch (Exception e) {
             e.printStackTrace();
-            return java.util.Map.of("success", false, "message", e.getMessage());
+            return Map.of("success", false, "message", e.getMessage());
         }
     }
 
@@ -50,19 +59,67 @@ public class PaymentController {
                     // 3. If PayOS says PAID, sync our DB and return PAID
                     if ("PAID".equals(payosStatus)) {
                         paymentService.verifyAndUpdateOrder(order.getOrderCode());
-                        return java.util.Map.of("status", "PAID");
+                        return Map.of("status", "PAID");
                     }
 
                     // 4. Return whatever status PayOS reports (PENDING, CANCELLED, etc.)
-                    return java.util.Map.of("status", payosStatus);
+                    return Map.of("status", payosStatus);
                 } catch (Exception e) {
                     e.printStackTrace();
                     // Fallback to local status if API fails
                 }
             }
-            return java.util.Map.of("status",
+            return Map.of("status",
                     (order.getStatus() != null && order.getStatus() == 1) ? "PAID" : "PENDING");
         }
-        return java.util.Map.of("status", "NOT_FOUND");
+        return Map.of("status", "NOT_FOUND");
+    }
+
+    @GetMapping("/vnpay-return")
+    public void handleVNPayReturn(jakarta.servlet.http.HttpServletRequest request,
+            jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
+        int paymentStatus = vnPayService.orderReturn(request);
+        String orderInfo = request.getParameter("vnp_OrderInfo");
+        // orderInfo usually contains "Thanh toan don hang #orderId"
+        try {
+            if (paymentStatus == 1) {
+                // Success
+                String orderIdStr = orderInfo.substring(orderInfo.lastIndexOf("#") + 1);
+                int orderId = Integer.parseInt(orderIdStr);
+                Optional<Order> orderOpt = orderRepository.findById(orderId);
+                if (orderOpt.isPresent()) {
+                    Order order = orderOpt.get();
+                    if (order.getStatus() != 2) {
+                        order.setStatus(2);
+                        orderRepository.save(order);
+
+                        // Save Transaction
+                        Transaction transaction = new Transaction();
+                        transaction.setOrder(order);
+                        transaction.setAmount(Double.parseDouble(request.getParameter("vnp_Amount")) / 100.0);
+                        transaction.setPaymentMethod("VNPAY");
+                        transaction.setTransactionType("PAYMENT");
+                        transaction.setStatus(1); // Success
+                        transaction.setOrderCode(Long.parseLong(request.getParameter("vnp_TxnRef")));
+                        transaction.setReference(request.getParameter("vnp_TransactionNo"));
+                        transaction.setLog("VNPAY Success: " + request.getParameter("vnp_ResponseCode"));
+                        transaction.setCreateAt(LocalDateTime.now());
+                        transactionRepository.save(transaction);
+
+                        // Send Email
+                        try {
+                            orderEmailService.sendOrderInvoice(order);
+                        } catch (Exception e) {
+                            System.err.println("DEBUG: Failed to send VNPAY invoice email: " + e.getMessage());
+                        }
+                    }
+                    response.sendRedirect("/payment/success");
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        response.sendRedirect("/payment/cancel");
     }
 }

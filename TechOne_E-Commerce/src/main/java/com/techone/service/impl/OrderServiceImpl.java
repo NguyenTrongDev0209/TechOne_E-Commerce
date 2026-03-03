@@ -27,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final VariantRepository variantRepository;
     private final ShipmentRepository shipmentRepository;
     private final ShippingFeeService shippingFeeService;
+    private final com.techone.service.OrderEmailService orderEmailService;
 
     @Override
     @Transactional
@@ -126,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 5. Create OrderDetails & Update Stock
         long productTotal = 0;
+        List<OrderDetail> details = new java.util.ArrayList<>();
         for (CartItem item : cartItems) {
             OrderDetail detail = new OrderDetail();
             detail.setOrder(order);
@@ -135,6 +137,7 @@ public class OrderServiceImpl implements OrderService {
             double pricePerItem = item.getVariant().getPrice() * (1 - item.getVariant().getDiscount() / 100.0);
             detail.setUnitPrice(pricePerItem);
             orderDetailRepository.save(detail);
+            details.add(detail);
 
             // Reduce Stock
             Variant variant = item.getVariant();
@@ -143,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
 
             productTotal += (long) (pricePerItem * item.getQuantity());
         }
+        order.setOrderDetail(details);
 
         // 6. Handle Voucher Discount
         double voucherDiscount = 0;
@@ -167,6 +171,15 @@ public class OrderServiceImpl implements OrderService {
         // 7. Clear Cart
         cartItemRepository.deleteAll(cartItems);
         session.setAttribute("cartCount", 0);
+
+        // Send Invoice Email for COD (Status != 1)
+        if (order.getStatus() == 0) {
+            try {
+                orderEmailService.sendOrderInvoice(order);
+            } catch (Exception e) {
+                System.err.println("DEBUG: Failed to send COD invoice email: " + e.getMessage());
+            }
+        }
 
         return order;
     }

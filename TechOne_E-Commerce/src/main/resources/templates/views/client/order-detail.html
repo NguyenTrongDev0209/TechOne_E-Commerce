@@ -227,7 +227,6 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-[#1c100d] dark:text-white">Giao hàng nhanh</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">Dự kiến nhận: 26/10/2023</p>
                                 </div>
                             </div>
                         </div>
@@ -242,7 +241,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-medium text-[#1c100d] dark:text-white"
-                                        th:text="${order.transaction != null && !order.transaction.isEmpty() ? order.transaction[0].method : 'Chưa thanh toán'}">
+                                        th:text="${order.transaction != null && !order.transaction.isEmpty() ? order.transaction[0].method : 'Thanh toán khi nhận hàng'}">
                                         Thanh toán khi nhận hàng
                                     </p>
                                     <p class="text-xs text-gray-500 dark:text-gray-400"

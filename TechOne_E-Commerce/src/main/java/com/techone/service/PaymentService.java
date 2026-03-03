@@ -21,6 +21,7 @@ public class PaymentService {
     private final PayOS payOS;
     private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
+    private final OrderEmailService orderEmailService;
 
     @Transactional
     public void processWebhook(Object body) throws Exception {
@@ -130,6 +131,13 @@ public class PaymentService {
             if (order.getStatus() != 2) {
                 order.setStatus(2); // 2: Paid/Success
                 orderRepository.save(order);
+
+                // Send Invoice Email for Online Payment
+                try {
+                    orderEmailService.sendOrderInvoice(order);
+                } catch (Exception e) {
+                    System.err.println("DEBUG: Failed to send Online invoice email: " + e.getMessage());
+                }
             }
 
             // 2. Clear duplicated transaction if any

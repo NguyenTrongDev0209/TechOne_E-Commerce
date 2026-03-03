@@ -420,12 +420,30 @@
                                             </div>
                                             <div class="flex-1">
                                                 <div class="font-medium text-gray-900 dark:text-white">Thanh toán qua mã
-                                                    QR
+                                                    QR (PayOS)
                                                 </div>
                                                 <div class="text-sm text-gray-500 dark:text-gray-400">VietQR, Chuyển
                                                     khoản ngân
                                                     hàng
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="block cursor-pointer group">
+                                        <input class="peer sr-only" name="paymentMethod" type="radio" value="VNPAY" />
+                                        <div
+                                            class="custom-radio-border flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-primary transition-all duration-200">
+                                            <div
+                                                class="relative w-5 h-5 border-2 border-gray-300 dark:border-gray-500 rounded-full mr-4 radio-indicator">
+                                            </div>
+                                            <div
+                                                class="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-xl mr-4">
+                                                <span class="material-symbols-outlined">account_balance</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="font-medium text-gray-900 dark:text-white">VNPAY</div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">Thanh toán qua
+                                                    cổng VNPAY (Thẻ ATM, Visa, QR)</div>
                                             </div>
                                         </div>
                                     </label>
@@ -1215,8 +1233,8 @@
                 }
 
                 // Kiểm tra thông báo từ Server (Thymeleaf)
-                const error = [[${ error }]];
-                const message = [[${ message }]];
+                const error = /*[[${error}]]*/ null;
+                const message = /*[[${message}]]*/ null;
                 if (error) showStatusModal('error', 'Lỗi', error);
                 if (message) showStatusModal('success', 'Thông báo', message);
             });
