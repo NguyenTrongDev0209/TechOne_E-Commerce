@@ -161,8 +161,12 @@ public class OrderServiceImpl implements OrderService {
             if (vPercent.getMaxPrice() != null && voucherDiscount > vPercent.getMaxPrice()) {
                 voucherDiscount = vPercent.getMaxPrice();
             }
-            appliedVoucher.setStatus(1); // Mark as used
-            voucherItemRepository.save(appliedVoucher);
+            // CHỈ mark voucher là đã dùng nếu đây là COD (xác nhận đơn ngay lập tức)
+            // Với QR/VNPAY (status=1), voucher sẽ được mark khi payment được xác nhận
+            if (order.getStatus() == 0) { // 0 = COD
+                appliedVoucher.setStatus(1);
+                voucherItemRepository.save(appliedVoucher);
+            }
         }
         order.setVoucherDiscount(voucherDiscount);
         order.setTotalAmount((double) (productTotal + shippingFee - voucherDiscount));

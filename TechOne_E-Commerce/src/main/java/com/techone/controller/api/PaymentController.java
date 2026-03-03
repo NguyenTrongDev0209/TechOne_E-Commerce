@@ -2,8 +2,10 @@ package com.techone.controller.api;
 
 import com.techone.model.Order;
 import com.techone.model.Transaction;
+import com.techone.model.VoucherItem;
 import com.techone.repository.OrderRepository;
 import com.techone.repository.TransactionRepository;
+import com.techone.repository.VoucherItemRepository;
 import com.techone.service.PaymentService;
 import com.techone.service.VNPayService;
 import com.techone.service.OrderEmailService;
@@ -26,6 +28,7 @@ public class PaymentController {
     private final VNPayService vnPayService;
     private final OrderEmailService orderEmailService;
     private final TransactionRepository transactionRepository;
+    private final VoucherItemRepository voucherItemRepository;
 
     @PostMapping("/payos_transfer_handler")
     public Object payosTransferHandler(@RequestBody Object body) {
@@ -93,6 +96,13 @@ public class PaymentController {
                     if (order.getStatus() != 2) {
                         order.setStatus(2);
                         orderRepository.save(order);
+
+                        // Mark voucher là đã sử dụng khi VNPAY xác nhận thanh toán thành công
+                        if (order.getAppliedVoucher() != null && order.getAppliedVoucher().getStatus() == 0) {
+                            VoucherItem voucher = order.getAppliedVoucher();
+                            voucher.setStatus(1);
+                            voucherItemRepository.save(voucher);
+                        }
 
                         // Save Transaction
                         Transaction transaction = new Transaction();

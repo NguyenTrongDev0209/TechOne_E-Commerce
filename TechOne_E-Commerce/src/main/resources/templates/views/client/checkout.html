@@ -1000,9 +1000,13 @@
                     return;
                 }
 
+                // Lấy giảm giá sản phẩm để tính base amount
+                const productDiscountForCalc = parseFloat(document.getElementById('discount-product-amount')?.getAttribute('data-value')) || 0;
+                const baseAmount = subtotal - productDiscountForCalc; // Giá sau giảm sản phẩm
+
                 let discount = 0;
                 if (isDiscount) {
-                    discount = subtotal * (numPercent / 100);
+                    discount = baseAmount * (numPercent / 100);
                 } else {
                     // Free Shipping voucher
                     discount = shippingFee * (numPercent / 100);
@@ -1074,8 +1078,10 @@
                 let voucherDiscount = 0;
                 if (vId) {
                     const isDiscount = (String(vType) === 'true');
+                    const productDisc = productDiscountEl ? (parseFloat(productDiscountEl.getAttribute('data-value')) || 0) : 0;
+                    const baseAmount = subtotal - productDisc; // Giá sau giảm sản phẩm
                     if (isDiscount) {
-                        voucherDiscount = subtotal * (vPercent / 100);
+                        voucherDiscount = baseAmount * (vPercent / 100);
                     } else {
                         voucherDiscount = shippingFee * (vPercent / 100);
                     }
