@@ -177,10 +177,20 @@ public class CheckoutController {
 
 					CreatePaymentLinkResponse data = payOS.paymentRequests().create(paymentData);
 
+					// Lưu thông tin thanh toán vào Order để dùng lại khi quay lại trang
+					order.setQrCode(data.getQrCode());
+					order.setCheckoutUrl(data.getCheckoutUrl());
+					order.setAccountName(data.getAccountName());
+					order.setAccountNumber(data.getAccountNumber());
+					order.setBin(data.getBin());
+					orderRepository.save(order);
+
+					// Truyền dữ liệu qua FlashAttributes cho lần load đầu tiên
 					redirectAttributes.addFlashAttribute("qrCode", data.getQrCode());
 					redirectAttributes.addFlashAttribute("accountName", data.getAccountName());
 					redirectAttributes.addFlashAttribute("accountNumber", data.getAccountNumber());
 					redirectAttributes.addFlashAttribute("bin", data.getBin());
+					redirectAttributes.addFlashAttribute("bankName", "Ngân hàng MB Bank");
 					redirectAttributes.addFlashAttribute("checkoutUrl", data.getCheckoutUrl());
 					redirectAttributes.addFlashAttribute("amount", data.getAmount());
 					redirectAttributes.addFlashAttribute("description", data.getDescription());
@@ -220,80 +230,46 @@ public class CheckoutController {
 
 		Order order = orderOpt.get();
 		model.addAttribute("order", order);
+		model.addAttribute("amount", order.getTotalAmount());
+		model.addAttribute("description", "Thanh toan don hang #" + order.getId());
 
-		// If QR data is already in model (from FlashAttributes), we are good
-		if (model.containsAttribute("qrCode") || model.containsAttribute("qrUrl")) {
+		// Ưu tiên 1: dữ liệu từ FlashAttributes (ngay sau khi tạo đơn mới)
+		if (model.containsAttribute("qrCode")) {
 			return "views/client/payos";
 		}
 
-		try {
-			// Fetch actual payment info from PayOS API as fallback
-			vn.payos.model.v2.paymentRequests.PaymentLink paymentLink = payOS.paymentRequests()
-					.get(order.getOrderCode());
+		// Ưu tiên 2: dữ liệu đã lưu trong Order entity (khi quay lại trang)
+		if (order.getQrCode() != null && !order.getQrCode().isEmpty()) {
+			System.out.println("DEBUG: showPayos - Loading qrCode from Order entity for orderId=" + orderId);
+			model.addAttribute("qrCode", order.getQrCode());
+			if (order.getCheckoutUrl() != null) {
+				model.addAttribute("checkoutUrl", order.getCheckoutUrl());
+			}
+			if (order.getAccountName() != null) {
+				model.addAttribute("accountName", order.getAccountName());
+			}
+			if (order.getAccountNumber() != null) {
+				model.addAttribute("accountNumber", order.getAccountNumber());
+			}
+			if (order.getBin() != null) {
+				model.addAttribute("bin", order.getBin());
+				model.addAttribute("bankName", "Ngân hàng liên kết PayOS");
+			}
+			return "views/client/payos";
+		}
 
-			model.addAttribute("amount", paymentLink.getAmount());
-
-			// Try to get QR code if available in PaymentLink
-			String qrCodeValue = null;
+		// Ưu tiên 3: Gọi PayOS API để lấy số tiền (trường hợp đơn cũ chưa lưu qrCode)
+		// Lưu ý: PaymentLink SDK không trả về qrCode/checkoutUrl, chỉ có trạng thái đơn
+		// hàng
+		if (order.getOrderCode() != null) {
 			try {
-				qrCodeValue = (String) paymentLink.getClass().getMethod("getQrCode").invoke(paymentLink);
-			} catch (Exception e_qr) {
+				vn.payos.model.v2.paymentRequests.PaymentLink paymentLink = payOS.paymentRequests()
+						.get(order.getOrderCode());
+				model.addAttribute("amount", paymentLink.getAmount());
+				System.out.println("DEBUG: showPayos - Loaded payment link from PayOS API for orderId=" + orderId);
+			} catch (Exception e) {
+				System.out.println("DEBUG: showPayos - Could not fetch PayOS link: " + e.getMessage());
 			}
-
-			if (qrCodeValue != null && !qrCodeValue.isEmpty()) {
-				model.addAttribute("qrCode", qrCodeValue);
-			} else {
-				// Fallback to manual QR URL if qrcode data is missing
-				String qrUrlFallback = String
-						.format("https://img.vietqr.io/image/%s-%s-compact.png?amount=%d&addInfo=%s&accountName=%s",
-								"MB", "970422", order.getTotalAmount().longValue(),
-								"Thanh toan don hang " + order.getId(),
-								"LE QUOC MINH")
-						.replace(" ", "%20");
-				model.addAttribute("qrUrl", qrUrlFallback);
-			}
-
-			try {
-				model.addAttribute("checkoutUrl",
-						paymentLink.getClass().getMethod("getCheckoutUrl").invoke(paymentLink));
-			} catch (Exception e_url) {
-			}
-
-			try {
-				model.addAttribute("accountNumber",
-						paymentLink.getClass().getMethod("getAccountNumber").invoke(paymentLink));
-				model.addAttribute("accountName",
-						paymentLink.getClass().getMethod("getAccountName").invoke(paymentLink));
-				model.addAttribute("bin", paymentLink.getClass().getMethod("getBin").invoke(paymentLink));
-				model.addAttribute("bankName", "Ngân hàng liên kết");
-			} catch (Exception e_info) {
-				model.addAttribute("bankName", "MB Bank");
-				model.addAttribute("accountNumber", "970422");
-				model.addAttribute("accountName", "LE QUOC MINH");
-			}
-
-			try {
-				model.addAttribute("description",
-						paymentLink.getClass().getMethod("getDescription").invoke(paymentLink));
-			} catch (Exception e_desc) {
-				model.addAttribute("description", "Thanh toan don hang #" + order.getId());
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			// Manual fallback
-			model.addAttribute("bankName", "MB Bank");
-			model.addAttribute("accountNumber", "970422");
-			model.addAttribute("accountName", "LE QUOC MINH");
-			model.addAttribute("amount", order.getTotalAmount());
-			model.addAttribute("description", "TECHONE ORDER " + order.getId());
-
-			String qrUrlFallback = String
-					.format("https://img.vietqr.io/image/%s-%s-compact.png?amount=%d&addInfo=%s&accountName=%s",
-							"MB", "970422", order.getTotalAmount().longValue(), "Thanh toan don hang " + order.getId(),
-							"LE QUOC MINH")
-					.replace(" ", "%20");
-			model.addAttribute("qrUrl", qrUrlFallback);
 		}
 
 		return "views/client/payos";
