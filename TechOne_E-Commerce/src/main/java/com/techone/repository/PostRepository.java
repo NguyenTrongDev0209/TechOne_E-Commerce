@@ -15,6 +15,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     Optional<Post> findByIdAndStatus(Integer id, Boolean status);
     java.util.List<Post> findByStatusOrderByCreateAtDesc(Boolean status);
     java.util.List<Post> findTop2ByStatusOrderByViewCountDesc(Boolean status);
+    java.util.List<Post> findTop3ByStatusOrderByCreateAtDesc(Boolean status);
+    java.util.List<Post> findTop5ByStatusOrderByViewCountDesc(Boolean status);
     
     java.util.List<Post> findTop3ByCategoryAndIdNotAndStatusOrderByViewCountDesc(com.techone.model.Category category, Integer id, Boolean status);
     

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.techone.repository.BrandRepository;
 import com.techone.repository.CategoryRepository;
+import com.techone.repository.PostRepository;
 import com.techone.repository.ProductRepository;
 import com.techone.service.CookieService;
 import com.techone.model.Product;
@@ -37,6 +38,9 @@ public class HomeController {
 	@Autowired
 	private CookieService cookieService;
 
+	@Autowired
+	private PostRepository postRepository;
+
 	@GetMapping("/")
 	public String showHome(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "0") int viewedPage,
@@ -62,6 +66,12 @@ public class HomeController {
 
 		// Lấy danh sách thương hiệu có status = true và có ít nhất 1 sản phẩm
 		model.addAttribute("brands", brandRepository.findActiveBrandsWithProductCount());
+
+		// Tin công nghệ mới: 3 bài viết mới nhất
+		model.addAttribute("latestPosts", postRepository.findTop3ByStatusOrderByCreateAtDesc(true));
+
+		// Tin tức & Sự kiện: 5 bài viết nhiều lượt xem nhất
+		model.addAttribute("topViewedPosts", postRepository.findTop5ByStatusOrderByViewCountDesc(true));
 
 		// viewed products from cookie
 		String viewedIds = cookieService.getValue("viewed_products");

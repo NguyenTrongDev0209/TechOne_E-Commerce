@@ -77,7 +77,7 @@ public class LoginController {
 	            SecurityContext context = SecurityContextHolder.createEmptyContext();
 	            context.setAuthentication(auth);
 	            SecurityContextHolder.setContext(context);
-	            securityContextRepository1.saveContext(context, request, response);
+	            securityContextRepository.saveContext(context, request, response);
 
 	            if (account.getRole()) {
 	                return "redirect:/admin/dashboard";

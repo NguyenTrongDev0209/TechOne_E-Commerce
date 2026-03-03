@@ -59,7 +59,6 @@
                                         tiết</label>
                                     <div
                                         class="border border-gray-200 dark:border-gray-600 rounded overflow-hidden bg-white dark:bg-gray-700 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all text-gray-900">
-                                        <!-- Thay the editor tu che bang textarea chuc nang cho CKEditor -->
                                         <textarea th:field="*{content}" id="editor"></textarea>
                                     </div>
                                     <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}"
@@ -230,7 +229,7 @@
             }
         </style>
 
-        <!-- Tải Script CDN của CKEditor -->
+        <!-- CDN của CKEditor -->
         <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
         <script>
