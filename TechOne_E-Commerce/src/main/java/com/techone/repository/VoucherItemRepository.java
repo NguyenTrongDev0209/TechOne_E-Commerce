@@ -15,4 +15,6 @@ public interface VoucherItemRepository extends JpaRepository<VoucherItem, Intege
     List<VoucherItem> findByAccount(Account account);
 
     Optional<VoucherItem> findByAccountAndVoucherPercent(Account account, VoucherPercent voucherPercent);
+
+    long countByAccountIdAndStatus(Integer accountId, Integer status);
 }

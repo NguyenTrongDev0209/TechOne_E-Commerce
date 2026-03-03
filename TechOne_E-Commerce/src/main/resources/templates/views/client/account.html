@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">Đơn hàng</p>
-                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white">12</p>
+                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white" th:text="${orderCount}">0</p>
                 </div>
             </div>
             <div
@@ -51,7 +51,7 @@
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400">Kho Voucher</p>
-                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white">2</p>
+                    <p class="text-2xl font-bold text-[#1c100d] dark:text-white" th:text="${voucherCount}">0</p>
                 </div>
             </a>
         </div>
@@ -75,52 +75,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
+                        <tr th:each="order : ${recentOrders}"
                             class="bg-white border-b dark:bg-[#1e293b] dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                             <th class="px-6 py-4 font-medium text-[#1c100d] dark:text-white whitespace-nowrap"
-                                scope="row">
+                                scope="row" th:text="'#' + ${order.id}">
                                 #ORD-9921
                             </th>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300"
+                                th:text="${#temporals.format(order.createAt, 'dd/MM/yyyy')}">
                                 20/05/2024
                             </td>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300"
+                                th:text="${order.orderDetail != null && !order.orderDetail.isEmpty() ? order.orderDetail[0].variant.product.name + (order.orderDetail.size() > 1 ? '...' : '') : 'N/A'}">
                                 MacBook Pro M3 Max...
                             </td>
-                            <td class="px-6 py-4 font-bold text-[#1c100d] dark:text-white">
+                            <td class="px-6 py-4 font-bold text-[#1c100d] dark:text-white"
+                                th:text="${#numbers.formatDecimal(order.getTotalPrice(), 0, 'COMMA', 0, 'POINT')} + 'đ'">
                                 49.990.000đ
                             </td>
                             <td class="px-6 py-4">
-                                <span
+                                <span th:if="${order.status == 0}"
+                                    class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded border border-orange-200">Đang
+                                    xử lý</span>
+                                <span th:if="${order.status == 1}"
+                                    class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded border border-blue-200">Chờ
+                                    thanh toán</span>
+                                <span th:if="${order.status == 2}"
+                                    class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded border border-yellow-200">Đang
+                                    giao</span>
+                                <span th:if="${order.status == 3}"
                                     class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded border border-green-200">Giao
                                     thành công</span>
+                                <span th:if="${order.status == 4}"
+                                    class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded border border-red-200">Đã
+                                    hủy</span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button class="text-primary hover:text-orange-700 font-medium">Chi tiết</button>
+                                <a th:href="@{/account/orders/order-detail(id=${order.id})}"
+                                    class="text-primary hover:text-orange-700 font-medium">Chi tiết</a>
                             </td>
                         </tr>
-                        <tr class="bg-white dark:bg-[#1e293b] hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <th class="px-6 py-4 font-medium text-[#1c100d] dark:text-white whitespace-nowrap"
-                                scope="row">
-                                #ORD-9884
-                            </th>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-                                15/05/2024
-                            </td>
-                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">
-                                Sony WH-1000XM5...
-                            </td>
-                            <td class="px-6 py-4 font-bold text-[#1c100d] dark:text-white">
-                                8.490.000đ
-                            </td>
-                            <td class="px-6 py-4">
-                                <span
-                                    class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded border border-orange-200">Đang
-                                    giao</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <button class="text-primary hover:text-orange-700 font-medium">Chi tiết</button>
-                            </td>
+                        <tr th:if="${recentOrders.isEmpty()}">
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">Chưa có đơn hàng nào</td>
                         </tr>
                     </tbody>
                 </table>
@@ -228,101 +224,51 @@
                         cả</a>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <!-- Product Card 1 -->
-                    <a href="#"
-                        class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
-                        <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                            <span
-                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-10%</span>
-                            <button onclick="event.preventDefault()"
-                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:scale-110 transition-all group/fav">
-                                <span class="material-symbols-outlined text-[20px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">favorite</span>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400"
-                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
-                                alt="Dell XPS 13 Plus" />
-                        </div>
-                        <div class="p-3 flex flex-col gap-2">
-                            <span
-                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">DELL</span>
-                            <h4
-                                class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
-                                Dell XPS 13 Plus 9320 i7 16GB 512GB
-                            </h4>
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="text-gray-400 dark:text-gray-500 ml-1">(45)</span>
-                            </div>
-                            <div class="flex items-end justify-between mt-1">
-                                <div class="flex flex-col">
-                                    <span class="text-gray-400 text-xs line-through font-medium">39.990.000đ</span>
-                                    <span class="text-accent font-bold">35.990.000đ</span>
-                                </div>
-                                <button
-                                    class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                                    <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                    <!-- Favourite Products -->
+                    <div th:each="fav : ${favouriteProducts}" th:if="${fav.variant != null}">
+                        <a th:href="@{/product-detail(id=${fav.variant.product.id})}"
+                            class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
+                            <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
+                                <span th:if="${fav.variant.discount > 0}"
+                                    class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10"
+                                    th:text="'-' + ${fav.variant.discount} + '%'">-10%</span>
+                                <button onclick="event.preventDefault()"
+                                    class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:scale-110 transition-all group/fav">
+                                    <span class="material-symbols-outlined text-[20px] fill-current"
+                                        style="font-variation-settings: 'FILL' 1">favorite</span>
                                 </button>
+                                <img th:src="${fav.variant.variantImages != null && !fav.variant.variantImages.isEmpty() ? '/images/variants/' + fav.variant.variantImages[0].pathImage : 'https://images.unsplash.com/photo-1593642632823-8f78536788c6?auto=format&fit=crop&q=80&w=400'}"
+                                    class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
+                                    th:alt="${fav.variant.product.name}" />
                             </div>
-                        </div>
-                    </a>
-
-                    <!-- Product Card 2 -->
-                    <a href="#"
-                        class="block bg-white dark:bg-[#1e293b] rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:border-primary group/card cursor-pointer h-full transition-all hover:shadow-md">
-                        <div class="relative w-full aspect-square bg-gray-100 rounded-t-xl overflow-hidden">
-                            <span
-                                class="absolute top-2 left-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded z-10">-15%</span>
-                            <button onclick="event.preventDefault()"
-                                class="absolute top-2 right-2 z-10 w-8 h-8 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center shadow-sm text-red-500 hover:scale-110 transition-all group/fav">
-                                <span class="material-symbols-outlined text-[20px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">favorite</span>
-                            </button>
-                            <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&q=80&w=400"
-                                class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500"
-                                alt="Sony Headphones" />
-                        </div>
-                        <div class="p-3 flex flex-col gap-2">
-                            <span
-                                class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">SONY</span>
-                            <h4
-                                class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
-                                Tai nghe Chống ồn Sony WH-1000XM4
-                            </h4>
-                            <div class="flex items-center gap-1 text-yellow-400 text-xs">
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star</span>
-                                <span class="material-symbols-outlined text-[14px] fill-current"
-                                    style="font-variation-settings: 'FILL' 1">star_half</span>
-                                <span class="text-gray-400 dark:text-gray-500 ml-1">(120)</span>
-                            </div>
-                            <div class="flex items-end justify-between mt-1">
-                                <div class="flex flex-col">
-                                    <span class="text-gray-400 text-xs line-through font-medium">8.490.000đ</span>
-                                    <span class="text-accent font-bold">6.190.000đ</span>
+                            <div class="p-3 flex flex-col gap-2">
+                                <span
+                                    th:text="${fav.variant.product.brand != null ? fav.variant.product.brand.name : 'TechOne'}"
+                                    class="bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-300 text-[10px] font-bold px-2.5 py-0.5 rounded-full w-fit uppercase">DELL</span>
+                                <h4 th:text="${fav.variant.product.name} + ' ' + ${fav.variant.variantName}"
+                                    class="text-[#1c100d] dark:text-white font-semibold line-clamp-2 min-h-[2.5rem] group-hover/card:text-primary transition-colors text-sm">
+                                    Dell XPS 13 Plus 9320 i7 16GB 512GB
+                                </h4>
+                                <div class="flex items-end justify-between mt-1">
+                                    <div class="flex flex-col">
+                                        <span th:if="${fav.variant.discount > 0}"
+                                            class="text-gray-400 text-xs line-through font-medium"
+                                            th:text="${#numbers.formatDecimal(fav.variant.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">39.990.000đ</span>
+                                        <span class="text-accent font-bold"
+                                            th:text="${#numbers.formatDecimal(fav.variant.price * (1 - fav.variant.discount/100.0), 0, 'COMMA', 0, 'POINT')} + 'đ'">35.990.000đ</span>
+                                    </div>
+                                    <button
+                                        class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
+                                        <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                    </button>
                                 </div>
-                                <button
-                                    class="w-8 h-8 rounded-lg bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-all shadow-lg">
-                                    <span class="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-                                </button>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
+                    <div th:if="${favouriteProducts.isEmpty()}"
+                        class="col-span-2 py-8 text-center text-gray-500 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-200 dark:border-gray-700">
+                        Chưa có sản phẩm yêu thích
+                    </div>
                 </div>
             </div>
 
@@ -333,23 +279,30 @@
                 </div>
                 <div
                     class="bg-white dark:bg-[#1e293b] rounded-xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm h-full max-h-[280px]">
-                    <div class="flex items-start gap-3">
+                    <div class="flex items-start gap-3" th:if="${defaultAddress != null}">
                         <span class="material-symbols-outlined text-gray-400 mt-1">home_pin</span>
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="font-bold text-[#1c100d] dark:text-white">Nhà riêng</span>
-                                <span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded">Mặc
+                                <span class="font-bold text-[#1c100d] dark:text-white"
+                                    th:text="${defaultAddress.name}">Nhà riêng</span>
+                                <span th:if="${defaultAddress.status}"
+                                    class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-0.5 rounded">Mặc
                                     định</span>
                             </div>
                             <p class="font-medium text-gray-800 dark:text-gray-200 mb-1"
-                                th:text="${session.user.fullname}">Nguyen Van A</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1"
-                                th:text="${session.user.phone != null ? session.user.phone : session.user.email}">(+84)
-                                912 345 678</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+                                th:text="${defaultAddress.name}">Nguyen Van A</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-1" th:text="${defaultAddress.phone}">
+                                (+84) 912 345 678</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed"
+                                th:text="${defaultAddress.fullAddress}">
                                 Số 123, Đường Nguyễn Huệ, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh, Việt Nam
                             </p>
                         </div>
+                    </div>
+                    <div th:if="${defaultAddress == null}"
+                        class="flex flex-col items-center justify-center py-4 text-center">
+                        <span class="material-symbols-outlined text-gray-300 text-4xl mb-2">location_off</span>
+                        <p class="text-sm text-gray-500">Chưa có địa chỉ mặc định</p>
                     </div>
                     <div class="mt-6 pt-6 border-t border-dashed border-gray-200 dark:border-gray-600">
                         <button

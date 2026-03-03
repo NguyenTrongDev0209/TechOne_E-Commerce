@@ -11,7 +11,11 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findAllByOrderByCreateAtDesc();
 
+    List<Order> findByAccountIdOrderByCreateAtDesc(Integer accountId);
+
     java.util.Optional<Order> findByOrderCode(Long orderCode);
 
     Optional<Order> findFirstByAccountIdAndStatus(Integer accountId, Integer status);
+
+    long countByAccountId(Integer accountId);
 }

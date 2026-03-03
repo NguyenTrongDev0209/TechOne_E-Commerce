@@ -164,6 +164,9 @@
                             <input type="hidden" id="selected-address-id" name="addressId"
                                 th:value="${defaultAddress != null ? defaultAddress.id : ''}">
 
+                            <!-- Hidden inputs for selected item IDs -->
+                            <input type="hidden" th:each="id : ${param.itemIds}" name="itemIds" th:value="${id}">
+
                             <div
                                 class="bg-white dark:bg-[#1e293b] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
                                 <div class="relative">

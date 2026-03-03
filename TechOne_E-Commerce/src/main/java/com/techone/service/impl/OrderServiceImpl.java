@@ -30,7 +30,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order createOrder(Account user, Integer addressId, String paymentMethod, Integer voucherId, String note,
+    public Order createOrder(Account user, List<Integer> itemIds, Integer addressId, String paymentMethod,
+            Integer voucherId, String note,
             HttpSession session) throws Exception {
         // 1. Validation
         if (addressId == null)
@@ -43,8 +44,14 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy giỏ hàng của bạn"));
 
         List<CartItem> cartItems = cartItemRepository.findByCart(cart);
+        if (itemIds != null && !itemIds.isEmpty()) {
+            cartItems = cartItems.stream()
+                    .filter(item -> itemIds.contains(item.getId()))
+                    .toList();
+        }
+
         if (cartItems.isEmpty())
-            throw new IllegalArgumentException("Giỏ hàng của bạn đang trống");
+            throw new IllegalArgumentException("Giỏ hàng của bạn đang trống hoặc không có sản phẩm nào được chọn");
 
         // Validate stock and calculate product total
         long productTotalForVoucher = 0;
@@ -166,16 +173,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void cancelOrder(Integer orderId) {
+    public List<Integer> cancelOrder(Integer orderId) {
         Optional<Order> orderOpt = orderRepository.findById(orderId);
         if (orderOpt.isPresent()) {
             Order order = orderOpt.get();
             // Only cancel if it's still in "Waiting for Payment" state
             if (order.getStatus() != null && order.getStatus() == 1) {
                 System.out.println("DEBUG: Manual cancel for Order #" + orderId);
-                performCancel(order);
+                return performCancel(order);
             }
         }
+        return java.util.Collections.emptyList();
     }
 
     @Override
@@ -195,7 +203,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private void performCancel(Order order) {
+    private List<Integer> performCancel(Order order) {
         // 1. Restore Stock
         if (order.getOrderDetail() != null) {
             for (OrderDetail detail : order.getOrderDetail()) {
@@ -214,7 +222,43 @@ public class OrderServiceImpl implements OrderService {
             voucherItemRepository.save(voucher);
         }
 
-        // 3. Delete Order
+        // 3. Restore to Cart
+        List<Integer> restoredItemIds = new java.util.ArrayList<>();
+        Account account = order.getAccount();
+        if (account != null) {
+            Cart cart = cartRepository.findByAccountId(account.getId())
+                    .orElseGet(() -> {
+                        Cart newCart = new Cart();
+                        newCart.setAccount(account);
+                        return cartRepository.save(newCart);
+                    });
+
+            if (order.getOrderDetail() != null) {
+                for (OrderDetail detail : order.getOrderDetail()) {
+                    Variant variant = detail.getVariant();
+                    Optional<CartItem> existingItem = cartItemRepository.findByCartAndVariant(cart, variant);
+                    if (existingItem.isPresent()) {
+                        CartItem item = existingItem.get();
+                        item.setQuantity(item.getQuantity() + detail.getQuantity());
+                        cartItemRepository.save(item);
+                        restoredItemIds.add(item.getId());
+                    } else {
+                        CartItem newItem = new CartItem();
+                        newItem.setCart(cart);
+                        newItem.setVariant(variant);
+                        newItem.setQuantity(detail.getQuantity());
+                        newItem.setStatus(1); // Active
+                        newItem.setCreateAt(LocalDateTime.now());
+                        cartItemRepository.save(newItem);
+                        restoredItemIds.add(newItem.getId());
+                    }
+                }
+            }
+        }
+
+        // 4. Delete Order
         orderRepository.delete(order);
+
+        return restoredItemIds;
     }
 }

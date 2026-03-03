@@ -44,12 +44,8 @@
 
                     <!-- Right: Payment Info -->
                     <div class="w-full md:w-7/12 p-8 flex flex-col">
-                        <div class="flex items-center justify-between mb-8">
+                        <div class="flex items-center justify-center mb-8">
                             <h3 class="text-xl font-bold text-slate-800 dark:text-white">Thanh toán đơn hàng</h3>
-                            <a th:href="@{/checkout}"
-                                class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
-                                <span class="material-symbols-outlined">close</span>
-                            </a>
                         </div>
 
                         <div class="space-y-3.5 flex-grow">
@@ -113,10 +109,10 @@
                             </div>
 
                             <div class="mt-6 flex flex-col sm:flex-row items-center gap-4">
-                                <a th:href="@{/checkout/cancel/{id}(id=${order.id})}"
+                                <button type="button" onclick="confirmCancelPayment()"
                                     class="w-full sm:w-auto px-8 py-3.5 text-center rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold text-sm transition-all shadow-lg shadow-red-500/20">
                                     Hủy thanh toán
-                                </a>
+                                </button>
                                 <div
                                     class="flex-1 w-full p-3.5 bg-primary/5 rounded-xl border border-primary/10 flex items-center justify-center gap-3">
                                     <div class="relative flex items-center justify-center h-5 w-5">
@@ -168,9 +164,6 @@
                             <p class="text-sm font-bold text-slate-800 dark:text-white"
                                 th:text="${#numbers.formatDecimal(detail.unitPrice * detail.quantity, 0, 'POINT', 0, 'COMMA') + ' VNĐ'}">
                                 0 VNĐ</p>
-                            <p class="text-xs text-slate-400 dark:text-gray-500 mt-0.5"
-                                th:text="${#numbers.formatDecimal(detail.unitPrice, 0, 'POINT', 0, 'COMMA') + ' /sp'}">
-                                0 /sp</p>
                         </div>
                     </div>
                 </div>
@@ -206,6 +199,52 @@
             </div>
         </div>
 
+        <!-- Cancel Confirmation Modal -->
+        <div id="cancelModal"
+            class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px]">
+            <div class="bg-white dark:bg-[#1e293b] w-full max-w-sm rounded-2xl shadow-2xl p-6 text-center transform transition-all scale-95 opacity-0 duration-300"
+                id="cancelModalContent">
+                <div
+                    class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 bg-red-100 text-red-600">
+                    <span class="material-symbols-outlined text-4xl">warning</span>
+                </div>
+                <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Hủy thanh toán?</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Bạn có chắc chắn muốn hủy thanh toán này không? Đơn
+                    hàng
+                    sẽ không được thực hiện.</p>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeCancelModal()"
+                        class="flex-1 py-2.5 rounded-lg border border-gray-300 text-gray-700 dark:text-gray-300 font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        Quay lại
+                    </button>
+                    <button type="button" onclick="executeCancel()"
+                        class="flex-1 py-2.5 rounded-lg bg-red-500 text-white font-bold hover:bg-red-600 transition-colors shadow-lg shadow-red-500/20">
+                        Xác nhận hủy
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timeout Modal -->
+        <div id="timeoutModal"
+            class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/40 backdrop-blur-[2px]">
+            <div class="bg-white dark:bg-[#1e293b] w-full max-w-sm rounded-2xl shadow-2xl p-6 text-center transform transition-all scale-95 opacity-0 duration-300"
+                id="timeoutModalContent">
+                <div
+                    class="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 bg-orange-100 text-orange-600">
+                    <span class="material-symbols-outlined text-4xl">timer_off</span>
+                </div>
+                <h3 class="text-xl font-bold text-[#1c100d] dark:text-white mb-2">Hết thời gian!</h3>
+                <p class="text-gray-500 dark:text-gray-400 mb-6">Thời gian thanh toán đã hết. Đơn hàng sẽ bị hủy. Vui
+                    lòng
+                    thực hiện lại.</p>
+                <button type="button" onclick="window.location.href='/'"
+                    class="w-full py-2.5 rounded-lg bg-primary text-white font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/20">
+                    Quay lại trang chủ
+                </button>
+            </div>
+        </div>
+
         <script th:inline="javascript">
             /*<![CDATA[*/
             const orderId = /*[[${order.id}]]*/ 0;
@@ -233,6 +272,31 @@
                 }).catch(err => console.error('Lỗi copy:', err));
             }
 
+            // Cancel Modal Functions
+            function confirmCancelPayment() {
+                const modal = document.getElementById('cancelModal');
+                const content = document.getElementById('cancelModalContent');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+
+            function closeCancelModal() {
+                const modal = document.getElementById('cancelModal');
+                const content = document.getElementById('cancelModalContent');
+                content.classList.remove('scale-100', 'opacity-100');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+
+            function executeCancel() {
+                window.location.href = /*[[@{/checkout/cancel/{id}(id=${order.id})}]]*/ '/';
+            }
+
             const createAtStr = /*[[${#temporals.format(order.createAt, "yyyy-MM-dd'T'HH:mm:ss")}]]*/ '';
             const serverNow = new Date().getTime();
             const orderTime = new Date(createAtStr).getTime();
@@ -252,9 +316,18 @@
                     timeLeft--;
                     setTimeout(updateTimer, 1000);
                 } else {
-                    alert("Thời gian thanh toán đã hết. Đơn hàng sẽ bị hủy.");
-                    window.location.href = "/checkout";
+                    showTimeoutModal();
                 }
+            }
+
+            function showTimeoutModal() {
+                const modal = document.getElementById('timeoutModal');
+                const content = document.getElementById('timeoutModalContent');
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    content.classList.remove('scale-95', 'opacity-0');
+                    content.classList.add('scale-100', 'opacity-100');
+                }, 10);
             }
             updateTimer();
 

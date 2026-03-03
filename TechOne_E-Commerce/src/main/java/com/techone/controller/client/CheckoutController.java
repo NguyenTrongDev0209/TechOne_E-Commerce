@@ -125,6 +125,7 @@ public class CheckoutController {
 			@RequestParam(value = "note", required = false) String note,
 			@RequestParam(value = "addressId", required = false) Integer addressId,
 			@RequestParam(value = "voucherId", required = false) Integer voucherId,
+			@RequestParam(value = "itemIds", required = false) List<Integer> itemIds,
 			HttpSession session,
 			HttpServletRequest request,
 			RedirectAttributes redirectAttributes) {
@@ -137,7 +138,7 @@ public class CheckoutController {
 		try {
 			// Call OrderService to handle logic (Validation, Order/Shipment creation,
 			// Stock, Voucher)
-			Order order = orderService.createOrder(user, addressId, paymentMethod, voucherId, note, session);
+			Order order = orderService.createOrder(user, itemIds, addressId, paymentMethod, voucherId, note, session);
 
 			System.out.println("DEBUG: CheckoutController - Order status after createOrder: " + order.getStatus());
 
@@ -276,9 +277,39 @@ public class CheckoutController {
 	}
 
 	@GetMapping("/checkout/cancel/{orderId}")
-	public String cancelOrder(@PathVariable("orderId") Integer orderId) {
-		orderService.cancelOrder(orderId);
-		return "redirect:/checkout";
+	public String cancelOrder(@PathVariable("orderId") Integer orderId, HttpSession session) {
+		Account user = (Account) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/login";
+		}
+
+		// Kiểm tra quyền sở hữu đơn hàng trước khi cho phép hủy
+		Optional<Order> orderOpt = orderRepository.findById(orderId);
+		if (orderOpt.isEmpty() || orderOpt.get().getAccount() == null
+				|| !orderOpt.get().getAccount().getId().equals(user.getId())) {
+			System.out.println(
+					"DEBUG: Unauthorized cancel attempt for orderId=" + orderId + " by userId=" + user.getId());
+			return "redirect:/";
+		}
+
+		List<Integer> restoredItemIds = orderService.cancelOrder(orderId);
+		cartRepository.findByAccountId(user.getId()).ifPresent(cart -> {
+			int cartCount = cartItemRepository.findActiveItemsByCart(cart).size();
+			session.setAttribute("cartCount", cartCount);
+		});
+
+		// Xây dựng URL chuyển hướng kèm theo các itemIds đã khôi phục
+		StringBuilder redirectUrl = new StringBuilder("redirect:/checkout");
+		if (restoredItemIds != null && !restoredItemIds.isEmpty()) {
+			redirectUrl.append("?");
+			for (int i = 0; i < restoredItemIds.size(); i++) {
+				if (i > 0)
+					redirectUrl.append("&");
+				redirectUrl.append("itemIds=").append(restoredItemIds.get(i));
+			}
+		}
+
+		return redirectUrl.toString();
 	}
 
 	private String getBaseUrl(HttpServletRequest request) {
