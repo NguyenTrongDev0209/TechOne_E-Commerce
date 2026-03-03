@@ -607,11 +607,13 @@
                                         th:data-expiry="${#temporals.format(vItem.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(vItem.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
                                         th:data-value="${vItem.voucherPercent.percentVoucher}"
                                         th:data-minprice="${vItem.voucherPercent.minPrice}"
+                                        th:data-maxprice="${vItem.voucherPercent.maxPrice}"
+                                        th:data-type="${vItem.voucherPercent.voucherType}"
                                         onclick="showVoucherTerms(this)"
                                         class="text-primary text-[10px] font-bold hover:underline">Điều kiện</button>
                                 </div>
                                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"
-                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' + (${vItem.voucherPercent.maxPrice != null} ? ' Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' : '')">
                                     Đơn từ 500k</p>
                             </div>
 
@@ -676,11 +678,13 @@
                                         th:data-expiry="${#temporals.format(vItem.voucherPercent.activeDay, 'HH:mm dd/MM/yyyy')} + ' - ' + ${#temporals.format(vItem.voucherPercent.endAt, 'HH:mm dd/MM/yyyy')}"
                                         th:data-value="${vItem.voucherPercent.percentVoucher}"
                                         th:data-minprice="${vItem.voucherPercent.minPrice}"
+                                        th:data-maxprice="${vItem.voucherPercent.maxPrice}"
+                                        th:data-type="${vItem.voucherPercent.voucherType}"
                                         onclick="showVoucherTerms(this)"
                                         class="text-primary text-[10px] font-bold hover:underline">Điều kiện</button>
                                 </div>
                                 <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1"
-                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ. Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.'">
+                                    th:text="'Đơn hàng tối thiểu ' + ${#numbers.formatDecimal(vItem.voucherPercent.minPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' + (${vItem.voucherPercent.maxPrice != null} ? ' Giảm tối đa ' + ${#numbers.formatDecimal(vItem.voucherPercent.maxPrice, 0, 'COMMA', 0, 'POINT')} + 'đ.' : '')">
                                     Đơn từ 500k</p>
                             </div>
 
@@ -860,11 +864,19 @@
                 const expiry = button.getAttribute('data-expiry');
                 const value = button.getAttribute('data-value');
                 const minPrice = parseFloat(button.getAttribute('data-minprice'));
+                const maxPrice = button.getAttribute('data-maxprice');
+                const type = button.getAttribute('data-type') === 'true';
 
                 document.getElementById('modalVoucherCode').innerText = code;
                 document.getElementById('modalExpiry').innerText = expiry;
-                document.getElementById('modalDetail').innerText = 'Giảm ' + value + '% cho đơn hàng từ ' +
-                    minPrice.toLocaleString() + 'đ.';
+
+                let detailText = type ? 'Giảm ' + value + '%' : 'Miễn phí vận chuyển';
+                detailText += ' cho đơn hàng từ ' + minPrice.toLocaleString() + 'đ.';
+                if (maxPrice && maxPrice !== 'null' && maxPrice !== '') {
+                    detailText += ' Giảm tối đa ' + parseFloat(maxPrice).toLocaleString() + 'đ.';
+                }
+
+                document.getElementById('modalDetail').innerText = detailText;
 
                 // Tạm ẩn modal danh sách voucher
                 document.getElementById('voucher-modal').classList.add('hidden');

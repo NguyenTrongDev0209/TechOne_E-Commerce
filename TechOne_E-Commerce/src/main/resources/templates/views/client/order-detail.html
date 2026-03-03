@@ -91,12 +91,12 @@
                 <div class="relative w-full">
                     <!-- Progress Bar Background -->
                     <div
-                        class="absolute left-3 right-3 top-4 -translate-y-1/2 h-1 bg-gray-200 dark:bg-gray-700 rounded-full">
+                        class="absolute left-4 right-4 top-4 -translate-y-1/2 h-1 bg-gray-200 dark:bg-gray-700 rounded-full">
                     </div>
                     <!-- Progress Bar Active (Based on Status) -->
                     <div th:if="${order.status != 8}"
-                        class="absolute left-3 top-4 -translate-y-1/2 h-1 bg-primary transition-all duration-500 rounded-full"
-                        th:style="'width: ' + (${order.status == 0 || order.status == 1 ? '10%' : (order.status == 2 || order.status == 3 ? '40%' : (order.status == 4 || order.status == 5 ? '75%' : (order.status == 6 ? '100%' : '0%')))})">
+                        class="absolute left-4 top-4 -translate-y-1/2 h-1 bg-primary transition-all duration-500 rounded-full"
+                        th:style="'width: ' + (${order.status == 0 || order.status == 1 ? '0%' : (order.status == 2 || order.status == 3 ? '33.33%' : (order.status == 4 || order.status == 5 ? '66.66%' : (order.status == 6 ? '100%' : '0%')))})">
                     </div>
 
                     <div class="flex justify-between items-start w-full relative" th:if="${order.status != 8}">
