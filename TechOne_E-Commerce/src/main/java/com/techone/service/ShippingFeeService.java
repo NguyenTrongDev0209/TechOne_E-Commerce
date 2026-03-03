@@ -53,21 +53,26 @@ public class ShippingFeeService {
     private final int SERVICE_TYPE_ID = 53320;
 
     public Integer calculateShippingFee(Integer provinceId, Integer districtId, String wardCode) {
-        // 1. Lấy thông tin địa chỉ từ DB
-        District district = districtRepository.findById(districtId)
-                							  .orElseThrow(() -> new RuntimeException("Huyện không tồn tại"));
-        Ward ward = wardRepository.findById(wardCode)
-        						  .orElseThrow(() -> new RuntimeException("Xã không tồn tại"));
+        try {
+            // 1. Lấy thông tin địa chỉ từ DB
+            District district = districtRepository.findById(districtId)
+                    .orElseThrow(() -> new RuntimeException("Huyện không tồn tại"));
+            Ward ward = wardRepository.findById(wardCode)
+                    .orElseThrow(() -> new RuntimeException("Xã không tồn tại"));
 
-        // 2. Lấy Service Info khả dụng cho tuyến đường này
-        ServiceInfo info = getAvailableServiceId(district.getId());
-        if (info == null) {
-            throw new RuntimeException("Không tìm thấy dịch vụ vận chuyển nào khả dụng cho tuyến đường này (GHN)");
+            // 2. Lấy Service Info khả dụng cho tuyến đường này
+            ServiceInfo info = getAvailableServiceId(district.getId());
+            if (info == null) {
+                System.err.println("GHN Warning: No available service for route. Falling back to default fee 50,000đ.");
+                return 50000;
+            }
+
+            // 3. Chuẩn bị Request Body & Gọi API (Thử 2 lần: service_id trước, sau đó service_type_id)
+            return tryCalculateFee(info, district.getId(), ward.getCode());
+        } catch (Exception e) {
+            System.err.println("GHN API Fallback: Error calculateShippingFee: " + e.getMessage() + ". Using 50,000đ as default.");
+            return 50000;
         }
-
-        // 3. Chuẩn bị Request Body & Gọi API (Thử 2 lần: service_id trước, sau đó
-        // service_type_id)
-        return tryCalculateFee(info, district.getId(), ward.getCode());
     }
 
     private Integer tryCalculateFee(ServiceInfo info, Integer toDistrictId, String toWardCode) {

@@ -1099,8 +1099,10 @@
                     updateTotals();
                 } catch (error) {
                     console.error('Error fetching shipping fee:', error);
-                    feeEl.innerText = 'Miễn phí'; // Fallback
-                    feeEl.setAttribute('data-value', '0');
+                    // Fallback to 50,000₫ instead of Miễn phí
+                    const fallbackFee = 50000;
+                    feeEl.innerText = formatCurrency(fallbackFee).replace(/\s/g, '');
+                    feeEl.setAttribute('data-value', fallbackFee);
                     updateTotals();
                 }
             }
