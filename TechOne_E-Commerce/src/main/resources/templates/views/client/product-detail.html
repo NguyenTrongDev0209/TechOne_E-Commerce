@@ -308,11 +308,11 @@
             // Populate variantsMap safely using proper JS inlining
             /*[# th:each="v : ${variants}"]*/
             variantsMap["[[${v.id}]]"] = {
-                "price": [[${ v.price }]],
-                "discount": [[${ v.discount }]],
-                "stock": [[${ v.stock }]],
-                "sku": [[${ v.sku }]],
-                "image": [[${ not #lists.isEmpty(v.variantImages) ? '/images/variants/' + v.variantImages[0].pathImage : '' }]]
+                "price": /*[[${v.price}]]*/ 0,
+                "discount": /*[[${v.discount}]]*/ 0,
+                "stock": /*[[${v.stock}]]*/ 0,
+                "sku": /*[[${v.sku}]]*/ "",
+                "image": /*[[${not #lists.isEmpty(v.variantImages) ? '/images/variants/' + v.variantImages[0].pathImage : ''}]]*/ ""
             };
             /*[/]*/
 
