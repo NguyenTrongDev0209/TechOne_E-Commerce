@@ -89,70 +89,33 @@
         <section
             class="w-full bg-white dark:bg-[#1e293b]/50 py-16 px-4 md:px-8 border-t border-gray-200 dark:border-gray-700 mt-12">
             <div class="max-w-[1200px] mx-auto">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex justify-between mb-8">
                     <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white">Bài viết liên quan</h3>
-                    <a class="text-primary font-medium hover:underline flex items-center gap-1" href="/blogs">
-                        Xem tất cả <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                    </a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <a href="#" class="flex flex-col group cursor-pointer">
+                    <a th:each="rPost : ${relatedPosts}" th:href="@{/posts/{id}(id=${rPost.id})}"
+                        class="flex flex-col group cursor-pointer">
                         <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
                             <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
-                                style='background-image: url("https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&q=80&w=600");'>
+                                th:style="'background-image: url(/images/posts/' + ${rPost.thumbnail} + ');'">
                             </div>
-                            <div
-                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
+                            <div th:if="${rPost.category != null}"
+                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white"
+                                th:text="${rPost.category.name}">
                                 Tin tức</div>
                         </div>
                         <div class="flex flex-col flex-1">
-                            <div class="text-xs text-gray-500 mb-2">10 Oct 2023 · 3 min read</div>
-                            <h4
-                                class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
-                                Top 5 Laptop Gaming Đáng Mua Nhất Cuối Năm 2023
-                            </h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
-                                Tổng hợp những mẫu laptop cấu hình khủng, tản nhiệt tốt đang giảm giá mạnh...
-                            </p>
-                        </div>
-                    </a>
-                    <a href="#" class="flex flex-col group cursor-pointer">
-                        <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
-                                style='background-image: url("https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&q=80&w=600");'>
+                            <div class="text-xs text-gray-500 mb-2">
+                                <span th:text="${#temporals.format(rPost.createAt, 'dd MMM yyyy')}">10 Oct 2023</span>
+                                · <span th:text="${rPost.viewCount}">0</span> lượt xem
                             </div>
-                            <div
-                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
-                                Hướng dẫn</div>
-                        </div>
-                        <div class="flex flex-col flex-1">
-                            <div class="text-xs text-gray-500 mb-2">08 Oct 2023 · 7 min read</div>
-                            <h4
+                            <h4 th:text="${rPost.title}"
                                 class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
-                                Hướng Dẫn Chọn Bàn Phím Cơ Cho Người Mới Bắt Đầu
+                                Tiêu đề bài viết liên quan
                             </h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
-                                Blue switch, Red switch hay Brown switch? Cùng tìm hiểu sự khác biệt...
-                            </p>
-                        </div>
-                    </a>
-                    <a href="#" class="flex flex-col group cursor-pointer">
-                        <div class="w-full aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100 relative">
-                            <div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-110"
-                                style='background-image: url("https://images.unsplash.com/photo-1558002038-1091a166111c?auto=format&fit=crop&q=80&w=600");'>
-                            </div>
-                            <div
-                                class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur px-2 py-1 rounded text-xs font-bold text-[#1c100d] dark:text-white">
-                                Tips</div>
-                        </div>
-                        <div class="flex flex-col flex-1">
-                            <div class="text-xs text-gray-500 mb-2">05 Oct 2023 · 4 min read</div>
-                            <h4
-                                class="text-lg font-bold text-[#1c100d] dark:text-white mb-2 group-hover:text-primary transition-colors">
-                                5 Món Đồ Công Nghệ Giúp Bạn Làm Việc Hiệu Quả Hơn
-                            </h4>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
-                                Nâng cấp góc làm việc của bạn với những phụ kiện không thể thiếu này...
+                            <p th:text="${#strings.abbreviate(rPost.content.replaceAll('<[^>]*>', '').replaceAll('&nbsp;', ' '), 100)}"
+                                class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
+                                Mô tả ngắn gọn bài viết.
                             </p>
                         </div>
                     </a>
@@ -163,83 +126,139 @@
         <section class="w-full py-12 px-4 md:px-8">
             <div class="max-w-[800px] mx-auto">
                 <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white mb-8 flex items-center gap-2">
-                    <h3 class="text-2xl font-bold text-[#1c100d] dark:text-white mb-8 flex items-center gap-2">
-                        Bình luận <span
-                            class="text-base font-normal text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full"
-                            th:text="${post.comment.size()}">0</span>
-                    </h3>
+                    Bình luận <span
+                        class="text-base font-normal text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full"
+                        th:text="${post.comment.size()}">0</span>
+                </h3>
 
-                    <div th:if="${session.user != null}"
-                        class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm mb-10 border border-gray-100 dark:border-gray-700">
-                        <form th:action="@{/comments/post}" method="post">
-                            <input type="hidden" name="postId" th:value="${post.id}">
-                            <div class="flex gap-4">
-                                <div
-                                    class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0 flex items-center justify-center text-gray-500">
-                                    <span class="material-symbols-outlined text-xl">person</span>
-                                </div>
-                                <div class="flex-1">
-                                    <textarea name="content"
-                                        class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm placeholder-gray-400 text-[#1c100d] dark:text-white"
-                                        placeholder="Chia sẻ suy nghĩ của bạn về bài viết này..." rows="3"
-                                        required></textarea>
-                                    <div class="flex justify-end mt-3">
-                                        <button type="submit"
-                                            class="px-6 py-2 bg-primary hover:bg-red-600 text-white font-medium rounded-lg text-sm transition-colors shadow-lg shadow-primary/20">
-                                            Gửi bình luận
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div th:unless="${session.user != null}"
-                        class="mb-10 p-4 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
-                        <p class="text-gray-600 dark:text-gray-400">Vui lòng <a th:href="@{/login}"
-                                class="text-primary font-bold hover:underline">đăng nhập</a> để để lại bình luận.</p>
-                    </div>
-
-                    <div class="space-y-8">
-                        <!-- Iterating over comments -->
-                        <div th:each="cmt : ${post.comment}" class="flex gap-4">
-                            <div class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0">
-                                <img alt="User" class="w-full h-full object-cover"
-                                    th:src="${cmt.account != null ? 'https://ui-avatars.com/api/?name=' + cmt.account.fullname + '&background=random' : 'https://ui-avatars.com/api/?name=User&background=random'}" />
+                <div th:if="${session.user != null}"
+                    class="bg-white dark:bg-[#1e293b] p-6 rounded-xl shadow-sm mb-10 border border-gray-100 dark:border-gray-700">
+                    <form th:action="@{/comments/post}" method="post">
+                        <input type="hidden" name="postId" th:value="${post.id}">
+                        <div class="flex gap-4">
+                            <div
+                                class="size-10 rounded-full bg-gray-200 overflow-hidden shrink-0 flex items-center justify-center text-gray-500">
+                                <span class="material-symbols-outlined text-xl">person</span>
                             </div>
                             <div class="flex-1">
-                                <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <h5 class="font-bold text-[#1c100d] dark:text-white text-sm"
-                                            th:text="${cmt.account != null ? cmt.account.fullname : 'Người dùng ẩn danh'}">
-                                            Hoang Nguyen</h5>
-                                        <span class="text-xs text-gray-500"
-                                            th:text="${#temporals.format(cmt.createAt, 'dd-MM-yyyy HH:mm')}">2 hours
-                                            ago</span>
-                                    </div>
-                                    <p class="text-gray-700 dark:text-gray-300 text-sm" th:text="${cmt.content}">
-                                        Nội dung bình luận.
-                                    </p>
-                                </div>
-                                <div class="flex gap-4 mt-2 ml-2">
-                                    <button
-                                        class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-[16px]">thumb_up</span> Like
-                                    </button>
-                                    <button
-                                        class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
-                                        <span class="material-symbols-outlined text-[16px]">reply</span> Reply
+                                <textarea name="content"
+                                    class="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-sm placeholder-gray-400 text-[#1c100d] dark:text-white"
+                                    placeholder="Chia sẻ suy nghĩ của bạn về bài viết này..." rows="3"
+                                    required></textarea>
+                                <div class="flex justify-end mt-3">
+                                    <button type="submit"
+                                        class="px-6 py-2 bg-primary hover:bg-red-600 text-white font-medium rounded-lg text-sm transition-colors shadow-lg shadow-primary/20">
+                                        Gửi bình luận
                                     </button>
                                 </div>
                             </div>
                         </div>
+                    </form>
+                </div>
+                <div th:unless="${session.user != null}"
+                    class="mb-10 p-4 bg-gray-100 dark:bg-gray-800 rounded-xl text-center">
+                    <p class="text-gray-600 dark:text-gray-400">Vui lòng <a th:href="@{/login}"
+                            class="text-primary font-bold hover:underline">đăng nhập</a> để để lại bình luận.</p>
+                </div>
 
-                        <div th:if="${#lists.isEmpty(post.comment)}" class="text-center py-10">
-                            <p class="text-gray-500 italic">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+                <div class="space-y-8">
+                    <!-- Recursive fragment for displaying comments and their replies -->
+                    <th:block th:fragment="commentTree(comments, level)">
+                        <div th:each="cmt : ${comments}" class="flex flex-col gap-4"
+                            th:classappend="${level > 0} ? 'ml-8 border-l-2 border-gray-100 dark:border-gray-700 pl-4 mt-4' : ''">
+                            <div class="flex gap-4">
+                                <div
+                                    th:class="${level == 0 ? 'size-10' : 'size-8'} + ' rounded-full bg-gray-200 overflow-hidden shrink-0'">
+                                    <img alt="User" class="w-full h-full object-cover"
+                                        th:src="${cmt.account != null ? 'https://ui-avatars.com/api/?name=' + cmt.account.fullname + '&background=random' : 'https://ui-avatars.com/api/?name=User&background=random'}" />
+                                </div>
+                                <div class="flex-1">
+                                    <div class="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl rounded-tl-none">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h5 th:class="${level == 0 ? 'text-sm' : 'text-xs'} + ' font-bold text-[#1c100d] dark:text-white'"
+                                                th:text="${cmt.account != null ? cmt.account.fullname : 'Người dùng ẩn danh'}">
+                                                Hoang Nguyen</h5>
+                                            <span class="text-xs text-gray-500"
+                                                th:text="${#temporals.format(cmt.createAt, 'dd-MM-yyyy HH:mm')}">2 hours
+                                                ago</span>
+                                        </div>
+                                        <p class="text-gray-700 dark:text-gray-300 text-sm" th:text="${cmt.content}">
+                                            Nội dung bình luận.
+                                        </p>
+                                    </div>
+                                    <div class="flex gap-4 mt-2 ml-2">
+                                        <button
+                                            class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[16px]">thumb_up</span> Like
+                                        </button>
+                                        <button th:onclick="'toggleReplyForm(' + ${cmt.id} + ')'"
+                                            class="text-xs font-medium text-gray-500 hover:text-primary flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[16px]">reply</span> Reply
+                                        </button>
+                                    </div>
+
+                                    <!-- Reply Form (Unique for each comment) -->
+                                    <div th:id="'reply-form-' + ${cmt.id}" class="hidden mt-4">
+                                        <div th:if="${session.user != null}">
+                                            <form th:action="@{/comments/post}" method="post">
+                                                <input type="hidden" name="postId" th:value="${post.id}">
+                                                <input type="hidden" name="parentId" th:value="${cmt.id}">
+                                                <div class="flex gap-3">
+                                                    <div class="flex-1">
+                                                        <textarea name="content"
+                                                            class="w-full p-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-xs placeholder-gray-400 text-[#1c100d] dark:text-white"
+                                                            placeholder="Viết câu trả lời..." rows="2"
+                                                            required></textarea>
+                                                        <div class="flex justify-end mt-2 gap-2">
+                                                            <button type="button"
+                                                                th:onclick="'toggleReplyForm(' + ${cmt.id} + ')'"
+                                                                class="px-4 py-1 text-gray-500 hover:text-gray-700 text-xs font-medium">Hủy</button>
+                                                            <button type="submit"
+                                                                class="px-4 py-1 bg-primary hover:bg-red-600 text-white font-medium rounded text-xs transition-colors shadow-sm">
+                                                                Trả lời
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div th:unless="${session.user != null}"
+                                            class="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg text-center text-xs">
+                                            <p class="text-gray-600 dark:text-gray-400">Vui lòng <a th:href="@{/login}"
+                                                    class="text-primary font-bold hover:underline">đăng nhập</a> để trả
+                                                lời.</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Recursive Call for Children -->
+                                    <th:block th:if="${!#lists.isEmpty(cmt.children)}"
+                                        th:replace="~{::commentTree(comments=${cmt.children}, level=${level + 1})}">
+                                    </th:block>
+                                </div>
+                            </div>
                         </div>
+                    </th:block>
+
+                    <!-- Initial Call for Top-level Comments -->
+                    <th:block th:insert="~{::commentTree(comments=${post.comment.?[parent == null]}, level=0)}">
+                    </th:block>
+
+                    <div th:if="${#lists.isEmpty(post.comment)}" class="text-center py-10">
+                        <p class="text-gray-500 italic">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
                     </div>
+                </div>
+
             </div>
         </section>
 
+        <script>
+            function toggleReplyForm(commentId) {
+                const form = document.getElementById('reply-form-' + commentId);
+                if (form) {
+                    form.classList.toggle('hidden');
+                }
+            }
+        </script>
     </div>
 </body>
 

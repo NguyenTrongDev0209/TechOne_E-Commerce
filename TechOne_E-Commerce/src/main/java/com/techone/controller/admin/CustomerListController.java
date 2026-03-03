@@ -10,6 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.techone.model.Account;
 import com.techone.repository.AccountRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.techone.model.Account;
+import com.techone.repository.AccountRepository;
+
 @Controller
 public class CustomerListController {
 
@@ -18,10 +26,12 @@ public class CustomerListController {
 
     @GetMapping("/admin/customer-list")
     public String shippingConfiguration(
-            @org.springframework.web.bind.annotation.RequestParam(value = "search", required = false) String search,
-            @org.springframework.web.bind.annotation.RequestParam(value = "status", required = false) String statusStr,
-            @org.springframework.web.bind.annotation.RequestParam(value = "dateFrom", required = false) String dateFromStr,
-            @org.springframework.web.bind.annotation.RequestParam(value = "dateTo", required = false) String dateToStr,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "status", required = false) String statusStr,
+            @RequestParam(value = "dateFrom", required = false) String dateFromStr,
+            @RequestParam(value = "dateTo", required = false) String dateToStr,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
         
         Integer status = null;
@@ -39,18 +49,27 @@ public class CustomerListController {
             try { dateTo = java.time.LocalDate.parse(dateToStr.trim(), formatter); } catch(Exception e) {}
         }
 
-        List<Account> customers = accountRepository.findCustomersByFilters(
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Account> customersPage = accountRepository.findCustomersByFilters(
             (search != null && !search.trim().isEmpty()) ? search.trim() : null,
             status,
             dateFrom,
-            dateTo
+            dateTo,
+            pageable
         );
         
-        model.addAttribute("customers", customers);
+        model.addAttribute("customers", customersPage);
         model.addAttribute("paramSearch", search);
         model.addAttribute("paramStatus", statusStr == null ? "all" : statusStr);
         model.addAttribute("paramDateFrom", dateFromStr);
         model.addAttribute("paramDateTo", dateToStr);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
+        // Stats
+        model.addAttribute("totalCustomers", accountRepository.countByRole(false));
+        model.addAttribute("activeCustomers", accountRepository.countByRoleAndStatus(false, 1));
+        model.addAttribute("lockedCustomers", accountRepository.countByRoleAndStatus(false, 0));
         
         return "views/admin/customer-list";
     }

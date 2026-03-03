@@ -18,13 +18,6 @@
 					<p class="text-gray-500 dark:text-gray-400 mt-1">Quản lý thông tin, nhóm và lịch
 						sử mua hàng của khách.</p>
 				</div>
-				<div class="flex items-center gap-3">
-					<button
-						class="flex items-center gap-2 bg-primary hover:bg-orange-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-orange-900/20">
-						<span class="material-symbols-outlined text-[20px]">add</span>
-						Thêm khách hàng
-					</button>
-				</div>
 			</div>
 			<!-- Filter Section -->
 			<form th:action="@{/admin/customer-list}" method="GET" id="searchForm"
@@ -38,6 +31,8 @@
 						class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded bg-gray-50 text-slate-900 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary text-sm transition-all"
 						placeholder="Tìm kiếm khách hàng..." type="text"
 						onkeypress="if(event.key === 'Enter'){ event.preventDefault(); document.getElementById('searchForm').submit(); }" />
+					<input type="hidden" name="size" th:value="${pageSize}">
+					<input type="hidden" name="page" value="0">
 				</div>
 
 				<!-- Status Dropdown -->
@@ -176,7 +171,8 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
-							<tr th:each="customer : ${customers}" class="hover:bg-orange-50/30 transition-colors group">
+							<tr th:each="customer : ${customers.content}"
+								class="hover:bg-orange-50/30 transition-colors group">
 								<td class="px-6 py-4">
 									<div class="flex items-center gap-3">
 										<div th:if="${customer.avatar != null}"
@@ -252,9 +248,12 @@
 				<div
 					class="rounded-b-xl px-6 py-3 border-t border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-[#1e293b]">
 					<div class="text-xs text-gray-500 dark:text-gray-400 mb-4 sm:mb-0">
-						Đang xem <span class="font-medium text-gray-900 dark:text-white">1</span> đến <span
-							class="font-medium text-gray-900 dark:text-white">10</span> trong tổng số <span
-							class="font-medium text-gray-900 dark:text-white">2,450</span> khách hàng
+						Đang xem <span class="font-medium text-gray-900 dark:text-white"
+							th:text="${customers.totalElements > 0 ? (customers.number * customers.size + 1) : 0}">1</span>
+						đến <span class="font-medium text-gray-900 dark:text-white"
+							th:text="${customers.number * customers.size + customers.numberOfElements}">10</span>
+						trong tổng số <span class="font-medium text-gray-900 dark:text-white"
+							th:text="${customers.totalElements}">2,450</span> khách hàng
 					</div>
 
 					<div class="flex items-center gap-2">
@@ -265,7 +264,7 @@
 							<div class="relative">
 								<button onclick="togglePaginationDropdown()" id="paginationDropdownBtn"
 									class="flex items-center justify-between gap-2 px-2 py-1 text-xs font-medium border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-all shadow-sm w-14 h-7">
-									<span id="itemsPerPageLabel">10</span>
+									<span id="itemsPerPageLabel" th:text="${pageSize}">10</span>
 									<span id="paginationDropdownIcon"
 										class="material-symbols-outlined text-gray-400 text-[16px] transition-transform duration-200">expand_more</span>
 								</button>
@@ -293,18 +292,41 @@
 						</div>
 
 						<nav aria-label="Page navigation" class="flex items-center -space-x-px h-7 text-xs">
-							<button
+							<a th:if="${customers.hasPrevious()}"
+								th:href="@{/admin/customer-list(search=${paramSearch}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${customers.number - 1}, size=${pageSize})}"
 								class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
 								<span class="material-symbols-outlined text-[16px]">chevron_left</span>
-							</button>
-							<button aria-current="page"
-								class="cursor-pointer z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-primary-hover hover:text-white dark:border-gray-700 dark:bg-gray-700 dark:text-white transition-colors">
-								1
-							</button>
-							<button
-								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
+							</a>
+							<div th:unless="${customers.hasPrevious()}"
+								class="flex items-center justify-center size-7 ms-0 leading-tight text-gray-400 bg-gray-50 border border-e-0 border-gray-300 rounded-s dark:bg-gray-800/50 dark:border-gray-700 dark:text-gray-600 transition-colors cursor-not-allowed">
+								<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+							</div>
+
+							<!-- Simple Page Numbers -->
+							<th:block th:each="pageNum : ${#numbers.sequence(0, customers.totalPages - 1)}"
+								th:if="${customers.totalPages > 0}">
+								<a th:if="${pageNum == customers.number}" aria-current="page"
+									class="z-10 flex items-center justify-center size-7 leading-tight text-white border border-primary bg-primary hover:bg-primary-hover hover:text-white dark:border-gray-700 dark:bg-gray-700 dark:text-white transition-colors"
+									th:text="${pageNum + 1}">
+									1
+								</a>
+								<a th:unless="${pageNum == customers.number}"
+									th:href="@{/admin/customer-list(search=${paramSearch}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${pageNum}, size=${pageSize})}"
+									class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
+									th:text="${pageNum + 1}">
+									2
+								</a>
+							</th:block>
+
+							<a th:if="${customers.hasNext()}"
+								th:href="@{/admin/customer-list(search=${paramSearch}, status=${paramStatus}, dateFrom=${paramDateFrom}, dateTo=${paramDateTo}, page=${customers.number + 1}, size=${pageSize})}"
+								class="flex items-center justify-center size-7 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white transition-colors">
 								<span class="material-symbols-outlined text-[16px]">chevron_right</span>
-							</button>
+							</a>
+							<div th:unless="${customers.hasNext()}"
+								class="flex items-center justify-center size-7 leading-tight text-gray-400 bg-gray-50 border border-gray-300 rounded-e dark:bg-gray-800/50 dark:border-gray-700 dark:text-gray-600 transition-colors cursor-not-allowed">
+								<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+							</div>
 						</nav>
 					</div>
 				</div>
@@ -371,11 +393,10 @@
 					}
 
 					function selectItemsPerPage(value) {
-						document.getElementById('itemsPerPageLabel').textContent = value;
-						const dropdown = document.getElementById('paginationDropdown');
-						dropdown.classList.add('hidden');
-						const icon = document.getElementById('paginationDropdownIcon');
-						if (icon) icon.style.transform = 'rotate(0deg)';
+						const urlParams = new URLSearchParams(window.location.search);
+						urlParams.set('size', value);
+						urlParams.set('page', '0');
+						window.location.search = urlParams.toString();
 					}
 
 					// Global Click to Close

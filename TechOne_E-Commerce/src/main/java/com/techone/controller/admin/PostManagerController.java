@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.techone.model.Post;
 import com.techone.repository.PostRepository;
 
@@ -21,10 +26,12 @@ public class PostManagerController {
 
     @GetMapping("/admin/post-list")
     public String postList(
-            @org.springframework.web.bind.annotation.RequestParam(value = "title", required = false) String title,
-            @org.springframework.web.bind.annotation.RequestParam(value = "status", required = false) String statusStr,
-            @org.springframework.web.bind.annotation.RequestParam(value = "dateFrom", required = false) String dateFromStr,
-            @org.springframework.web.bind.annotation.RequestParam(value = "dateTo", required = false) String dateToStr,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "status", required = false) String statusStr,
+            @RequestParam(value = "dateFrom", required = false) String dateFromStr,
+            @RequestParam(value = "dateTo", required = false) String dateToStr,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
             Model model) {
         
         Boolean status = null;
@@ -42,18 +49,28 @@ public class PostManagerController {
             try { dateTo = java.time.LocalDate.parse(dateToStr.trim(), formatter); } catch(Exception e) {}
         }
 
-        List<Post> posts = postRepository.findByFilters(
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postsPage = postRepository.findByFilters(
             (title != null && !title.trim().isEmpty()) ? title.trim() : null,
             status,
+            null, // categoryId
             dateFrom,
-            dateTo
+            dateTo,
+            pageable
         );
 
-        model.addAttribute("posts", posts);
+        model.addAttribute("posts", postsPage);
         model.addAttribute("paramTitle", title);
         model.addAttribute("paramStatus", statusStr == null ? "all" : statusStr);
         model.addAttribute("paramDateFrom", dateFromStr);
         model.addAttribute("paramDateTo", dateToStr);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("pageSize", size);
+
+        // Stats for the header card
+        model.addAttribute("totalPosts", postRepository.count());
+        model.addAttribute("hiddenPosts", postRepository.countByStatus(false));
+        model.addAttribute("totalViews", postRepository.sumViewCount());
         
         return "views/admin/post-list";
     }
