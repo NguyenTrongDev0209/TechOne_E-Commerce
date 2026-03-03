@@ -37,7 +37,7 @@ public class LoginController {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-//    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+   // private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 	
     @Autowired
     private SecurityContextRepository securityContextRepository;
