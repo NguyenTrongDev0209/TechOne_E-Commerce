@@ -332,7 +332,12 @@
                                             class="text-accent font-bold"
                                             th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">21.490k</span>
                                     </div>
-
+                                    <button th:if="${product.variant != null && !product.variant.empty}"
+                                        th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                        class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                        title="Thêm vào giỏ hàng">
+                                        <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -433,7 +438,12 @@
                                         class="text-accent font-bold"
                                         th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">21.490k</span>
                                 </div>
-
+                                <button th:if="${product.variant != null && !product.variant.empty}"
+                                    th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                    class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                    title="Thêm vào giỏ hàng">
+                                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                </button>
                             </div>
                         </div>
                         </a>
@@ -615,6 +625,12 @@
                                         class="text-accent font-bold"
                                         th:text="${#numbers.formatDecimal(product.variant[0].price * (1 - product.variant[0].discount/100), 0, 'COMMA', 0, 'POINT') + '₫'}">13.990.000₫</span>
                                 </div>
+                                <button th:if="${product.variant != null && !product.variant.empty}"
+                                    th:onclick="'event.preventDefault(); addToCartDirectly(' + ${product.variant[0].id} + ')'"
+                                    class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center hover:bg-primary-hover transition-all shadow-lg shadow-primary/20"
+                                    title="Thêm vào giỏ hàng">
+                                    <span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -905,6 +921,50 @@
                 </div>
             </div>
         </section>
+
+        <script>
+            async function addToCartDirectly(variantId) {
+                try {
+                    const response = await fetch('/api/cart/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ variantId: parseInt(variantId), quantity: 1 })
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã thêm vào giỏ',
+                            text: 'Sản phẩm đã có trong giỏ hàng của bạn',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            cartBadge.innerText = data.cartCount;
+                            cartBadge.classList.remove('hidden');
+                        }
+                    } else if (response.status === 401) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Yêu cầu đăng nhập',
+                            text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+                            confirmButtonText: 'Đăng nhập',
+                            showCancelButton: true
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.href = '/login';
+                        });
+                    } else {
+                        const text = await response.text();
+                        Swal.fire({ icon: 'error', title: 'Thất bại', text: text || 'Có lỗi xảy ra' });
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+        </script>
     </main>
 </body>
 

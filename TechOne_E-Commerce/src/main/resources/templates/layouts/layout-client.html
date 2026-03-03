@@ -516,6 +516,22 @@
                     throw new Error(errorText || 'Có lỗi xảy ra');
                 }
 
+                const contentType = response.headers.get("content-type");
+                if (!contentType || contentType.indexOf("application/json") === -1) {
+                    // Not JSON (probably redirected to login page)
+                    Swal.fire({
+                        title: 'Yêu cầu đăng nhập',
+                        text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Đăng nhập',
+                        confirmButtonColor: '#ea580c'
+                    }).then((result) => {
+                        if (result.isConfirmed) window.location.href = '/login';
+                    });
+                    return;
+                }
+
                 const data = await response.json();
                 if (data.success) {
                     // Update counter in badges
