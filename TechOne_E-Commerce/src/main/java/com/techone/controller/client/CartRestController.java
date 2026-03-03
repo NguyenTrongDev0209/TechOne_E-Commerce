@@ -70,7 +70,7 @@ public class CartRestController {
         });
 
         int quantityToAdd = quantity;
-        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartAndVariant(cart, variant);
+        Optional<CartItem> existingItemOpt = cartItemRepository.findByCartIdAndVariantId(cart.getId(), variant.getId());
         CartItem cartItem;
 
         if (existingItemOpt.isPresent()) {
