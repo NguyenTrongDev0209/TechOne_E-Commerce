@@ -34,4 +34,22 @@ public class OderDetailController {
 		model.addAttribute("order", order);
 		return "views/client/order-detail";
 	}
+
+	@org.springframework.web.bind.annotation.PostMapping("/account/orders/confirm-delivery")
+	public String confirmDelivery(@RequestParam("id") Integer id, @RequestParam("status") Integer status) {
+		Account user = SessionUtils.get("user");
+		if (user == null) {
+			return "redirect:/login";
+		}
+
+		Order order = orderRepository.findById(id).orElse(null);
+		if (order != null && order.getAccount().getId().equals(user.getId()) && order.getStatus() == 5) {
+			// Status 6: Received, 7: Not Received
+			if (status == 6 || status == 7) {
+				order.setStatus(status);
+				orderRepository.save(order);
+			}
+		}
+		return "redirect:/account/orders/order-detail?id=" + id;
+	}
 }

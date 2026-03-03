@@ -21,7 +21,7 @@ public class VNPayService {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String vnp_TxnRef = vnPayConfig.getRandomNumber(8);
-        String vnp_IpAddr = "127.0.0.1";
+        String vnp_IpAddr = vnPayConfig.getIpAddress(request);
         String vnp_TmnCode = vnPayConfig.getVnp_TmnCode();
         String orderType = "other";
 
@@ -53,9 +53,7 @@ public class VNPayService {
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
-        Iterator<String> itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = itr.next();
+        for (String fieldName : fieldNames) {
             String fieldValue = vnp_Params.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
                 try {
@@ -63,6 +61,11 @@ public class VNPayService {
                             "%20");
                     String encodedValue = URLEncoder.encode(fieldValue, StandardCharsets.UTF_8.toString()).replace("+",
                             "%20");
+
+                    if (hashData.length() > 0) {
+                        hashData.append("&");
+                        query.append("&");
+                    }
 
                     hashData.append(fieldName);
                     hashData.append('=');
@@ -74,10 +77,6 @@ public class VNPayService {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                if (itr.hasNext()) {
-                    query.append('&');
-                    hashData.append('&');
-                }
             }
         }
 
@@ -88,15 +87,32 @@ public class VNPayService {
     }
 
     public int orderReturn(HttpServletRequest request) {
-        String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
-        String vnp_TransactionStatus = request.getParameter("vnp_TransactionStatus");
+        Map<String, String> fields = new HashMap<>();
+        for (Enumeration<String> params = request.getParameterNames(); params.hasMoreElements();) {
+            String fieldName = params.nextElement();
+            String fieldValue = request.getParameter(fieldName);
+            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                fields.put(fieldName, fieldValue);
+            }
+        }
 
-        // Theo yêu cầu người dùng: Bỏ qua kiểm tra chữ ký (SecureHash)
-        // Chỉ kiểm tra mã phản hồi '00' (Thành công)
-        if ("00".equals(vnp_ResponseCode) || "00".equals(vnp_TransactionStatus)) {
-            return 1; // Success
+        String vnp_SecureHash = request.getParameter("vnp_SecureHash");
+        if (fields.containsKey("vnp_SecureHashType")) {
+            fields.remove("vnp_SecureHashType");
+        }
+        if (fields.containsKey("vnp_SecureHash")) {
+            fields.remove("vnp_SecureHash");
+        }
+
+        String signValue = vnPayConfig.hashAllFields(fields);
+        if (signValue.equals(vnp_SecureHash)) {
+            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                return 1; // Success
+            } else {
+                return 0; // Failed
+            }
         } else {
-            return 0; // Failed or Canceled
+            return -1; // Invalid Signature
         }
     }
 }

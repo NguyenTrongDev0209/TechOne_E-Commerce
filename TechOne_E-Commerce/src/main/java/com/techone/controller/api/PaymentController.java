@@ -80,7 +80,8 @@ public class PaymentController {
             jakarta.servlet.http.HttpServletResponse response) throws java.io.IOException {
         int paymentStatus = vnPayService.orderReturn(request);
         String orderInfo = request.getParameter("vnp_OrderInfo");
-        // orderInfo usually contains "Thanh toan don hang #orderId"
+        String vnp_ResponseCode = request.getParameter("vnp_ResponseCode");
+
         try {
             if (paymentStatus == 1) {
                 // Success
@@ -102,7 +103,7 @@ public class PaymentController {
                         transaction.setStatus(1); // Success
                         transaction.setOrderCode(Long.parseLong(request.getParameter("vnp_TxnRef")));
                         transaction.setReference(request.getParameter("vnp_TransactionNo"));
-                        transaction.setLog("VNPAY Success: " + request.getParameter("vnp_ResponseCode"));
+                        transaction.setLog("VNPAY Success: " + vnp_ResponseCode);
                         transaction.setCreateAt(LocalDateTime.now());
                         transactionRepository.save(transaction);
 
@@ -116,6 +117,10 @@ public class PaymentController {
                     response.sendRedirect("/payment/success");
                     return;
                 }
+            } else if (paymentStatus == -1) {
+                System.err.println("SECURITY WARNING: VNPAY Invalid Signature detected for OrderInfo: " + orderInfo);
+            } else {
+                System.err.println("VNPAY Payment failed with ResponseCode: " + vnp_ResponseCode);
             }
         } catch (Exception e) {
             e.printStackTrace();

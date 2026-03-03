@@ -49,17 +49,15 @@ public class VNPayConfig {
         List<String> fieldNames = new ArrayList<>(fields.keySet());
         Collections.sort(fieldNames);
         StringBuilder sb = new StringBuilder();
-        Iterator<String> itr = fieldNames.iterator();
-        while (itr.hasNext()) {
-            String fieldName = itr.next();
+        for (String fieldName : fieldNames) {
             String fieldValue = fields.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                if (sb.length() > 0) {
+                    sb.append("&");
+                }
                 sb.append(fieldName);
                 sb.append("=");
                 sb.append(fieldValue);
-                if (itr.hasNext()) {
-                    sb.append("&");
-                }
             }
         }
         return hmacSHA512(getVnp_HashSecret(), sb.toString());
@@ -71,7 +69,7 @@ public class VNPayConfig {
                 throw new NullPointerException();
             }
             final Mac hmac512 = Mac.getInstance("HmacSHA512");
-            byte[] hmacKeyBytes = key.getBytes();
+            byte[] hmacKeyBytes = key.getBytes(StandardCharsets.UTF_8);
             final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
             hmac512.init(secretKey);
             byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
