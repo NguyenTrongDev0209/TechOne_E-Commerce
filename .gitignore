@@ -1,41 +1,53 @@
-# Cấu hình IDE (IntelliJ, Eclipse, VS Code)
-.idea/
-.eclipse/
+# ==========================================
+# 1. CẤU HÌNH IDE (Môi trường cá nhân)
+# ==========================================
+### STS / Eclipse ###
+.apt_generated
 .classpath
+.factorypath
 .project
 .settings/
-.vscode/
+.springBeans
+.sts4-cache
+.eclipse/
 
-# Thư mục và file build (Maven và Gradle)
-/target/
-/build/
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+/out/
+
+### VS Code & Khác ###
+.vscode/
+/nbproject/
+/nbbuild/
+
+# ==========================================
+# 2. FILE BUILD & DỊCH (Maven)
+# ==========================================
+target/
+!.mvn/wrapper/maven-wrapper.jar
 *.class
 *.jar
 *.war
 *.ear
 hs_err_pid*.log
 
-# Dependency (nếu không dùng Maven/Gradle wrapper)
-.gradle/
-/out/
-
-# Files hệ thống
+# ==========================================
+# 3. FILE HỆ THỐNG & LOG & TẠM
+# ==========================================
 .DS_Store
 Thumbs.db
 Desktop.ini
-
-# Files log
-logs/
 *.log
-*.txt
-
-# Files tạm hoặc backup
+logs/
 *.swp
-*~
-.#*
 *.bak
+*~
 
-# Files môi trường (nếu có)
+# ==========================================
+# 4. FILE MÔI TRƯỜNG (Bảo mật)
+# ==========================================
 .env
-application.properties.example
-application.yml.example
+application-prod.yml
