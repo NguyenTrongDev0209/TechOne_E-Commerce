@@ -764,16 +764,16 @@
 
 
         <script th:inline="javascript">
-            // --- Address Modal Logic ---
+           
             function toggleAddressModal() {
                 const modal = document.getElementById('address-modal');
                 const backdrop = document.getElementById('address-backdrop');
                 const content = document.getElementById('address-content');
 
                 if (modal.classList.contains('hidden')) {
-                    // Open
+                    
                     modal.classList.remove('hidden');
-                    // Animate in
+                    
                     setTimeout(() => {
                         backdrop.classList.remove('opacity-0');
                         content.classList.remove('scale-95', 'opacity-0');
@@ -791,16 +791,13 @@
                 }
             }
 
-            // Close when clicking outside
             document.getElementById('address-modal').addEventListener('click', function (e) {
                 if (e.target === this || e.target.id === 'address-backdrop') {
                     toggleAddressModal();
                 }
             });
 
-            // --- Voucher Modal Logic ---
             function toggleVoucherModal() {
-                // Đóng luôn modal điều kiện nếu đang mở
                 document.getElementById('voucher-terms-modal').classList.add('hidden');
 
                 const modal = document.getElementById('voucher-modal');
@@ -828,7 +825,6 @@
                 }
             }
 
-            // Close Voucher Modal when clicking outside
             document.getElementById('voucher-modal').addEventListener('click', function (e) {
                 if (e.target === this || e.target.id === 'voucher-backdrop') {
                     toggleVoucherModal();
@@ -878,7 +874,6 @@
 
                 document.getElementById('modalDetail').innerText = detailText;
 
-                // Tạm ẩn modal danh sách voucher
                 document.getElementById('voucher-modal').classList.add('hidden');
 
                 document.getElementById('voucher-terms-modal').classList.remove('hidden');

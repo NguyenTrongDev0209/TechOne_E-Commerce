@@ -141,13 +141,10 @@ public class CheckoutController {
 		}
 
 		try {
-			// Call OrderService to handle logic (Validation, Order/Shipment creation,
-			// Stock, Voucher)
 			Order order = orderService.createOrder(user, itemIds, addressId, paymentMethod, voucherId, note, session);
 
 			System.out.println("DEBUG: CheckoutController - Order status after createOrder: " + order.getStatus());
 
-			// Handle Online Payment (QR)
 			if ("QR".equals(paymentMethod)) {
 				try {
 					String baseUrl = getBaseUrl(request);
