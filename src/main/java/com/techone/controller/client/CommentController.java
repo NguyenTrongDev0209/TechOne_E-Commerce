@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.techone.model.Account;
-import com.techone.model.Comment;
-import com.techone.model.Post;
-import com.techone.repository.CommentRepository;
-import com.techone.repository.PostRepository;
-import com.techone.utils.SessionUtils;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.post.entity.Comment;
+import com.techone.domain.post.entity.Post;
+import com.techone.domain.post.repository.CommentRepository;
+import com.techone.domain.post.repository.PostRepository;
+import com.techone.common.utils.SessionUtils;
 
 import java.time.LocalDateTime;
 
@@ -67,3 +67,5 @@ public class CommentController {
         return "redirect:/posts/" + postId;
     }
 }
+
+

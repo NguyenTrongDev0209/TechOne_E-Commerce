@@ -8,8 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.techone.model.Product;
-import com.techone.repository.ProductRepository;
+import com.techone.domain.product.entity.Product;
+import com.techone.domain.product.repository.ProductRepository;
 
 @Controller
 public class SearchController {
@@ -38,3 +38,4 @@ public class SearchController {
 	}
 
 }
+

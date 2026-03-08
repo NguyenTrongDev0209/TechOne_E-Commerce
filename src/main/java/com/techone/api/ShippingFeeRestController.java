@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techone.service.ShippingFeeService;
+import com.techone.domain.order.service.ShippingFeeService;
 
 @RestController
 @RequestMapping("/api/shipping-fee")
@@ -34,3 +34,4 @@ public class ShippingFeeRestController {
         }
     }
 }
+

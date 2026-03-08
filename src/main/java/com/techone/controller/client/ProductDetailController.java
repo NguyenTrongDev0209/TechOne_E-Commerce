@@ -6,9 +6,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.data.domain.PageRequest;
-import com.techone.repository.*;
-import com.techone.model.*;
-import com.techone.service.CookieService;
+import com.techone.domain.product.repository.ProductRepository;
+import com.techone.domain.product.repository.VariantRepository;
+import com.techone.domain.product.repository.SpecificationRepository;
+import com.techone.domain.product.repository.VariantAttributeValueRepository;
+import com.techone.domain.product.entity.Product;
+import com.techone.domain.product.entity.Variant;
+import com.techone.domain.product.entity.Specification;
+import com.techone.domain.product.entity.VariantAttributeValue;
+import com.techone.domain.product.entity.Category;
+
+import com.techone.common.utils.CookieUtils;
 import java.util.*;
 
 @Controller
@@ -27,7 +35,7 @@ public class ProductDetailController {
 	private VariantAttributeValueRepository variantAttributeValueRepository;
 
 	@Autowired
-	private CookieService cookieService;
+	private CookieUtils cookieUtils;
 
 	@GetMapping("/product/product-detail/{slug}")
 	public String showProductDetail(@PathVariable("slug") String slug, Model model) {
@@ -38,7 +46,7 @@ public class ProductDetailController {
 
 		// Save to cookie: viewed_products (e.g., "3,1,2")
 		if (Boolean.TRUE.equals(product.getStatus())) {
-			String viewedIds = cookieService.getValue("viewed_products");
+			String viewedIds = cookieUtils.getValue("viewed_products");
 			List<String> idList = new ArrayList<>();
 			if (!viewedIds.isEmpty()) {
 				idList = new ArrayList<>(Arrays.asList(viewedIds.split("-")));
@@ -51,7 +59,7 @@ public class ProductDetailController {
 			if (idList.size() > 50) {
 				idList = idList.subList(0, 50);
 			}
-			cookieService.add("viewed_products", String.join("-", idList), 30);
+			cookieUtils.add("viewed_products", String.join("-", idList), 30);
 		}
 
 		List<Variant> variants = variantRepository.findByProduct(product);

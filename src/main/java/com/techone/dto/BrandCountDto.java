@@ -1,6 +1,6 @@
 package com.techone.dto;
 
-import com.techone.model.Brand;
+import com.techone.domain.product.entity.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,3 +12,4 @@ public class BrandCountDto {
     private Brand brand;
     private long productCount;
 }
+

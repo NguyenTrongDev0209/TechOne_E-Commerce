@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.techone.model.Category;
-import com.techone.repository.CategoryRepository;
-import com.techone.repository.ProductRepository;
+import com.techone.domain.product.entity.Category;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.product.repository.ProductRepository;
 
-import com.techone.utils.FileUploadUtils;
+import com.techone.common.utils.FileUploadUtils;
+import com.techone.common.utils.SlugUtils;
+
 import jakarta.servlet.ServletContext;
 import jakarta.validation.Valid;
 
@@ -145,7 +147,8 @@ public class CategoryManagerController {
             }
 
             if (category.getSlug() == null || category.getSlug().isEmpty()) {
-                category.setSlug(com.techone.utils.SlugUtils.toSlug(category.getName()));
+                category.setSlug(SlugUtils.toSlug(category.getName()));
+
             }
 
             category.setStatus(true);
@@ -337,7 +340,8 @@ public class CategoryManagerController {
             existing.setParent(category.getParent());
 
             if (category.getSlug() == null || category.getSlug().isEmpty()) {
-                existing.setSlug(com.techone.utils.SlugUtils.toSlug(category.getName()));
+                existing.setSlug(SlugUtils.toSlug(category.getName()));
+
             } else {
                 existing.setSlug(category.getSlug());
             }

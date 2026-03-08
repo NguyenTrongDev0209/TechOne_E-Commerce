@@ -1,6 +1,6 @@
 package com.techone.controller.admin;
 
-import com.techone.repository.VoucherPercentRepository;
+import com.techone.domain.promotion.repository.VoucherPercentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
@@ -18,3 +18,4 @@ public class VoucherManagerController {
         return "views/admin/voucher-list";
     }
 }
+

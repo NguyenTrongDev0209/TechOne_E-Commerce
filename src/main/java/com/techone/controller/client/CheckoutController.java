@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.techone.model.Account;
-import com.techone.model.Address;
-import com.techone.model.Cart;
-import com.techone.model.CartItem;
-import com.techone.model.Order;
-import com.techone.model.OrderDetail;
-import com.techone.model.VoucherItem;
-import com.techone.repository.AddressRepository;
-import com.techone.repository.CartItemRepository;
-import com.techone.repository.CartRepository;
-import com.techone.repository.OrderRepository;
-import com.techone.repository.VoucherItemRepository;
-import com.techone.service.OrderService;
-import com.techone.service.VNPayService;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.user.entity.Address;
+import com.techone.domain.order.entity.Cart;
+import com.techone.domain.order.entity.CartItem;
+import com.techone.domain.order.entity.Order;
+import com.techone.domain.order.entity.OrderDetail;
+import com.techone.domain.promotion.entity.VoucherItem;
+import com.techone.domain.user.repository.AddressRepository;
+import com.techone.domain.order.repository.CartItemRepository;
+import com.techone.domain.order.repository.CartRepository;
+import com.techone.domain.order.repository.OrderRepository;
+import com.techone.domain.promotion.repository.VoucherItemRepository;
+import com.techone.domain.order.service.OrderService;
+import com.techone.domain.order.service.VNPayService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -340,3 +340,6 @@ public class CheckoutController {
 		return url;
 	}
 }
+
+
+

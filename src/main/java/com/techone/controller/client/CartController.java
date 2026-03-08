@@ -9,13 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.techone.model.Account;
-import com.techone.model.Cart;
-import com.techone.model.CartItem;
-import com.techone.repository.CartItemRepository;
-import com.techone.repository.CartRepository;
-import com.techone.repository.OrderRepository;
-import com.techone.model.Order;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.order.entity.Cart;
+import com.techone.domain.order.entity.CartItem;
+import com.techone.domain.order.repository.CartItemRepository;
+import com.techone.domain.order.repository.CartRepository;
+import com.techone.domain.order.repository.OrderRepository;
+import com.techone.domain.order.entity.Order;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -52,3 +52,5 @@ public class CartController {
 		return "views/client/cart";
 	}
 }
+
+

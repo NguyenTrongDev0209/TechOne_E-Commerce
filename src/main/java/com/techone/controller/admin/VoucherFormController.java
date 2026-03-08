@@ -1,10 +1,10 @@
 package com.techone.controller.admin;
 
-import com.techone.model.VoucherItem;
-import com.techone.model.VoucherPercent;
-import com.techone.repository.AccountRepository;
-import com.techone.repository.VoucherItemRepository;
-import com.techone.repository.VoucherPercentRepository;
+import com.techone.domain.promotion.entity.VoucherItem;
+import com.techone.domain.promotion.entity.VoucherPercent;
+import com.techone.domain.user.repository.AccountRepository;
+import com.techone.domain.promotion.repository.VoucherItemRepository;
+import com.techone.domain.promotion.repository.VoucherPercentRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,3 +70,5 @@ public class VoucherFormController {
     }
 
 }
+
+

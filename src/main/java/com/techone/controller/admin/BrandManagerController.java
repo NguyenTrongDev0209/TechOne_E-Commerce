@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.techone.model.Brand;
-import com.techone.repository.BrandRepository;
+import com.techone.domain.product.entity.Brand;
+import com.techone.domain.product.repository.BrandRepository;
 
 import jakarta.validation.Valid;
-import com.techone.utils.FileUploadUtils;
+import com.techone.common.utils.FileUploadUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -214,7 +214,7 @@ public class BrandManagerController {
     }
 
     @Autowired
-    com.techone.repository.ProductRepository productRepository;
+    com.techone.domain.product.repository.ProductRepository productRepository;
 
     @GetMapping("/admin/brand/toggle-status/{id}")
     public String toggleStatus(@PathVariable("id") Integer id) {

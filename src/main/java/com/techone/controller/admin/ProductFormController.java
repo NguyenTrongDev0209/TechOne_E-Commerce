@@ -9,30 +9,41 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import com.techone.model.Brand;
-import com.techone.model.Category;
-import com.techone.model.Product;
-import com.techone.model.Account;
-import com.techone.utils.SessionUtils;
-import com.techone.repository.BrandRepository;
-import com.techone.repository.CategoryRepository;
-import com.techone.repository.ProductRepository;
-import com.techone.utils.SlugUtils;
-import com.techone.model.Variant;
-import com.techone.model.Attribute;
-import com.techone.model.AttributeValue;
-import com.techone.model.VariantAttributeValue;
-import com.techone.model.VariantImage;
-import com.techone.repository.AttributeRepository;
-import com.techone.repository.AttributeValueRepository;
-import com.techone.repository.VariantRepository;
-import com.techone.repository.VariantAttributeValueRepository;
-import com.techone.repository.VariantImageRepository;
+import com.techone.domain.product.entity.Brand;
+import com.techone.domain.product.entity.Category;
+import com.techone.domain.product.entity.Product;
+import com.techone.domain.user.entity.Account;
+import com.techone.common.utils.SessionUtils;
+import com.techone.domain.product.repository.BrandRepository;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.product.repository.ProductRepository;
+import com.techone.common.utils.SlugUtils;
+import com.techone.domain.product.entity.Variant;
+import com.techone.domain.product.entity.Attribute;
+import com.techone.domain.product.entity.AttributeValue;
+import com.techone.domain.product.entity.VariantAttributeValue;
+import com.techone.domain.product.entity.VariantImage;
+import com.techone.domain.product.repository.AttributeRepository;
+import com.techone.domain.product.repository.AttributeValueRepository;
+import com.techone.domain.product.repository.VariantRepository;
+import com.techone.domain.product.repository.VariantAttributeValueRepository;
+import com.techone.domain.product.repository.VariantImageRepository;
 import com.techone.dto.VariantPayloadDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import com.techone.utils.FileUploadUtils;
+import com.techone.common.utils.FileUploadUtils;
+import com.techone.domain.product.repository.ImageProductRepository;
+import com.techone.domain.product.repository.SpecificationRepository;
+import com.techone.domain.product.repository.SpecificationTitleRepository;
+import com.techone.domain.product.repository.SpecificationValueRepository;
+import com.techone.domain.order.repository.OrderDetailRepository;
+import com.techone.domain.order.repository.CartItemRepository;
+import com.techone.domain.user.repository.FavouriteRepository;
+import com.techone.domain.product.entity.Specification;
+import com.techone.domain.product.entity.SpecificationTitle;
+import com.techone.domain.product.entity.SpecificationValue;
+import com.techone.domain.product.entity.ImageProduct;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
@@ -51,7 +62,7 @@ public class ProductFormController {
 	BrandRepository brandRepository;
 
 	@Autowired
-	com.techone.repository.ImageProductRepository imageProductRepository;
+	ImageProductRepository imageProductRepository;
 
 	@Autowired
 	AttributeRepository attributeRepository;
@@ -69,25 +80,25 @@ public class ProductFormController {
 	VariantImageRepository variantImageRepository;
 
 	@Autowired
-	com.techone.repository.SpecificationRepository specificationRepository;
+	SpecificationRepository specificationRepository;
 
 	@Autowired
-	com.techone.repository.SpecificationTitleRepository specificationTitleRepository;
+	SpecificationTitleRepository specificationTitleRepository;
 
 	@Autowired
-	com.techone.repository.SpecificationValueRepository specificationValueRepository;
+	SpecificationValueRepository specificationValueRepository;
 
 	@Autowired
-	com.techone.repository.OrderDetailRepository orderDetailRepository;
+	OrderDetailRepository orderDetailRepository;
 
 	@Autowired
 	FileUploadUtils fileUploadUtils;
 
 	@Autowired
-	com.techone.repository.CartItemRepository cartItemRepository;
+	CartItemRepository cartItemRepository;
 
 	@Autowired
-	com.techone.repository.FavouriteRepository favouriteRepository;
+	FavouriteRepository favouriteRepository;
 
 	@Autowired
 	Validator validator;
@@ -175,18 +186,22 @@ public class ProductFormController {
 			}
 
 			// Transform Specifications
-			java.util.List<com.techone.model.Specification> specs = specificationRepository.findByProduct(product);
+			java.util.List<Specification> specs = specificationRepository.findByProduct(product);
+
 			if (specs != null && !specs.isEmpty()) {
-				com.techone.model.Specification spec = specs.get(0);
+				Specification spec = specs.get(0);
+
 				java.util.List<com.techone.dto.SpecificationPayloadDto> sList = new java.util.ArrayList<>();
 				if (spec.getSpecificationTitles() != null) {
-					for (com.techone.model.SpecificationTitle title : spec.getSpecificationTitles()) {
+					for (SpecificationTitle title : spec.getSpecificationTitles()) {
+
 						com.techone.dto.SpecificationPayloadDto gDto = new com.techone.dto.SpecificationPayloadDto();
 						gDto.setGroupName(title.getName());
 
 						java.util.List<com.techone.dto.SpecificationItemDto> items = new java.util.ArrayList<>();
 						if (title.getSpecificationValues() != null) {
-							for (com.techone.model.SpecificationValue val : title.getSpecificationValues()) {
+							for (SpecificationValue val : title.getSpecificationValues()) {
+
 								com.techone.dto.SpecificationItemDto iDto = new com.techone.dto.SpecificationItemDto();
 								String rawName = val.getName();
 								if (rawName != null && rawName.contains(": ")) {
@@ -588,13 +603,15 @@ public class ProductFormController {
 				}
 
 				if (!specPayloads.isEmpty()) {
-					com.techone.model.Specification specification = new com.techone.model.Specification();
+					Specification specification = new Specification();
+
 					specification.setProduct(savedProduct);
 					specification = specificationRepository.save(specification);
 
 					for (com.techone.dto.SpecificationPayloadDto payload : specPayloads) {
 						if (payload.getGroupName() != null && !payload.getGroupName().trim().isEmpty()) {
-							com.techone.model.SpecificationTitle title = new com.techone.model.SpecificationTitle();
+							SpecificationTitle title = new SpecificationTitle();
+
 							title.setSpecification(specification);
 							title.setName(payload.getGroupName());
 							title = specificationTitleRepository.save(title);
@@ -603,7 +620,8 @@ public class ProductFormController {
 								for (com.techone.dto.SpecificationItemDto item : payload.getItems()) {
 									if (item.getName() != null && !item.getName().trim().isEmpty()
 											&& item.getValue() != null && !item.getValue().trim().isEmpty()) {
-										com.techone.model.SpecificationValue val = new com.techone.model.SpecificationValue();
+										SpecificationValue val = new SpecificationValue();
+
 										val.setSpecificationTitle(title);
 										val.setName(item.getName() + ": " + item.getValue());
 										specificationValueRepository.save(val);
@@ -623,7 +641,8 @@ public class ProductFormController {
 		if (hasNewImages) {
 			// Delete existing product images physically and from DB
 			if (savedProduct.getImageProduct() != null) {
-				for (com.techone.model.ImageProduct ei : savedProduct.getImageProduct()) {
+				for (ImageProduct ei : savedProduct.getImageProduct()) {
+
 					fileUploadUtils.deleteFile(ei.getUrl(), "products");
 				}
 				savedProduct.getImageProduct().clear();
@@ -633,7 +652,8 @@ public class ProductFormController {
 				if (image != null && !image.isEmpty()) {
 					try {
 						String vFilename = fileUploadUtils.saveImage(image, "products");
-						com.techone.model.ImageProduct imageProduct = new com.techone.model.ImageProduct();
+						ImageProduct imageProduct = new ImageProduct();
+
 						imageProduct.setUrl(vFilename);
 						imageProduct.setProduct(savedProduct);
 						imageProductRepository.save(imageProduct);

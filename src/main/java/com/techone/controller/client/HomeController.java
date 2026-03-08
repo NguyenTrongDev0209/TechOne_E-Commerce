@@ -5,12 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.techone.repository.BrandRepository;
-import com.techone.repository.CategoryRepository;
-import com.techone.repository.PostRepository;
-import com.techone.repository.ProductRepository;
-import com.techone.service.CookieService;
-import com.techone.model.Product;
+import com.techone.domain.product.repository.BrandRepository;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.post.repository.PostRepository;
+import com.techone.domain.product.repository.ProductRepository;
+import com.techone.common.utils.CookieUtils;
+import com.techone.domain.product.entity.Product;
 import com.techone.dto.BrandCountDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +36,7 @@ public class HomeController {
 	private BrandRepository brandRepository;
 
 	@Autowired
-	private CookieService cookieService;
+	private CookieUtils cookieUtils;
 
 	@Autowired
 	private PostRepository postRepository;
@@ -74,7 +74,7 @@ public class HomeController {
 		model.addAttribute("topViewedPosts", postRepository.findTop5ByStatusOrderByViewCountDesc(true));
 
 		// viewed products from cookie
-		String viewedIds = cookieService.getValue("viewed_products");
+		String viewedIds = cookieUtils.getValue("viewed_products");
 		if (!viewedIds.isEmpty()) {
 			try {
 				List<Integer> ids = Arrays.stream(viewedIds.split("-"))
@@ -100,10 +100,12 @@ public class HomeController {
 				model.addAttribute("viewedTotalPages", viewedProductPage.getTotalPages());
 			} catch (Exception e) {
 				// Handle invalid format or data in cookie
-				cookieService.remove("viewed_products");
+				cookieUtils.remove("viewed_products");
 			}
 		}
 
 		return "views/client/home";
 	}
 }
+
+

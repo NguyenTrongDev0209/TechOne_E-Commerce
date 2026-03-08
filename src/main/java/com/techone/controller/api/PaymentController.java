@@ -1,14 +1,14 @@
 package com.techone.controller.api;
 
-import com.techone.model.Order;
-import com.techone.model.Transaction;
-import com.techone.model.VoucherItem;
-import com.techone.repository.OrderRepository;
-import com.techone.repository.TransactionRepository;
-import com.techone.repository.VoucherItemRepository;
-import com.techone.service.PaymentService;
-import com.techone.service.VNPayService;
-import com.techone.service.OrderEmailService;
+import com.techone.domain.order.entity.Order;
+import com.techone.domain.order.entity.Transaction;
+import com.techone.domain.promotion.entity.VoucherItem;
+import com.techone.domain.order.repository.OrderRepository;
+import com.techone.domain.order.repository.TransactionRepository;
+import com.techone.domain.promotion.repository.VoucherItemRepository;
+import com.techone.domain.order.service.PaymentService;
+import com.techone.domain.order.service.VNPayService;
+import com.techone.domain.order.service.OrderEmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import vn.payos.PayOS;
@@ -138,3 +138,5 @@ public class PaymentController {
         response.sendRedirect("/payment/cancel");
     }
 }
+
+

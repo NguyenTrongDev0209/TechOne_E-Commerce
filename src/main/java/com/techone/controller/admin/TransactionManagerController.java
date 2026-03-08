@@ -1,7 +1,7 @@
 package com.techone.controller.admin;
 
-import com.techone.model.Transaction;
-import com.techone.repository.TransactionRepository;
+import com.techone.domain.order.entity.Transaction;
+import com.techone.domain.order.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,3 +39,4 @@ public class TransactionManagerController {
                 return "views/admin/transaction-manager";
         }
 }
+

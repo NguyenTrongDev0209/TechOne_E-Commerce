@@ -1,11 +1,11 @@
 package com.techone.controller.client;
 
-import com.techone.model.Account;
-import com.techone.model.VoucherItem;
-import com.techone.model.VoucherPercent;
-import com.techone.repository.VoucherItemRepository;
-import com.techone.repository.VoucherPercentRepository;
-import com.techone.utils.SessionUtils;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.promotion.entity.VoucherItem;
+import com.techone.domain.promotion.entity.VoucherPercent;
+import com.techone.domain.promotion.repository.VoucherItemRepository;
+import com.techone.domain.promotion.repository.VoucherPercentRepository;
+import com.techone.common.utils.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -117,3 +117,5 @@ public class VoucherController {
         return ResponseEntity.ok(response);
     }
 }
+
+

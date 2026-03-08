@@ -6,10 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.techone.model.Account;
-import com.techone.model.Order;
-import com.techone.repository.OrderRepository;
-import com.techone.utils.SessionUtils;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.order.entity.Order;
+import com.techone.domain.order.repository.OrderRepository;
+import com.techone.common.utils.SessionUtils;
 
 @Controller
 public class OderDetailController {
@@ -53,3 +53,5 @@ public class OderDetailController {
 		return "redirect:/account/orders/order-detail?id=" + id;
 	}
 }
+
+

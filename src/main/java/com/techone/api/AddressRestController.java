@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.techone.model.District;
-import com.techone.model.Province;
-import com.techone.model.Ward;
-import com.techone.repository.DistrictRepository;
-import com.techone.repository.ProvinceRepository;
-import com.techone.repository.WardRepository;
+import com.techone.domain.user.entity.District;
+import com.techone.domain.user.entity.Province;
+import com.techone.domain.user.entity.Ward;
+import com.techone.domain.user.repository.DistrictRepository;
+import com.techone.domain.user.repository.ProvinceRepository;
+import com.techone.domain.user.repository.WardRepository;
 
 @RestController
 @RequestMapping("/api/address")
@@ -39,3 +39,4 @@ public class AddressRestController {
         return wardRepository.findByDistrictId(districtId);
     }
 }
+

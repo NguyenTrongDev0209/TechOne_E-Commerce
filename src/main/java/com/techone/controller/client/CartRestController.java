@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techone.model.Account;
-import com.techone.model.Cart;
-import com.techone.model.CartItem;
-import com.techone.model.Variant;
-import com.techone.repository.CartItemRepository;
-import com.techone.repository.CartRepository;
-import com.techone.repository.VariantRepository;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.order.entity.Cart;
+import com.techone.domain.order.entity.CartItem;
+import com.techone.domain.product.entity.Variant;
+import com.techone.domain.order.repository.CartItemRepository;
+import com.techone.domain.order.repository.CartRepository;
+import com.techone.domain.product.repository.VariantRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -171,3 +171,6 @@ public class CartRestController {
         return ResponseEntity.notFound().build();
     }
 }
+
+
+

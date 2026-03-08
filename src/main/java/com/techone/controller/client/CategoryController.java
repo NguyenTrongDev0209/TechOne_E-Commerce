@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.techone.model.Category;
-import com.techone.model.Product;
-import com.techone.repository.CategoryRepository;
-import com.techone.repository.ProductRepository;
+import com.techone.domain.product.entity.Category;
+import com.techone.domain.product.entity.Product;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.product.repository.ProductRepository;
 
 @Controller
 public class CategoryController {
@@ -63,3 +63,4 @@ public class CategoryController {
 		return "views/client/categories";
 	}
 }
+

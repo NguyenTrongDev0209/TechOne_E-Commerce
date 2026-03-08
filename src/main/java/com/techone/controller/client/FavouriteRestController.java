@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techone.model.Account;
-import com.techone.model.Favourite;
-import com.techone.model.Variant;
-import com.techone.repository.FavouriteRepository;
-import com.techone.repository.VariantRepository;
+import com.techone.domain.user.entity.Account;
+import com.techone.domain.user.entity.Favourite;
+import com.techone.domain.product.entity.Variant;
+import com.techone.domain.user.repository.FavouriteRepository;
+import com.techone.domain.product.repository.VariantRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -84,3 +84,6 @@ public class FavouriteRestController {
         return ResponseEntity.ok(response);
     }
 }
+
+
+

@@ -15,8 +15,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.techone.model.Post;
-import com.techone.repository.PostRepository;
+import com.techone.domain.post.entity.Post;
+import com.techone.domain.post.repository.PostRepository;
 
 @Controller
 public class PostManagerController {
@@ -86,3 +86,4 @@ public class PostManagerController {
         return "redirect:/admin/post-list";
     }
 }
+

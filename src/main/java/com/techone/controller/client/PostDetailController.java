@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.techone.model.Post;
-import com.techone.repository.PostRepository;
+import com.techone.domain.post.entity.Post;
+import com.techone.domain.post.repository.PostRepository;
 
 @Controller
 public class PostDetailController {
@@ -33,3 +33,4 @@ public class PostDetailController {
 		return "views/client/post-detail";
 	}
 }
+

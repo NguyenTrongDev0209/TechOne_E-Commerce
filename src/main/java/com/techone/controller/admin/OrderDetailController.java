@@ -4,8 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.techone.model.Order;
-import com.techone.repository.OrderRepository;
+import com.techone.domain.order.entity.Order;
+import com.techone.domain.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,3 +57,4 @@ public class OrderDetailController {
 		}
 	}
 }
+

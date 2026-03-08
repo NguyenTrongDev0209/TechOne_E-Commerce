@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import com.techone.model.Post;
-import com.techone.model.ImagePost;
-import com.techone.repository.PostRepository;
-import com.techone.repository.ImagePostRepository;
-import com.techone.repository.AccountRepository;
-import com.techone.repository.CategoryRepository;
+import com.techone.domain.post.entity.Post;
+import com.techone.domain.post.entity.ImagePost;
+import com.techone.domain.post.repository.PostRepository;
+import com.techone.domain.post.repository.ImagePostRepository;
+import com.techone.domain.user.repository.AccountRepository;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.product.entity.Category;
+import com.techone.domain.user.entity.Account;
+
 import jakarta.validation.Valid;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,7 +50,7 @@ public class PostFormController {
         Post post = new Post();
         post.setStatus(true);
         post.setCreateAt(LocalDate.now());
-        post.setCategory(new com.techone.model.Category());
+        post.setCategory(new Category());
 
         model.addAttribute("post", post);
         model.addAttribute("editMode", false);
@@ -76,9 +79,10 @@ public class PostFormController {
             @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
             @RequestParam(value = "imageFiles", required = false) MultipartFile[] images) {
 
-        // Manual validation for Thumbnail if it's a new post or if the existing thumbnail is missing
-        if ((post.getId() == null || post.getThumbnail() == null || post.getThumbnail().isEmpty()) 
-            && (thumbnailFile == null || thumbnailFile.isEmpty())) {
+        // Manual validation for Thumbnail if it's a new post or if the existing
+        // thumbnail is missing
+        if ((post.getId() == null || post.getThumbnail() == null || post.getThumbnail().isEmpty())
+                && (thumbnailFile == null || thumbnailFile.isEmpty())) {
             result.rejectValue("thumbnail", "NotBlank", "Vui lòng tải lên ảnh thumbnail");
         }
 
@@ -89,9 +93,10 @@ public class PostFormController {
         }
 
         // Handle author from session
-        jakarta.servlet.http.HttpSession session = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
-        com.techone.model.Account sessionUser = (com.techone.model.Account) session.getAttribute("user");
-        
+        jakarta.servlet.http.HttpSession session = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder
+                .currentRequestAttributes()).getRequest().getSession();
+        Account sessionUser = (Account) session.getAttribute("user");
+
         if (post.getId() == null && sessionUser != null) {
             post.setAccount(sessionUser);
         } else if (post.getId() == null) {
@@ -107,18 +112,18 @@ public class PostFormController {
             post.setCreateAt(LocalDate.now());
             post.setViewCount(0);
         }
-        
+
         // Handle Thumbnail
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             try {
                 String filename = System.currentTimeMillis() + "_" + thumbnailFile.getOriginalFilename();
                 String projectPath = System.getProperty("user.dir");
                 Path uploadPath = Paths.get(projectPath, UPLOAD_DIR);
-                
+
                 if (!Files.exists(uploadPath)) {
                     Files.createDirectories(uploadPath);
                 }
-                
+
                 File file = new File(uploadPath.toFile(), filename);
                 thumbnailFile.transferTo(file);
                 post.setThumbnail(filename);

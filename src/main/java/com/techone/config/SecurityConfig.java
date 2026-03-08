@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 
-import com.techone.controller.authentic.CustomOAuth2UserController;
+import com.techone.domain.user.controller.authentic.CustomOAuth2UserController;
 
 @Configuration
 public class SecurityConfig {

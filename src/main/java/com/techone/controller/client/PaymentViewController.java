@@ -1,6 +1,6 @@
 package com.techone.controller.client;
 
-import com.techone.service.PaymentService;
+import com.techone.domain.order.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,3 +34,4 @@ public class PaymentViewController {
         return "views/client/order-cancel";
     }
 }
+

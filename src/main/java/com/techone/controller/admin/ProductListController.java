@@ -17,23 +17,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.techone.model.Product;
-import com.techone.model.Category;
-import com.techone.model.Variant;
-import com.techone.model.Specification;
-import com.techone.repository.BrandRepository;
-import com.techone.repository.CategoryRepository;
-import com.techone.repository.ProductRepository;
-import com.techone.repository.VariantRepository;
-import com.techone.repository.SpecificationRepository;
-import com.techone.repository.ImageProductRepository;
-import com.techone.repository.VariantAttributeValueRepository;
-import com.techone.repository.VariantImageRepository;
-import com.techone.repository.SpecificationTitleRepository;
-import com.techone.repository.SpecificationValueRepository;
-import com.techone.repository.CartItemRepository;
-import com.techone.repository.FavouriteRepository;
-import com.techone.repository.OrderDetailRepository;
+import com.techone.domain.product.entity.Product;
+import com.techone.domain.product.entity.Category;
+import com.techone.domain.product.entity.Variant;
+import com.techone.domain.product.entity.Specification;
+import com.techone.domain.product.entity.SpecificationTitle;
+import com.techone.domain.product.entity.VariantAttributeValue;
+import com.techone.domain.product.entity.VariantImage;
+
+import com.techone.domain.product.repository.BrandRepository;
+import com.techone.domain.product.repository.CategoryRepository;
+import com.techone.domain.product.repository.ProductRepository;
+import com.techone.domain.product.repository.VariantRepository;
+import com.techone.domain.product.repository.SpecificationRepository;
+import com.techone.domain.product.repository.ImageProductRepository;
+import com.techone.domain.product.repository.VariantAttributeValueRepository;
+import com.techone.domain.product.repository.VariantImageRepository;
+import com.techone.domain.product.repository.SpecificationTitleRepository;
+import com.techone.domain.product.repository.SpecificationValueRepository;
+import com.techone.domain.order.repository.CartItemRepository;
+import com.techone.domain.user.repository.FavouriteRepository;
+import com.techone.domain.order.repository.OrderDetailRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Controller
@@ -187,7 +191,8 @@ public class ProductListController {
 				if (specs != null) {
 					for (Specification spec : specs) {
 						if (spec.getSpecificationTitles() != null) {
-							for (com.techone.model.SpecificationTitle title : spec.getSpecificationTitles()) {
+							for (SpecificationTitle title : spec.getSpecificationTitles()) {
+
 								if (title.getSpecificationValues() != null) {
 									specificationValueRepository.deleteAll(title.getSpecificationValues());
 								}
@@ -207,13 +212,15 @@ public class ProductListController {
 						}
 
 						// Delete dependent data
-						java.util.List<com.techone.model.VariantAttributeValue> vavs = variantAttributeValueRepository
+						java.util.List<VariantAttributeValue> vavs = variantAttributeValueRepository
 								.findByVariant(v);
+
 						if (vavs != null)
 							variantAttributeValueRepository.deleteAll(vavs);
 
-						java.util.List<com.techone.model.VariantImage> vImages = variantImageRepository
+						java.util.List<VariantImage> vImages = variantImageRepository
 								.findByVariant(v);
+
 						if (vImages != null)
 							variantImageRepository.deleteAll(vImages);
 
