@@ -26,7 +26,7 @@ public class AttributeValue {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Integer id;
 	
-	@Column(columnDefinition = "varchar(255)")
+	@Column(columnDefinition = "nvarchar(255)")
 	@NotBlank(message = "Giá trị không thể để trống")
 	public String value;
 	

@@ -15,6 +15,7 @@
         rel="stylesheet" />
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -186,7 +187,7 @@
                     <form th:action="@{/search}"
                         class="flex w-full items-center rounded-lg bg-white border border-gray-200 hover:border-primary hover:shadow-sm overflow-hidden h-11 transition-all duration-300">
 
-                        <input
+                        <input name="keywords" th:value="${keywords}"
                             class="flex-1 border-none bg-transparent px-4 text-base text-slate-700 placeholder-slate-400 focus:ring-0 h-full"
                             placeholder="Tìm kiếm iPhone, Macbook, Phụ kiện..." type="text" />
 
@@ -215,11 +216,11 @@
                         th:href="@{/account}">
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all overflow-hidden">
-                            <img th:if="${session.user.avatar != null}"
-                                th:src="${session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar}"
-                                class="w-full h-full object-cover">
-                            <span th:unless="${session.user.avatar != null}"
-                                class="material-symbols-outlined !text-[26px]">person</span>
+                            <img th:src="${session.user.avatar != null ? (session.user.avatar.startsWith('http') ? session.user.avatar : '/images/avatars/' + session.user.avatar) : ''}"
+                                th:classappend="${session.user.avatar == null ? 'hidden' : ''}"
+                                class="w-full h-full object-cover js-user-avatar">
+                            <span th:classappend="${session.user.avatar != null ? 'hidden' : ''}"
+                                class="material-symbols-outlined !text-[26px] js-user-avatar-placeholder">person</span>
                         </div>
                         <span
                             class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide"
@@ -228,11 +229,12 @@
                         </span>
                     </a>
 
-                    <a class="group flex flex-col items-center gap-1" href="#">
+                    <a class="group flex flex-col items-center gap-1" th:href="@{/account/favourited}">
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
                             <span class="material-symbols-outlined !text-[26px]">favorite</span>
-                            <span
+                            <span id="favorite-count-badge" th:text="${session.favoriteCount ?: 0}"
+                                th:classappend="${(session.favoriteCount ?: 0) == 0} ? 'hidden' : ''"
                                 class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">0</span>
                         </div>
                         <span
@@ -244,8 +246,9 @@
                         <div
                             class="relative w-10 h-10 flex items-center justify-center rounded-2xl bg-white shadow-sm group-hover:bg-orange-50 text-slate-600 group-hover:text-primary transition-all">
                             <span class="material-symbols-outlined !text-[26px]">shopping_cart</span>
-                            <span
-                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">2</span>
+                            <span id="cart-count-badge" th:text="${session.cartCount ?: 0}"
+                                th:classappend="${(session.cartCount ?: 0) == 0} ? 'hidden' : ''"
+                                class="absolute -top-1 -right-1 h-5 w-5 bg-accent rounded-full text-[10px] font-bold text-white flex items-center justify-center border-2 border-white shadow-sm">0</span>
                         </div>
                         <span
                             class="text-[11px] font-semibold text-slate-500 group-hover:text-primary uppercase tracking-wide">Giỏ
@@ -262,11 +265,34 @@
             <div class="flex items-center gap-8 h-12">
 
                 <div class="relative group h-full flex items-center">
-                    <a th:href="@{/categories}"
+                    <button type="button"
                         class="flex items-center gap-2 bg-primary text-white hover:bg-primary-hover px-4 py-1.5 rounded-lg text-sm font-bold transition-all shadow-md shadow-primary/20">
                         <span class="material-symbols-outlined text-[20px]">widgets</span>
                         <span>DANH MỤC</span>
-                    </a>
+                        <span
+                            class="material-symbols-outlined text-[18px] transition-transform group-hover:rotate-180">expand_more</span>
+                    </button>
+
+                    <!-- Dropdown Menu -->
+                    <div
+                        class="absolute top-full left-0 w-64 bg-white dark:bg-[#1e293b] rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 opacity-0 invisible translate-y-4 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50 overflow-hidden py-2">
+                        <div class="max-h-[70vh] overflow-y-auto no-scrollbar">
+                            <th:block th:each="cat : ${parentCategories}">
+                                <div class="relative group/item">
+                                    <a th:href="@{/categories/{slug}(slug=${cat.slug})}"
+                                        class="flex items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 dark:text-gray-200 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-primary transition-colors">
+                                        <div class="flex items-center gap-3">
+                                            <img th:if="${cat.image != null}"
+                                                th:src="@{'/images/categories/' + ${cat.image}}"
+                                                class="w-6 h-6 object-contain" alt="">
+                                            <span th:text="${cat.name}">Category Name</span>
+                                        </div>
+                                    </a>
+
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
                 </div>
 
                 <nav class="flex items-center gap-8 h-full">
@@ -277,7 +303,7 @@
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
                     </a>
                     <a class="text-sm font-semibold text-slate-700 hover:text-primary relative group h-full flex items-center gap-1 px-1"
-                        href="#">
+                        href="/categories">
                         Sản phẩm <span class="material-symbols-outlined text-[18px]">expand_more</span>
                         <span
                             class="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></span>
@@ -448,6 +474,139 @@
             </div>
         </div>
     </footer>
+    <script>
+        async function toggleFavorite(variantId, btn) {
+            if (!variantId) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Thông báo',
+                    text: 'Vui lòng chọn phiên bản sản phẩm'
+                });
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/favourite/toggle', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ variantId: variantId })
+                });
+
+                if (response.status === 401) {
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Đăng nhập',
+                        cancelButtonText: 'Đóng',
+                        confirmButtonColor: '#ea580c'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/login';
+                        }
+                    });
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Có lỗi xảy ra');
+                }
+
+                const data = await response.json();
+                if (data.success) {
+                    // Update counter in badges
+                    const badges = document.querySelectorAll('#favorite-count-badge');
+                    badges.forEach(badge => {
+                        badge.innerText = data.favoriteCount;
+                        if (data.favoriteCount > 0) {
+                            badge.classList.remove('hidden');
+                        } else {
+                            badge.classList.add('hidden');
+                        }
+                    });
+
+                    // Update UI if btn list or detail page
+                    if (btn) {
+                        const icon = btn.querySelector('.material-symbols-outlined');
+                        if (icon) {
+                            if (data.favorited) {
+                                icon.style.fontVariationSettings = "'FILL' 1";
+                                icon.classList.add('text-red-500');
+                                icon.classList.remove('text-gray-400');
+                            } else {
+                                icon.style.fontVariationSettings = "'FILL' 0";
+                                icon.classList.remove('text-red-500');
+                                icon.classList.add('text-gray-400');
+                            }
+                        }
+                    } else if (window.location.pathname.includes('/product-detail/')) {
+                        // Specific for product detail if button is ID-based
+                        const detailBtn = document.getElementById('favorite-btn');
+                        const detailIcon = document.getElementById('favorite-icon');
+                        const detailText = document.getElementById('favorite-text');
+                        if (detailBtn && detailIcon) {
+                            if (data.favorited) {
+                                detailBtn.classList.add('border-red-500', 'bg-red-50', 'dark:bg-red-500/10');
+                                detailIcon.style.fontVariationSettings = "'FILL' 1";
+                                detailIcon.classList.add('text-red-500');
+                                detailIcon.classList.remove('text-gray-400');
+                                if (detailText) {
+                                    detailText.classList.add('text-red-500');
+                                    detailText.innerText = "Đã yêu thích";
+                                }
+                            } else {
+                                detailBtn.classList.remove('border-red-500', 'bg-red-50', 'dark:bg-red-500/10');
+                                detailIcon.style.fontVariationSettings = "'FILL' 0";
+                                detailIcon.classList.remove('text-red-500');
+                                detailIcon.classList.add('text-gray-400');
+                                if (detailText) {
+                                    detailText.classList.remove('text-red-500');
+                                    detailText.innerText = "Yêu thích sản phẩm";
+                                }
+                            }
+                        }
+                    }
+
+                    // Update global favoritedVariantIds if it exists (for product detail page and list consistency)
+                    if (typeof favoritedVariantIds !== 'undefined' && Array.isArray(favoritedVariantIds)) {
+                        const vId = parseInt(variantId);
+                        if (data.favorited) {
+                            if (!favoritedVariantIds.includes(vId)) favoritedVariantIds.push(vId);
+                        } else {
+                            const index = favoritedVariantIds.indexOf(vId);
+                            if (index > -1) favoritedVariantIds.splice(index, 1);
+                        }
+                    }
+
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'success',
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+
+                    // Option to refresh if on favorited page
+                    if (window.location.pathname === '/account/favourited') {
+                        setTimeout(() => location.reload(), 1000);
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: error.message
+                });
+            }
+        }
+    </script>
 </body>
 
 </html>

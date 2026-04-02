@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantPayloadDto {
-    private Long id; // Temp ID from frontend tracking
+    private Long id; // Database ID (Long for temp ID compatibility)
 
     @NotBlank(message = "Mã SKU không được trống")
     private String sku;
@@ -29,5 +29,6 @@ public class VariantPayloadDto {
     private Double discount;
 
     private String imageInputName;
+    private java.util.List<String> existingImages;
     private Map<String, String> attributes; // Key: Attribute Name, Value: Attribute Value
 }
